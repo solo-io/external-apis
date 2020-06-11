@@ -12,7 +12,7 @@ replace (
 )
 
 require (
-	github.com/golang/mock v1.4.4-0.20200406172829-6d816de489c1 // indirect
+	github.com/golang/mock v1.4.4-0.20200406172829-6d816de489c1
 	github.com/linkerd/linkerd2 v0.5.1-0.20200402173539-fee70c064bc0
 	github.com/pkg/errors v0.9.1
 	github.com/servicemeshinterface/smi-sdk-go v0.3.0

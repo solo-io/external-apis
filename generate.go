@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/solo-io/external-apis/codegen"
 	"log"
+
+	"github.com/solo-io/external-apis/codegen"
 )
 
 func main() {
