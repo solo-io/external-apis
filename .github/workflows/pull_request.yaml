@@ -15,7 +15,6 @@ jobs:
       uses: actions/setup-go@v1
       with:
         go-version: 1.14
-      id: go
 
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
@@ -29,7 +28,7 @@ jobs:
     
     - name: Generate Code
       run: |
-        export PATH=$PATH:$GOPATH/bin/ && ./ci/check-code-gen.sh
+        export PATH=$PATH:/home/runner/go/bin/ && ./ci/check-code-gen.sh
 
     - name: Check Compile
       run: |
