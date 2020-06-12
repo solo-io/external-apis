@@ -17,6 +17,11 @@ import (
   See package `github.com/solo-io/skv2/pkg/multicluster/register` for example
 */
 
+// Provider for AuthorizationPolicyClient from Clientset
+func AuthorizationPolicyClientFromClientsetProvider(clients security_istio_io_v1beta1.Clientset) security_istio_io_v1beta1.AuthorizationPolicyClient {
+	return clients.AuthorizationPolicies()
+}
+
 // Provider for AuthorizationPolicy Client from Client
 func AuthorizationPolicyClientProvider(client client.Client) security_istio_io_v1beta1.AuthorizationPolicyClient {
 	return security_istio_io_v1beta1.NewAuthorizationPolicyClient(client)

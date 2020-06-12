@@ -17,6 +17,11 @@ import (
   See package `github.com/solo-io/skv2/pkg/multicluster/register` for example
 */
 
+// Provider for JobClient from Clientset
+func JobClientFromClientsetProvider(clients batch_v1.Clientset) batch_v1.JobClient {
+	return clients.Jobs()
+}
+
 // Provider for Job Client from Client
 func JobClientProvider(client client.Client) batch_v1.JobClient {
 	return batch_v1.NewJobClient(client)

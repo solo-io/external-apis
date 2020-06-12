@@ -17,6 +17,11 @@ import (
   See package `github.com/solo-io/skv2/pkg/multicluster/register` for example
 */
 
+// Provider for ServiceProfileClient from Clientset
+func ServiceProfileClientFromClientsetProvider(clients linkerd_io_v1alpha2.Clientset) linkerd_io_v1alpha2.ServiceProfileClient {
+	return clients.ServiceProfiles()
+}
+
 // Provider for ServiceProfile Client from Client
 func ServiceProfileClientProvider(client client.Client) linkerd_io_v1alpha2.ServiceProfileClient {
 	return linkerd_io_v1alpha2.NewServiceProfileClient(client)

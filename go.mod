@@ -15,7 +15,7 @@ require (
 	github.com/linkerd/linkerd2 v0.5.1-0.20200402173539-fee70c064bc0
 	github.com/pkg/errors v0.9.1
 	github.com/servicemeshinterface/smi-sdk-go v0.3.0
-	github.com/solo-io/skv2 v0.4.0
+	github.com/solo-io/skv2 v0.4.2
 	istio.io/client-go v0.0.0-20200610222318-1cfead1f1938
 	k8s.io/api v0.17.4
 	k8s.io/apiextensions-apiserver v0.17.4

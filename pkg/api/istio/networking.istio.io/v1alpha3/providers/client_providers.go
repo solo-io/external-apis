@@ -17,6 +17,11 @@ import (
   See package `github.com/solo-io/skv2/pkg/multicluster/register` for example
 */
 
+// Provider for DestinationRuleClient from Clientset
+func DestinationRuleClientFromClientsetProvider(clients networking_istio_io_v1alpha3.Clientset) networking_istio_io_v1alpha3.DestinationRuleClient {
+	return clients.DestinationRules()
+}
+
 // Provider for DestinationRule Client from Client
 func DestinationRuleClientProvider(client client.Client) networking_istio_io_v1alpha3.DestinationRuleClient {
 	return networking_istio_io_v1alpha3.NewDestinationRuleClient(client)
@@ -38,6 +43,11 @@ func DestinationRuleClientFromConfigFactoryProvider() DestinationRuleClientFromC
 		}
 		return clients.DestinationRules(), nil
 	}
+}
+
+// Provider for EnvoyFilterClient from Clientset
+func EnvoyFilterClientFromClientsetProvider(clients networking_istio_io_v1alpha3.Clientset) networking_istio_io_v1alpha3.EnvoyFilterClient {
+	return clients.EnvoyFilters()
 }
 
 // Provider for EnvoyFilter Client from Client
@@ -63,6 +73,11 @@ func EnvoyFilterClientFromConfigFactoryProvider() EnvoyFilterClientFromConfigFac
 	}
 }
 
+// Provider for GatewayClient from Clientset
+func GatewayClientFromClientsetProvider(clients networking_istio_io_v1alpha3.Clientset) networking_istio_io_v1alpha3.GatewayClient {
+	return clients.Gateways()
+}
+
 // Provider for Gateway Client from Client
 func GatewayClientProvider(client client.Client) networking_istio_io_v1alpha3.GatewayClient {
 	return networking_istio_io_v1alpha3.NewGatewayClient(client)
@@ -86,6 +101,11 @@ func GatewayClientFromConfigFactoryProvider() GatewayClientFromConfigFactory {
 	}
 }
 
+// Provider for ServiceEntryClient from Clientset
+func ServiceEntryClientFromClientsetProvider(clients networking_istio_io_v1alpha3.Clientset) networking_istio_io_v1alpha3.ServiceEntryClient {
+	return clients.ServiceEntries()
+}
+
 // Provider for ServiceEntry Client from Client
 func ServiceEntryClientProvider(client client.Client) networking_istio_io_v1alpha3.ServiceEntryClient {
 	return networking_istio_io_v1alpha3.NewServiceEntryClient(client)
@@ -107,6 +127,11 @@ func ServiceEntryClientFromConfigFactoryProvider() ServiceEntryClientFromConfigF
 		}
 		return clients.ServiceEntries(), nil
 	}
+}
+
+// Provider for VirtualServiceClient from Clientset
+func VirtualServiceClientFromClientsetProvider(clients networking_istio_io_v1alpha3.Clientset) networking_istio_io_v1alpha3.VirtualServiceClient {
+	return clients.VirtualServices()
 }
 
 // Provider for VirtualService Client from Client

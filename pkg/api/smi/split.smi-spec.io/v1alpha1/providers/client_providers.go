@@ -17,6 +17,11 @@ import (
   See package `github.com/solo-io/skv2/pkg/multicluster/register` for example
 */
 
+// Provider for TrafficSplitClient from Clientset
+func TrafficSplitClientFromClientsetProvider(clients split_smi_spec_io_v1alpha1.Clientset) split_smi_spec_io_v1alpha1.TrafficSplitClient {
+	return clients.TrafficSplits()
+}
+
 // Provider for TrafficSplit Client from Client
 func TrafficSplitClientProvider(client client.Client) split_smi_spec_io_v1alpha1.TrafficSplitClient {
 	return split_smi_spec_io_v1alpha1.NewTrafficSplitClient(client)

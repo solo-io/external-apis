@@ -17,6 +17,11 @@ import (
   See package `github.com/solo-io/skv2/pkg/multicluster/register` for example
 */
 
+// Provider for DeploymentClient from Clientset
+func DeploymentClientFromClientsetProvider(clients apps_v1.Clientset) apps_v1.DeploymentClient {
+	return clients.Deployments()
+}
+
 // Provider for Deployment Client from Client
 func DeploymentClientProvider(client client.Client) apps_v1.DeploymentClient {
 	return apps_v1.NewDeploymentClient(client)
@@ -40,6 +45,11 @@ func DeploymentClientFromConfigFactoryProvider() DeploymentClientFromConfigFacto
 	}
 }
 
+// Provider for ReplicaSetClient from Clientset
+func ReplicaSetClientFromClientsetProvider(clients apps_v1.Clientset) apps_v1.ReplicaSetClient {
+	return clients.ReplicaSets()
+}
+
 // Provider for ReplicaSet Client from Client
 func ReplicaSetClientProvider(client client.Client) apps_v1.ReplicaSetClient {
 	return apps_v1.NewReplicaSetClient(client)
@@ -61,6 +71,11 @@ func ReplicaSetClientFromConfigFactoryProvider() ReplicaSetClientFromConfigFacto
 		}
 		return clients.ReplicaSets(), nil
 	}
+}
+
+// Provider for DaemonSetClient from Clientset
+func DaemonSetClientFromClientsetProvider(clients apps_v1.Clientset) apps_v1.DaemonSetClient {
+	return clients.DaemonSets()
 }
 
 // Provider for DaemonSet Client from Client

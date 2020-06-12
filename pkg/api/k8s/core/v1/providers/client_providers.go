@@ -17,6 +17,11 @@ import (
   See package `github.com/solo-io/skv2/pkg/multicluster/register` for example
 */
 
+// Provider for SecretClient from Clientset
+func SecretClientFromClientsetProvider(clients v1.Clientset) v1.SecretClient {
+	return clients.Secrets()
+}
+
 // Provider for Secret Client from Client
 func SecretClientProvider(client client.Client) v1.SecretClient {
 	return v1.NewSecretClient(client)
@@ -38,6 +43,11 @@ func SecretClientFromConfigFactoryProvider() SecretClientFromConfigFactory {
 		}
 		return clients.Secrets(), nil
 	}
+}
+
+// Provider for ServiceAccountClient from Clientset
+func ServiceAccountClientFromClientsetProvider(clients v1.Clientset) v1.ServiceAccountClient {
+	return clients.ServiceAccounts()
 }
 
 // Provider for ServiceAccount Client from Client
@@ -63,6 +73,11 @@ func ServiceAccountClientFromConfigFactoryProvider() ServiceAccountClientFromCon
 	}
 }
 
+// Provider for ConfigMapClient from Clientset
+func ConfigMapClientFromClientsetProvider(clients v1.Clientset) v1.ConfigMapClient {
+	return clients.ConfigMaps()
+}
+
 // Provider for ConfigMap Client from Client
 func ConfigMapClientProvider(client client.Client) v1.ConfigMapClient {
 	return v1.NewConfigMapClient(client)
@@ -84,6 +99,11 @@ func ConfigMapClientFromConfigFactoryProvider() ConfigMapClientFromConfigFactory
 		}
 		return clients.ConfigMaps(), nil
 	}
+}
+
+// Provider for ServiceClient from Clientset
+func ServiceClientFromClientsetProvider(clients v1.Clientset) v1.ServiceClient {
+	return clients.Services()
 }
 
 // Provider for Service Client from Client
@@ -109,6 +129,11 @@ func ServiceClientFromConfigFactoryProvider() ServiceClientFromConfigFactory {
 	}
 }
 
+// Provider for PodClient from Clientset
+func PodClientFromClientsetProvider(clients v1.Clientset) v1.PodClient {
+	return clients.Pods()
+}
+
 // Provider for Pod Client from Client
 func PodClientProvider(client client.Client) v1.PodClient {
 	return v1.NewPodClient(client)
@@ -132,6 +157,11 @@ func PodClientFromConfigFactoryProvider() PodClientFromConfigFactory {
 	}
 }
 
+// Provider for NamespaceClient from Clientset
+func NamespaceClientFromClientsetProvider(clients v1.Clientset) v1.NamespaceClient {
+	return clients.Namespaces()
+}
+
 // Provider for Namespace Client from Client
 func NamespaceClientProvider(client client.Client) v1.NamespaceClient {
 	return v1.NewNamespaceClient(client)
@@ -153,6 +183,11 @@ func NamespaceClientFromConfigFactoryProvider() NamespaceClientFromConfigFactory
 		}
 		return clients.Namespaces(), nil
 	}
+}
+
+// Provider for NodeClient from Clientset
+func NodeClientFromClientsetProvider(clients v1.Clientset) v1.NodeClient {
+	return clients.Nodes()
 }
 
 // Provider for Node Client from Client
