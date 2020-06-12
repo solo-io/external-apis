@@ -29,7 +29,3 @@ jobs:
     - name: Generate Code
       run: |
         export PATH=$PATH:/home/runner/go/bin/ && ./ci/check-code-gen.sh
-
-    - name: Check Compile
-      run: |
-        go build -v ./...
