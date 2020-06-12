@@ -50,7 +50,7 @@ type clientSet struct {
 
 func NewClientsetFromConfig(cfg *rest.Config) (Clientset, error) {
 	scheme := scheme.Scheme
-	if err := AddToScheme(scheme); err != nil {
+	if err := linkerd_io_v1alpha2.AddToScheme(scheme); err != nil {
 		return nil, err
 	}
 	client, err := client.New(cfg, client.Options{
@@ -131,7 +131,7 @@ func NewServiceProfileClient(client client.Client) *serviceProfileClient {
 }
 
 func (c *serviceProfileClient) GetServiceProfile(ctx context.Context, key client.ObjectKey) (*linkerd_io_v1alpha2.ServiceProfile, error) {
-	obj := &ServiceProfile{}
+	obj := &linkerd_io_v1alpha2.ServiceProfile{}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
 	}
@@ -139,7 +139,7 @@ func (c *serviceProfileClient) GetServiceProfile(ctx context.Context, key client
 }
 
 func (c *serviceProfileClient) ListServiceProfile(ctx context.Context, opts ...client.ListOption) (*linkerd_io_v1alpha2.ServiceProfileList, error) {
-	list := &ServiceProfileList{}
+	list := &linkerd_io_v1alpha2.ServiceProfileList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
@@ -151,7 +151,7 @@ func (c *serviceProfileClient) CreateServiceProfile(ctx context.Context, obj *li
 }
 
 func (c *serviceProfileClient) DeleteServiceProfile(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	obj := &ServiceProfile{}
+	obj := &linkerd_io_v1alpha2.ServiceProfile{}
 	obj.SetName(key.Name)
 	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
@@ -166,7 +166,7 @@ func (c *serviceProfileClient) PatchServiceProfile(ctx context.Context, obj *lin
 }
 
 func (c *serviceProfileClient) DeleteAllOfServiceProfile(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &ServiceProfile{}
+	obj := &linkerd_io_v1alpha2.ServiceProfile{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 

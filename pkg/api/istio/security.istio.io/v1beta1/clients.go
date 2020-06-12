@@ -50,7 +50,7 @@ type clientSet struct {
 
 func NewClientsetFromConfig(cfg *rest.Config) (Clientset, error) {
 	scheme := scheme.Scheme
-	if err := AddToScheme(scheme); err != nil {
+	if err := security_istio_io_v1beta1.AddToScheme(scheme); err != nil {
 		return nil, err
 	}
 	client, err := client.New(cfg, client.Options{
@@ -131,7 +131,7 @@ func NewAuthorizationPolicyClient(client client.Client) *authorizationPolicyClie
 }
 
 func (c *authorizationPolicyClient) GetAuthorizationPolicy(ctx context.Context, key client.ObjectKey) (*security_istio_io_v1beta1.AuthorizationPolicy, error) {
-	obj := &AuthorizationPolicy{}
+	obj := &security_istio_io_v1beta1.AuthorizationPolicy{}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
 	}
@@ -139,7 +139,7 @@ func (c *authorizationPolicyClient) GetAuthorizationPolicy(ctx context.Context, 
 }
 
 func (c *authorizationPolicyClient) ListAuthorizationPolicy(ctx context.Context, opts ...client.ListOption) (*security_istio_io_v1beta1.AuthorizationPolicyList, error) {
-	list := &AuthorizationPolicyList{}
+	list := &security_istio_io_v1beta1.AuthorizationPolicyList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
@@ -151,7 +151,7 @@ func (c *authorizationPolicyClient) CreateAuthorizationPolicy(ctx context.Contex
 }
 
 func (c *authorizationPolicyClient) DeleteAuthorizationPolicy(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	obj := &AuthorizationPolicy{}
+	obj := &security_istio_io_v1beta1.AuthorizationPolicy{}
 	obj.SetName(key.Name)
 	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
@@ -166,7 +166,7 @@ func (c *authorizationPolicyClient) PatchAuthorizationPolicy(ctx context.Context
 }
 
 func (c *authorizationPolicyClient) DeleteAllOfAuthorizationPolicy(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &AuthorizationPolicy{}
+	obj := &security_istio_io_v1beta1.AuthorizationPolicy{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 

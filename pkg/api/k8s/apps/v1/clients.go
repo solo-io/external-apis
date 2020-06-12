@@ -54,7 +54,7 @@ type clientSet struct {
 
 func NewClientsetFromConfig(cfg *rest.Config) (Clientset, error) {
 	scheme := scheme.Scheme
-	if err := AddToScheme(scheme); err != nil {
+	if err := apps_v1.AddToScheme(scheme); err != nil {
 		return nil, err
 	}
 	client, err := client.New(cfg, client.Options{
@@ -145,7 +145,7 @@ func NewDeploymentClient(client client.Client) *deploymentClient {
 }
 
 func (c *deploymentClient) GetDeployment(ctx context.Context, key client.ObjectKey) (*apps_v1.Deployment, error) {
-	obj := &Deployment{}
+	obj := &apps_v1.Deployment{}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
 	}
@@ -153,7 +153,7 @@ func (c *deploymentClient) GetDeployment(ctx context.Context, key client.ObjectK
 }
 
 func (c *deploymentClient) ListDeployment(ctx context.Context, opts ...client.ListOption) (*apps_v1.DeploymentList, error) {
-	list := &DeploymentList{}
+	list := &apps_v1.DeploymentList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
@@ -165,7 +165,7 @@ func (c *deploymentClient) CreateDeployment(ctx context.Context, obj *apps_v1.De
 }
 
 func (c *deploymentClient) DeleteDeployment(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	obj := &Deployment{}
+	obj := &apps_v1.Deployment{}
 	obj.SetName(key.Name)
 	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
@@ -180,7 +180,7 @@ func (c *deploymentClient) PatchDeployment(ctx context.Context, obj *apps_v1.Dep
 }
 
 func (c *deploymentClient) DeleteAllOfDeployment(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &Deployment{}
+	obj := &apps_v1.Deployment{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 
@@ -265,7 +265,7 @@ func NewReplicaSetClient(client client.Client) *replicaSetClient {
 }
 
 func (c *replicaSetClient) GetReplicaSet(ctx context.Context, key client.ObjectKey) (*apps_v1.ReplicaSet, error) {
-	obj := &ReplicaSet{}
+	obj := &apps_v1.ReplicaSet{}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
 	}
@@ -273,7 +273,7 @@ func (c *replicaSetClient) GetReplicaSet(ctx context.Context, key client.ObjectK
 }
 
 func (c *replicaSetClient) ListReplicaSet(ctx context.Context, opts ...client.ListOption) (*apps_v1.ReplicaSetList, error) {
-	list := &ReplicaSetList{}
+	list := &apps_v1.ReplicaSetList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
@@ -285,7 +285,7 @@ func (c *replicaSetClient) CreateReplicaSet(ctx context.Context, obj *apps_v1.Re
 }
 
 func (c *replicaSetClient) DeleteReplicaSet(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	obj := &ReplicaSet{}
+	obj := &apps_v1.ReplicaSet{}
 	obj.SetName(key.Name)
 	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
@@ -300,7 +300,7 @@ func (c *replicaSetClient) PatchReplicaSet(ctx context.Context, obj *apps_v1.Rep
 }
 
 func (c *replicaSetClient) DeleteAllOfReplicaSet(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &ReplicaSet{}
+	obj := &apps_v1.ReplicaSet{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 
@@ -385,7 +385,7 @@ func NewDaemonSetClient(client client.Client) *daemonSetClient {
 }
 
 func (c *daemonSetClient) GetDaemonSet(ctx context.Context, key client.ObjectKey) (*apps_v1.DaemonSet, error) {
-	obj := &DaemonSet{}
+	obj := &apps_v1.DaemonSet{}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
 	}
@@ -393,7 +393,7 @@ func (c *daemonSetClient) GetDaemonSet(ctx context.Context, key client.ObjectKey
 }
 
 func (c *daemonSetClient) ListDaemonSet(ctx context.Context, opts ...client.ListOption) (*apps_v1.DaemonSetList, error) {
-	list := &DaemonSetList{}
+	list := &apps_v1.DaemonSetList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
@@ -405,7 +405,7 @@ func (c *daemonSetClient) CreateDaemonSet(ctx context.Context, obj *apps_v1.Daem
 }
 
 func (c *daemonSetClient) DeleteDaemonSet(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	obj := &DaemonSet{}
+	obj := &apps_v1.DaemonSet{}
 	obj.SetName(key.Name)
 	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
@@ -420,7 +420,7 @@ func (c *daemonSetClient) PatchDaemonSet(ctx context.Context, obj *apps_v1.Daemo
 }
 
 func (c *daemonSetClient) DeleteAllOfDaemonSet(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &DaemonSet{}
+	obj := &apps_v1.DaemonSet{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 

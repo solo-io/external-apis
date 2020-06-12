@@ -62,7 +62,7 @@ type clientSet struct {
 
 func NewClientsetFromConfig(cfg *rest.Config) (Clientset, error) {
 	scheme := scheme.Scheme
-	if err := AddToScheme(scheme); err != nil {
+	if err := v1.AddToScheme(scheme); err != nil {
 		return nil, err
 	}
 	client, err := client.New(cfg, client.Options{
@@ -173,7 +173,7 @@ func NewSecretClient(client client.Client) *secretClient {
 }
 
 func (c *secretClient) GetSecret(ctx context.Context, key client.ObjectKey) (*v1.Secret, error) {
-	obj := &Secret{}
+	obj := &v1.Secret{}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
 	}
@@ -181,7 +181,7 @@ func (c *secretClient) GetSecret(ctx context.Context, key client.ObjectKey) (*v1
 }
 
 func (c *secretClient) ListSecret(ctx context.Context, opts ...client.ListOption) (*v1.SecretList, error) {
-	list := &SecretList{}
+	list := &v1.SecretList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
@@ -193,7 +193,7 @@ func (c *secretClient) CreateSecret(ctx context.Context, obj *v1.Secret, opts ..
 }
 
 func (c *secretClient) DeleteSecret(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	obj := &Secret{}
+	obj := &v1.Secret{}
 	obj.SetName(key.Name)
 	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
@@ -208,7 +208,7 @@ func (c *secretClient) PatchSecret(ctx context.Context, obj *v1.Secret, patch cl
 }
 
 func (c *secretClient) DeleteAllOfSecret(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &Secret{}
+	obj := &v1.Secret{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 
@@ -293,7 +293,7 @@ func NewServiceAccountClient(client client.Client) *serviceAccountClient {
 }
 
 func (c *serviceAccountClient) GetServiceAccount(ctx context.Context, key client.ObjectKey) (*v1.ServiceAccount, error) {
-	obj := &ServiceAccount{}
+	obj := &v1.ServiceAccount{}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
 	}
@@ -301,7 +301,7 @@ func (c *serviceAccountClient) GetServiceAccount(ctx context.Context, key client
 }
 
 func (c *serviceAccountClient) ListServiceAccount(ctx context.Context, opts ...client.ListOption) (*v1.ServiceAccountList, error) {
-	list := &ServiceAccountList{}
+	list := &v1.ServiceAccountList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
@@ -313,7 +313,7 @@ func (c *serviceAccountClient) CreateServiceAccount(ctx context.Context, obj *v1
 }
 
 func (c *serviceAccountClient) DeleteServiceAccount(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	obj := &ServiceAccount{}
+	obj := &v1.ServiceAccount{}
 	obj.SetName(key.Name)
 	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
@@ -328,7 +328,7 @@ func (c *serviceAccountClient) PatchServiceAccount(ctx context.Context, obj *v1.
 }
 
 func (c *serviceAccountClient) DeleteAllOfServiceAccount(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &ServiceAccount{}
+	obj := &v1.ServiceAccount{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 
@@ -413,7 +413,7 @@ func NewConfigMapClient(client client.Client) *configMapClient {
 }
 
 func (c *configMapClient) GetConfigMap(ctx context.Context, key client.ObjectKey) (*v1.ConfigMap, error) {
-	obj := &ConfigMap{}
+	obj := &v1.ConfigMap{}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
 	}
@@ -421,7 +421,7 @@ func (c *configMapClient) GetConfigMap(ctx context.Context, key client.ObjectKey
 }
 
 func (c *configMapClient) ListConfigMap(ctx context.Context, opts ...client.ListOption) (*v1.ConfigMapList, error) {
-	list := &ConfigMapList{}
+	list := &v1.ConfigMapList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
@@ -433,7 +433,7 @@ func (c *configMapClient) CreateConfigMap(ctx context.Context, obj *v1.ConfigMap
 }
 
 func (c *configMapClient) DeleteConfigMap(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	obj := &ConfigMap{}
+	obj := &v1.ConfigMap{}
 	obj.SetName(key.Name)
 	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
@@ -448,7 +448,7 @@ func (c *configMapClient) PatchConfigMap(ctx context.Context, obj *v1.ConfigMap,
 }
 
 func (c *configMapClient) DeleteAllOfConfigMap(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &ConfigMap{}
+	obj := &v1.ConfigMap{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 
@@ -533,7 +533,7 @@ func NewServiceClient(client client.Client) *serviceClient {
 }
 
 func (c *serviceClient) GetService(ctx context.Context, key client.ObjectKey) (*v1.Service, error) {
-	obj := &Service{}
+	obj := &v1.Service{}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
 	}
@@ -541,7 +541,7 @@ func (c *serviceClient) GetService(ctx context.Context, key client.ObjectKey) (*
 }
 
 func (c *serviceClient) ListService(ctx context.Context, opts ...client.ListOption) (*v1.ServiceList, error) {
-	list := &ServiceList{}
+	list := &v1.ServiceList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
@@ -553,7 +553,7 @@ func (c *serviceClient) CreateService(ctx context.Context, obj *v1.Service, opts
 }
 
 func (c *serviceClient) DeleteService(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	obj := &Service{}
+	obj := &v1.Service{}
 	obj.SetName(key.Name)
 	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
@@ -568,7 +568,7 @@ func (c *serviceClient) PatchService(ctx context.Context, obj *v1.Service, patch
 }
 
 func (c *serviceClient) DeleteAllOfService(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &Service{}
+	obj := &v1.Service{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 
@@ -653,7 +653,7 @@ func NewPodClient(client client.Client) *podClient {
 }
 
 func (c *podClient) GetPod(ctx context.Context, key client.ObjectKey) (*v1.Pod, error) {
-	obj := &Pod{}
+	obj := &v1.Pod{}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
 	}
@@ -661,7 +661,7 @@ func (c *podClient) GetPod(ctx context.Context, key client.ObjectKey) (*v1.Pod, 
 }
 
 func (c *podClient) ListPod(ctx context.Context, opts ...client.ListOption) (*v1.PodList, error) {
-	list := &PodList{}
+	list := &v1.PodList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
@@ -673,7 +673,7 @@ func (c *podClient) CreatePod(ctx context.Context, obj *v1.Pod, opts ...client.C
 }
 
 func (c *podClient) DeletePod(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	obj := &Pod{}
+	obj := &v1.Pod{}
 	obj.SetName(key.Name)
 	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
@@ -688,7 +688,7 @@ func (c *podClient) PatchPod(ctx context.Context, obj *v1.Pod, patch client.Patc
 }
 
 func (c *podClient) DeleteAllOfPod(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &Pod{}
+	obj := &v1.Pod{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 
@@ -773,7 +773,7 @@ func NewNamespaceClient(client client.Client) *namespaceClient {
 }
 
 func (c *namespaceClient) GetNamespace(ctx context.Context, name string) (*v1.Namespace, error) {
-	obj := &Namespace{}
+	obj := &v1.Namespace{}
 	key := client.ObjectKey{
 		Name: name,
 	}
@@ -784,7 +784,7 @@ func (c *namespaceClient) GetNamespace(ctx context.Context, name string) (*v1.Na
 }
 
 func (c *namespaceClient) ListNamespace(ctx context.Context, opts ...client.ListOption) (*v1.NamespaceList, error) {
-	list := &NamespaceList{}
+	list := &v1.NamespaceList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
@@ -796,7 +796,7 @@ func (c *namespaceClient) CreateNamespace(ctx context.Context, obj *v1.Namespace
 }
 
 func (c *namespaceClient) DeleteNamespace(ctx context.Context, name string, opts ...client.DeleteOption) error {
-	obj := &Namespace{}
+	obj := &v1.Namespace{}
 	obj.SetName(name)
 	return c.client.Delete(ctx, obj, opts...)
 }
@@ -810,7 +810,7 @@ func (c *namespaceClient) PatchNamespace(ctx context.Context, obj *v1.Namespace,
 }
 
 func (c *namespaceClient) DeleteAllOfNamespace(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &Namespace{}
+	obj := &v1.Namespace{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 
@@ -895,7 +895,7 @@ func NewNodeClient(client client.Client) *nodeClient {
 }
 
 func (c *nodeClient) GetNode(ctx context.Context, name string) (*v1.Node, error) {
-	obj := &Node{}
+	obj := &v1.Node{}
 	key := client.ObjectKey{
 		Name: name,
 	}
@@ -906,7 +906,7 @@ func (c *nodeClient) GetNode(ctx context.Context, name string) (*v1.Node, error)
 }
 
 func (c *nodeClient) ListNode(ctx context.Context, opts ...client.ListOption) (*v1.NodeList, error) {
-	list := &NodeList{}
+	list := &v1.NodeList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
@@ -918,7 +918,7 @@ func (c *nodeClient) CreateNode(ctx context.Context, obj *v1.Node, opts ...clien
 }
 
 func (c *nodeClient) DeleteNode(ctx context.Context, name string, opts ...client.DeleteOption) error {
-	obj := &Node{}
+	obj := &v1.Node{}
 	obj.SetName(name)
 	return c.client.Delete(ctx, obj, opts...)
 }
@@ -932,7 +932,7 @@ func (c *nodeClient) PatchNode(ctx context.Context, obj *v1.Node, patch client.P
 }
 
 func (c *nodeClient) DeleteAllOfNode(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &Node{}
+	obj := &v1.Node{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 

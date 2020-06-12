@@ -58,7 +58,7 @@ type clientSet struct {
 
 func NewClientsetFromConfig(cfg *rest.Config) (Clientset, error) {
 	scheme := scheme.Scheme
-	if err := AddToScheme(scheme); err != nil {
+	if err := networking_istio_io_v1alpha3.AddToScheme(scheme); err != nil {
 		return nil, err
 	}
 	client, err := client.New(cfg, client.Options{
@@ -159,7 +159,7 @@ func NewDestinationRuleClient(client client.Client) *destinationRuleClient {
 }
 
 func (c *destinationRuleClient) GetDestinationRule(ctx context.Context, key client.ObjectKey) (*networking_istio_io_v1alpha3.DestinationRule, error) {
-	obj := &DestinationRule{}
+	obj := &networking_istio_io_v1alpha3.DestinationRule{}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
 	}
@@ -167,7 +167,7 @@ func (c *destinationRuleClient) GetDestinationRule(ctx context.Context, key clie
 }
 
 func (c *destinationRuleClient) ListDestinationRule(ctx context.Context, opts ...client.ListOption) (*networking_istio_io_v1alpha3.DestinationRuleList, error) {
-	list := &DestinationRuleList{}
+	list := &networking_istio_io_v1alpha3.DestinationRuleList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
@@ -179,7 +179,7 @@ func (c *destinationRuleClient) CreateDestinationRule(ctx context.Context, obj *
 }
 
 func (c *destinationRuleClient) DeleteDestinationRule(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	obj := &DestinationRule{}
+	obj := &networking_istio_io_v1alpha3.DestinationRule{}
 	obj.SetName(key.Name)
 	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
@@ -194,7 +194,7 @@ func (c *destinationRuleClient) PatchDestinationRule(ctx context.Context, obj *n
 }
 
 func (c *destinationRuleClient) DeleteAllOfDestinationRule(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &DestinationRule{}
+	obj := &networking_istio_io_v1alpha3.DestinationRule{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 
@@ -279,7 +279,7 @@ func NewEnvoyFilterClient(client client.Client) *envoyFilterClient {
 }
 
 func (c *envoyFilterClient) GetEnvoyFilter(ctx context.Context, key client.ObjectKey) (*networking_istio_io_v1alpha3.EnvoyFilter, error) {
-	obj := &EnvoyFilter{}
+	obj := &networking_istio_io_v1alpha3.EnvoyFilter{}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
 	}
@@ -287,7 +287,7 @@ func (c *envoyFilterClient) GetEnvoyFilter(ctx context.Context, key client.Objec
 }
 
 func (c *envoyFilterClient) ListEnvoyFilter(ctx context.Context, opts ...client.ListOption) (*networking_istio_io_v1alpha3.EnvoyFilterList, error) {
-	list := &EnvoyFilterList{}
+	list := &networking_istio_io_v1alpha3.EnvoyFilterList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
@@ -299,7 +299,7 @@ func (c *envoyFilterClient) CreateEnvoyFilter(ctx context.Context, obj *networki
 }
 
 func (c *envoyFilterClient) DeleteEnvoyFilter(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	obj := &EnvoyFilter{}
+	obj := &networking_istio_io_v1alpha3.EnvoyFilter{}
 	obj.SetName(key.Name)
 	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
@@ -314,7 +314,7 @@ func (c *envoyFilterClient) PatchEnvoyFilter(ctx context.Context, obj *networkin
 }
 
 func (c *envoyFilterClient) DeleteAllOfEnvoyFilter(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &EnvoyFilter{}
+	obj := &networking_istio_io_v1alpha3.EnvoyFilter{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 
@@ -399,7 +399,7 @@ func NewGatewayClient(client client.Client) *gatewayClient {
 }
 
 func (c *gatewayClient) GetGateway(ctx context.Context, key client.ObjectKey) (*networking_istio_io_v1alpha3.Gateway, error) {
-	obj := &Gateway{}
+	obj := &networking_istio_io_v1alpha3.Gateway{}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
 	}
@@ -407,7 +407,7 @@ func (c *gatewayClient) GetGateway(ctx context.Context, key client.ObjectKey) (*
 }
 
 func (c *gatewayClient) ListGateway(ctx context.Context, opts ...client.ListOption) (*networking_istio_io_v1alpha3.GatewayList, error) {
-	list := &GatewayList{}
+	list := &networking_istio_io_v1alpha3.GatewayList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
@@ -419,7 +419,7 @@ func (c *gatewayClient) CreateGateway(ctx context.Context, obj *networking_istio
 }
 
 func (c *gatewayClient) DeleteGateway(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	obj := &Gateway{}
+	obj := &networking_istio_io_v1alpha3.Gateway{}
 	obj.SetName(key.Name)
 	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
@@ -434,7 +434,7 @@ func (c *gatewayClient) PatchGateway(ctx context.Context, obj *networking_istio_
 }
 
 func (c *gatewayClient) DeleteAllOfGateway(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &Gateway{}
+	obj := &networking_istio_io_v1alpha3.Gateway{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 
@@ -519,7 +519,7 @@ func NewServiceEntryClient(client client.Client) *serviceEntryClient {
 }
 
 func (c *serviceEntryClient) GetServiceEntry(ctx context.Context, key client.ObjectKey) (*networking_istio_io_v1alpha3.ServiceEntry, error) {
-	obj := &ServiceEntry{}
+	obj := &networking_istio_io_v1alpha3.ServiceEntry{}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
 	}
@@ -527,7 +527,7 @@ func (c *serviceEntryClient) GetServiceEntry(ctx context.Context, key client.Obj
 }
 
 func (c *serviceEntryClient) ListServiceEntry(ctx context.Context, opts ...client.ListOption) (*networking_istio_io_v1alpha3.ServiceEntryList, error) {
-	list := &ServiceEntryList{}
+	list := &networking_istio_io_v1alpha3.ServiceEntryList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
@@ -539,7 +539,7 @@ func (c *serviceEntryClient) CreateServiceEntry(ctx context.Context, obj *networ
 }
 
 func (c *serviceEntryClient) DeleteServiceEntry(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	obj := &ServiceEntry{}
+	obj := &networking_istio_io_v1alpha3.ServiceEntry{}
 	obj.SetName(key.Name)
 	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
@@ -554,7 +554,7 @@ func (c *serviceEntryClient) PatchServiceEntry(ctx context.Context, obj *network
 }
 
 func (c *serviceEntryClient) DeleteAllOfServiceEntry(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &ServiceEntry{}
+	obj := &networking_istio_io_v1alpha3.ServiceEntry{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 
@@ -639,7 +639,7 @@ func NewVirtualServiceClient(client client.Client) *virtualServiceClient {
 }
 
 func (c *virtualServiceClient) GetVirtualService(ctx context.Context, key client.ObjectKey) (*networking_istio_io_v1alpha3.VirtualService, error) {
-	obj := &VirtualService{}
+	obj := &networking_istio_io_v1alpha3.VirtualService{}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
 	}
@@ -647,7 +647,7 @@ func (c *virtualServiceClient) GetVirtualService(ctx context.Context, key client
 }
 
 func (c *virtualServiceClient) ListVirtualService(ctx context.Context, opts ...client.ListOption) (*networking_istio_io_v1alpha3.VirtualServiceList, error) {
-	list := &VirtualServiceList{}
+	list := &networking_istio_io_v1alpha3.VirtualServiceList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
@@ -659,7 +659,7 @@ func (c *virtualServiceClient) CreateVirtualService(ctx context.Context, obj *ne
 }
 
 func (c *virtualServiceClient) DeleteVirtualService(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	obj := &VirtualService{}
+	obj := &networking_istio_io_v1alpha3.VirtualService{}
 	obj.SetName(key.Name)
 	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
@@ -674,7 +674,7 @@ func (c *virtualServiceClient) PatchVirtualService(ctx context.Context, obj *net
 }
 
 func (c *virtualServiceClient) DeleteAllOfVirtualService(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &VirtualService{}
+	obj := &networking_istio_io_v1alpha3.VirtualService{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 

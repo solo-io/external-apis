@@ -50,7 +50,7 @@ type clientSet struct {
 
 func NewClientsetFromConfig(cfg *rest.Config) (Clientset, error) {
 	scheme := scheme.Scheme
-	if err := AddToScheme(scheme); err != nil {
+	if err := batch_v1.AddToScheme(scheme); err != nil {
 		return nil, err
 	}
 	client, err := client.New(cfg, client.Options{
@@ -131,7 +131,7 @@ func NewJobClient(client client.Client) *jobClient {
 }
 
 func (c *jobClient) GetJob(ctx context.Context, key client.ObjectKey) (*batch_v1.Job, error) {
-	obj := &Job{}
+	obj := &batch_v1.Job{}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
 	}
@@ -139,7 +139,7 @@ func (c *jobClient) GetJob(ctx context.Context, key client.ObjectKey) (*batch_v1
 }
 
 func (c *jobClient) ListJob(ctx context.Context, opts ...client.ListOption) (*batch_v1.JobList, error) {
-	list := &JobList{}
+	list := &batch_v1.JobList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
@@ -151,7 +151,7 @@ func (c *jobClient) CreateJob(ctx context.Context, obj *batch_v1.Job, opts ...cl
 }
 
 func (c *jobClient) DeleteJob(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	obj := &Job{}
+	obj := &batch_v1.Job{}
 	obj.SetName(key.Name)
 	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
@@ -166,7 +166,7 @@ func (c *jobClient) PatchJob(ctx context.Context, obj *batch_v1.Job, patch clien
 }
 
 func (c *jobClient) DeleteAllOfJob(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &Job{}
+	obj := &batch_v1.Job{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 

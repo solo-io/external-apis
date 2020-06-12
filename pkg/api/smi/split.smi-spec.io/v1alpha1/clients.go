@@ -50,7 +50,7 @@ type clientSet struct {
 
 func NewClientsetFromConfig(cfg *rest.Config) (Clientset, error) {
 	scheme := scheme.Scheme
-	if err := AddToScheme(scheme); err != nil {
+	if err := split_smi_spec_io_v1alpha1.AddToScheme(scheme); err != nil {
 		return nil, err
 	}
 	client, err := client.New(cfg, client.Options{
@@ -131,7 +131,7 @@ func NewTrafficSplitClient(client client.Client) *trafficSplitClient {
 }
 
 func (c *trafficSplitClient) GetTrafficSplit(ctx context.Context, key client.ObjectKey) (*split_smi_spec_io_v1alpha1.TrafficSplit, error) {
-	obj := &TrafficSplit{}
+	obj := &split_smi_spec_io_v1alpha1.TrafficSplit{}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
 	}
@@ -139,7 +139,7 @@ func (c *trafficSplitClient) GetTrafficSplit(ctx context.Context, key client.Obj
 }
 
 func (c *trafficSplitClient) ListTrafficSplit(ctx context.Context, opts ...client.ListOption) (*split_smi_spec_io_v1alpha1.TrafficSplitList, error) {
-	list := &TrafficSplitList{}
+	list := &split_smi_spec_io_v1alpha1.TrafficSplitList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
@@ -151,7 +151,7 @@ func (c *trafficSplitClient) CreateTrafficSplit(ctx context.Context, obj *split_
 }
 
 func (c *trafficSplitClient) DeleteTrafficSplit(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	obj := &TrafficSplit{}
+	obj := &split_smi_spec_io_v1alpha1.TrafficSplit{}
 	obj.SetName(key.Name)
 	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
@@ -166,7 +166,7 @@ func (c *trafficSplitClient) PatchTrafficSplit(ctx context.Context, obj *split_s
 }
 
 func (c *trafficSplitClient) DeleteAllOfTrafficSplit(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &TrafficSplit{}
+	obj := &split_smi_spec_io_v1alpha1.TrafficSplit{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 
