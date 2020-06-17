@@ -190,3 +190,25 @@ func (c *jobClient) UpdateJobStatus(ctx context.Context, obj *batch_v1.Job, opts
 func (c *jobClient) PatchJobStatus(ctx context.Context, obj *batch_v1.Job, patch client.Patch, opts ...client.PatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
+
+// Provides JobClients for multiple clusters.
+type MulticlusterJobClient interface {
+	// Cluster returns a JobClient for the given cluster
+	Cluster(cluster string) (JobClient, error)
+}
+
+type multiclusterJobClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterJobClient(client multicluster.Client) MulticlusterJobClient {
+	return &multiclusterJobClient{client: client}
+}
+
+func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewJobClient(client), nil
+}

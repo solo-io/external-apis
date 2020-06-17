@@ -205,6 +205,28 @@ func (c *deploymentClient) PatchDeploymentStatus(ctx context.Context, obj *apps_
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
+// Provides DeploymentClients for multiple clusters.
+type MulticlusterDeploymentClient interface {
+	// Cluster returns a DeploymentClient for the given cluster
+	Cluster(cluster string) (DeploymentClient, error)
+}
+
+type multiclusterDeploymentClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterDeploymentClient(client multicluster.Client) MulticlusterDeploymentClient {
+	return &multiclusterDeploymentClient{client: client}
+}
+
+func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewDeploymentClient(client), nil
+}
+
 // Reader knows how to read and list ReplicaSets.
 type ReplicaSetReader interface {
 	// Get retrieves a ReplicaSet for the given object key
@@ -325,6 +347,28 @@ func (c *replicaSetClient) PatchReplicaSetStatus(ctx context.Context, obj *apps_
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
+// Provides ReplicaSetClients for multiple clusters.
+type MulticlusterReplicaSetClient interface {
+	// Cluster returns a ReplicaSetClient for the given cluster
+	Cluster(cluster string) (ReplicaSetClient, error)
+}
+
+type multiclusterReplicaSetClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterReplicaSetClient(client multicluster.Client) MulticlusterReplicaSetClient {
+	return &multiclusterReplicaSetClient{client: client}
+}
+
+func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewReplicaSetClient(client), nil
+}
+
 // Reader knows how to read and list DaemonSets.
 type DaemonSetReader interface {
 	// Get retrieves a DaemonSet for the given object key
@@ -443,4 +487,26 @@ func (c *daemonSetClient) UpdateDaemonSetStatus(ctx context.Context, obj *apps_v
 
 func (c *daemonSetClient) PatchDaemonSetStatus(ctx context.Context, obj *apps_v1.DaemonSet, patch client.Patch, opts ...client.PatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
+}
+
+// Provides DaemonSetClients for multiple clusters.
+type MulticlusterDaemonSetClient interface {
+	// Cluster returns a DaemonSetClient for the given cluster
+	Cluster(cluster string) (DaemonSetClient, error)
+}
+
+type multiclusterDaemonSetClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterDaemonSetClient(client multicluster.Client) MulticlusterDaemonSetClient {
+	return &multiclusterDaemonSetClient{client: client}
+}
+
+func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewDaemonSetClient(client), nil
 }

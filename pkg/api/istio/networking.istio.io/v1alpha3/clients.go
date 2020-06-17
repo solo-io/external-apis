@@ -219,6 +219,28 @@ func (c *destinationRuleClient) PatchDestinationRuleStatus(ctx context.Context, 
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
+// Provides DestinationRuleClients for multiple clusters.
+type MulticlusterDestinationRuleClient interface {
+	// Cluster returns a DestinationRuleClient for the given cluster
+	Cluster(cluster string) (DestinationRuleClient, error)
+}
+
+type multiclusterDestinationRuleClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterDestinationRuleClient(client multicluster.Client) MulticlusterDestinationRuleClient {
+	return &multiclusterDestinationRuleClient{client: client}
+}
+
+func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewDestinationRuleClient(client), nil
+}
+
 // Reader knows how to read and list EnvoyFilters.
 type EnvoyFilterReader interface {
 	// Get retrieves a EnvoyFilter for the given object key
@@ -337,6 +359,28 @@ func (c *envoyFilterClient) UpdateEnvoyFilterStatus(ctx context.Context, obj *ne
 
 func (c *envoyFilterClient) PatchEnvoyFilterStatus(ctx context.Context, obj *networking_istio_io_v1alpha3.EnvoyFilter, patch client.Patch, opts ...client.PatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
+}
+
+// Provides EnvoyFilterClients for multiple clusters.
+type MulticlusterEnvoyFilterClient interface {
+	// Cluster returns a EnvoyFilterClient for the given cluster
+	Cluster(cluster string) (EnvoyFilterClient, error)
+}
+
+type multiclusterEnvoyFilterClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterEnvoyFilterClient(client multicluster.Client) MulticlusterEnvoyFilterClient {
+	return &multiclusterEnvoyFilterClient{client: client}
+}
+
+func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewEnvoyFilterClient(client), nil
 }
 
 // Reader knows how to read and list Gateways.
@@ -459,6 +503,28 @@ func (c *gatewayClient) PatchGatewayStatus(ctx context.Context, obj *networking_
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
+// Provides GatewayClients for multiple clusters.
+type MulticlusterGatewayClient interface {
+	// Cluster returns a GatewayClient for the given cluster
+	Cluster(cluster string) (GatewayClient, error)
+}
+
+type multiclusterGatewayClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterGatewayClient(client multicluster.Client) MulticlusterGatewayClient {
+	return &multiclusterGatewayClient{client: client}
+}
+
+func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewGatewayClient(client), nil
+}
+
 // Reader knows how to read and list ServiceEntrys.
 type ServiceEntryReader interface {
 	// Get retrieves a ServiceEntry for the given object key
@@ -579,6 +645,28 @@ func (c *serviceEntryClient) PatchServiceEntryStatus(ctx context.Context, obj *n
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
+// Provides ServiceEntryClients for multiple clusters.
+type MulticlusterServiceEntryClient interface {
+	// Cluster returns a ServiceEntryClient for the given cluster
+	Cluster(cluster string) (ServiceEntryClient, error)
+}
+
+type multiclusterServiceEntryClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterServiceEntryClient(client multicluster.Client) MulticlusterServiceEntryClient {
+	return &multiclusterServiceEntryClient{client: client}
+}
+
+func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewServiceEntryClient(client), nil
+}
+
 // Reader knows how to read and list VirtualServices.
 type VirtualServiceReader interface {
 	// Get retrieves a VirtualService for the given object key
@@ -697,4 +785,26 @@ func (c *virtualServiceClient) UpdateVirtualServiceStatus(ctx context.Context, o
 
 func (c *virtualServiceClient) PatchVirtualServiceStatus(ctx context.Context, obj *networking_istio_io_v1alpha3.VirtualService, patch client.Patch, opts ...client.PatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
+}
+
+// Provides VirtualServiceClients for multiple clusters.
+type MulticlusterVirtualServiceClient interface {
+	// Cluster returns a VirtualServiceClient for the given cluster
+	Cluster(cluster string) (VirtualServiceClient, error)
+}
+
+type multiclusterVirtualServiceClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterVirtualServiceClient(client multicluster.Client) MulticlusterVirtualServiceClient {
+	return &multiclusterVirtualServiceClient{client: client}
+}
+
+func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewVirtualServiceClient(client), nil
 }

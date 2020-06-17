@@ -190,3 +190,25 @@ func (c *trafficSplitClient) UpdateTrafficSplitStatus(ctx context.Context, obj *
 func (c *trafficSplitClient) PatchTrafficSplitStatus(ctx context.Context, obj *split_smi_spec_io_v1alpha1.TrafficSplit, patch client.Patch, opts ...client.PatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
+
+// Provides TrafficSplitClients for multiple clusters.
+type MulticlusterTrafficSplitClient interface {
+	// Cluster returns a TrafficSplitClient for the given cluster
+	Cluster(cluster string) (TrafficSplitClient, error)
+}
+
+type multiclusterTrafficSplitClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterTrafficSplitClient(client multicluster.Client) MulticlusterTrafficSplitClient {
+	return &multiclusterTrafficSplitClient{client: client}
+}
+
+func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewTrafficSplitClient(client), nil
+}

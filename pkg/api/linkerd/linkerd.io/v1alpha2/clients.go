@@ -190,3 +190,25 @@ func (c *serviceProfileClient) UpdateServiceProfileStatus(ctx context.Context, o
 func (c *serviceProfileClient) PatchServiceProfileStatus(ctx context.Context, obj *linkerd_io_v1alpha2.ServiceProfile, patch client.Patch, opts ...client.PatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
+
+// Provides ServiceProfileClients for multiple clusters.
+type MulticlusterServiceProfileClient interface {
+	// Cluster returns a ServiceProfileClient for the given cluster
+	Cluster(cluster string) (ServiceProfileClient, error)
+}
+
+type multiclusterServiceProfileClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterServiceProfileClient(client multicluster.Client) MulticlusterServiceProfileClient {
+	return &multiclusterServiceProfileClient{client: client}
+}
+
+func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewServiceProfileClient(client), nil
+}

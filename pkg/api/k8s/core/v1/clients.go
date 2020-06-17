@@ -233,6 +233,28 @@ func (c *secretClient) PatchSecretStatus(ctx context.Context, obj *v1.Secret, pa
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
+// Provides SecretClients for multiple clusters.
+type MulticlusterSecretClient interface {
+	// Cluster returns a SecretClient for the given cluster
+	Cluster(cluster string) (SecretClient, error)
+}
+
+type multiclusterSecretClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterSecretClient(client multicluster.Client) MulticlusterSecretClient {
+	return &multiclusterSecretClient{client: client}
+}
+
+func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewSecretClient(client), nil
+}
+
 // Reader knows how to read and list ServiceAccounts.
 type ServiceAccountReader interface {
 	// Get retrieves a ServiceAccount for the given object key
@@ -351,6 +373,28 @@ func (c *serviceAccountClient) UpdateServiceAccountStatus(ctx context.Context, o
 
 func (c *serviceAccountClient) PatchServiceAccountStatus(ctx context.Context, obj *v1.ServiceAccount, patch client.Patch, opts ...client.PatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
+}
+
+// Provides ServiceAccountClients for multiple clusters.
+type MulticlusterServiceAccountClient interface {
+	// Cluster returns a ServiceAccountClient for the given cluster
+	Cluster(cluster string) (ServiceAccountClient, error)
+}
+
+type multiclusterServiceAccountClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterServiceAccountClient(client multicluster.Client) MulticlusterServiceAccountClient {
+	return &multiclusterServiceAccountClient{client: client}
+}
+
+func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewServiceAccountClient(client), nil
 }
 
 // Reader knows how to read and list ConfigMaps.
@@ -473,6 +517,28 @@ func (c *configMapClient) PatchConfigMapStatus(ctx context.Context, obj *v1.Conf
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
+// Provides ConfigMapClients for multiple clusters.
+type MulticlusterConfigMapClient interface {
+	// Cluster returns a ConfigMapClient for the given cluster
+	Cluster(cluster string) (ConfigMapClient, error)
+}
+
+type multiclusterConfigMapClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterConfigMapClient(client multicluster.Client) MulticlusterConfigMapClient {
+	return &multiclusterConfigMapClient{client: client}
+}
+
+func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewConfigMapClient(client), nil
+}
+
 // Reader knows how to read and list Services.
 type ServiceReader interface {
 	// Get retrieves a Service for the given object key
@@ -593,6 +659,28 @@ func (c *serviceClient) PatchServiceStatus(ctx context.Context, obj *v1.Service,
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
+// Provides ServiceClients for multiple clusters.
+type MulticlusterServiceClient interface {
+	// Cluster returns a ServiceClient for the given cluster
+	Cluster(cluster string) (ServiceClient, error)
+}
+
+type multiclusterServiceClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterServiceClient(client multicluster.Client) MulticlusterServiceClient {
+	return &multiclusterServiceClient{client: client}
+}
+
+func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewServiceClient(client), nil
+}
+
 // Reader knows how to read and list Pods.
 type PodReader interface {
 	// Get retrieves a Pod for the given object key
@@ -711,6 +799,28 @@ func (c *podClient) UpdatePodStatus(ctx context.Context, obj *v1.Pod, opts ...cl
 
 func (c *podClient) PatchPodStatus(ctx context.Context, obj *v1.Pod, patch client.Patch, opts ...client.PatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
+}
+
+// Provides PodClients for multiple clusters.
+type MulticlusterPodClient interface {
+	// Cluster returns a PodClient for the given cluster
+	Cluster(cluster string) (PodClient, error)
+}
+
+type multiclusterPodClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterPodClient(client multicluster.Client) MulticlusterPodClient {
+	return &multiclusterPodClient{client: client}
+}
+
+func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewPodClient(client), nil
 }
 
 // Reader knows how to read and list Namespaces.
@@ -835,6 +945,28 @@ func (c *namespaceClient) PatchNamespaceStatus(ctx context.Context, obj *v1.Name
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
+// Provides NamespaceClients for multiple clusters.
+type MulticlusterNamespaceClient interface {
+	// Cluster returns a NamespaceClient for the given cluster
+	Cluster(cluster string) (NamespaceClient, error)
+}
+
+type multiclusterNamespaceClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterNamespaceClient(client multicluster.Client) MulticlusterNamespaceClient {
+	return &multiclusterNamespaceClient{client: client}
+}
+
+func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewNamespaceClient(client), nil
+}
+
 // Reader knows how to read and list Nodes.
 type NodeReader interface {
 	// Get retrieves a Node for the given object key
@@ -955,4 +1087,26 @@ func (c *nodeClient) UpdateNodeStatus(ctx context.Context, obj *v1.Node, opts ..
 
 func (c *nodeClient) PatchNodeStatus(ctx context.Context, obj *v1.Node, patch client.Patch, opts ...client.PatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
+}
+
+// Provides NodeClients for multiple clusters.
+type MulticlusterNodeClient interface {
+	// Cluster returns a NodeClient for the given cluster
+	Cluster(cluster string) (NodeClient, error)
+}
+
+type multiclusterNodeClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterNodeClient(client multicluster.Client) MulticlusterNodeClient {
+	return &multiclusterNodeClient{client: client}
+}
+
+func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewNodeClient(client), nil
 }
