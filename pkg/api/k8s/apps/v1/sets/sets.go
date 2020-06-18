@@ -8,7 +8,7 @@ import (
 	apps_v1 "k8s.io/api/apps/v1"
 
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"github.com/solo-io/skv2/pkg/ezkube"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
@@ -23,10 +23,11 @@ type DeploymentSet interface {
 	Union(set DeploymentSet) DeploymentSet
 	Difference(set DeploymentSet) DeploymentSet
 	Intersection(set DeploymentSet) DeploymentSet
+	Find(id ezkube.ResourceId) (*apps_v1.Deployment, error)
 }
 
 func makeGenericDeploymentSet(deploymentList []*apps_v1.Deployment) sksets.ResourceSet {
-	var genericResources []metav1.Object
+	var genericResources []ezkube.ResourceId
 	for _, obj := range deploymentList {
 		genericResources = append(genericResources, obj)
 	}
@@ -101,6 +102,15 @@ func (s deploymentSet) Intersection(set DeploymentSet) DeploymentSet {
 	return NewDeploymentSet(deploymentList...)
 }
 
+func (s deploymentSet) Find(id ezkube.ResourceId) (*apps_v1.Deployment, error) {
+	obj, err := s.set.Find(&apps_v1.Deployment{}, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return obj.(*apps_v1.Deployment), nil
+}
+
 type ReplicaSetSet interface {
 	Keys() sets.String
 	List() []*apps_v1.ReplicaSet
@@ -112,10 +122,11 @@ type ReplicaSetSet interface {
 	Union(set ReplicaSetSet) ReplicaSetSet
 	Difference(set ReplicaSetSet) ReplicaSetSet
 	Intersection(set ReplicaSetSet) ReplicaSetSet
+	Find(id ezkube.ResourceId) (*apps_v1.ReplicaSet, error)
 }
 
 func makeGenericReplicaSetSet(replicaSetList []*apps_v1.ReplicaSet) sksets.ResourceSet {
-	var genericResources []metav1.Object
+	var genericResources []ezkube.ResourceId
 	for _, obj := range replicaSetList {
 		genericResources = append(genericResources, obj)
 	}
@@ -190,6 +201,15 @@ func (s replicaSetSet) Intersection(set ReplicaSetSet) ReplicaSetSet {
 	return NewReplicaSetSet(replicaSetList...)
 }
 
+func (s replicaSetSet) Find(id ezkube.ResourceId) (*apps_v1.ReplicaSet, error) {
+	obj, err := s.set.Find(&apps_v1.ReplicaSet{}, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return obj.(*apps_v1.ReplicaSet), nil
+}
+
 type DaemonSetSet interface {
 	Keys() sets.String
 	List() []*apps_v1.DaemonSet
@@ -201,10 +221,11 @@ type DaemonSetSet interface {
 	Union(set DaemonSetSet) DaemonSetSet
 	Difference(set DaemonSetSet) DaemonSetSet
 	Intersection(set DaemonSetSet) DaemonSetSet
+	Find(id ezkube.ResourceId) (*apps_v1.DaemonSet, error)
 }
 
 func makeGenericDaemonSetSet(daemonSetList []*apps_v1.DaemonSet) sksets.ResourceSet {
-	var genericResources []metav1.Object
+	var genericResources []ezkube.ResourceId
 	for _, obj := range daemonSetList {
 		genericResources = append(genericResources, obj)
 	}
@@ -277,4 +298,13 @@ func (s daemonSetSet) Intersection(set DaemonSetSet) DaemonSetSet {
 		daemonSetList = append(daemonSetList, obj.(*apps_v1.DaemonSet))
 	}
 	return NewDaemonSetSet(daemonSetList...)
+}
+
+func (s daemonSetSet) Find(id ezkube.ResourceId) (*apps_v1.DaemonSet, error) {
+	obj, err := s.set.Find(&apps_v1.DaemonSet{}, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return obj.(*apps_v1.DaemonSet), nil
 }

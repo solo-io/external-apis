@@ -9,6 +9,7 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	v1beta1sets "github.com/solo-io/external-apis/pkg/api/istio/security.istio.io/v1beta1/sets"
+	ezkube "github.com/solo-io/skv2/pkg/ezkube"
 	v1beta1 "istio.io/client-go/pkg/apis/security/v1beta1"
 	sets "k8s.io/apimachinery/pkg/util/sets"
 )
@@ -174,4 +175,19 @@ func (m *MockAuthorizationPolicySet) Intersection(set v1beta1sets.AuthorizationP
 func (mr *MockAuthorizationPolicySetMockRecorder) Intersection(set interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockAuthorizationPolicySet)(nil).Intersection), set)
+}
+
+// Find mocks base method.
+func (m *MockAuthorizationPolicySet) Find(id ezkube.ResourceId) (*v1beta1.AuthorizationPolicy, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1beta1.AuthorizationPolicy)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockAuthorizationPolicySetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockAuthorizationPolicySet)(nil).Find), id)
 }

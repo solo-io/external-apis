@@ -233,7 +233,7 @@ func NewMulticlusterDestinationRuleClient(client multicluster.Client) Multiclust
 	return &multiclusterDestinationRuleClient{client: client}
 }
 
-func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+func (m *multiclusterDestinationRuleClient) Cluster(cluster string) (DestinationRuleClient, error) {
 	client, err := m.client.Cluster(cluster)
 	if err != nil {
 		return nil, err
@@ -375,7 +375,7 @@ func NewMulticlusterEnvoyFilterClient(client multicluster.Client) MulticlusterEn
 	return &multiclusterEnvoyFilterClient{client: client}
 }
 
-func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+func (m *multiclusterEnvoyFilterClient) Cluster(cluster string) (EnvoyFilterClient, error) {
 	client, err := m.client.Cluster(cluster)
 	if err != nil {
 		return nil, err
@@ -517,7 +517,7 @@ func NewMulticlusterGatewayClient(client multicluster.Client) MulticlusterGatewa
 	return &multiclusterGatewayClient{client: client}
 }
 
-func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+func (m *multiclusterGatewayClient) Cluster(cluster string) (GatewayClient, error) {
 	client, err := m.client.Cluster(cluster)
 	if err != nil {
 		return nil, err
@@ -659,7 +659,7 @@ func NewMulticlusterServiceEntryClient(client multicluster.Client) MulticlusterS
 	return &multiclusterServiceEntryClient{client: client}
 }
 
-func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+func (m *multiclusterServiceEntryClient) Cluster(cluster string) (ServiceEntryClient, error) {
 	client, err := m.client.Cluster(cluster)
 	if err != nil {
 		return nil, err
@@ -801,7 +801,7 @@ func NewMulticlusterVirtualServiceClient(client multicluster.Client) Multicluste
 	return &multiclusterVirtualServiceClient{client: client}
 }
 
-func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+func (m *multiclusterVirtualServiceClient) Cluster(cluster string) (VirtualServiceClient, error) {
 	client, err := m.client.Cluster(cluster)
 	if err != nil {
 		return nil, err

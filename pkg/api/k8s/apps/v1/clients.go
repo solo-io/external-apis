@@ -219,7 +219,7 @@ func NewMulticlusterDeploymentClient(client multicluster.Client) MulticlusterDep
 	return &multiclusterDeploymentClient{client: client}
 }
 
-func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+func (m *multiclusterDeploymentClient) Cluster(cluster string) (DeploymentClient, error) {
 	client, err := m.client.Cluster(cluster)
 	if err != nil {
 		return nil, err
@@ -361,7 +361,7 @@ func NewMulticlusterReplicaSetClient(client multicluster.Client) MulticlusterRep
 	return &multiclusterReplicaSetClient{client: client}
 }
 
-func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+func (m *multiclusterReplicaSetClient) Cluster(cluster string) (ReplicaSetClient, error) {
 	client, err := m.client.Cluster(cluster)
 	if err != nil {
 		return nil, err
@@ -503,7 +503,7 @@ func NewMulticlusterDaemonSetClient(client multicluster.Client) MulticlusterDaem
 	return &multiclusterDaemonSetClient{client: client}
 }
 
-func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+func (m *multiclusterDaemonSetClient) Cluster(cluster string) (DaemonSetClient, error) {
 	client, err := m.client.Cluster(cluster)
 	if err != nil {
 		return nil, err

@@ -9,6 +9,7 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	v1alpha3sets "github.com/solo-io/external-apis/pkg/api/istio/networking.istio.io/v1alpha3/sets"
+	ezkube "github.com/solo-io/skv2/pkg/ezkube"
 	v1alpha3 "istio.io/client-go/pkg/apis/networking/v1alpha3"
 	sets "k8s.io/apimachinery/pkg/util/sets"
 )
@@ -176,6 +177,21 @@ func (mr *MockDestinationRuleSetMockRecorder) Intersection(set interface{}) *gom
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockDestinationRuleSet)(nil).Intersection), set)
 }
 
+// Find mocks base method.
+func (m *MockDestinationRuleSet) Find(id ezkube.ResourceId) (*v1alpha3.DestinationRule, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1alpha3.DestinationRule)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockDestinationRuleSetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockDestinationRuleSet)(nil).Find), id)
+}
+
 // MockEnvoyFilterSet is a mock of EnvoyFilterSet interface.
 type MockEnvoyFilterSet struct {
 	ctrl     *gomock.Controller
@@ -337,6 +353,21 @@ func (m *MockEnvoyFilterSet) Intersection(set v1alpha3sets.EnvoyFilterSet) v1alp
 func (mr *MockEnvoyFilterSetMockRecorder) Intersection(set interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockEnvoyFilterSet)(nil).Intersection), set)
+}
+
+// Find mocks base method.
+func (m *MockEnvoyFilterSet) Find(id ezkube.ResourceId) (*v1alpha3.EnvoyFilter, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1alpha3.EnvoyFilter)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockEnvoyFilterSetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockEnvoyFilterSet)(nil).Find), id)
 }
 
 // MockGatewaySet is a mock of GatewaySet interface.
@@ -502,6 +533,21 @@ func (mr *MockGatewaySetMockRecorder) Intersection(set interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockGatewaySet)(nil).Intersection), set)
 }
 
+// Find mocks base method.
+func (m *MockGatewaySet) Find(id ezkube.ResourceId) (*v1alpha3.Gateway, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1alpha3.Gateway)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockGatewaySetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockGatewaySet)(nil).Find), id)
+}
+
 // MockServiceEntrySet is a mock of ServiceEntrySet interface.
 type MockServiceEntrySet struct {
 	ctrl     *gomock.Controller
@@ -665,6 +711,21 @@ func (mr *MockServiceEntrySetMockRecorder) Intersection(set interface{}) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockServiceEntrySet)(nil).Intersection), set)
 }
 
+// Find mocks base method.
+func (m *MockServiceEntrySet) Find(id ezkube.ResourceId) (*v1alpha3.ServiceEntry, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1alpha3.ServiceEntry)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockServiceEntrySetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockServiceEntrySet)(nil).Find), id)
+}
+
 // MockVirtualServiceSet is a mock of VirtualServiceSet interface.
 type MockVirtualServiceSet struct {
 	ctrl     *gomock.Controller
@@ -826,4 +887,19 @@ func (m *MockVirtualServiceSet) Intersection(set v1alpha3sets.VirtualServiceSet)
 func (mr *MockVirtualServiceSetMockRecorder) Intersection(set interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockVirtualServiceSet)(nil).Intersection), set)
+}
+
+// Find mocks base method.
+func (m *MockVirtualServiceSet) Find(id ezkube.ResourceId) (*v1alpha3.VirtualService, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1alpha3.VirtualService)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockVirtualServiceSetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockVirtualServiceSet)(nil).Find), id)
 }

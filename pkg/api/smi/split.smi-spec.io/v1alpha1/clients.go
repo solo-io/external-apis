@@ -205,7 +205,7 @@ func NewMulticlusterTrafficSplitClient(client multicluster.Client) MulticlusterT
 	return &multiclusterTrafficSplitClient{client: client}
 }
 
-func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+func (m *multiclusterTrafficSplitClient) Cluster(cluster string) (TrafficSplitClient, error) {
 	client, err := m.client.Cluster(cluster)
 	if err != nil {
 		return nil, err

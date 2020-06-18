@@ -9,6 +9,7 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	v1sets "github.com/solo-io/external-apis/pkg/api/k8s/apps/v1/sets"
+	ezkube "github.com/solo-io/skv2/pkg/ezkube"
 	v1 "k8s.io/api/apps/v1"
 	sets "k8s.io/apimachinery/pkg/util/sets"
 )
@@ -176,6 +177,21 @@ func (mr *MockDeploymentSetMockRecorder) Intersection(set interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockDeploymentSet)(nil).Intersection), set)
 }
 
+// Find mocks base method.
+func (m *MockDeploymentSet) Find(id ezkube.ResourceId) (*v1.Deployment, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1.Deployment)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockDeploymentSetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockDeploymentSet)(nil).Find), id)
+}
+
 // MockReplicaSetSet is a mock of ReplicaSetSet interface.
 type MockReplicaSetSet struct {
 	ctrl     *gomock.Controller
@@ -339,6 +355,21 @@ func (mr *MockReplicaSetSetMockRecorder) Intersection(set interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockReplicaSetSet)(nil).Intersection), set)
 }
 
+// Find mocks base method.
+func (m *MockReplicaSetSet) Find(id ezkube.ResourceId) (*v1.ReplicaSet, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1.ReplicaSet)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockReplicaSetSetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockReplicaSetSet)(nil).Find), id)
+}
+
 // MockDaemonSetSet is a mock of DaemonSetSet interface.
 type MockDaemonSetSet struct {
 	ctrl     *gomock.Controller
@@ -500,4 +531,19 @@ func (m *MockDaemonSetSet) Intersection(set v1sets.DaemonSetSet) v1sets.DaemonSe
 func (mr *MockDaemonSetSetMockRecorder) Intersection(set interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockDaemonSetSet)(nil).Intersection), set)
+}
+
+// Find mocks base method.
+func (m *MockDaemonSetSet) Find(id ezkube.ResourceId) (*v1.DaemonSet, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1.DaemonSet)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockDaemonSetSetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockDaemonSetSet)(nil).Find), id)
 }

@@ -205,7 +205,7 @@ func NewMulticlusterAuthorizationPolicyClient(client multicluster.Client) Multic
 	return &multiclusterAuthorizationPolicyClient{client: client}
 }
 
-func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+func (m *multiclusterAuthorizationPolicyClient) Cluster(cluster string) (AuthorizationPolicyClient, error) {
 	client, err := m.client.Cluster(cluster)
 	if err != nil {
 		return nil, err

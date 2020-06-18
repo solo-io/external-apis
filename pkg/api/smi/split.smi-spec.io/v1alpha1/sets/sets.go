@@ -8,7 +8,7 @@ import (
 	split_smi_spec_io_v1alpha1 "github.com/servicemeshinterface/smi-sdk-go/pkg/apis/split/v1alpha1"
 
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"github.com/solo-io/skv2/pkg/ezkube"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
@@ -23,10 +23,11 @@ type TrafficSplitSet interface {
 	Union(set TrafficSplitSet) TrafficSplitSet
 	Difference(set TrafficSplitSet) TrafficSplitSet
 	Intersection(set TrafficSplitSet) TrafficSplitSet
+	Find(id ezkube.ResourceId) (*split_smi_spec_io_v1alpha1.TrafficSplit, error)
 }
 
 func makeGenericTrafficSplitSet(trafficSplitList []*split_smi_spec_io_v1alpha1.TrafficSplit) sksets.ResourceSet {
-	var genericResources []metav1.Object
+	var genericResources []ezkube.ResourceId
 	for _, obj := range trafficSplitList {
 		genericResources = append(genericResources, obj)
 	}
@@ -99,4 +100,13 @@ func (s trafficSplitSet) Intersection(set TrafficSplitSet) TrafficSplitSet {
 		trafficSplitList = append(trafficSplitList, obj.(*split_smi_spec_io_v1alpha1.TrafficSplit))
 	}
 	return NewTrafficSplitSet(trafficSplitList...)
+}
+
+func (s trafficSplitSet) Find(id ezkube.ResourceId) (*split_smi_spec_io_v1alpha1.TrafficSplit, error) {
+	obj, err := s.set.Find(&split_smi_spec_io_v1alpha1.TrafficSplit{}, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return obj.(*split_smi_spec_io_v1alpha1.TrafficSplit), nil
 }

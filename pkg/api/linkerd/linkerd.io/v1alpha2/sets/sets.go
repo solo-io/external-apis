@@ -8,7 +8,7 @@ import (
 	linkerd_io_v1alpha2 "github.com/linkerd/linkerd2/controller/gen/apis/serviceprofile/v1alpha2"
 
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"github.com/solo-io/skv2/pkg/ezkube"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
@@ -23,10 +23,11 @@ type ServiceProfileSet interface {
 	Union(set ServiceProfileSet) ServiceProfileSet
 	Difference(set ServiceProfileSet) ServiceProfileSet
 	Intersection(set ServiceProfileSet) ServiceProfileSet
+	Find(id ezkube.ResourceId) (*linkerd_io_v1alpha2.ServiceProfile, error)
 }
 
 func makeGenericServiceProfileSet(serviceProfileList []*linkerd_io_v1alpha2.ServiceProfile) sksets.ResourceSet {
-	var genericResources []metav1.Object
+	var genericResources []ezkube.ResourceId
 	for _, obj := range serviceProfileList {
 		genericResources = append(genericResources, obj)
 	}
@@ -99,4 +100,13 @@ func (s serviceProfileSet) Intersection(set ServiceProfileSet) ServiceProfileSet
 		serviceProfileList = append(serviceProfileList, obj.(*linkerd_io_v1alpha2.ServiceProfile))
 	}
 	return NewServiceProfileSet(serviceProfileList...)
+}
+
+func (s serviceProfileSet) Find(id ezkube.ResourceId) (*linkerd_io_v1alpha2.ServiceProfile, error) {
+	obj, err := s.set.Find(&linkerd_io_v1alpha2.ServiceProfile{}, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return obj.(*linkerd_io_v1alpha2.ServiceProfile), nil
 }

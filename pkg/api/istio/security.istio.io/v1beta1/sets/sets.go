@@ -8,7 +8,7 @@ import (
 	security_istio_io_v1beta1 "istio.io/client-go/pkg/apis/security/v1beta1"
 
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"github.com/solo-io/skv2/pkg/ezkube"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
@@ -23,10 +23,11 @@ type AuthorizationPolicySet interface {
 	Union(set AuthorizationPolicySet) AuthorizationPolicySet
 	Difference(set AuthorizationPolicySet) AuthorizationPolicySet
 	Intersection(set AuthorizationPolicySet) AuthorizationPolicySet
+	Find(id ezkube.ResourceId) (*security_istio_io_v1beta1.AuthorizationPolicy, error)
 }
 
 func makeGenericAuthorizationPolicySet(authorizationPolicyList []*security_istio_io_v1beta1.AuthorizationPolicy) sksets.ResourceSet {
-	var genericResources []metav1.Object
+	var genericResources []ezkube.ResourceId
 	for _, obj := range authorizationPolicyList {
 		genericResources = append(genericResources, obj)
 	}
@@ -99,4 +100,13 @@ func (s authorizationPolicySet) Intersection(set AuthorizationPolicySet) Authori
 		authorizationPolicyList = append(authorizationPolicyList, obj.(*security_istio_io_v1beta1.AuthorizationPolicy))
 	}
 	return NewAuthorizationPolicySet(authorizationPolicyList...)
+}
+
+func (s authorizationPolicySet) Find(id ezkube.ResourceId) (*security_istio_io_v1beta1.AuthorizationPolicy, error) {
+	obj, err := s.set.Find(&security_istio_io_v1beta1.AuthorizationPolicy{}, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return obj.(*security_istio_io_v1beta1.AuthorizationPolicy), nil
 }

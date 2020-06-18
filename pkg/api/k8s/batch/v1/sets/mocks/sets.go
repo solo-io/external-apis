@@ -9,6 +9,7 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	v1sets "github.com/solo-io/external-apis/pkg/api/k8s/batch/v1/sets"
+	ezkube "github.com/solo-io/skv2/pkg/ezkube"
 	v1 "k8s.io/api/batch/v1"
 	sets "k8s.io/apimachinery/pkg/util/sets"
 )
@@ -174,4 +175,19 @@ func (m *MockJobSet) Intersection(set v1sets.JobSet) v1sets.JobSet {
 func (mr *MockJobSetMockRecorder) Intersection(set interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockJobSet)(nil).Intersection), set)
+}
+
+// Find mocks base method.
+func (m *MockJobSet) Find(id ezkube.ResourceId) (*v1.Job, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1.Job)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockJobSetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockJobSet)(nil).Find), id)
 }

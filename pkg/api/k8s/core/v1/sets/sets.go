@@ -8,7 +8,7 @@ import (
 	v1 "k8s.io/api/core/v1"
 
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"github.com/solo-io/skv2/pkg/ezkube"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
@@ -23,10 +23,11 @@ type SecretSet interface {
 	Union(set SecretSet) SecretSet
 	Difference(set SecretSet) SecretSet
 	Intersection(set SecretSet) SecretSet
+	Find(id ezkube.ResourceId) (*v1.Secret, error)
 }
 
 func makeGenericSecretSet(secretList []*v1.Secret) sksets.ResourceSet {
-	var genericResources []metav1.Object
+	var genericResources []ezkube.ResourceId
 	for _, obj := range secretList {
 		genericResources = append(genericResources, obj)
 	}
@@ -101,6 +102,15 @@ func (s secretSet) Intersection(set SecretSet) SecretSet {
 	return NewSecretSet(secretList...)
 }
 
+func (s secretSet) Find(id ezkube.ResourceId) (*v1.Secret, error) {
+	obj, err := s.set.Find(&v1.Secret{}, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return obj.(*v1.Secret), nil
+}
+
 type ServiceAccountSet interface {
 	Keys() sets.String
 	List() []*v1.ServiceAccount
@@ -112,10 +122,11 @@ type ServiceAccountSet interface {
 	Union(set ServiceAccountSet) ServiceAccountSet
 	Difference(set ServiceAccountSet) ServiceAccountSet
 	Intersection(set ServiceAccountSet) ServiceAccountSet
+	Find(id ezkube.ResourceId) (*v1.ServiceAccount, error)
 }
 
 func makeGenericServiceAccountSet(serviceAccountList []*v1.ServiceAccount) sksets.ResourceSet {
-	var genericResources []metav1.Object
+	var genericResources []ezkube.ResourceId
 	for _, obj := range serviceAccountList {
 		genericResources = append(genericResources, obj)
 	}
@@ -190,6 +201,15 @@ func (s serviceAccountSet) Intersection(set ServiceAccountSet) ServiceAccountSet
 	return NewServiceAccountSet(serviceAccountList...)
 }
 
+func (s serviceAccountSet) Find(id ezkube.ResourceId) (*v1.ServiceAccount, error) {
+	obj, err := s.set.Find(&v1.ServiceAccount{}, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return obj.(*v1.ServiceAccount), nil
+}
+
 type ConfigMapSet interface {
 	Keys() sets.String
 	List() []*v1.ConfigMap
@@ -201,10 +221,11 @@ type ConfigMapSet interface {
 	Union(set ConfigMapSet) ConfigMapSet
 	Difference(set ConfigMapSet) ConfigMapSet
 	Intersection(set ConfigMapSet) ConfigMapSet
+	Find(id ezkube.ResourceId) (*v1.ConfigMap, error)
 }
 
 func makeGenericConfigMapSet(configMapList []*v1.ConfigMap) sksets.ResourceSet {
-	var genericResources []metav1.Object
+	var genericResources []ezkube.ResourceId
 	for _, obj := range configMapList {
 		genericResources = append(genericResources, obj)
 	}
@@ -279,6 +300,15 @@ func (s configMapSet) Intersection(set ConfigMapSet) ConfigMapSet {
 	return NewConfigMapSet(configMapList...)
 }
 
+func (s configMapSet) Find(id ezkube.ResourceId) (*v1.ConfigMap, error) {
+	obj, err := s.set.Find(&v1.ConfigMap{}, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return obj.(*v1.ConfigMap), nil
+}
+
 type ServiceSet interface {
 	Keys() sets.String
 	List() []*v1.Service
@@ -290,10 +320,11 @@ type ServiceSet interface {
 	Union(set ServiceSet) ServiceSet
 	Difference(set ServiceSet) ServiceSet
 	Intersection(set ServiceSet) ServiceSet
+	Find(id ezkube.ResourceId) (*v1.Service, error)
 }
 
 func makeGenericServiceSet(serviceList []*v1.Service) sksets.ResourceSet {
-	var genericResources []metav1.Object
+	var genericResources []ezkube.ResourceId
 	for _, obj := range serviceList {
 		genericResources = append(genericResources, obj)
 	}
@@ -368,6 +399,15 @@ func (s serviceSet) Intersection(set ServiceSet) ServiceSet {
 	return NewServiceSet(serviceList...)
 }
 
+func (s serviceSet) Find(id ezkube.ResourceId) (*v1.Service, error) {
+	obj, err := s.set.Find(&v1.Service{}, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return obj.(*v1.Service), nil
+}
+
 type PodSet interface {
 	Keys() sets.String
 	List() []*v1.Pod
@@ -379,10 +419,11 @@ type PodSet interface {
 	Union(set PodSet) PodSet
 	Difference(set PodSet) PodSet
 	Intersection(set PodSet) PodSet
+	Find(id ezkube.ResourceId) (*v1.Pod, error)
 }
 
 func makeGenericPodSet(podList []*v1.Pod) sksets.ResourceSet {
-	var genericResources []metav1.Object
+	var genericResources []ezkube.ResourceId
 	for _, obj := range podList {
 		genericResources = append(genericResources, obj)
 	}
@@ -457,6 +498,15 @@ func (s podSet) Intersection(set PodSet) PodSet {
 	return NewPodSet(podList...)
 }
 
+func (s podSet) Find(id ezkube.ResourceId) (*v1.Pod, error) {
+	obj, err := s.set.Find(&v1.Pod{}, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return obj.(*v1.Pod), nil
+}
+
 type NamespaceSet interface {
 	Keys() sets.String
 	List() []*v1.Namespace
@@ -468,10 +518,11 @@ type NamespaceSet interface {
 	Union(set NamespaceSet) NamespaceSet
 	Difference(set NamespaceSet) NamespaceSet
 	Intersection(set NamespaceSet) NamespaceSet
+	Find(id ezkube.ResourceId) (*v1.Namespace, error)
 }
 
 func makeGenericNamespaceSet(namespaceList []*v1.Namespace) sksets.ResourceSet {
-	var genericResources []metav1.Object
+	var genericResources []ezkube.ResourceId
 	for _, obj := range namespaceList {
 		genericResources = append(genericResources, obj)
 	}
@@ -546,6 +597,15 @@ func (s namespaceSet) Intersection(set NamespaceSet) NamespaceSet {
 	return NewNamespaceSet(namespaceList...)
 }
 
+func (s namespaceSet) Find(id ezkube.ResourceId) (*v1.Namespace, error) {
+	obj, err := s.set.Find(&v1.Namespace{}, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return obj.(*v1.Namespace), nil
+}
+
 type NodeSet interface {
 	Keys() sets.String
 	List() []*v1.Node
@@ -557,10 +617,11 @@ type NodeSet interface {
 	Union(set NodeSet) NodeSet
 	Difference(set NodeSet) NodeSet
 	Intersection(set NodeSet) NodeSet
+	Find(id ezkube.ResourceId) (*v1.Node, error)
 }
 
 func makeGenericNodeSet(nodeList []*v1.Node) sksets.ResourceSet {
-	var genericResources []metav1.Object
+	var genericResources []ezkube.ResourceId
 	for _, obj := range nodeList {
 		genericResources = append(genericResources, obj)
 	}
@@ -633,4 +694,13 @@ func (s nodeSet) Intersection(set NodeSet) NodeSet {
 		nodeList = append(nodeList, obj.(*v1.Node))
 	}
 	return NewNodeSet(nodeList...)
+}
+
+func (s nodeSet) Find(id ezkube.ResourceId) (*v1.Node, error) {
+	obj, err := s.set.Find(&v1.Node{}, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return obj.(*v1.Node), nil
 }

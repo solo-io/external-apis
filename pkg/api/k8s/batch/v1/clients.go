@@ -205,7 +205,7 @@ func NewMulticlusterJobClient(client multicluster.Client) MulticlusterJobClient 
 	return &multiclusterJobClient{client: client}
 }
 
-func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
+func (m *multiclusterJobClient) Cluster(cluster string) (JobClient, error) {
 	client, err := m.client.Cluster(cluster)
 	if err != nil {
 		return nil, err
