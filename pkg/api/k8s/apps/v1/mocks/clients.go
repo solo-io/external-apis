@@ -117,6 +117,20 @@ func (mr *MockClientsetMockRecorder) DaemonSets() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DaemonSets", reflect.TypeOf((*MockClientset)(nil).DaemonSets))
 }
 
+// StatefulSets mocks base method.
+func (m *MockClientset) StatefulSets() v1.StatefulSetClient {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "StatefulSets")
+	ret0, _ := ret[0].(v1.StatefulSetClient)
+	return ret0
+}
+
+// StatefulSets indicates an expected call of StatefulSets.
+func (mr *MockClientsetMockRecorder) StatefulSets() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StatefulSets", reflect.TypeOf((*MockClientset)(nil).StatefulSets))
+}
+
 // MockDeploymentReader is a mock of DeploymentReader interface.
 type MockDeploymentReader struct {
 	ctrl     *gomock.Controller
@@ -1627,4 +1641,508 @@ func (m *MockMulticlusterDaemonSetClient) Cluster(cluster string) (v1.DaemonSetC
 func (mr *MockMulticlusterDaemonSetClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterDaemonSetClient)(nil).Cluster), cluster)
+}
+
+// MockStatefulSetReader is a mock of StatefulSetReader interface.
+type MockStatefulSetReader struct {
+	ctrl     *gomock.Controller
+	recorder *MockStatefulSetReaderMockRecorder
+}
+
+// MockStatefulSetReaderMockRecorder is the mock recorder for MockStatefulSetReader.
+type MockStatefulSetReaderMockRecorder struct {
+	mock *MockStatefulSetReader
+}
+
+// NewMockStatefulSetReader creates a new mock instance.
+func NewMockStatefulSetReader(ctrl *gomock.Controller) *MockStatefulSetReader {
+	mock := &MockStatefulSetReader{ctrl: ctrl}
+	mock.recorder = &MockStatefulSetReaderMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockStatefulSetReader) EXPECT() *MockStatefulSetReaderMockRecorder {
+	return m.recorder
+}
+
+// GetStatefulSet mocks base method.
+func (m *MockStatefulSetReader) GetStatefulSet(ctx context.Context, key client.ObjectKey) (*v10.StatefulSet, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetStatefulSet", ctx, key)
+	ret0, _ := ret[0].(*v10.StatefulSet)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetStatefulSet indicates an expected call of GetStatefulSet.
+func (mr *MockStatefulSetReaderMockRecorder) GetStatefulSet(ctx, key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetStatefulSet", reflect.TypeOf((*MockStatefulSetReader)(nil).GetStatefulSet), ctx, key)
+}
+
+// ListStatefulSet mocks base method.
+func (m *MockStatefulSetReader) ListStatefulSet(ctx context.Context, opts ...client.ListOption) (*v10.StatefulSetList, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListStatefulSet", varargs...)
+	ret0, _ := ret[0].(*v10.StatefulSetList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListStatefulSet indicates an expected call of ListStatefulSet.
+func (mr *MockStatefulSetReaderMockRecorder) ListStatefulSet(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListStatefulSet", reflect.TypeOf((*MockStatefulSetReader)(nil).ListStatefulSet), varargs...)
+}
+
+// MockStatefulSetWriter is a mock of StatefulSetWriter interface.
+type MockStatefulSetWriter struct {
+	ctrl     *gomock.Controller
+	recorder *MockStatefulSetWriterMockRecorder
+}
+
+// MockStatefulSetWriterMockRecorder is the mock recorder for MockStatefulSetWriter.
+type MockStatefulSetWriterMockRecorder struct {
+	mock *MockStatefulSetWriter
+}
+
+// NewMockStatefulSetWriter creates a new mock instance.
+func NewMockStatefulSetWriter(ctrl *gomock.Controller) *MockStatefulSetWriter {
+	mock := &MockStatefulSetWriter{ctrl: ctrl}
+	mock.recorder = &MockStatefulSetWriterMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockStatefulSetWriter) EXPECT() *MockStatefulSetWriterMockRecorder {
+	return m.recorder
+}
+
+// CreateStatefulSet mocks base method.
+func (m *MockStatefulSetWriter) CreateStatefulSet(ctx context.Context, obj *v10.StatefulSet, opts ...client.CreateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateStatefulSet", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateStatefulSet indicates an expected call of CreateStatefulSet.
+func (mr *MockStatefulSetWriterMockRecorder) CreateStatefulSet(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateStatefulSet", reflect.TypeOf((*MockStatefulSetWriter)(nil).CreateStatefulSet), varargs...)
+}
+
+// DeleteStatefulSet mocks base method.
+func (m *MockStatefulSetWriter) DeleteStatefulSet(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, key}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteStatefulSet", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteStatefulSet indicates an expected call of DeleteStatefulSet.
+func (mr *MockStatefulSetWriterMockRecorder) DeleteStatefulSet(ctx, key interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, key}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteStatefulSet", reflect.TypeOf((*MockStatefulSetWriter)(nil).DeleteStatefulSet), varargs...)
+}
+
+// UpdateStatefulSet mocks base method.
+func (m *MockStatefulSetWriter) UpdateStatefulSet(ctx context.Context, obj *v10.StatefulSet, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateStatefulSet", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateStatefulSet indicates an expected call of UpdateStatefulSet.
+func (mr *MockStatefulSetWriterMockRecorder) UpdateStatefulSet(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateStatefulSet", reflect.TypeOf((*MockStatefulSetWriter)(nil).UpdateStatefulSet), varargs...)
+}
+
+// PatchStatefulSet mocks base method.
+func (m *MockStatefulSetWriter) PatchStatefulSet(ctx context.Context, obj *v10.StatefulSet, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchStatefulSet", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchStatefulSet indicates an expected call of PatchStatefulSet.
+func (mr *MockStatefulSetWriterMockRecorder) PatchStatefulSet(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchStatefulSet", reflect.TypeOf((*MockStatefulSetWriter)(nil).PatchStatefulSet), varargs...)
+}
+
+// DeleteAllOfStatefulSet mocks base method.
+func (m *MockStatefulSetWriter) DeleteAllOfStatefulSet(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteAllOfStatefulSet", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllOfStatefulSet indicates an expected call of DeleteAllOfStatefulSet.
+func (mr *MockStatefulSetWriterMockRecorder) DeleteAllOfStatefulSet(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfStatefulSet", reflect.TypeOf((*MockStatefulSetWriter)(nil).DeleteAllOfStatefulSet), varargs...)
+}
+
+// UpsertStatefulSet mocks base method.
+func (m *MockStatefulSetWriter) UpsertStatefulSet(ctx context.Context, obj *v10.StatefulSet, transitionFuncs ...v1.StatefulSetTransitionFunction) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range transitionFuncs {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpsertStatefulSet", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertStatefulSet indicates an expected call of UpsertStatefulSet.
+func (mr *MockStatefulSetWriterMockRecorder) UpsertStatefulSet(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertStatefulSet", reflect.TypeOf((*MockStatefulSetWriter)(nil).UpsertStatefulSet), varargs...)
+}
+
+// MockStatefulSetStatusWriter is a mock of StatefulSetStatusWriter interface.
+type MockStatefulSetStatusWriter struct {
+	ctrl     *gomock.Controller
+	recorder *MockStatefulSetStatusWriterMockRecorder
+}
+
+// MockStatefulSetStatusWriterMockRecorder is the mock recorder for MockStatefulSetStatusWriter.
+type MockStatefulSetStatusWriterMockRecorder struct {
+	mock *MockStatefulSetStatusWriter
+}
+
+// NewMockStatefulSetStatusWriter creates a new mock instance.
+func NewMockStatefulSetStatusWriter(ctrl *gomock.Controller) *MockStatefulSetStatusWriter {
+	mock := &MockStatefulSetStatusWriter{ctrl: ctrl}
+	mock.recorder = &MockStatefulSetStatusWriterMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockStatefulSetStatusWriter) EXPECT() *MockStatefulSetStatusWriterMockRecorder {
+	return m.recorder
+}
+
+// UpdateStatefulSetStatus mocks base method.
+func (m *MockStatefulSetStatusWriter) UpdateStatefulSetStatus(ctx context.Context, obj *v10.StatefulSet, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateStatefulSetStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateStatefulSetStatus indicates an expected call of UpdateStatefulSetStatus.
+func (mr *MockStatefulSetStatusWriterMockRecorder) UpdateStatefulSetStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateStatefulSetStatus", reflect.TypeOf((*MockStatefulSetStatusWriter)(nil).UpdateStatefulSetStatus), varargs...)
+}
+
+// PatchStatefulSetStatus mocks base method.
+func (m *MockStatefulSetStatusWriter) PatchStatefulSetStatus(ctx context.Context, obj *v10.StatefulSet, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchStatefulSetStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchStatefulSetStatus indicates an expected call of PatchStatefulSetStatus.
+func (mr *MockStatefulSetStatusWriterMockRecorder) PatchStatefulSetStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchStatefulSetStatus", reflect.TypeOf((*MockStatefulSetStatusWriter)(nil).PatchStatefulSetStatus), varargs...)
+}
+
+// MockStatefulSetClient is a mock of StatefulSetClient interface.
+type MockStatefulSetClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockStatefulSetClientMockRecorder
+}
+
+// MockStatefulSetClientMockRecorder is the mock recorder for MockStatefulSetClient.
+type MockStatefulSetClientMockRecorder struct {
+	mock *MockStatefulSetClient
+}
+
+// NewMockStatefulSetClient creates a new mock instance.
+func NewMockStatefulSetClient(ctrl *gomock.Controller) *MockStatefulSetClient {
+	mock := &MockStatefulSetClient{ctrl: ctrl}
+	mock.recorder = &MockStatefulSetClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockStatefulSetClient) EXPECT() *MockStatefulSetClientMockRecorder {
+	return m.recorder
+}
+
+// GetStatefulSet mocks base method.
+func (m *MockStatefulSetClient) GetStatefulSet(ctx context.Context, key client.ObjectKey) (*v10.StatefulSet, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetStatefulSet", ctx, key)
+	ret0, _ := ret[0].(*v10.StatefulSet)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetStatefulSet indicates an expected call of GetStatefulSet.
+func (mr *MockStatefulSetClientMockRecorder) GetStatefulSet(ctx, key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetStatefulSet", reflect.TypeOf((*MockStatefulSetClient)(nil).GetStatefulSet), ctx, key)
+}
+
+// ListStatefulSet mocks base method.
+func (m *MockStatefulSetClient) ListStatefulSet(ctx context.Context, opts ...client.ListOption) (*v10.StatefulSetList, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListStatefulSet", varargs...)
+	ret0, _ := ret[0].(*v10.StatefulSetList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListStatefulSet indicates an expected call of ListStatefulSet.
+func (mr *MockStatefulSetClientMockRecorder) ListStatefulSet(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListStatefulSet", reflect.TypeOf((*MockStatefulSetClient)(nil).ListStatefulSet), varargs...)
+}
+
+// CreateStatefulSet mocks base method.
+func (m *MockStatefulSetClient) CreateStatefulSet(ctx context.Context, obj *v10.StatefulSet, opts ...client.CreateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateStatefulSet", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateStatefulSet indicates an expected call of CreateStatefulSet.
+func (mr *MockStatefulSetClientMockRecorder) CreateStatefulSet(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateStatefulSet", reflect.TypeOf((*MockStatefulSetClient)(nil).CreateStatefulSet), varargs...)
+}
+
+// DeleteStatefulSet mocks base method.
+func (m *MockStatefulSetClient) DeleteStatefulSet(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, key}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteStatefulSet", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteStatefulSet indicates an expected call of DeleteStatefulSet.
+func (mr *MockStatefulSetClientMockRecorder) DeleteStatefulSet(ctx, key interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, key}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteStatefulSet", reflect.TypeOf((*MockStatefulSetClient)(nil).DeleteStatefulSet), varargs...)
+}
+
+// UpdateStatefulSet mocks base method.
+func (m *MockStatefulSetClient) UpdateStatefulSet(ctx context.Context, obj *v10.StatefulSet, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateStatefulSet", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateStatefulSet indicates an expected call of UpdateStatefulSet.
+func (mr *MockStatefulSetClientMockRecorder) UpdateStatefulSet(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateStatefulSet", reflect.TypeOf((*MockStatefulSetClient)(nil).UpdateStatefulSet), varargs...)
+}
+
+// PatchStatefulSet mocks base method.
+func (m *MockStatefulSetClient) PatchStatefulSet(ctx context.Context, obj *v10.StatefulSet, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchStatefulSet", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchStatefulSet indicates an expected call of PatchStatefulSet.
+func (mr *MockStatefulSetClientMockRecorder) PatchStatefulSet(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchStatefulSet", reflect.TypeOf((*MockStatefulSetClient)(nil).PatchStatefulSet), varargs...)
+}
+
+// DeleteAllOfStatefulSet mocks base method.
+func (m *MockStatefulSetClient) DeleteAllOfStatefulSet(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteAllOfStatefulSet", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllOfStatefulSet indicates an expected call of DeleteAllOfStatefulSet.
+func (mr *MockStatefulSetClientMockRecorder) DeleteAllOfStatefulSet(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfStatefulSet", reflect.TypeOf((*MockStatefulSetClient)(nil).DeleteAllOfStatefulSet), varargs...)
+}
+
+// UpsertStatefulSet mocks base method.
+func (m *MockStatefulSetClient) UpsertStatefulSet(ctx context.Context, obj *v10.StatefulSet, transitionFuncs ...v1.StatefulSetTransitionFunction) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range transitionFuncs {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpsertStatefulSet", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertStatefulSet indicates an expected call of UpsertStatefulSet.
+func (mr *MockStatefulSetClientMockRecorder) UpsertStatefulSet(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertStatefulSet", reflect.TypeOf((*MockStatefulSetClient)(nil).UpsertStatefulSet), varargs...)
+}
+
+// UpdateStatefulSetStatus mocks base method.
+func (m *MockStatefulSetClient) UpdateStatefulSetStatus(ctx context.Context, obj *v10.StatefulSet, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateStatefulSetStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateStatefulSetStatus indicates an expected call of UpdateStatefulSetStatus.
+func (mr *MockStatefulSetClientMockRecorder) UpdateStatefulSetStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateStatefulSetStatus", reflect.TypeOf((*MockStatefulSetClient)(nil).UpdateStatefulSetStatus), varargs...)
+}
+
+// PatchStatefulSetStatus mocks base method.
+func (m *MockStatefulSetClient) PatchStatefulSetStatus(ctx context.Context, obj *v10.StatefulSet, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchStatefulSetStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchStatefulSetStatus indicates an expected call of PatchStatefulSetStatus.
+func (mr *MockStatefulSetClientMockRecorder) PatchStatefulSetStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchStatefulSetStatus", reflect.TypeOf((*MockStatefulSetClient)(nil).PatchStatefulSetStatus), varargs...)
+}
+
+// MockMulticlusterStatefulSetClient is a mock of MulticlusterStatefulSetClient interface.
+type MockMulticlusterStatefulSetClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterStatefulSetClientMockRecorder
+}
+
+// MockMulticlusterStatefulSetClientMockRecorder is the mock recorder for MockMulticlusterStatefulSetClient.
+type MockMulticlusterStatefulSetClientMockRecorder struct {
+	mock *MockMulticlusterStatefulSetClient
+}
+
+// NewMockMulticlusterStatefulSetClient creates a new mock instance.
+func NewMockMulticlusterStatefulSetClient(ctrl *gomock.Controller) *MockMulticlusterStatefulSetClient {
+	mock := &MockMulticlusterStatefulSetClient{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterStatefulSetClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterStatefulSetClient) EXPECT() *MockMulticlusterStatefulSetClientMockRecorder {
+	return m.recorder
+}
+
+// Cluster mocks base method.
+func (m *MockMulticlusterStatefulSetClient) Cluster(cluster string) (v1.StatefulSetClient, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Cluster", cluster)
+	ret0, _ := ret[0].(v1.StatefulSetClient)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Cluster indicates an expected call of Cluster.
+func (mr *MockMulticlusterStatefulSetClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterStatefulSetClient)(nil).Cluster), cluster)
 }

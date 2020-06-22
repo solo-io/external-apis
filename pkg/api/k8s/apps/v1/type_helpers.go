@@ -15,3 +15,6 @@ type ReplicaSetSlice []*ReplicaSet
 
 // DaemonSetSlice represents a slice of *DaemonSet
 type DaemonSetSlice []*DaemonSet
+
+// StatefulSetSlice represents a slice of *StatefulSet
+type StatefulSetSlice []*StatefulSet

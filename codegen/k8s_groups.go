@@ -66,6 +66,9 @@ func k8sGroups() []model.Group {
 				{
 					Kind: "DaemonSet",
 				},
+				{
+					Kind: "StatefulSet",
+				},
 			},
 			CustomTypesImportPath: "k8s.io/api/apps/v1",
 			ApiRoot:               k8sApiRoot,

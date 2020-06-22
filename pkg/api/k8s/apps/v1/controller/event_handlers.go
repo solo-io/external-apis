@@ -337,3 +337,110 @@ func (h genericDaemonSetHandler) Generic(object runtime.Object) error {
 	}
 	return h.handler.GenericDaemonSet(obj)
 }
+
+// Handle events for the StatefulSet Resource
+// DEPRECATED: Prefer reconciler pattern.
+type StatefulSetEventHandler interface {
+	CreateStatefulSet(obj *apps_v1.StatefulSet) error
+	UpdateStatefulSet(old, new *apps_v1.StatefulSet) error
+	DeleteStatefulSet(obj *apps_v1.StatefulSet) error
+	GenericStatefulSet(obj *apps_v1.StatefulSet) error
+}
+
+type StatefulSetEventHandlerFuncs struct {
+	OnCreate  func(obj *apps_v1.StatefulSet) error
+	OnUpdate  func(old, new *apps_v1.StatefulSet) error
+	OnDelete  func(obj *apps_v1.StatefulSet) error
+	OnGeneric func(obj *apps_v1.StatefulSet) error
+}
+
+func (f *StatefulSetEventHandlerFuncs) CreateStatefulSet(obj *apps_v1.StatefulSet) error {
+	if f.OnCreate == nil {
+		return nil
+	}
+	return f.OnCreate(obj)
+}
+
+func (f *StatefulSetEventHandlerFuncs) DeleteStatefulSet(obj *apps_v1.StatefulSet) error {
+	if f.OnDelete == nil {
+		return nil
+	}
+	return f.OnDelete(obj)
+}
+
+func (f *StatefulSetEventHandlerFuncs) UpdateStatefulSet(objOld, objNew *apps_v1.StatefulSet) error {
+	if f.OnUpdate == nil {
+		return nil
+	}
+	return f.OnUpdate(objOld, objNew)
+}
+
+func (f *StatefulSetEventHandlerFuncs) GenericStatefulSet(obj *apps_v1.StatefulSet) error {
+	if f.OnGeneric == nil {
+		return nil
+	}
+	return f.OnGeneric(obj)
+}
+
+type StatefulSetEventWatcher interface {
+	AddEventHandler(ctx context.Context, h StatefulSetEventHandler, predicates ...predicate.Predicate) error
+}
+
+type statefulSetEventWatcher struct {
+	watcher events.EventWatcher
+}
+
+func NewStatefulSetEventWatcher(name string, mgr manager.Manager) StatefulSetEventWatcher {
+	return &statefulSetEventWatcher{
+		watcher: events.NewWatcher(name, mgr, &apps_v1.StatefulSet{}),
+	}
+}
+
+func (c *statefulSetEventWatcher) AddEventHandler(ctx context.Context, h StatefulSetEventHandler, predicates ...predicate.Predicate) error {
+	handler := genericStatefulSetHandler{handler: h}
+	if err := c.watcher.Watch(ctx, handler, predicates...); err != nil {
+		return err
+	}
+	return nil
+}
+
+// genericStatefulSetHandler implements a generic events.EventHandler
+type genericStatefulSetHandler struct {
+	handler StatefulSetEventHandler
+}
+
+func (h genericStatefulSetHandler) Create(object runtime.Object) error {
+	obj, ok := object.(*apps_v1.StatefulSet)
+	if !ok {
+		return errors.Errorf("internal error: StatefulSet handler received event for %T", object)
+	}
+	return h.handler.CreateStatefulSet(obj)
+}
+
+func (h genericStatefulSetHandler) Delete(object runtime.Object) error {
+	obj, ok := object.(*apps_v1.StatefulSet)
+	if !ok {
+		return errors.Errorf("internal error: StatefulSet handler received event for %T", object)
+	}
+	return h.handler.DeleteStatefulSet(obj)
+}
+
+func (h genericStatefulSetHandler) Update(old, new runtime.Object) error {
+	objOld, ok := old.(*apps_v1.StatefulSet)
+	if !ok {
+		return errors.Errorf("internal error: StatefulSet handler received event for %T", old)
+	}
+	objNew, ok := new.(*apps_v1.StatefulSet)
+	if !ok {
+		return errors.Errorf("internal error: StatefulSet handler received event for %T", new)
+	}
+	return h.handler.UpdateStatefulSet(objOld, objNew)
+}
+
+func (h genericStatefulSetHandler) Generic(object runtime.Object) error {
+	obj, ok := object.(*apps_v1.StatefulSet)
+	if !ok {
+		return errors.Errorf("internal error: StatefulSet handler received event for %T", object)
+	}
+	return h.handler.GenericStatefulSet(obj)
+}

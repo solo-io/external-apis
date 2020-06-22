@@ -100,3 +100,31 @@ func DaemonSetClientFromConfigFactoryProvider() DaemonSetClientFromConfigFactory
 		return clients.DaemonSets(), nil
 	}
 }
+
+// Provider for StatefulSetClient from Clientset
+func StatefulSetClientFromClientsetProvider(clients apps_v1.Clientset) apps_v1.StatefulSetClient {
+	return clients.StatefulSets()
+}
+
+// Provider for StatefulSet Client from Client
+func StatefulSetClientProvider(client client.Client) apps_v1.StatefulSetClient {
+	return apps_v1.NewStatefulSetClient(client)
+}
+
+type StatefulSetClientFactory func(client client.Client) apps_v1.StatefulSetClient
+
+func StatefulSetClientFactoryProvider() StatefulSetClientFactory {
+	return StatefulSetClientProvider
+}
+
+type StatefulSetClientFromConfigFactory func(cfg *rest.Config) (apps_v1.StatefulSetClient, error)
+
+func StatefulSetClientFromConfigFactoryProvider() StatefulSetClientFromConfigFactory {
+	return func(cfg *rest.Config) (apps_v1.StatefulSetClient, error) {
+		clients, err := apps_v1.NewClientsetFromConfig(cfg)
+		if err != nil {
+			return nil, err
+		}
+		return clients.StatefulSets(), nil
+	}
+}

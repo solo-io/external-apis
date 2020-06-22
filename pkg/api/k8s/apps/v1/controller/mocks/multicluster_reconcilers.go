@@ -353,3 +353,116 @@ func (mr *MockMulticlusterDaemonSetReconcileLoopMockRecorder) AddMulticlusterDae
 	varargs := append([]interface{}{ctx, rec}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddMulticlusterDaemonSetReconciler", reflect.TypeOf((*MockMulticlusterDaemonSetReconcileLoop)(nil).AddMulticlusterDaemonSetReconciler), varargs...)
 }
+
+// MockMulticlusterStatefulSetReconciler is a mock of MulticlusterStatefulSetReconciler interface.
+type MockMulticlusterStatefulSetReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterStatefulSetReconcilerMockRecorder
+}
+
+// MockMulticlusterStatefulSetReconcilerMockRecorder is the mock recorder for MockMulticlusterStatefulSetReconciler.
+type MockMulticlusterStatefulSetReconcilerMockRecorder struct {
+	mock *MockMulticlusterStatefulSetReconciler
+}
+
+// NewMockMulticlusterStatefulSetReconciler creates a new mock instance.
+func NewMockMulticlusterStatefulSetReconciler(ctrl *gomock.Controller) *MockMulticlusterStatefulSetReconciler {
+	mock := &MockMulticlusterStatefulSetReconciler{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterStatefulSetReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterStatefulSetReconciler) EXPECT() *MockMulticlusterStatefulSetReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileStatefulSet mocks base method.
+func (m *MockMulticlusterStatefulSetReconciler) ReconcileStatefulSet(clusterName string, obj *v1.StatefulSet) (reconcile.Result, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileStatefulSet", clusterName, obj)
+	ret0, _ := ret[0].(reconcile.Result)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReconcileStatefulSet indicates an expected call of ReconcileStatefulSet.
+func (mr *MockMulticlusterStatefulSetReconcilerMockRecorder) ReconcileStatefulSet(clusterName, obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileStatefulSet", reflect.TypeOf((*MockMulticlusterStatefulSetReconciler)(nil).ReconcileStatefulSet), clusterName, obj)
+}
+
+// MockMulticlusterStatefulSetDeletionReconciler is a mock of MulticlusterStatefulSetDeletionReconciler interface.
+type MockMulticlusterStatefulSetDeletionReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterStatefulSetDeletionReconcilerMockRecorder
+}
+
+// MockMulticlusterStatefulSetDeletionReconcilerMockRecorder is the mock recorder for MockMulticlusterStatefulSetDeletionReconciler.
+type MockMulticlusterStatefulSetDeletionReconcilerMockRecorder struct {
+	mock *MockMulticlusterStatefulSetDeletionReconciler
+}
+
+// NewMockMulticlusterStatefulSetDeletionReconciler creates a new mock instance.
+func NewMockMulticlusterStatefulSetDeletionReconciler(ctrl *gomock.Controller) *MockMulticlusterStatefulSetDeletionReconciler {
+	mock := &MockMulticlusterStatefulSetDeletionReconciler{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterStatefulSetDeletionReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterStatefulSetDeletionReconciler) EXPECT() *MockMulticlusterStatefulSetDeletionReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileStatefulSetDeletion mocks base method.
+func (m *MockMulticlusterStatefulSetDeletionReconciler) ReconcileStatefulSetDeletion(clusterName string, req reconcile.Request) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "ReconcileStatefulSetDeletion", clusterName, req)
+}
+
+// ReconcileStatefulSetDeletion indicates an expected call of ReconcileStatefulSetDeletion.
+func (mr *MockMulticlusterStatefulSetDeletionReconcilerMockRecorder) ReconcileStatefulSetDeletion(clusterName, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileStatefulSetDeletion", reflect.TypeOf((*MockMulticlusterStatefulSetDeletionReconciler)(nil).ReconcileStatefulSetDeletion), clusterName, req)
+}
+
+// MockMulticlusterStatefulSetReconcileLoop is a mock of MulticlusterStatefulSetReconcileLoop interface.
+type MockMulticlusterStatefulSetReconcileLoop struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterStatefulSetReconcileLoopMockRecorder
+}
+
+// MockMulticlusterStatefulSetReconcileLoopMockRecorder is the mock recorder for MockMulticlusterStatefulSetReconcileLoop.
+type MockMulticlusterStatefulSetReconcileLoopMockRecorder struct {
+	mock *MockMulticlusterStatefulSetReconcileLoop
+}
+
+// NewMockMulticlusterStatefulSetReconcileLoop creates a new mock instance.
+func NewMockMulticlusterStatefulSetReconcileLoop(ctrl *gomock.Controller) *MockMulticlusterStatefulSetReconcileLoop {
+	mock := &MockMulticlusterStatefulSetReconcileLoop{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterStatefulSetReconcileLoopMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterStatefulSetReconcileLoop) EXPECT() *MockMulticlusterStatefulSetReconcileLoopMockRecorder {
+	return m.recorder
+}
+
+// AddMulticlusterStatefulSetReconciler mocks base method.
+func (m *MockMulticlusterStatefulSetReconcileLoop) AddMulticlusterStatefulSetReconciler(ctx context.Context, rec controller.MulticlusterStatefulSetReconciler, predicates ...predicate.Predicate) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, rec}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "AddMulticlusterStatefulSetReconciler", varargs...)
+}
+
+// AddMulticlusterStatefulSetReconciler indicates an expected call of AddMulticlusterStatefulSetReconciler.
+func (mr *MockMulticlusterStatefulSetReconcileLoopMockRecorder) AddMulticlusterStatefulSetReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, rec}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddMulticlusterStatefulSetReconciler", reflect.TypeOf((*MockMulticlusterStatefulSetReconcileLoop)(nil).AddMulticlusterStatefulSetReconciler), varargs...)
+}

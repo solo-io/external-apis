@@ -308,3 +308,102 @@ func (s daemonSetSet) Find(id ezkube.ResourceId) (*apps_v1.DaemonSet, error) {
 
 	return obj.(*apps_v1.DaemonSet), nil
 }
+
+type StatefulSetSet interface {
+	Keys() sets.String
+	List() []*apps_v1.StatefulSet
+	Map() map[string]*apps_v1.StatefulSet
+	Insert(statefulSet ...*apps_v1.StatefulSet)
+	Equal(statefulSetSet StatefulSetSet) bool
+	Has(statefulSet *apps_v1.StatefulSet) bool
+	Delete(statefulSet *apps_v1.StatefulSet)
+	Union(set StatefulSetSet) StatefulSetSet
+	Difference(set StatefulSetSet) StatefulSetSet
+	Intersection(set StatefulSetSet) StatefulSetSet
+	Find(id ezkube.ResourceId) (*apps_v1.StatefulSet, error)
+}
+
+func makeGenericStatefulSetSet(statefulSetList []*apps_v1.StatefulSet) sksets.ResourceSet {
+	var genericResources []ezkube.ResourceId
+	for _, obj := range statefulSetList {
+		genericResources = append(genericResources, obj)
+	}
+	return sksets.NewResourceSet(genericResources...)
+}
+
+type statefulSetSet struct {
+	set sksets.ResourceSet
+}
+
+func NewStatefulSetSet(statefulSetList ...*apps_v1.StatefulSet) StatefulSetSet {
+	return &statefulSetSet{set: makeGenericStatefulSetSet(statefulSetList)}
+}
+
+func (s statefulSetSet) Keys() sets.String {
+	return s.set.Keys()
+}
+
+func (s statefulSetSet) List() []*apps_v1.StatefulSet {
+	var statefulSetList []*apps_v1.StatefulSet
+	for _, obj := range s.set.List() {
+		statefulSetList = append(statefulSetList, obj.(*apps_v1.StatefulSet))
+	}
+	return statefulSetList
+}
+
+func (s statefulSetSet) Map() map[string]*apps_v1.StatefulSet {
+	newMap := map[string]*apps_v1.StatefulSet{}
+	for k, v := range s.set.Map() {
+		newMap[k] = v.(*apps_v1.StatefulSet)
+	}
+	return newMap
+}
+
+func (s statefulSetSet) Insert(
+	statefulSetList ...*apps_v1.StatefulSet,
+) {
+	for _, obj := range statefulSetList {
+		s.set.Insert(obj)
+	}
+}
+
+func (s statefulSetSet) Has(statefulSet *apps_v1.StatefulSet) bool {
+	return s.set.Has(statefulSet)
+}
+
+func (s statefulSetSet) Equal(
+	statefulSetSet StatefulSetSet,
+) bool {
+	return s.set.Equal(makeGenericStatefulSetSet(statefulSetSet.List()))
+}
+
+func (s statefulSetSet) Delete(StatefulSet *apps_v1.StatefulSet) {
+	s.set.Delete(StatefulSet)
+}
+
+func (s statefulSetSet) Union(set StatefulSetSet) StatefulSetSet {
+	return NewStatefulSetSet(append(s.List(), set.List()...)...)
+}
+
+func (s statefulSetSet) Difference(set StatefulSetSet) StatefulSetSet {
+	newSet := s.set.Difference(makeGenericStatefulSetSet(set.List()))
+	return statefulSetSet{set: newSet}
+}
+
+func (s statefulSetSet) Intersection(set StatefulSetSet) StatefulSetSet {
+	newSet := s.set.Intersection(makeGenericStatefulSetSet(set.List()))
+	var statefulSetList []*apps_v1.StatefulSet
+	for _, obj := range newSet.List() {
+		statefulSetList = append(statefulSetList, obj.(*apps_v1.StatefulSet))
+	}
+	return NewStatefulSetSet(statefulSetList...)
+}
+
+func (s statefulSetSet) Find(id ezkube.ResourceId) (*apps_v1.StatefulSet, error) {
+	obj, err := s.set.Find(&apps_v1.StatefulSet{}, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return obj.(*apps_v1.StatefulSet), nil
+}
