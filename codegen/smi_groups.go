@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	groups = append(groups, smiGroups()...)
+	Groups = append(Groups, smiGroups()...)
 }
 
 const (

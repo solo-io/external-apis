@@ -10,18 +10,18 @@ const (
 	apiRoot = "pkg/api"
 )
 
-var groups []model.Group
+var Groups []model.Group
 
 func Command() codegen.Command {
-	for i, group := range groups {
+	for i, group := range Groups {
 		group.RenderClients = true
 		group.RenderController = true
 		group.MockgenDirective = true
 		group.CustomTemplates = contrib.AllCustomTemplates
-		groups[i] = group
+		Groups[i] = group
 	}
 
 	return codegen.Command{
-		Groups: groups,
+		Groups: Groups,
 	}
 }

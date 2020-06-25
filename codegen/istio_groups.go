@@ -7,7 +7,7 @@ import (
 )
 
 func init() {
-	groups = append(groups, istioGroups()...)
+	Groups = append(Groups, istioGroups()...)
 }
 
 const (

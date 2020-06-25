@@ -17,7 +17,7 @@ const (
 )
 
 func init() {
-	groups = append(groups, k8sGroups()...)
+	Groups = append(Groups, k8sGroups()...)
 }
 
 func k8sGroups() []model.Group {
