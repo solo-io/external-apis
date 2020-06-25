@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	groups = append(groups, linkerdGroups()...)
+	Groups = append(Groups, linkerdGroups()...)
 }
 
 const (

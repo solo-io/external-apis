@@ -8,7 +8,7 @@ import (
 	batch_v1 "k8s.io/api/batch/v1"
 
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"github.com/solo-io/skv2/pkg/ezkube"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
@@ -23,10 +23,11 @@ type JobSet interface {
 	Union(set JobSet) JobSet
 	Difference(set JobSet) JobSet
 	Intersection(set JobSet) JobSet
+	Find(id ezkube.ResourceId) (*batch_v1.Job, error)
 }
 
 func makeGenericJobSet(jobList []*batch_v1.Job) sksets.ResourceSet {
-	var genericResources []metav1.Object
+	var genericResources []ezkube.ResourceId
 	for _, obj := range jobList {
 		genericResources = append(genericResources, obj)
 	}
@@ -99,4 +100,13 @@ func (s jobSet) Intersection(set JobSet) JobSet {
 		jobList = append(jobList, obj.(*batch_v1.Job))
 	}
 	return NewJobSet(jobList...)
+}
+
+func (s jobSet) Find(id ezkube.ResourceId) (*batch_v1.Job, error) {
+	obj, err := s.set.Find(&batch_v1.Job{}, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return obj.(*batch_v1.Job), nil
 }

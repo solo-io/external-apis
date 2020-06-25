@@ -554,3 +554,41 @@ func (mr *MockTrafficSplitClientMockRecorder) PatchTrafficSplitStatus(ctx, obj, 
 	varargs := append([]interface{}{ctx, obj, patch}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchTrafficSplitStatus", reflect.TypeOf((*MockTrafficSplitClient)(nil).PatchTrafficSplitStatus), varargs...)
 }
+
+// MockMulticlusterTrafficSplitClient is a mock of MulticlusterTrafficSplitClient interface.
+type MockMulticlusterTrafficSplitClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterTrafficSplitClientMockRecorder
+}
+
+// MockMulticlusterTrafficSplitClientMockRecorder is the mock recorder for MockMulticlusterTrafficSplitClient.
+type MockMulticlusterTrafficSplitClientMockRecorder struct {
+	mock *MockMulticlusterTrafficSplitClient
+}
+
+// NewMockMulticlusterTrafficSplitClient creates a new mock instance.
+func NewMockMulticlusterTrafficSplitClient(ctrl *gomock.Controller) *MockMulticlusterTrafficSplitClient {
+	mock := &MockMulticlusterTrafficSplitClient{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterTrafficSplitClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterTrafficSplitClient) EXPECT() *MockMulticlusterTrafficSplitClientMockRecorder {
+	return m.recorder
+}
+
+// Cluster mocks base method.
+func (m *MockMulticlusterTrafficSplitClient) Cluster(cluster string) (v1alpha10.TrafficSplitClient, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Cluster", cluster)
+	ret0, _ := ret[0].(v1alpha10.TrafficSplitClient)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Cluster indicates an expected call of Cluster.
+func (mr *MockMulticlusterTrafficSplitClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterTrafficSplitClient)(nil).Cluster), cluster)
+}

@@ -10,6 +10,7 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	v1alpha2 "github.com/linkerd/linkerd2/controller/gen/apis/serviceprofile/v1alpha2"
 	v1alpha2sets "github.com/solo-io/external-apis/pkg/api/linkerd/linkerd.io/v1alpha2/sets"
+	ezkube "github.com/solo-io/skv2/pkg/ezkube"
 	sets "k8s.io/apimachinery/pkg/util/sets"
 )
 
@@ -174,4 +175,19 @@ func (m *MockServiceProfileSet) Intersection(set v1alpha2sets.ServiceProfileSet)
 func (mr *MockServiceProfileSetMockRecorder) Intersection(set interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockServiceProfileSet)(nil).Intersection), set)
+}
+
+// Find mocks base method.
+func (m *MockServiceProfileSet) Find(id ezkube.ResourceId) (*v1alpha2.ServiceProfile, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1alpha2.ServiceProfile)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockServiceProfileSetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockServiceProfileSet)(nil).Find), id)
 }

@@ -17,7 +17,7 @@ const (
 )
 
 func init() {
-	groups = append(groups, k8sGroups()...)
+	Groups = append(Groups, k8sGroups()...)
 }
 
 func k8sGroups() []model.Group {
@@ -65,6 +65,9 @@ func k8sGroups() []model.Group {
 				},
 				{
 					Kind: "DaemonSet",
+				},
+				{
+					Kind: "StatefulSet",
 				},
 			},
 			CustomTypesImportPath: "k8s.io/api/apps/v1",

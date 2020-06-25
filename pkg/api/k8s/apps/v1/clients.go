@@ -46,6 +46,8 @@ type Clientset interface {
 	ReplicaSets() ReplicaSetClient
 	// clienset for the apps/v1/v1 APIs
 	DaemonSets() DaemonSetClient
+	// clienset for the apps/v1/v1 APIs
+	StatefulSets() StatefulSetClient
 }
 
 type clientSet struct {
@@ -83,6 +85,11 @@ func (c *clientSet) ReplicaSets() ReplicaSetClient {
 // clienset for the apps/v1/v1 APIs
 func (c *clientSet) DaemonSets() DaemonSetClient {
 	return NewDaemonSetClient(c.client)
+}
+
+// clienset for the apps/v1/v1 APIs
+func (c *clientSet) StatefulSets() StatefulSetClient {
+	return NewStatefulSetClient(c.client)
 }
 
 // Reader knows how to read and list Deployments.
@@ -205,6 +212,28 @@ func (c *deploymentClient) PatchDeploymentStatus(ctx context.Context, obj *apps_
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
+// Provides DeploymentClients for multiple clusters.
+type MulticlusterDeploymentClient interface {
+	// Cluster returns a DeploymentClient for the given cluster
+	Cluster(cluster string) (DeploymentClient, error)
+}
+
+type multiclusterDeploymentClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterDeploymentClient(client multicluster.Client) MulticlusterDeploymentClient {
+	return &multiclusterDeploymentClient{client: client}
+}
+
+func (m *multiclusterDeploymentClient) Cluster(cluster string) (DeploymentClient, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewDeploymentClient(client), nil
+}
+
 // Reader knows how to read and list ReplicaSets.
 type ReplicaSetReader interface {
 	// Get retrieves a ReplicaSet for the given object key
@@ -325,6 +354,28 @@ func (c *replicaSetClient) PatchReplicaSetStatus(ctx context.Context, obj *apps_
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
+// Provides ReplicaSetClients for multiple clusters.
+type MulticlusterReplicaSetClient interface {
+	// Cluster returns a ReplicaSetClient for the given cluster
+	Cluster(cluster string) (ReplicaSetClient, error)
+}
+
+type multiclusterReplicaSetClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterReplicaSetClient(client multicluster.Client) MulticlusterReplicaSetClient {
+	return &multiclusterReplicaSetClient{client: client}
+}
+
+func (m *multiclusterReplicaSetClient) Cluster(cluster string) (ReplicaSetClient, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewReplicaSetClient(client), nil
+}
+
 // Reader knows how to read and list DaemonSets.
 type DaemonSetReader interface {
 	// Get retrieves a DaemonSet for the given object key
@@ -443,4 +494,168 @@ func (c *daemonSetClient) UpdateDaemonSetStatus(ctx context.Context, obj *apps_v
 
 func (c *daemonSetClient) PatchDaemonSetStatus(ctx context.Context, obj *apps_v1.DaemonSet, patch client.Patch, opts ...client.PatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
+}
+
+// Provides DaemonSetClients for multiple clusters.
+type MulticlusterDaemonSetClient interface {
+	// Cluster returns a DaemonSetClient for the given cluster
+	Cluster(cluster string) (DaemonSetClient, error)
+}
+
+type multiclusterDaemonSetClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterDaemonSetClient(client multicluster.Client) MulticlusterDaemonSetClient {
+	return &multiclusterDaemonSetClient{client: client}
+}
+
+func (m *multiclusterDaemonSetClient) Cluster(cluster string) (DaemonSetClient, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewDaemonSetClient(client), nil
+}
+
+// Reader knows how to read and list StatefulSets.
+type StatefulSetReader interface {
+	// Get retrieves a StatefulSet for the given object key
+	GetStatefulSet(ctx context.Context, key client.ObjectKey) (*apps_v1.StatefulSet, error)
+
+	// List retrieves list of StatefulSets for a given namespace and list options.
+	ListStatefulSet(ctx context.Context, opts ...client.ListOption) (*apps_v1.StatefulSetList, error)
+}
+
+// StatefulSetTransitionFunction instructs the StatefulSetWriter how to transition between an existing
+// StatefulSet object and a desired on an Upsert
+type StatefulSetTransitionFunction func(existing, desired *apps_v1.StatefulSet) error
+
+// Writer knows how to create, delete, and update StatefulSets.
+type StatefulSetWriter interface {
+	// Create saves the StatefulSet object.
+	CreateStatefulSet(ctx context.Context, obj *apps_v1.StatefulSet, opts ...client.CreateOption) error
+
+	// Delete deletes the StatefulSet object.
+	DeleteStatefulSet(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error
+
+	// Update updates the given StatefulSet object.
+	UpdateStatefulSet(ctx context.Context, obj *apps_v1.StatefulSet, opts ...client.UpdateOption) error
+
+	// Patch patches the given StatefulSet object.
+	PatchStatefulSet(ctx context.Context, obj *apps_v1.StatefulSet, patch client.Patch, opts ...client.PatchOption) error
+
+	// DeleteAllOf deletes all StatefulSet objects matching the given options.
+	DeleteAllOfStatefulSet(ctx context.Context, opts ...client.DeleteAllOfOption) error
+
+	// Create or Update the StatefulSet object.
+	UpsertStatefulSet(ctx context.Context, obj *apps_v1.StatefulSet, transitionFuncs ...StatefulSetTransitionFunction) error
+}
+
+// StatusWriter knows how to update status subresource of a StatefulSet object.
+type StatefulSetStatusWriter interface {
+	// Update updates the fields corresponding to the status subresource for the
+	// given StatefulSet object.
+	UpdateStatefulSetStatus(ctx context.Context, obj *apps_v1.StatefulSet, opts ...client.UpdateOption) error
+
+	// Patch patches the given StatefulSet object's subresource.
+	PatchStatefulSetStatus(ctx context.Context, obj *apps_v1.StatefulSet, patch client.Patch, opts ...client.PatchOption) error
+}
+
+// Client knows how to perform CRUD operations on StatefulSets.
+type StatefulSetClient interface {
+	StatefulSetReader
+	StatefulSetWriter
+	StatefulSetStatusWriter
+}
+
+type statefulSetClient struct {
+	client client.Client
+}
+
+func NewStatefulSetClient(client client.Client) *statefulSetClient {
+	return &statefulSetClient{client: client}
+}
+
+func (c *statefulSetClient) GetStatefulSet(ctx context.Context, key client.ObjectKey) (*apps_v1.StatefulSet, error) {
+	obj := &apps_v1.StatefulSet{}
+	if err := c.client.Get(ctx, key, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+func (c *statefulSetClient) ListStatefulSet(ctx context.Context, opts ...client.ListOption) (*apps_v1.StatefulSetList, error) {
+	list := &apps_v1.StatefulSetList{}
+	if err := c.client.List(ctx, list, opts...); err != nil {
+		return nil, err
+	}
+	return list, nil
+}
+
+func (c *statefulSetClient) CreateStatefulSet(ctx context.Context, obj *apps_v1.StatefulSet, opts ...client.CreateOption) error {
+	return c.client.Create(ctx, obj, opts...)
+}
+
+func (c *statefulSetClient) DeleteStatefulSet(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	obj := &apps_v1.StatefulSet{}
+	obj.SetName(key.Name)
+	obj.SetNamespace(key.Namespace)
+	return c.client.Delete(ctx, obj, opts...)
+}
+
+func (c *statefulSetClient) UpdateStatefulSet(ctx context.Context, obj *apps_v1.StatefulSet, opts ...client.UpdateOption) error {
+	return c.client.Update(ctx, obj, opts...)
+}
+
+func (c *statefulSetClient) PatchStatefulSet(ctx context.Context, obj *apps_v1.StatefulSet, patch client.Patch, opts ...client.PatchOption) error {
+	return c.client.Patch(ctx, obj, patch, opts...)
+}
+
+func (c *statefulSetClient) DeleteAllOfStatefulSet(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	obj := &apps_v1.StatefulSet{}
+	return c.client.DeleteAllOf(ctx, obj, opts...)
+}
+
+func (c *statefulSetClient) UpsertStatefulSet(ctx context.Context, obj *apps_v1.StatefulSet, transitionFuncs ...StatefulSetTransitionFunction) error {
+	genericTxFunc := func(existing, desired runtime.Object) error {
+		for _, txFunc := range transitionFuncs {
+			if err := txFunc(existing.(*apps_v1.StatefulSet), desired.(*apps_v1.StatefulSet)); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+	_, err := controllerutils.Upsert(ctx, c.client, obj, genericTxFunc)
+	return err
+}
+
+func (c *statefulSetClient) UpdateStatefulSetStatus(ctx context.Context, obj *apps_v1.StatefulSet, opts ...client.UpdateOption) error {
+	return c.client.Status().Update(ctx, obj, opts...)
+}
+
+func (c *statefulSetClient) PatchStatefulSetStatus(ctx context.Context, obj *apps_v1.StatefulSet, patch client.Patch, opts ...client.PatchOption) error {
+	return c.client.Status().Patch(ctx, obj, patch, opts...)
+}
+
+// Provides StatefulSetClients for multiple clusters.
+type MulticlusterStatefulSetClient interface {
+	// Cluster returns a StatefulSetClient for the given cluster
+	Cluster(cluster string) (StatefulSetClient, error)
+}
+
+type multiclusterStatefulSetClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterStatefulSetClient(client multicluster.Client) MulticlusterStatefulSetClient {
+	return &multiclusterStatefulSetClient{client: client}
+}
+
+func (m *multiclusterStatefulSetClient) Cluster(cluster string) (StatefulSetClient, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewStatefulSetClient(client), nil
 }

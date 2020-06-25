@@ -554,3 +554,41 @@ func (mr *MockAuthorizationPolicyClientMockRecorder) PatchAuthorizationPolicySta
 	varargs := append([]interface{}{ctx, obj, patch}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchAuthorizationPolicyStatus", reflect.TypeOf((*MockAuthorizationPolicyClient)(nil).PatchAuthorizationPolicyStatus), varargs...)
 }
+
+// MockMulticlusterAuthorizationPolicyClient is a mock of MulticlusterAuthorizationPolicyClient interface.
+type MockMulticlusterAuthorizationPolicyClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterAuthorizationPolicyClientMockRecorder
+}
+
+// MockMulticlusterAuthorizationPolicyClientMockRecorder is the mock recorder for MockMulticlusterAuthorizationPolicyClient.
+type MockMulticlusterAuthorizationPolicyClientMockRecorder struct {
+	mock *MockMulticlusterAuthorizationPolicyClient
+}
+
+// NewMockMulticlusterAuthorizationPolicyClient creates a new mock instance.
+func NewMockMulticlusterAuthorizationPolicyClient(ctrl *gomock.Controller) *MockMulticlusterAuthorizationPolicyClient {
+	mock := &MockMulticlusterAuthorizationPolicyClient{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterAuthorizationPolicyClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterAuthorizationPolicyClient) EXPECT() *MockMulticlusterAuthorizationPolicyClientMockRecorder {
+	return m.recorder
+}
+
+// Cluster mocks base method.
+func (m *MockMulticlusterAuthorizationPolicyClient) Cluster(cluster string) (v1beta1.AuthorizationPolicyClient, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Cluster", cluster)
+	ret0, _ := ret[0].(v1beta1.AuthorizationPolicyClient)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Cluster indicates an expected call of Cluster.
+func (mr *MockMulticlusterAuthorizationPolicyClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterAuthorizationPolicyClient)(nil).Cluster), cluster)
+}

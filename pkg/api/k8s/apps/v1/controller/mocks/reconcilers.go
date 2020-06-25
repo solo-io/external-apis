@@ -557,3 +557,184 @@ func (mr *MockDaemonSetReconcileLoopMockRecorder) RunDaemonSetReconciler(ctx, re
 	varargs := append([]interface{}{ctx, rec}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunDaemonSetReconciler", reflect.TypeOf((*MockDaemonSetReconcileLoop)(nil).RunDaemonSetReconciler), varargs...)
 }
+
+// MockStatefulSetReconciler is a mock of StatefulSetReconciler interface.
+type MockStatefulSetReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockStatefulSetReconcilerMockRecorder
+}
+
+// MockStatefulSetReconcilerMockRecorder is the mock recorder for MockStatefulSetReconciler.
+type MockStatefulSetReconcilerMockRecorder struct {
+	mock *MockStatefulSetReconciler
+}
+
+// NewMockStatefulSetReconciler creates a new mock instance.
+func NewMockStatefulSetReconciler(ctrl *gomock.Controller) *MockStatefulSetReconciler {
+	mock := &MockStatefulSetReconciler{ctrl: ctrl}
+	mock.recorder = &MockStatefulSetReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockStatefulSetReconciler) EXPECT() *MockStatefulSetReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileStatefulSet mocks base method.
+func (m *MockStatefulSetReconciler) ReconcileStatefulSet(obj *v1.StatefulSet) (reconcile.Result, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileStatefulSet", obj)
+	ret0, _ := ret[0].(reconcile.Result)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReconcileStatefulSet indicates an expected call of ReconcileStatefulSet.
+func (mr *MockStatefulSetReconcilerMockRecorder) ReconcileStatefulSet(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileStatefulSet", reflect.TypeOf((*MockStatefulSetReconciler)(nil).ReconcileStatefulSet), obj)
+}
+
+// MockStatefulSetDeletionReconciler is a mock of StatefulSetDeletionReconciler interface.
+type MockStatefulSetDeletionReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockStatefulSetDeletionReconcilerMockRecorder
+}
+
+// MockStatefulSetDeletionReconcilerMockRecorder is the mock recorder for MockStatefulSetDeletionReconciler.
+type MockStatefulSetDeletionReconcilerMockRecorder struct {
+	mock *MockStatefulSetDeletionReconciler
+}
+
+// NewMockStatefulSetDeletionReconciler creates a new mock instance.
+func NewMockStatefulSetDeletionReconciler(ctrl *gomock.Controller) *MockStatefulSetDeletionReconciler {
+	mock := &MockStatefulSetDeletionReconciler{ctrl: ctrl}
+	mock.recorder = &MockStatefulSetDeletionReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockStatefulSetDeletionReconciler) EXPECT() *MockStatefulSetDeletionReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileStatefulSetDeletion mocks base method.
+func (m *MockStatefulSetDeletionReconciler) ReconcileStatefulSetDeletion(req reconcile.Request) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "ReconcileStatefulSetDeletion", req)
+}
+
+// ReconcileStatefulSetDeletion indicates an expected call of ReconcileStatefulSetDeletion.
+func (mr *MockStatefulSetDeletionReconcilerMockRecorder) ReconcileStatefulSetDeletion(req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileStatefulSetDeletion", reflect.TypeOf((*MockStatefulSetDeletionReconciler)(nil).ReconcileStatefulSetDeletion), req)
+}
+
+// MockStatefulSetFinalizer is a mock of StatefulSetFinalizer interface.
+type MockStatefulSetFinalizer struct {
+	ctrl     *gomock.Controller
+	recorder *MockStatefulSetFinalizerMockRecorder
+}
+
+// MockStatefulSetFinalizerMockRecorder is the mock recorder for MockStatefulSetFinalizer.
+type MockStatefulSetFinalizerMockRecorder struct {
+	mock *MockStatefulSetFinalizer
+}
+
+// NewMockStatefulSetFinalizer creates a new mock instance.
+func NewMockStatefulSetFinalizer(ctrl *gomock.Controller) *MockStatefulSetFinalizer {
+	mock := &MockStatefulSetFinalizer{ctrl: ctrl}
+	mock.recorder = &MockStatefulSetFinalizerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockStatefulSetFinalizer) EXPECT() *MockStatefulSetFinalizerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileStatefulSet mocks base method.
+func (m *MockStatefulSetFinalizer) ReconcileStatefulSet(obj *v1.StatefulSet) (reconcile.Result, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileStatefulSet", obj)
+	ret0, _ := ret[0].(reconcile.Result)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReconcileStatefulSet indicates an expected call of ReconcileStatefulSet.
+func (mr *MockStatefulSetFinalizerMockRecorder) ReconcileStatefulSet(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileStatefulSet", reflect.TypeOf((*MockStatefulSetFinalizer)(nil).ReconcileStatefulSet), obj)
+}
+
+// StatefulSetFinalizerName mocks base method.
+func (m *MockStatefulSetFinalizer) StatefulSetFinalizerName() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "StatefulSetFinalizerName")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// StatefulSetFinalizerName indicates an expected call of StatefulSetFinalizerName.
+func (mr *MockStatefulSetFinalizerMockRecorder) StatefulSetFinalizerName() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StatefulSetFinalizerName", reflect.TypeOf((*MockStatefulSetFinalizer)(nil).StatefulSetFinalizerName))
+}
+
+// FinalizeStatefulSet mocks base method.
+func (m *MockStatefulSetFinalizer) FinalizeStatefulSet(obj *v1.StatefulSet) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FinalizeStatefulSet", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// FinalizeStatefulSet indicates an expected call of FinalizeStatefulSet.
+func (mr *MockStatefulSetFinalizerMockRecorder) FinalizeStatefulSet(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FinalizeStatefulSet", reflect.TypeOf((*MockStatefulSetFinalizer)(nil).FinalizeStatefulSet), obj)
+}
+
+// MockStatefulSetReconcileLoop is a mock of StatefulSetReconcileLoop interface.
+type MockStatefulSetReconcileLoop struct {
+	ctrl     *gomock.Controller
+	recorder *MockStatefulSetReconcileLoopMockRecorder
+}
+
+// MockStatefulSetReconcileLoopMockRecorder is the mock recorder for MockStatefulSetReconcileLoop.
+type MockStatefulSetReconcileLoopMockRecorder struct {
+	mock *MockStatefulSetReconcileLoop
+}
+
+// NewMockStatefulSetReconcileLoop creates a new mock instance.
+func NewMockStatefulSetReconcileLoop(ctrl *gomock.Controller) *MockStatefulSetReconcileLoop {
+	mock := &MockStatefulSetReconcileLoop{ctrl: ctrl}
+	mock.recorder = &MockStatefulSetReconcileLoopMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockStatefulSetReconcileLoop) EXPECT() *MockStatefulSetReconcileLoopMockRecorder {
+	return m.recorder
+}
+
+// RunStatefulSetReconciler mocks base method.
+func (m *MockStatefulSetReconcileLoop) RunStatefulSetReconciler(ctx context.Context, rec controller.StatefulSetReconciler, predicates ...predicate.Predicate) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, rec}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "RunStatefulSetReconciler", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// RunStatefulSetReconciler indicates an expected call of RunStatefulSetReconciler.
+func (mr *MockStatefulSetReconcileLoopMockRecorder) RunStatefulSetReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, rec}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunStatefulSetReconciler", reflect.TypeOf((*MockStatefulSetReconcileLoop)(nil).RunStatefulSetReconciler), varargs...)
+}

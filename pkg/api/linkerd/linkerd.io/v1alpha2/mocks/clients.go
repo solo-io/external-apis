@@ -554,3 +554,41 @@ func (mr *MockServiceProfileClientMockRecorder) PatchServiceProfileStatus(ctx, o
 	varargs := append([]interface{}{ctx, obj, patch}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchServiceProfileStatus", reflect.TypeOf((*MockServiceProfileClient)(nil).PatchServiceProfileStatus), varargs...)
 }
+
+// MockMulticlusterServiceProfileClient is a mock of MulticlusterServiceProfileClient interface.
+type MockMulticlusterServiceProfileClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterServiceProfileClientMockRecorder
+}
+
+// MockMulticlusterServiceProfileClientMockRecorder is the mock recorder for MockMulticlusterServiceProfileClient.
+type MockMulticlusterServiceProfileClientMockRecorder struct {
+	mock *MockMulticlusterServiceProfileClient
+}
+
+// NewMockMulticlusterServiceProfileClient creates a new mock instance.
+func NewMockMulticlusterServiceProfileClient(ctrl *gomock.Controller) *MockMulticlusterServiceProfileClient {
+	mock := &MockMulticlusterServiceProfileClient{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterServiceProfileClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterServiceProfileClient) EXPECT() *MockMulticlusterServiceProfileClientMockRecorder {
+	return m.recorder
+}
+
+// Cluster mocks base method.
+func (m *MockMulticlusterServiceProfileClient) Cluster(cluster string) (v1alpha20.ServiceProfileClient, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Cluster", cluster)
+	ret0, _ := ret[0].(v1alpha20.ServiceProfileClient)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Cluster indicates an expected call of Cluster.
+func (mr *MockMulticlusterServiceProfileClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterServiceProfileClient)(nil).Cluster), cluster)
+}

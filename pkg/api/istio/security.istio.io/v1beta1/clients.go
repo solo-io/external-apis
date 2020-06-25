@@ -190,3 +190,25 @@ func (c *authorizationPolicyClient) UpdateAuthorizationPolicyStatus(ctx context.
 func (c *authorizationPolicyClient) PatchAuthorizationPolicyStatus(ctx context.Context, obj *security_istio_io_v1beta1.AuthorizationPolicy, patch client.Patch, opts ...client.PatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
+
+// Provides AuthorizationPolicyClients for multiple clusters.
+type MulticlusterAuthorizationPolicyClient interface {
+	// Cluster returns a AuthorizationPolicyClient for the given cluster
+	Cluster(cluster string) (AuthorizationPolicyClient, error)
+}
+
+type multiclusterAuthorizationPolicyClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterAuthorizationPolicyClient(client multicluster.Client) MulticlusterAuthorizationPolicyClient {
+	return &multiclusterAuthorizationPolicyClient{client: client}
+}
+
+func (m *multiclusterAuthorizationPolicyClient) Cluster(cluster string) (AuthorizationPolicyClient, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewAuthorizationPolicyClient(client), nil
+}

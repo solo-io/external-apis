@@ -10,6 +10,7 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	v1alpha1 "github.com/servicemeshinterface/smi-sdk-go/pkg/apis/split/v1alpha1"
 	v1alpha1sets "github.com/solo-io/external-apis/pkg/api/smi/split.smi-spec.io/v1alpha1/sets"
+	ezkube "github.com/solo-io/skv2/pkg/ezkube"
 	sets "k8s.io/apimachinery/pkg/util/sets"
 )
 
@@ -174,4 +175,19 @@ func (m *MockTrafficSplitSet) Intersection(set v1alpha1sets.TrafficSplitSet) v1a
 func (mr *MockTrafficSplitSetMockRecorder) Intersection(set interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockTrafficSplitSet)(nil).Intersection), set)
+}
+
+// Find mocks base method.
+func (m *MockTrafficSplitSet) Find(id ezkube.ResourceId) (*v1alpha1.TrafficSplit, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1alpha1.TrafficSplit)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockTrafficSplitSetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockTrafficSplitSet)(nil).Find), id)
 }

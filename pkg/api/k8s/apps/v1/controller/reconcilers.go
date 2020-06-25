@@ -361,3 +361,118 @@ func (r genericDaemonSetFinalizer) Finalize(object ezkube.Object) error {
 	}
 	return r.finalizingReconciler.FinalizeDaemonSet(obj)
 }
+
+// Reconcile Upsert events for the StatefulSet Resource.
+// implemented by the user
+type StatefulSetReconciler interface {
+	ReconcileStatefulSet(obj *apps_v1.StatefulSet) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the StatefulSet Resource.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type StatefulSetDeletionReconciler interface {
+	ReconcileStatefulSetDeletion(req reconcile.Request)
+}
+
+type StatefulSetReconcilerFuncs struct {
+	OnReconcileStatefulSet         func(obj *apps_v1.StatefulSet) (reconcile.Result, error)
+	OnReconcileStatefulSetDeletion func(req reconcile.Request)
+}
+
+func (f *StatefulSetReconcilerFuncs) ReconcileStatefulSet(obj *apps_v1.StatefulSet) (reconcile.Result, error) {
+	if f.OnReconcileStatefulSet == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcileStatefulSet(obj)
+}
+
+func (f *StatefulSetReconcilerFuncs) ReconcileStatefulSetDeletion(req reconcile.Request) {
+	if f.OnReconcileStatefulSetDeletion == nil {
+		return
+	}
+	f.OnReconcileStatefulSetDeletion(req)
+}
+
+// Reconcile and finalize the StatefulSet Resource
+// implemented by the user
+type StatefulSetFinalizer interface {
+	StatefulSetReconciler
+
+	// name of the finalizer used by this handler.
+	// finalizer names should be unique for a single task
+	StatefulSetFinalizerName() string
+
+	// finalize the object before it is deleted.
+	// Watchers created with a finalizing handler will a
+	FinalizeStatefulSet(obj *apps_v1.StatefulSet) error
+}
+
+type StatefulSetReconcileLoop interface {
+	RunStatefulSetReconciler(ctx context.Context, rec StatefulSetReconciler, predicates ...predicate.Predicate) error
+}
+
+type statefulSetReconcileLoop struct {
+	loop reconcile.Loop
+}
+
+func NewStatefulSetReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) StatefulSetReconcileLoop {
+	return &statefulSetReconcileLoop{
+		loop: reconcile.NewLoop(name, mgr, &apps_v1.StatefulSet{}, options),
+	}
+}
+
+func (c *statefulSetReconcileLoop) RunStatefulSetReconciler(ctx context.Context, reconciler StatefulSetReconciler, predicates ...predicate.Predicate) error {
+	genericReconciler := genericStatefulSetReconciler{
+		reconciler: reconciler,
+	}
+
+	var reconcilerWrapper reconcile.Reconciler
+	if finalizingReconciler, ok := reconciler.(StatefulSetFinalizer); ok {
+		reconcilerWrapper = genericStatefulSetFinalizer{
+			genericStatefulSetReconciler: genericReconciler,
+			finalizingReconciler:         finalizingReconciler,
+		}
+	} else {
+		reconcilerWrapper = genericReconciler
+	}
+	return c.loop.RunReconciler(ctx, reconcilerWrapper, predicates...)
+}
+
+// genericStatefulSetHandler implements a generic reconcile.Reconciler
+type genericStatefulSetReconciler struct {
+	reconciler StatefulSetReconciler
+}
+
+func (r genericStatefulSetReconciler) Reconcile(object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*apps_v1.StatefulSet)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: StatefulSet handler received event for %T", object)
+	}
+	return r.reconciler.ReconcileStatefulSet(obj)
+}
+
+func (r genericStatefulSetReconciler) ReconcileDeletion(request reconcile.Request) {
+	if deletionReconciler, ok := r.reconciler.(StatefulSetDeletionReconciler); ok {
+		deletionReconciler.ReconcileStatefulSetDeletion(request)
+	}
+}
+
+// genericStatefulSetFinalizer implements a generic reconcile.FinalizingReconciler
+type genericStatefulSetFinalizer struct {
+	genericStatefulSetReconciler
+	finalizingReconciler StatefulSetFinalizer
+}
+
+func (r genericStatefulSetFinalizer) FinalizerName() string {
+	return r.finalizingReconciler.StatefulSetFinalizerName()
+}
+
+func (r genericStatefulSetFinalizer) Finalize(object ezkube.Object) error {
+	obj, ok := object.(*apps_v1.StatefulSet)
+	if !ok {
+		return errors.Errorf("internal error: StatefulSet handler received event for %T", object)
+	}
+	return r.finalizingReconciler.FinalizeStatefulSet(obj)
+}

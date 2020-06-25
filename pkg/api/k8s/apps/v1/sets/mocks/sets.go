@@ -9,6 +9,7 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	v1sets "github.com/solo-io/external-apis/pkg/api/k8s/apps/v1/sets"
+	ezkube "github.com/solo-io/skv2/pkg/ezkube"
 	v1 "k8s.io/api/apps/v1"
 	sets "k8s.io/apimachinery/pkg/util/sets"
 )
@@ -176,6 +177,21 @@ func (mr *MockDeploymentSetMockRecorder) Intersection(set interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockDeploymentSet)(nil).Intersection), set)
 }
 
+// Find mocks base method.
+func (m *MockDeploymentSet) Find(id ezkube.ResourceId) (*v1.Deployment, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1.Deployment)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockDeploymentSetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockDeploymentSet)(nil).Find), id)
+}
+
 // MockReplicaSetSet is a mock of ReplicaSetSet interface.
 type MockReplicaSetSet struct {
 	ctrl     *gomock.Controller
@@ -339,6 +355,21 @@ func (mr *MockReplicaSetSetMockRecorder) Intersection(set interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockReplicaSetSet)(nil).Intersection), set)
 }
 
+// Find mocks base method.
+func (m *MockReplicaSetSet) Find(id ezkube.ResourceId) (*v1.ReplicaSet, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1.ReplicaSet)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockReplicaSetSetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockReplicaSetSet)(nil).Find), id)
+}
+
 // MockDaemonSetSet is a mock of DaemonSetSet interface.
 type MockDaemonSetSet struct {
 	ctrl     *gomock.Controller
@@ -500,4 +531,197 @@ func (m *MockDaemonSetSet) Intersection(set v1sets.DaemonSetSet) v1sets.DaemonSe
 func (mr *MockDaemonSetSetMockRecorder) Intersection(set interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockDaemonSetSet)(nil).Intersection), set)
+}
+
+// Find mocks base method.
+func (m *MockDaemonSetSet) Find(id ezkube.ResourceId) (*v1.DaemonSet, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1.DaemonSet)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockDaemonSetSetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockDaemonSetSet)(nil).Find), id)
+}
+
+// MockStatefulSetSet is a mock of StatefulSetSet interface.
+type MockStatefulSetSet struct {
+	ctrl     *gomock.Controller
+	recorder *MockStatefulSetSetMockRecorder
+}
+
+// MockStatefulSetSetMockRecorder is the mock recorder for MockStatefulSetSet.
+type MockStatefulSetSetMockRecorder struct {
+	mock *MockStatefulSetSet
+}
+
+// NewMockStatefulSetSet creates a new mock instance.
+func NewMockStatefulSetSet(ctrl *gomock.Controller) *MockStatefulSetSet {
+	mock := &MockStatefulSetSet{ctrl: ctrl}
+	mock.recorder = &MockStatefulSetSetMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockStatefulSetSet) EXPECT() *MockStatefulSetSetMockRecorder {
+	return m.recorder
+}
+
+// Keys mocks base method.
+func (m *MockStatefulSetSet) Keys() sets.String {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Keys")
+	ret0, _ := ret[0].(sets.String)
+	return ret0
+}
+
+// Keys indicates an expected call of Keys.
+func (mr *MockStatefulSetSetMockRecorder) Keys() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Keys", reflect.TypeOf((*MockStatefulSetSet)(nil).Keys))
+}
+
+// List mocks base method.
+func (m *MockStatefulSetSet) List() []*v1.StatefulSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "List")
+	ret0, _ := ret[0].([]*v1.StatefulSet)
+	return ret0
+}
+
+// List indicates an expected call of List.
+func (mr *MockStatefulSetSetMockRecorder) List() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockStatefulSetSet)(nil).List))
+}
+
+// Map mocks base method.
+func (m *MockStatefulSetSet) Map() map[string]*v1.StatefulSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Map")
+	ret0, _ := ret[0].(map[string]*v1.StatefulSet)
+	return ret0
+}
+
+// Map indicates an expected call of Map.
+func (mr *MockStatefulSetSetMockRecorder) Map() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Map", reflect.TypeOf((*MockStatefulSetSet)(nil).Map))
+}
+
+// Insert mocks base method.
+func (m *MockStatefulSetSet) Insert(statefulSet ...*v1.StatefulSet) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range statefulSet {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "Insert", varargs...)
+}
+
+// Insert indicates an expected call of Insert.
+func (mr *MockStatefulSetSetMockRecorder) Insert(statefulSet ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockStatefulSetSet)(nil).Insert), statefulSet...)
+}
+
+// Equal mocks base method.
+func (m *MockStatefulSetSet) Equal(statefulSetSet v1sets.StatefulSetSet) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Equal", statefulSetSet)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Equal indicates an expected call of Equal.
+func (mr *MockStatefulSetSetMockRecorder) Equal(statefulSetSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Equal", reflect.TypeOf((*MockStatefulSetSet)(nil).Equal), statefulSetSet)
+}
+
+// Has mocks base method.
+func (m *MockStatefulSetSet) Has(statefulSet *v1.StatefulSet) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Has", statefulSet)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Has indicates an expected call of Has.
+func (mr *MockStatefulSetSetMockRecorder) Has(statefulSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Has", reflect.TypeOf((*MockStatefulSetSet)(nil).Has), statefulSet)
+}
+
+// Delete mocks base method.
+func (m *MockStatefulSetSet) Delete(statefulSet *v1.StatefulSet) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Delete", statefulSet)
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockStatefulSetSetMockRecorder) Delete(statefulSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockStatefulSetSet)(nil).Delete), statefulSet)
+}
+
+// Union mocks base method.
+func (m *MockStatefulSetSet) Union(set v1sets.StatefulSetSet) v1sets.StatefulSetSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Union", set)
+	ret0, _ := ret[0].(v1sets.StatefulSetSet)
+	return ret0
+}
+
+// Union indicates an expected call of Union.
+func (mr *MockStatefulSetSetMockRecorder) Union(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Union", reflect.TypeOf((*MockStatefulSetSet)(nil).Union), set)
+}
+
+// Difference mocks base method.
+func (m *MockStatefulSetSet) Difference(set v1sets.StatefulSetSet) v1sets.StatefulSetSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Difference", set)
+	ret0, _ := ret[0].(v1sets.StatefulSetSet)
+	return ret0
+}
+
+// Difference indicates an expected call of Difference.
+func (mr *MockStatefulSetSetMockRecorder) Difference(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Difference", reflect.TypeOf((*MockStatefulSetSet)(nil).Difference), set)
+}
+
+// Intersection mocks base method.
+func (m *MockStatefulSetSet) Intersection(set v1sets.StatefulSetSet) v1sets.StatefulSetSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Intersection", set)
+	ret0, _ := ret[0].(v1sets.StatefulSetSet)
+	return ret0
+}
+
+// Intersection indicates an expected call of Intersection.
+func (mr *MockStatefulSetSetMockRecorder) Intersection(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockStatefulSetSet)(nil).Intersection), set)
+}
+
+// Find mocks base method.
+func (m *MockStatefulSetSet) Find(id ezkube.ResourceId) (*v1.StatefulSet, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1.StatefulSet)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockStatefulSetSetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockStatefulSetSet)(nil).Find), id)
 }

@@ -376,3 +376,124 @@ func (mr *MockDaemonSetEventWatcherMockRecorder) AddEventHandler(ctx, h interfac
 	varargs := append([]interface{}{ctx, h}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockDaemonSetEventWatcher)(nil).AddEventHandler), varargs...)
 }
+
+// MockStatefulSetEventHandler is a mock of StatefulSetEventHandler interface.
+type MockStatefulSetEventHandler struct {
+	ctrl     *gomock.Controller
+	recorder *MockStatefulSetEventHandlerMockRecorder
+}
+
+// MockStatefulSetEventHandlerMockRecorder is the mock recorder for MockStatefulSetEventHandler.
+type MockStatefulSetEventHandlerMockRecorder struct {
+	mock *MockStatefulSetEventHandler
+}
+
+// NewMockStatefulSetEventHandler creates a new mock instance.
+func NewMockStatefulSetEventHandler(ctrl *gomock.Controller) *MockStatefulSetEventHandler {
+	mock := &MockStatefulSetEventHandler{ctrl: ctrl}
+	mock.recorder = &MockStatefulSetEventHandlerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockStatefulSetEventHandler) EXPECT() *MockStatefulSetEventHandlerMockRecorder {
+	return m.recorder
+}
+
+// CreateStatefulSet mocks base method.
+func (m *MockStatefulSetEventHandler) CreateStatefulSet(obj *v1.StatefulSet) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateStatefulSet", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateStatefulSet indicates an expected call of CreateStatefulSet.
+func (mr *MockStatefulSetEventHandlerMockRecorder) CreateStatefulSet(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateStatefulSet", reflect.TypeOf((*MockStatefulSetEventHandler)(nil).CreateStatefulSet), obj)
+}
+
+// UpdateStatefulSet mocks base method.
+func (m *MockStatefulSetEventHandler) UpdateStatefulSet(old, new *v1.StatefulSet) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateStatefulSet", old, new)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateStatefulSet indicates an expected call of UpdateStatefulSet.
+func (mr *MockStatefulSetEventHandlerMockRecorder) UpdateStatefulSet(old, new interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateStatefulSet", reflect.TypeOf((*MockStatefulSetEventHandler)(nil).UpdateStatefulSet), old, new)
+}
+
+// DeleteStatefulSet mocks base method.
+func (m *MockStatefulSetEventHandler) DeleteStatefulSet(obj *v1.StatefulSet) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteStatefulSet", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteStatefulSet indicates an expected call of DeleteStatefulSet.
+func (mr *MockStatefulSetEventHandlerMockRecorder) DeleteStatefulSet(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteStatefulSet", reflect.TypeOf((*MockStatefulSetEventHandler)(nil).DeleteStatefulSet), obj)
+}
+
+// GenericStatefulSet mocks base method.
+func (m *MockStatefulSetEventHandler) GenericStatefulSet(obj *v1.StatefulSet) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GenericStatefulSet", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// GenericStatefulSet indicates an expected call of GenericStatefulSet.
+func (mr *MockStatefulSetEventHandlerMockRecorder) GenericStatefulSet(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericStatefulSet", reflect.TypeOf((*MockStatefulSetEventHandler)(nil).GenericStatefulSet), obj)
+}
+
+// MockStatefulSetEventWatcher is a mock of StatefulSetEventWatcher interface.
+type MockStatefulSetEventWatcher struct {
+	ctrl     *gomock.Controller
+	recorder *MockStatefulSetEventWatcherMockRecorder
+}
+
+// MockStatefulSetEventWatcherMockRecorder is the mock recorder for MockStatefulSetEventWatcher.
+type MockStatefulSetEventWatcherMockRecorder struct {
+	mock *MockStatefulSetEventWatcher
+}
+
+// NewMockStatefulSetEventWatcher creates a new mock instance.
+func NewMockStatefulSetEventWatcher(ctrl *gomock.Controller) *MockStatefulSetEventWatcher {
+	mock := &MockStatefulSetEventWatcher{ctrl: ctrl}
+	mock.recorder = &MockStatefulSetEventWatcherMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockStatefulSetEventWatcher) EXPECT() *MockStatefulSetEventWatcherMockRecorder {
+	return m.recorder
+}
+
+// AddEventHandler mocks base method.
+func (m *MockStatefulSetEventWatcher) AddEventHandler(ctx context.Context, h controller.StatefulSetEventHandler, predicates ...predicate.Predicate) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, h}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "AddEventHandler", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AddEventHandler indicates an expected call of AddEventHandler.
+func (mr *MockStatefulSetEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, h}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockStatefulSetEventWatcher)(nil).AddEventHandler), varargs...)
+}

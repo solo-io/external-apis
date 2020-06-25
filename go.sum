@@ -1039,6 +1039,7 @@ istio.io/gogo-genproto v0.0.0-20190930162913-45029607206a/go.mod h1:OzpAts7jljZc
 istio.io/gogo-genproto v0.0.0-20191009201739-17d570f95998 h1:uvW88tRzT6wjR+SdqPoDjR0jjKTYWmjOp2Z1jXs1ZJQ=
 istio.io/gogo-genproto v0.0.0-20191009201739-17d570f95998/go.mod h1:OzpAts7jljZceG4Vqi5/zXy/pOg1b209T3jb7Nv5wIs=
 istio.io/tools v0.0.0-20200611003734-7fe61cad5b12/go.mod h1:IXJtzIZ6d2/2qMyw87QBJf4+1HQcyoKN1xilUprv1oE=
+istio.io/tools v0.0.0-20200618150529-c2a9ca53ea5a/go.mod h1:GdjiSRU2gBVck/dkMy3IEDpmTjWCajlkgqkKRi5yvEg=
 k8s.io/api v0.0.0-20190425012535-181e1f9c52c1/go.mod h1:AhUc3Ph6fhRc0SCpt0Hwv0E+Q8QiEAASkXKwfmT2JwU=
 k8s.io/api v0.0.0-20190918155943-95b840bb6a1f/go.mod h1:uWuOHnjmNrtQomJrvEBg0c0HRNyQ+8KTEERVsK0PW48=
 k8s.io/api v0.0.0-20191004120003-3a12735a829a/go.mod h1:ceHJE/vDjU8jKnRV6Vqn/+vyZmC6NvOluInN+RhQkIs=

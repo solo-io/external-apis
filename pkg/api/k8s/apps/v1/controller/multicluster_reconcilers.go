@@ -227,3 +227,73 @@ func (g genericDaemonSetMulticlusterReconciler) Reconcile(cluster string, object
 	}
 	return g.reconciler.ReconcileDaemonSet(cluster, obj)
 }
+
+// Reconcile Upsert events for the StatefulSet Resource across clusters.
+// implemented by the user
+type MulticlusterStatefulSetReconciler interface {
+	ReconcileStatefulSet(clusterName string, obj *apps_v1.StatefulSet) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the StatefulSet Resource across clusters.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type MulticlusterStatefulSetDeletionReconciler interface {
+	ReconcileStatefulSetDeletion(clusterName string, req reconcile.Request)
+}
+
+type MulticlusterStatefulSetReconcilerFuncs struct {
+	OnReconcileStatefulSet         func(clusterName string, obj *apps_v1.StatefulSet) (reconcile.Result, error)
+	OnReconcileStatefulSetDeletion func(clusterName string, req reconcile.Request)
+}
+
+func (f *MulticlusterStatefulSetReconcilerFuncs) ReconcileStatefulSet(clusterName string, obj *apps_v1.StatefulSet) (reconcile.Result, error) {
+	if f.OnReconcileStatefulSet == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcileStatefulSet(clusterName, obj)
+}
+
+func (f *MulticlusterStatefulSetReconcilerFuncs) ReconcileStatefulSetDeletion(clusterName string, req reconcile.Request) {
+	if f.OnReconcileStatefulSetDeletion == nil {
+		return
+	}
+	f.OnReconcileStatefulSetDeletion(clusterName, req)
+}
+
+type MulticlusterStatefulSetReconcileLoop interface {
+	// AddMulticlusterStatefulSetReconciler adds a MulticlusterStatefulSetReconciler to the MulticlusterStatefulSetReconcileLoop.
+	AddMulticlusterStatefulSetReconciler(ctx context.Context, rec MulticlusterStatefulSetReconciler, predicates ...predicate.Predicate)
+}
+
+type multiclusterStatefulSetReconcileLoop struct {
+	loop multicluster.Loop
+}
+
+func (m *multiclusterStatefulSetReconcileLoop) AddMulticlusterStatefulSetReconciler(ctx context.Context, rec MulticlusterStatefulSetReconciler, predicates ...predicate.Predicate) {
+	genericReconciler := genericStatefulSetMulticlusterReconciler{reconciler: rec}
+
+	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
+}
+
+func NewMulticlusterStatefulSetReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterStatefulSetReconcileLoop {
+	return &multiclusterStatefulSetReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &apps_v1.StatefulSet{})}
+}
+
+type genericStatefulSetMulticlusterReconciler struct {
+	reconciler MulticlusterStatefulSetReconciler
+}
+
+func (g genericStatefulSetMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) {
+	if deletionReconciler, ok := g.reconciler.(MulticlusterStatefulSetDeletionReconciler); ok {
+		deletionReconciler.ReconcileStatefulSetDeletion(cluster, req)
+	}
+}
+
+func (g genericStatefulSetMulticlusterReconciler) Reconcile(cluster string, object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*apps_v1.StatefulSet)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: StatefulSet handler received event for %T", object)
+	}
+	return g.reconciler.ReconcileStatefulSet(cluster, obj)
+}
