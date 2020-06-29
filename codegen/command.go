@@ -17,7 +17,7 @@ func Command() codegen.Command {
 		group.RenderClients = true
 		group.RenderController = true
 		group.MockgenDirective = true
-		group.CustomTemplates = contrib.AllCustomTemplates
+		group.CustomTemplates = contrib.AllGroupCustomTemplates
 		Groups[i] = group
 	}
 

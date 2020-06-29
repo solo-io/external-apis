@@ -24,6 +24,7 @@ type SecretSet interface {
 	Difference(set SecretSet) SecretSet
 	Intersection(set SecretSet) SecretSet
 	Find(id ezkube.ResourceId) (*v1.Secret, error)
+	Length() int
 }
 
 func makeGenericSecretSet(secretList []*v1.Secret) sksets.ResourceSet {
@@ -42,11 +43,19 @@ func NewSecretSet(secretList ...*v1.Secret) SecretSet {
 	return &secretSet{set: makeGenericSecretSet(secretList)}
 }
 
-func (s secretSet) Keys() sets.String {
+func NewSecretSetFromList(secretList *v1.SecretList) SecretSet {
+	list := make([]*v1.Secret, 0, len(secretList.Items))
+	for idx := range secretList.Items {
+		list = append(list, &secretList.Items[idx])
+	}
+	return &secretSet{set: makeGenericSecretSet(list)}
+}
+
+func (s *secretSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s secretSet) List() []*v1.Secret {
+func (s *secretSet) List() []*v1.Secret {
 	var secretList []*v1.Secret
 	for _, obj := range s.set.List() {
 		secretList = append(secretList, obj.(*v1.Secret))
@@ -54,7 +63,7 @@ func (s secretSet) List() []*v1.Secret {
 	return secretList
 }
 
-func (s secretSet) Map() map[string]*v1.Secret {
+func (s *secretSet) Map() map[string]*v1.Secret {
 	newMap := map[string]*v1.Secret{}
 	for k, v := range s.set.Map() {
 		newMap[k] = v.(*v1.Secret)
@@ -62,7 +71,7 @@ func (s secretSet) Map() map[string]*v1.Secret {
 	return newMap
 }
 
-func (s secretSet) Insert(
+func (s *secretSet) Insert(
 	secretList ...*v1.Secret,
 ) {
 	for _, obj := range secretList {
@@ -70,30 +79,30 @@ func (s secretSet) Insert(
 	}
 }
 
-func (s secretSet) Has(secret *v1.Secret) bool {
+func (s *secretSet) Has(secret *v1.Secret) bool {
 	return s.set.Has(secret)
 }
 
-func (s secretSet) Equal(
+func (s *secretSet) Equal(
 	secretSet SecretSet,
 ) bool {
 	return s.set.Equal(makeGenericSecretSet(secretSet.List()))
 }
 
-func (s secretSet) Delete(Secret *v1.Secret) {
+func (s *secretSet) Delete(Secret *v1.Secret) {
 	s.set.Delete(Secret)
 }
 
-func (s secretSet) Union(set SecretSet) SecretSet {
+func (s *secretSet) Union(set SecretSet) SecretSet {
 	return NewSecretSet(append(s.List(), set.List()...)...)
 }
 
-func (s secretSet) Difference(set SecretSet) SecretSet {
+func (s *secretSet) Difference(set SecretSet) SecretSet {
 	newSet := s.set.Difference(makeGenericSecretSet(set.List()))
-	return secretSet{set: newSet}
+	return &secretSet{set: newSet}
 }
 
-func (s secretSet) Intersection(set SecretSet) SecretSet {
+func (s *secretSet) Intersection(set SecretSet) SecretSet {
 	newSet := s.set.Intersection(makeGenericSecretSet(set.List()))
 	var secretList []*v1.Secret
 	for _, obj := range newSet.List() {
@@ -102,13 +111,17 @@ func (s secretSet) Intersection(set SecretSet) SecretSet {
 	return NewSecretSet(secretList...)
 }
 
-func (s secretSet) Find(id ezkube.ResourceId) (*v1.Secret, error) {
+func (s *secretSet) Find(id ezkube.ResourceId) (*v1.Secret, error) {
 	obj, err := s.set.Find(&v1.Secret{}, id)
 	if err != nil {
 		return nil, err
 	}
 
 	return obj.(*v1.Secret), nil
+}
+
+func (s *secretSet) Length() int {
+	return s.set.Length()
 }
 
 type ServiceAccountSet interface {
@@ -123,6 +136,7 @@ type ServiceAccountSet interface {
 	Difference(set ServiceAccountSet) ServiceAccountSet
 	Intersection(set ServiceAccountSet) ServiceAccountSet
 	Find(id ezkube.ResourceId) (*v1.ServiceAccount, error)
+	Length() int
 }
 
 func makeGenericServiceAccountSet(serviceAccountList []*v1.ServiceAccount) sksets.ResourceSet {
@@ -141,11 +155,19 @@ func NewServiceAccountSet(serviceAccountList ...*v1.ServiceAccount) ServiceAccou
 	return &serviceAccountSet{set: makeGenericServiceAccountSet(serviceAccountList)}
 }
 
-func (s serviceAccountSet) Keys() sets.String {
+func NewServiceAccountSetFromList(serviceAccountList *v1.ServiceAccountList) ServiceAccountSet {
+	list := make([]*v1.ServiceAccount, 0, len(serviceAccountList.Items))
+	for idx := range serviceAccountList.Items {
+		list = append(list, &serviceAccountList.Items[idx])
+	}
+	return &serviceAccountSet{set: makeGenericServiceAccountSet(list)}
+}
+
+func (s *serviceAccountSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s serviceAccountSet) List() []*v1.ServiceAccount {
+func (s *serviceAccountSet) List() []*v1.ServiceAccount {
 	var serviceAccountList []*v1.ServiceAccount
 	for _, obj := range s.set.List() {
 		serviceAccountList = append(serviceAccountList, obj.(*v1.ServiceAccount))
@@ -153,7 +175,7 @@ func (s serviceAccountSet) List() []*v1.ServiceAccount {
 	return serviceAccountList
 }
 
-func (s serviceAccountSet) Map() map[string]*v1.ServiceAccount {
+func (s *serviceAccountSet) Map() map[string]*v1.ServiceAccount {
 	newMap := map[string]*v1.ServiceAccount{}
 	for k, v := range s.set.Map() {
 		newMap[k] = v.(*v1.ServiceAccount)
@@ -161,7 +183,7 @@ func (s serviceAccountSet) Map() map[string]*v1.ServiceAccount {
 	return newMap
 }
 
-func (s serviceAccountSet) Insert(
+func (s *serviceAccountSet) Insert(
 	serviceAccountList ...*v1.ServiceAccount,
 ) {
 	for _, obj := range serviceAccountList {
@@ -169,30 +191,30 @@ func (s serviceAccountSet) Insert(
 	}
 }
 
-func (s serviceAccountSet) Has(serviceAccount *v1.ServiceAccount) bool {
+func (s *serviceAccountSet) Has(serviceAccount *v1.ServiceAccount) bool {
 	return s.set.Has(serviceAccount)
 }
 
-func (s serviceAccountSet) Equal(
+func (s *serviceAccountSet) Equal(
 	serviceAccountSet ServiceAccountSet,
 ) bool {
 	return s.set.Equal(makeGenericServiceAccountSet(serviceAccountSet.List()))
 }
 
-func (s serviceAccountSet) Delete(ServiceAccount *v1.ServiceAccount) {
+func (s *serviceAccountSet) Delete(ServiceAccount *v1.ServiceAccount) {
 	s.set.Delete(ServiceAccount)
 }
 
-func (s serviceAccountSet) Union(set ServiceAccountSet) ServiceAccountSet {
+func (s *serviceAccountSet) Union(set ServiceAccountSet) ServiceAccountSet {
 	return NewServiceAccountSet(append(s.List(), set.List()...)...)
 }
 
-func (s serviceAccountSet) Difference(set ServiceAccountSet) ServiceAccountSet {
+func (s *serviceAccountSet) Difference(set ServiceAccountSet) ServiceAccountSet {
 	newSet := s.set.Difference(makeGenericServiceAccountSet(set.List()))
-	return serviceAccountSet{set: newSet}
+	return &serviceAccountSet{set: newSet}
 }
 
-func (s serviceAccountSet) Intersection(set ServiceAccountSet) ServiceAccountSet {
+func (s *serviceAccountSet) Intersection(set ServiceAccountSet) ServiceAccountSet {
 	newSet := s.set.Intersection(makeGenericServiceAccountSet(set.List()))
 	var serviceAccountList []*v1.ServiceAccount
 	for _, obj := range newSet.List() {
@@ -201,13 +223,17 @@ func (s serviceAccountSet) Intersection(set ServiceAccountSet) ServiceAccountSet
 	return NewServiceAccountSet(serviceAccountList...)
 }
 
-func (s serviceAccountSet) Find(id ezkube.ResourceId) (*v1.ServiceAccount, error) {
+func (s *serviceAccountSet) Find(id ezkube.ResourceId) (*v1.ServiceAccount, error) {
 	obj, err := s.set.Find(&v1.ServiceAccount{}, id)
 	if err != nil {
 		return nil, err
 	}
 
 	return obj.(*v1.ServiceAccount), nil
+}
+
+func (s *serviceAccountSet) Length() int {
+	return s.set.Length()
 }
 
 type ConfigMapSet interface {
@@ -222,6 +248,7 @@ type ConfigMapSet interface {
 	Difference(set ConfigMapSet) ConfigMapSet
 	Intersection(set ConfigMapSet) ConfigMapSet
 	Find(id ezkube.ResourceId) (*v1.ConfigMap, error)
+	Length() int
 }
 
 func makeGenericConfigMapSet(configMapList []*v1.ConfigMap) sksets.ResourceSet {
@@ -240,11 +267,19 @@ func NewConfigMapSet(configMapList ...*v1.ConfigMap) ConfigMapSet {
 	return &configMapSet{set: makeGenericConfigMapSet(configMapList)}
 }
 
-func (s configMapSet) Keys() sets.String {
+func NewConfigMapSetFromList(configMapList *v1.ConfigMapList) ConfigMapSet {
+	list := make([]*v1.ConfigMap, 0, len(configMapList.Items))
+	for idx := range configMapList.Items {
+		list = append(list, &configMapList.Items[idx])
+	}
+	return &configMapSet{set: makeGenericConfigMapSet(list)}
+}
+
+func (s *configMapSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s configMapSet) List() []*v1.ConfigMap {
+func (s *configMapSet) List() []*v1.ConfigMap {
 	var configMapList []*v1.ConfigMap
 	for _, obj := range s.set.List() {
 		configMapList = append(configMapList, obj.(*v1.ConfigMap))
@@ -252,7 +287,7 @@ func (s configMapSet) List() []*v1.ConfigMap {
 	return configMapList
 }
 
-func (s configMapSet) Map() map[string]*v1.ConfigMap {
+func (s *configMapSet) Map() map[string]*v1.ConfigMap {
 	newMap := map[string]*v1.ConfigMap{}
 	for k, v := range s.set.Map() {
 		newMap[k] = v.(*v1.ConfigMap)
@@ -260,7 +295,7 @@ func (s configMapSet) Map() map[string]*v1.ConfigMap {
 	return newMap
 }
 
-func (s configMapSet) Insert(
+func (s *configMapSet) Insert(
 	configMapList ...*v1.ConfigMap,
 ) {
 	for _, obj := range configMapList {
@@ -268,30 +303,30 @@ func (s configMapSet) Insert(
 	}
 }
 
-func (s configMapSet) Has(configMap *v1.ConfigMap) bool {
+func (s *configMapSet) Has(configMap *v1.ConfigMap) bool {
 	return s.set.Has(configMap)
 }
 
-func (s configMapSet) Equal(
+func (s *configMapSet) Equal(
 	configMapSet ConfigMapSet,
 ) bool {
 	return s.set.Equal(makeGenericConfigMapSet(configMapSet.List()))
 }
 
-func (s configMapSet) Delete(ConfigMap *v1.ConfigMap) {
+func (s *configMapSet) Delete(ConfigMap *v1.ConfigMap) {
 	s.set.Delete(ConfigMap)
 }
 
-func (s configMapSet) Union(set ConfigMapSet) ConfigMapSet {
+func (s *configMapSet) Union(set ConfigMapSet) ConfigMapSet {
 	return NewConfigMapSet(append(s.List(), set.List()...)...)
 }
 
-func (s configMapSet) Difference(set ConfigMapSet) ConfigMapSet {
+func (s *configMapSet) Difference(set ConfigMapSet) ConfigMapSet {
 	newSet := s.set.Difference(makeGenericConfigMapSet(set.List()))
-	return configMapSet{set: newSet}
+	return &configMapSet{set: newSet}
 }
 
-func (s configMapSet) Intersection(set ConfigMapSet) ConfigMapSet {
+func (s *configMapSet) Intersection(set ConfigMapSet) ConfigMapSet {
 	newSet := s.set.Intersection(makeGenericConfigMapSet(set.List()))
 	var configMapList []*v1.ConfigMap
 	for _, obj := range newSet.List() {
@@ -300,13 +335,17 @@ func (s configMapSet) Intersection(set ConfigMapSet) ConfigMapSet {
 	return NewConfigMapSet(configMapList...)
 }
 
-func (s configMapSet) Find(id ezkube.ResourceId) (*v1.ConfigMap, error) {
+func (s *configMapSet) Find(id ezkube.ResourceId) (*v1.ConfigMap, error) {
 	obj, err := s.set.Find(&v1.ConfigMap{}, id)
 	if err != nil {
 		return nil, err
 	}
 
 	return obj.(*v1.ConfigMap), nil
+}
+
+func (s *configMapSet) Length() int {
+	return s.set.Length()
 }
 
 type ServiceSet interface {
@@ -321,6 +360,7 @@ type ServiceSet interface {
 	Difference(set ServiceSet) ServiceSet
 	Intersection(set ServiceSet) ServiceSet
 	Find(id ezkube.ResourceId) (*v1.Service, error)
+	Length() int
 }
 
 func makeGenericServiceSet(serviceList []*v1.Service) sksets.ResourceSet {
@@ -339,11 +379,19 @@ func NewServiceSet(serviceList ...*v1.Service) ServiceSet {
 	return &serviceSet{set: makeGenericServiceSet(serviceList)}
 }
 
-func (s serviceSet) Keys() sets.String {
+func NewServiceSetFromList(serviceList *v1.ServiceList) ServiceSet {
+	list := make([]*v1.Service, 0, len(serviceList.Items))
+	for idx := range serviceList.Items {
+		list = append(list, &serviceList.Items[idx])
+	}
+	return &serviceSet{set: makeGenericServiceSet(list)}
+}
+
+func (s *serviceSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s serviceSet) List() []*v1.Service {
+func (s *serviceSet) List() []*v1.Service {
 	var serviceList []*v1.Service
 	for _, obj := range s.set.List() {
 		serviceList = append(serviceList, obj.(*v1.Service))
@@ -351,7 +399,7 @@ func (s serviceSet) List() []*v1.Service {
 	return serviceList
 }
 
-func (s serviceSet) Map() map[string]*v1.Service {
+func (s *serviceSet) Map() map[string]*v1.Service {
 	newMap := map[string]*v1.Service{}
 	for k, v := range s.set.Map() {
 		newMap[k] = v.(*v1.Service)
@@ -359,7 +407,7 @@ func (s serviceSet) Map() map[string]*v1.Service {
 	return newMap
 }
 
-func (s serviceSet) Insert(
+func (s *serviceSet) Insert(
 	serviceList ...*v1.Service,
 ) {
 	for _, obj := range serviceList {
@@ -367,30 +415,30 @@ func (s serviceSet) Insert(
 	}
 }
 
-func (s serviceSet) Has(service *v1.Service) bool {
+func (s *serviceSet) Has(service *v1.Service) bool {
 	return s.set.Has(service)
 }
 
-func (s serviceSet) Equal(
+func (s *serviceSet) Equal(
 	serviceSet ServiceSet,
 ) bool {
 	return s.set.Equal(makeGenericServiceSet(serviceSet.List()))
 }
 
-func (s serviceSet) Delete(Service *v1.Service) {
+func (s *serviceSet) Delete(Service *v1.Service) {
 	s.set.Delete(Service)
 }
 
-func (s serviceSet) Union(set ServiceSet) ServiceSet {
+func (s *serviceSet) Union(set ServiceSet) ServiceSet {
 	return NewServiceSet(append(s.List(), set.List()...)...)
 }
 
-func (s serviceSet) Difference(set ServiceSet) ServiceSet {
+func (s *serviceSet) Difference(set ServiceSet) ServiceSet {
 	newSet := s.set.Difference(makeGenericServiceSet(set.List()))
-	return serviceSet{set: newSet}
+	return &serviceSet{set: newSet}
 }
 
-func (s serviceSet) Intersection(set ServiceSet) ServiceSet {
+func (s *serviceSet) Intersection(set ServiceSet) ServiceSet {
 	newSet := s.set.Intersection(makeGenericServiceSet(set.List()))
 	var serviceList []*v1.Service
 	for _, obj := range newSet.List() {
@@ -399,13 +447,17 @@ func (s serviceSet) Intersection(set ServiceSet) ServiceSet {
 	return NewServiceSet(serviceList...)
 }
 
-func (s serviceSet) Find(id ezkube.ResourceId) (*v1.Service, error) {
+func (s *serviceSet) Find(id ezkube.ResourceId) (*v1.Service, error) {
 	obj, err := s.set.Find(&v1.Service{}, id)
 	if err != nil {
 		return nil, err
 	}
 
 	return obj.(*v1.Service), nil
+}
+
+func (s *serviceSet) Length() int {
+	return s.set.Length()
 }
 
 type PodSet interface {
@@ -420,6 +472,7 @@ type PodSet interface {
 	Difference(set PodSet) PodSet
 	Intersection(set PodSet) PodSet
 	Find(id ezkube.ResourceId) (*v1.Pod, error)
+	Length() int
 }
 
 func makeGenericPodSet(podList []*v1.Pod) sksets.ResourceSet {
@@ -438,11 +491,19 @@ func NewPodSet(podList ...*v1.Pod) PodSet {
 	return &podSet{set: makeGenericPodSet(podList)}
 }
 
-func (s podSet) Keys() sets.String {
+func NewPodSetFromList(podList *v1.PodList) PodSet {
+	list := make([]*v1.Pod, 0, len(podList.Items))
+	for idx := range podList.Items {
+		list = append(list, &podList.Items[idx])
+	}
+	return &podSet{set: makeGenericPodSet(list)}
+}
+
+func (s *podSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s podSet) List() []*v1.Pod {
+func (s *podSet) List() []*v1.Pod {
 	var podList []*v1.Pod
 	for _, obj := range s.set.List() {
 		podList = append(podList, obj.(*v1.Pod))
@@ -450,7 +511,7 @@ func (s podSet) List() []*v1.Pod {
 	return podList
 }
 
-func (s podSet) Map() map[string]*v1.Pod {
+func (s *podSet) Map() map[string]*v1.Pod {
 	newMap := map[string]*v1.Pod{}
 	for k, v := range s.set.Map() {
 		newMap[k] = v.(*v1.Pod)
@@ -458,7 +519,7 @@ func (s podSet) Map() map[string]*v1.Pod {
 	return newMap
 }
 
-func (s podSet) Insert(
+func (s *podSet) Insert(
 	podList ...*v1.Pod,
 ) {
 	for _, obj := range podList {
@@ -466,30 +527,30 @@ func (s podSet) Insert(
 	}
 }
 
-func (s podSet) Has(pod *v1.Pod) bool {
+func (s *podSet) Has(pod *v1.Pod) bool {
 	return s.set.Has(pod)
 }
 
-func (s podSet) Equal(
+func (s *podSet) Equal(
 	podSet PodSet,
 ) bool {
 	return s.set.Equal(makeGenericPodSet(podSet.List()))
 }
 
-func (s podSet) Delete(Pod *v1.Pod) {
+func (s *podSet) Delete(Pod *v1.Pod) {
 	s.set.Delete(Pod)
 }
 
-func (s podSet) Union(set PodSet) PodSet {
+func (s *podSet) Union(set PodSet) PodSet {
 	return NewPodSet(append(s.List(), set.List()...)...)
 }
 
-func (s podSet) Difference(set PodSet) PodSet {
+func (s *podSet) Difference(set PodSet) PodSet {
 	newSet := s.set.Difference(makeGenericPodSet(set.List()))
-	return podSet{set: newSet}
+	return &podSet{set: newSet}
 }
 
-func (s podSet) Intersection(set PodSet) PodSet {
+func (s *podSet) Intersection(set PodSet) PodSet {
 	newSet := s.set.Intersection(makeGenericPodSet(set.List()))
 	var podList []*v1.Pod
 	for _, obj := range newSet.List() {
@@ -498,13 +559,17 @@ func (s podSet) Intersection(set PodSet) PodSet {
 	return NewPodSet(podList...)
 }
 
-func (s podSet) Find(id ezkube.ResourceId) (*v1.Pod, error) {
+func (s *podSet) Find(id ezkube.ResourceId) (*v1.Pod, error) {
 	obj, err := s.set.Find(&v1.Pod{}, id)
 	if err != nil {
 		return nil, err
 	}
 
 	return obj.(*v1.Pod), nil
+}
+
+func (s *podSet) Length() int {
+	return s.set.Length()
 }
 
 type NamespaceSet interface {
@@ -519,6 +584,7 @@ type NamespaceSet interface {
 	Difference(set NamespaceSet) NamespaceSet
 	Intersection(set NamespaceSet) NamespaceSet
 	Find(id ezkube.ResourceId) (*v1.Namespace, error)
+	Length() int
 }
 
 func makeGenericNamespaceSet(namespaceList []*v1.Namespace) sksets.ResourceSet {
@@ -537,11 +603,19 @@ func NewNamespaceSet(namespaceList ...*v1.Namespace) NamespaceSet {
 	return &namespaceSet{set: makeGenericNamespaceSet(namespaceList)}
 }
 
-func (s namespaceSet) Keys() sets.String {
+func NewNamespaceSetFromList(namespaceList *v1.NamespaceList) NamespaceSet {
+	list := make([]*v1.Namespace, 0, len(namespaceList.Items))
+	for idx := range namespaceList.Items {
+		list = append(list, &namespaceList.Items[idx])
+	}
+	return &namespaceSet{set: makeGenericNamespaceSet(list)}
+}
+
+func (s *namespaceSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s namespaceSet) List() []*v1.Namespace {
+func (s *namespaceSet) List() []*v1.Namespace {
 	var namespaceList []*v1.Namespace
 	for _, obj := range s.set.List() {
 		namespaceList = append(namespaceList, obj.(*v1.Namespace))
@@ -549,7 +623,7 @@ func (s namespaceSet) List() []*v1.Namespace {
 	return namespaceList
 }
 
-func (s namespaceSet) Map() map[string]*v1.Namespace {
+func (s *namespaceSet) Map() map[string]*v1.Namespace {
 	newMap := map[string]*v1.Namespace{}
 	for k, v := range s.set.Map() {
 		newMap[k] = v.(*v1.Namespace)
@@ -557,7 +631,7 @@ func (s namespaceSet) Map() map[string]*v1.Namespace {
 	return newMap
 }
 
-func (s namespaceSet) Insert(
+func (s *namespaceSet) Insert(
 	namespaceList ...*v1.Namespace,
 ) {
 	for _, obj := range namespaceList {
@@ -565,30 +639,30 @@ func (s namespaceSet) Insert(
 	}
 }
 
-func (s namespaceSet) Has(namespace *v1.Namespace) bool {
+func (s *namespaceSet) Has(namespace *v1.Namespace) bool {
 	return s.set.Has(namespace)
 }
 
-func (s namespaceSet) Equal(
+func (s *namespaceSet) Equal(
 	namespaceSet NamespaceSet,
 ) bool {
 	return s.set.Equal(makeGenericNamespaceSet(namespaceSet.List()))
 }
 
-func (s namespaceSet) Delete(Namespace *v1.Namespace) {
+func (s *namespaceSet) Delete(Namespace *v1.Namespace) {
 	s.set.Delete(Namespace)
 }
 
-func (s namespaceSet) Union(set NamespaceSet) NamespaceSet {
+func (s *namespaceSet) Union(set NamespaceSet) NamespaceSet {
 	return NewNamespaceSet(append(s.List(), set.List()...)...)
 }
 
-func (s namespaceSet) Difference(set NamespaceSet) NamespaceSet {
+func (s *namespaceSet) Difference(set NamespaceSet) NamespaceSet {
 	newSet := s.set.Difference(makeGenericNamespaceSet(set.List()))
-	return namespaceSet{set: newSet}
+	return &namespaceSet{set: newSet}
 }
 
-func (s namespaceSet) Intersection(set NamespaceSet) NamespaceSet {
+func (s *namespaceSet) Intersection(set NamespaceSet) NamespaceSet {
 	newSet := s.set.Intersection(makeGenericNamespaceSet(set.List()))
 	var namespaceList []*v1.Namespace
 	for _, obj := range newSet.List() {
@@ -597,13 +671,17 @@ func (s namespaceSet) Intersection(set NamespaceSet) NamespaceSet {
 	return NewNamespaceSet(namespaceList...)
 }
 
-func (s namespaceSet) Find(id ezkube.ResourceId) (*v1.Namespace, error) {
+func (s *namespaceSet) Find(id ezkube.ResourceId) (*v1.Namespace, error) {
 	obj, err := s.set.Find(&v1.Namespace{}, id)
 	if err != nil {
 		return nil, err
 	}
 
 	return obj.(*v1.Namespace), nil
+}
+
+func (s *namespaceSet) Length() int {
+	return s.set.Length()
 }
 
 type NodeSet interface {
@@ -618,6 +696,7 @@ type NodeSet interface {
 	Difference(set NodeSet) NodeSet
 	Intersection(set NodeSet) NodeSet
 	Find(id ezkube.ResourceId) (*v1.Node, error)
+	Length() int
 }
 
 func makeGenericNodeSet(nodeList []*v1.Node) sksets.ResourceSet {
@@ -636,11 +715,19 @@ func NewNodeSet(nodeList ...*v1.Node) NodeSet {
 	return &nodeSet{set: makeGenericNodeSet(nodeList)}
 }
 
-func (s nodeSet) Keys() sets.String {
+func NewNodeSetFromList(nodeList *v1.NodeList) NodeSet {
+	list := make([]*v1.Node, 0, len(nodeList.Items))
+	for idx := range nodeList.Items {
+		list = append(list, &nodeList.Items[idx])
+	}
+	return &nodeSet{set: makeGenericNodeSet(list)}
+}
+
+func (s *nodeSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s nodeSet) List() []*v1.Node {
+func (s *nodeSet) List() []*v1.Node {
 	var nodeList []*v1.Node
 	for _, obj := range s.set.List() {
 		nodeList = append(nodeList, obj.(*v1.Node))
@@ -648,7 +735,7 @@ func (s nodeSet) List() []*v1.Node {
 	return nodeList
 }
 
-func (s nodeSet) Map() map[string]*v1.Node {
+func (s *nodeSet) Map() map[string]*v1.Node {
 	newMap := map[string]*v1.Node{}
 	for k, v := range s.set.Map() {
 		newMap[k] = v.(*v1.Node)
@@ -656,7 +743,7 @@ func (s nodeSet) Map() map[string]*v1.Node {
 	return newMap
 }
 
-func (s nodeSet) Insert(
+func (s *nodeSet) Insert(
 	nodeList ...*v1.Node,
 ) {
 	for _, obj := range nodeList {
@@ -664,30 +751,30 @@ func (s nodeSet) Insert(
 	}
 }
 
-func (s nodeSet) Has(node *v1.Node) bool {
+func (s *nodeSet) Has(node *v1.Node) bool {
 	return s.set.Has(node)
 }
 
-func (s nodeSet) Equal(
+func (s *nodeSet) Equal(
 	nodeSet NodeSet,
 ) bool {
 	return s.set.Equal(makeGenericNodeSet(nodeSet.List()))
 }
 
-func (s nodeSet) Delete(Node *v1.Node) {
+func (s *nodeSet) Delete(Node *v1.Node) {
 	s.set.Delete(Node)
 }
 
-func (s nodeSet) Union(set NodeSet) NodeSet {
+func (s *nodeSet) Union(set NodeSet) NodeSet {
 	return NewNodeSet(append(s.List(), set.List()...)...)
 }
 
-func (s nodeSet) Difference(set NodeSet) NodeSet {
+func (s *nodeSet) Difference(set NodeSet) NodeSet {
 	newSet := s.set.Difference(makeGenericNodeSet(set.List()))
-	return nodeSet{set: newSet}
+	return &nodeSet{set: newSet}
 }
 
-func (s nodeSet) Intersection(set NodeSet) NodeSet {
+func (s *nodeSet) Intersection(set NodeSet) NodeSet {
 	newSet := s.set.Intersection(makeGenericNodeSet(set.List()))
 	var nodeList []*v1.Node
 	for _, obj := range newSet.List() {
@@ -696,11 +783,15 @@ func (s nodeSet) Intersection(set NodeSet) NodeSet {
 	return NewNodeSet(nodeList...)
 }
 
-func (s nodeSet) Find(id ezkube.ResourceId) (*v1.Node, error) {
+func (s *nodeSet) Find(id ezkube.ResourceId) (*v1.Node, error) {
 	obj, err := s.set.Find(&v1.Node{}, id)
 	if err != nil {
 		return nil, err
 	}
 
 	return obj.(*v1.Node), nil
+}
+
+func (s *nodeSet) Length() int {
+	return s.set.Length()
 }

@@ -14,30 +14,30 @@ import (
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
-// MockServiceProfileEventHandler is a mock of ServiceProfileEventHandler interface.
+// MockServiceProfileEventHandler is a mock of ServiceProfileEventHandler interface
 type MockServiceProfileEventHandler struct {
 	ctrl     *gomock.Controller
 	recorder *MockServiceProfileEventHandlerMockRecorder
 }
 
-// MockServiceProfileEventHandlerMockRecorder is the mock recorder for MockServiceProfileEventHandler.
+// MockServiceProfileEventHandlerMockRecorder is the mock recorder for MockServiceProfileEventHandler
 type MockServiceProfileEventHandlerMockRecorder struct {
 	mock *MockServiceProfileEventHandler
 }
 
-// NewMockServiceProfileEventHandler creates a new mock instance.
+// NewMockServiceProfileEventHandler creates a new mock instance
 func NewMockServiceProfileEventHandler(ctrl *gomock.Controller) *MockServiceProfileEventHandler {
 	mock := &MockServiceProfileEventHandler{ctrl: ctrl}
 	mock.recorder = &MockServiceProfileEventHandlerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockServiceProfileEventHandler) EXPECT() *MockServiceProfileEventHandlerMockRecorder {
 	return m.recorder
 }
 
-// CreateServiceProfile mocks base method.
+// CreateServiceProfile mocks base method
 func (m *MockServiceProfileEventHandler) CreateServiceProfile(obj *v1alpha2.ServiceProfile) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateServiceProfile", obj)
@@ -45,13 +45,13 @@ func (m *MockServiceProfileEventHandler) CreateServiceProfile(obj *v1alpha2.Serv
 	return ret0
 }
 
-// CreateServiceProfile indicates an expected call of CreateServiceProfile.
+// CreateServiceProfile indicates an expected call of CreateServiceProfile
 func (mr *MockServiceProfileEventHandlerMockRecorder) CreateServiceProfile(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateServiceProfile", reflect.TypeOf((*MockServiceProfileEventHandler)(nil).CreateServiceProfile), obj)
 }
 
-// UpdateServiceProfile mocks base method.
+// UpdateServiceProfile mocks base method
 func (m *MockServiceProfileEventHandler) UpdateServiceProfile(old, new *v1alpha2.ServiceProfile) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateServiceProfile", old, new)
@@ -59,13 +59,13 @@ func (m *MockServiceProfileEventHandler) UpdateServiceProfile(old, new *v1alpha2
 	return ret0
 }
 
-// UpdateServiceProfile indicates an expected call of UpdateServiceProfile.
+// UpdateServiceProfile indicates an expected call of UpdateServiceProfile
 func (mr *MockServiceProfileEventHandlerMockRecorder) UpdateServiceProfile(old, new interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateServiceProfile", reflect.TypeOf((*MockServiceProfileEventHandler)(nil).UpdateServiceProfile), old, new)
 }
 
-// DeleteServiceProfile mocks base method.
+// DeleteServiceProfile mocks base method
 func (m *MockServiceProfileEventHandler) DeleteServiceProfile(obj *v1alpha2.ServiceProfile) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteServiceProfile", obj)
@@ -73,13 +73,13 @@ func (m *MockServiceProfileEventHandler) DeleteServiceProfile(obj *v1alpha2.Serv
 	return ret0
 }
 
-// DeleteServiceProfile indicates an expected call of DeleteServiceProfile.
+// DeleteServiceProfile indicates an expected call of DeleteServiceProfile
 func (mr *MockServiceProfileEventHandlerMockRecorder) DeleteServiceProfile(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteServiceProfile", reflect.TypeOf((*MockServiceProfileEventHandler)(nil).DeleteServiceProfile), obj)
 }
 
-// GenericServiceProfile mocks base method.
+// GenericServiceProfile mocks base method
 func (m *MockServiceProfileEventHandler) GenericServiceProfile(obj *v1alpha2.ServiceProfile) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GenericServiceProfile", obj)
@@ -87,36 +87,36 @@ func (m *MockServiceProfileEventHandler) GenericServiceProfile(obj *v1alpha2.Ser
 	return ret0
 }
 
-// GenericServiceProfile indicates an expected call of GenericServiceProfile.
+// GenericServiceProfile indicates an expected call of GenericServiceProfile
 func (mr *MockServiceProfileEventHandlerMockRecorder) GenericServiceProfile(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericServiceProfile", reflect.TypeOf((*MockServiceProfileEventHandler)(nil).GenericServiceProfile), obj)
 }
 
-// MockServiceProfileEventWatcher is a mock of ServiceProfileEventWatcher interface.
+// MockServiceProfileEventWatcher is a mock of ServiceProfileEventWatcher interface
 type MockServiceProfileEventWatcher struct {
 	ctrl     *gomock.Controller
 	recorder *MockServiceProfileEventWatcherMockRecorder
 }
 
-// MockServiceProfileEventWatcherMockRecorder is the mock recorder for MockServiceProfileEventWatcher.
+// MockServiceProfileEventWatcherMockRecorder is the mock recorder for MockServiceProfileEventWatcher
 type MockServiceProfileEventWatcherMockRecorder struct {
 	mock *MockServiceProfileEventWatcher
 }
 
-// NewMockServiceProfileEventWatcher creates a new mock instance.
+// NewMockServiceProfileEventWatcher creates a new mock instance
 func NewMockServiceProfileEventWatcher(ctrl *gomock.Controller) *MockServiceProfileEventWatcher {
 	mock := &MockServiceProfileEventWatcher{ctrl: ctrl}
 	mock.recorder = &MockServiceProfileEventWatcherMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockServiceProfileEventWatcher) EXPECT() *MockServiceProfileEventWatcherMockRecorder {
 	return m.recorder
 }
 
-// AddEventHandler mocks base method.
+// AddEventHandler mocks base method
 func (m *MockServiceProfileEventWatcher) AddEventHandler(ctx context.Context, h controller.ServiceProfileEventHandler, predicates ...predicate.Predicate) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, h}
@@ -128,7 +128,7 @@ func (m *MockServiceProfileEventWatcher) AddEventHandler(ctx context.Context, h 
 	return ret0
 }
 
-// AddEventHandler indicates an expected call of AddEventHandler.
+// AddEventHandler indicates an expected call of AddEventHandler
 func (mr *MockServiceProfileEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, h}, predicates...)

@@ -14,30 +14,30 @@ import (
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
-// MockDestinationRuleEventHandler is a mock of DestinationRuleEventHandler interface.
+// MockDestinationRuleEventHandler is a mock of DestinationRuleEventHandler interface
 type MockDestinationRuleEventHandler struct {
 	ctrl     *gomock.Controller
 	recorder *MockDestinationRuleEventHandlerMockRecorder
 }
 
-// MockDestinationRuleEventHandlerMockRecorder is the mock recorder for MockDestinationRuleEventHandler.
+// MockDestinationRuleEventHandlerMockRecorder is the mock recorder for MockDestinationRuleEventHandler
 type MockDestinationRuleEventHandlerMockRecorder struct {
 	mock *MockDestinationRuleEventHandler
 }
 
-// NewMockDestinationRuleEventHandler creates a new mock instance.
+// NewMockDestinationRuleEventHandler creates a new mock instance
 func NewMockDestinationRuleEventHandler(ctrl *gomock.Controller) *MockDestinationRuleEventHandler {
 	mock := &MockDestinationRuleEventHandler{ctrl: ctrl}
 	mock.recorder = &MockDestinationRuleEventHandlerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockDestinationRuleEventHandler) EXPECT() *MockDestinationRuleEventHandlerMockRecorder {
 	return m.recorder
 }
 
-// CreateDestinationRule mocks base method.
+// CreateDestinationRule mocks base method
 func (m *MockDestinationRuleEventHandler) CreateDestinationRule(obj *v1alpha3.DestinationRule) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateDestinationRule", obj)
@@ -45,13 +45,13 @@ func (m *MockDestinationRuleEventHandler) CreateDestinationRule(obj *v1alpha3.De
 	return ret0
 }
 
-// CreateDestinationRule indicates an expected call of CreateDestinationRule.
+// CreateDestinationRule indicates an expected call of CreateDestinationRule
 func (mr *MockDestinationRuleEventHandlerMockRecorder) CreateDestinationRule(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateDestinationRule", reflect.TypeOf((*MockDestinationRuleEventHandler)(nil).CreateDestinationRule), obj)
 }
 
-// UpdateDestinationRule mocks base method.
+// UpdateDestinationRule mocks base method
 func (m *MockDestinationRuleEventHandler) UpdateDestinationRule(old, new *v1alpha3.DestinationRule) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateDestinationRule", old, new)
@@ -59,13 +59,13 @@ func (m *MockDestinationRuleEventHandler) UpdateDestinationRule(old, new *v1alph
 	return ret0
 }
 
-// UpdateDestinationRule indicates an expected call of UpdateDestinationRule.
+// UpdateDestinationRule indicates an expected call of UpdateDestinationRule
 func (mr *MockDestinationRuleEventHandlerMockRecorder) UpdateDestinationRule(old, new interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateDestinationRule", reflect.TypeOf((*MockDestinationRuleEventHandler)(nil).UpdateDestinationRule), old, new)
 }
 
-// DeleteDestinationRule mocks base method.
+// DeleteDestinationRule mocks base method
 func (m *MockDestinationRuleEventHandler) DeleteDestinationRule(obj *v1alpha3.DestinationRule) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteDestinationRule", obj)
@@ -73,13 +73,13 @@ func (m *MockDestinationRuleEventHandler) DeleteDestinationRule(obj *v1alpha3.De
 	return ret0
 }
 
-// DeleteDestinationRule indicates an expected call of DeleteDestinationRule.
+// DeleteDestinationRule indicates an expected call of DeleteDestinationRule
 func (mr *MockDestinationRuleEventHandlerMockRecorder) DeleteDestinationRule(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDestinationRule", reflect.TypeOf((*MockDestinationRuleEventHandler)(nil).DeleteDestinationRule), obj)
 }
 
-// GenericDestinationRule mocks base method.
+// GenericDestinationRule mocks base method
 func (m *MockDestinationRuleEventHandler) GenericDestinationRule(obj *v1alpha3.DestinationRule) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GenericDestinationRule", obj)
@@ -87,36 +87,36 @@ func (m *MockDestinationRuleEventHandler) GenericDestinationRule(obj *v1alpha3.D
 	return ret0
 }
 
-// GenericDestinationRule indicates an expected call of GenericDestinationRule.
+// GenericDestinationRule indicates an expected call of GenericDestinationRule
 func (mr *MockDestinationRuleEventHandlerMockRecorder) GenericDestinationRule(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericDestinationRule", reflect.TypeOf((*MockDestinationRuleEventHandler)(nil).GenericDestinationRule), obj)
 }
 
-// MockDestinationRuleEventWatcher is a mock of DestinationRuleEventWatcher interface.
+// MockDestinationRuleEventWatcher is a mock of DestinationRuleEventWatcher interface
 type MockDestinationRuleEventWatcher struct {
 	ctrl     *gomock.Controller
 	recorder *MockDestinationRuleEventWatcherMockRecorder
 }
 
-// MockDestinationRuleEventWatcherMockRecorder is the mock recorder for MockDestinationRuleEventWatcher.
+// MockDestinationRuleEventWatcherMockRecorder is the mock recorder for MockDestinationRuleEventWatcher
 type MockDestinationRuleEventWatcherMockRecorder struct {
 	mock *MockDestinationRuleEventWatcher
 }
 
-// NewMockDestinationRuleEventWatcher creates a new mock instance.
+// NewMockDestinationRuleEventWatcher creates a new mock instance
 func NewMockDestinationRuleEventWatcher(ctrl *gomock.Controller) *MockDestinationRuleEventWatcher {
 	mock := &MockDestinationRuleEventWatcher{ctrl: ctrl}
 	mock.recorder = &MockDestinationRuleEventWatcherMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockDestinationRuleEventWatcher) EXPECT() *MockDestinationRuleEventWatcherMockRecorder {
 	return m.recorder
 }
 
-// AddEventHandler mocks base method.
+// AddEventHandler mocks base method
 func (m *MockDestinationRuleEventWatcher) AddEventHandler(ctx context.Context, h controller.DestinationRuleEventHandler, predicates ...predicate.Predicate) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, h}
@@ -128,37 +128,37 @@ func (m *MockDestinationRuleEventWatcher) AddEventHandler(ctx context.Context, h
 	return ret0
 }
 
-// AddEventHandler indicates an expected call of AddEventHandler.
+// AddEventHandler indicates an expected call of AddEventHandler
 func (mr *MockDestinationRuleEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, h}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockDestinationRuleEventWatcher)(nil).AddEventHandler), varargs...)
 }
 
-// MockEnvoyFilterEventHandler is a mock of EnvoyFilterEventHandler interface.
+// MockEnvoyFilterEventHandler is a mock of EnvoyFilterEventHandler interface
 type MockEnvoyFilterEventHandler struct {
 	ctrl     *gomock.Controller
 	recorder *MockEnvoyFilterEventHandlerMockRecorder
 }
 
-// MockEnvoyFilterEventHandlerMockRecorder is the mock recorder for MockEnvoyFilterEventHandler.
+// MockEnvoyFilterEventHandlerMockRecorder is the mock recorder for MockEnvoyFilterEventHandler
 type MockEnvoyFilterEventHandlerMockRecorder struct {
 	mock *MockEnvoyFilterEventHandler
 }
 
-// NewMockEnvoyFilterEventHandler creates a new mock instance.
+// NewMockEnvoyFilterEventHandler creates a new mock instance
 func NewMockEnvoyFilterEventHandler(ctrl *gomock.Controller) *MockEnvoyFilterEventHandler {
 	mock := &MockEnvoyFilterEventHandler{ctrl: ctrl}
 	mock.recorder = &MockEnvoyFilterEventHandlerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockEnvoyFilterEventHandler) EXPECT() *MockEnvoyFilterEventHandlerMockRecorder {
 	return m.recorder
 }
 
-// CreateEnvoyFilter mocks base method.
+// CreateEnvoyFilter mocks base method
 func (m *MockEnvoyFilterEventHandler) CreateEnvoyFilter(obj *v1alpha3.EnvoyFilter) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateEnvoyFilter", obj)
@@ -166,13 +166,13 @@ func (m *MockEnvoyFilterEventHandler) CreateEnvoyFilter(obj *v1alpha3.EnvoyFilte
 	return ret0
 }
 
-// CreateEnvoyFilter indicates an expected call of CreateEnvoyFilter.
+// CreateEnvoyFilter indicates an expected call of CreateEnvoyFilter
 func (mr *MockEnvoyFilterEventHandlerMockRecorder) CreateEnvoyFilter(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateEnvoyFilter", reflect.TypeOf((*MockEnvoyFilterEventHandler)(nil).CreateEnvoyFilter), obj)
 }
 
-// UpdateEnvoyFilter mocks base method.
+// UpdateEnvoyFilter mocks base method
 func (m *MockEnvoyFilterEventHandler) UpdateEnvoyFilter(old, new *v1alpha3.EnvoyFilter) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateEnvoyFilter", old, new)
@@ -180,13 +180,13 @@ func (m *MockEnvoyFilterEventHandler) UpdateEnvoyFilter(old, new *v1alpha3.Envoy
 	return ret0
 }
 
-// UpdateEnvoyFilter indicates an expected call of UpdateEnvoyFilter.
+// UpdateEnvoyFilter indicates an expected call of UpdateEnvoyFilter
 func (mr *MockEnvoyFilterEventHandlerMockRecorder) UpdateEnvoyFilter(old, new interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateEnvoyFilter", reflect.TypeOf((*MockEnvoyFilterEventHandler)(nil).UpdateEnvoyFilter), old, new)
 }
 
-// DeleteEnvoyFilter mocks base method.
+// DeleteEnvoyFilter mocks base method
 func (m *MockEnvoyFilterEventHandler) DeleteEnvoyFilter(obj *v1alpha3.EnvoyFilter) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteEnvoyFilter", obj)
@@ -194,13 +194,13 @@ func (m *MockEnvoyFilterEventHandler) DeleteEnvoyFilter(obj *v1alpha3.EnvoyFilte
 	return ret0
 }
 
-// DeleteEnvoyFilter indicates an expected call of DeleteEnvoyFilter.
+// DeleteEnvoyFilter indicates an expected call of DeleteEnvoyFilter
 func (mr *MockEnvoyFilterEventHandlerMockRecorder) DeleteEnvoyFilter(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteEnvoyFilter", reflect.TypeOf((*MockEnvoyFilterEventHandler)(nil).DeleteEnvoyFilter), obj)
 }
 
-// GenericEnvoyFilter mocks base method.
+// GenericEnvoyFilter mocks base method
 func (m *MockEnvoyFilterEventHandler) GenericEnvoyFilter(obj *v1alpha3.EnvoyFilter) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GenericEnvoyFilter", obj)
@@ -208,36 +208,36 @@ func (m *MockEnvoyFilterEventHandler) GenericEnvoyFilter(obj *v1alpha3.EnvoyFilt
 	return ret0
 }
 
-// GenericEnvoyFilter indicates an expected call of GenericEnvoyFilter.
+// GenericEnvoyFilter indicates an expected call of GenericEnvoyFilter
 func (mr *MockEnvoyFilterEventHandlerMockRecorder) GenericEnvoyFilter(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericEnvoyFilter", reflect.TypeOf((*MockEnvoyFilterEventHandler)(nil).GenericEnvoyFilter), obj)
 }
 
-// MockEnvoyFilterEventWatcher is a mock of EnvoyFilterEventWatcher interface.
+// MockEnvoyFilterEventWatcher is a mock of EnvoyFilterEventWatcher interface
 type MockEnvoyFilterEventWatcher struct {
 	ctrl     *gomock.Controller
 	recorder *MockEnvoyFilterEventWatcherMockRecorder
 }
 
-// MockEnvoyFilterEventWatcherMockRecorder is the mock recorder for MockEnvoyFilterEventWatcher.
+// MockEnvoyFilterEventWatcherMockRecorder is the mock recorder for MockEnvoyFilterEventWatcher
 type MockEnvoyFilterEventWatcherMockRecorder struct {
 	mock *MockEnvoyFilterEventWatcher
 }
 
-// NewMockEnvoyFilterEventWatcher creates a new mock instance.
+// NewMockEnvoyFilterEventWatcher creates a new mock instance
 func NewMockEnvoyFilterEventWatcher(ctrl *gomock.Controller) *MockEnvoyFilterEventWatcher {
 	mock := &MockEnvoyFilterEventWatcher{ctrl: ctrl}
 	mock.recorder = &MockEnvoyFilterEventWatcherMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockEnvoyFilterEventWatcher) EXPECT() *MockEnvoyFilterEventWatcherMockRecorder {
 	return m.recorder
 }
 
-// AddEventHandler mocks base method.
+// AddEventHandler mocks base method
 func (m *MockEnvoyFilterEventWatcher) AddEventHandler(ctx context.Context, h controller.EnvoyFilterEventHandler, predicates ...predicate.Predicate) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, h}
@@ -249,37 +249,37 @@ func (m *MockEnvoyFilterEventWatcher) AddEventHandler(ctx context.Context, h con
 	return ret0
 }
 
-// AddEventHandler indicates an expected call of AddEventHandler.
+// AddEventHandler indicates an expected call of AddEventHandler
 func (mr *MockEnvoyFilterEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, h}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockEnvoyFilterEventWatcher)(nil).AddEventHandler), varargs...)
 }
 
-// MockGatewayEventHandler is a mock of GatewayEventHandler interface.
+// MockGatewayEventHandler is a mock of GatewayEventHandler interface
 type MockGatewayEventHandler struct {
 	ctrl     *gomock.Controller
 	recorder *MockGatewayEventHandlerMockRecorder
 }
 
-// MockGatewayEventHandlerMockRecorder is the mock recorder for MockGatewayEventHandler.
+// MockGatewayEventHandlerMockRecorder is the mock recorder for MockGatewayEventHandler
 type MockGatewayEventHandlerMockRecorder struct {
 	mock *MockGatewayEventHandler
 }
 
-// NewMockGatewayEventHandler creates a new mock instance.
+// NewMockGatewayEventHandler creates a new mock instance
 func NewMockGatewayEventHandler(ctrl *gomock.Controller) *MockGatewayEventHandler {
 	mock := &MockGatewayEventHandler{ctrl: ctrl}
 	mock.recorder = &MockGatewayEventHandlerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockGatewayEventHandler) EXPECT() *MockGatewayEventHandlerMockRecorder {
 	return m.recorder
 }
 
-// CreateGateway mocks base method.
+// CreateGateway mocks base method
 func (m *MockGatewayEventHandler) CreateGateway(obj *v1alpha3.Gateway) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateGateway", obj)
@@ -287,13 +287,13 @@ func (m *MockGatewayEventHandler) CreateGateway(obj *v1alpha3.Gateway) error {
 	return ret0
 }
 
-// CreateGateway indicates an expected call of CreateGateway.
+// CreateGateway indicates an expected call of CreateGateway
 func (mr *MockGatewayEventHandlerMockRecorder) CreateGateway(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateGateway", reflect.TypeOf((*MockGatewayEventHandler)(nil).CreateGateway), obj)
 }
 
-// UpdateGateway mocks base method.
+// UpdateGateway mocks base method
 func (m *MockGatewayEventHandler) UpdateGateway(old, new *v1alpha3.Gateway) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateGateway", old, new)
@@ -301,13 +301,13 @@ func (m *MockGatewayEventHandler) UpdateGateway(old, new *v1alpha3.Gateway) erro
 	return ret0
 }
 
-// UpdateGateway indicates an expected call of UpdateGateway.
+// UpdateGateway indicates an expected call of UpdateGateway
 func (mr *MockGatewayEventHandlerMockRecorder) UpdateGateway(old, new interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateGateway", reflect.TypeOf((*MockGatewayEventHandler)(nil).UpdateGateway), old, new)
 }
 
-// DeleteGateway mocks base method.
+// DeleteGateway mocks base method
 func (m *MockGatewayEventHandler) DeleteGateway(obj *v1alpha3.Gateway) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteGateway", obj)
@@ -315,13 +315,13 @@ func (m *MockGatewayEventHandler) DeleteGateway(obj *v1alpha3.Gateway) error {
 	return ret0
 }
 
-// DeleteGateway indicates an expected call of DeleteGateway.
+// DeleteGateway indicates an expected call of DeleteGateway
 func (mr *MockGatewayEventHandlerMockRecorder) DeleteGateway(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteGateway", reflect.TypeOf((*MockGatewayEventHandler)(nil).DeleteGateway), obj)
 }
 
-// GenericGateway mocks base method.
+// GenericGateway mocks base method
 func (m *MockGatewayEventHandler) GenericGateway(obj *v1alpha3.Gateway) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GenericGateway", obj)
@@ -329,36 +329,36 @@ func (m *MockGatewayEventHandler) GenericGateway(obj *v1alpha3.Gateway) error {
 	return ret0
 }
 
-// GenericGateway indicates an expected call of GenericGateway.
+// GenericGateway indicates an expected call of GenericGateway
 func (mr *MockGatewayEventHandlerMockRecorder) GenericGateway(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericGateway", reflect.TypeOf((*MockGatewayEventHandler)(nil).GenericGateway), obj)
 }
 
-// MockGatewayEventWatcher is a mock of GatewayEventWatcher interface.
+// MockGatewayEventWatcher is a mock of GatewayEventWatcher interface
 type MockGatewayEventWatcher struct {
 	ctrl     *gomock.Controller
 	recorder *MockGatewayEventWatcherMockRecorder
 }
 
-// MockGatewayEventWatcherMockRecorder is the mock recorder for MockGatewayEventWatcher.
+// MockGatewayEventWatcherMockRecorder is the mock recorder for MockGatewayEventWatcher
 type MockGatewayEventWatcherMockRecorder struct {
 	mock *MockGatewayEventWatcher
 }
 
-// NewMockGatewayEventWatcher creates a new mock instance.
+// NewMockGatewayEventWatcher creates a new mock instance
 func NewMockGatewayEventWatcher(ctrl *gomock.Controller) *MockGatewayEventWatcher {
 	mock := &MockGatewayEventWatcher{ctrl: ctrl}
 	mock.recorder = &MockGatewayEventWatcherMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockGatewayEventWatcher) EXPECT() *MockGatewayEventWatcherMockRecorder {
 	return m.recorder
 }
 
-// AddEventHandler mocks base method.
+// AddEventHandler mocks base method
 func (m *MockGatewayEventWatcher) AddEventHandler(ctx context.Context, h controller.GatewayEventHandler, predicates ...predicate.Predicate) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, h}
@@ -370,37 +370,37 @@ func (m *MockGatewayEventWatcher) AddEventHandler(ctx context.Context, h control
 	return ret0
 }
 
-// AddEventHandler indicates an expected call of AddEventHandler.
+// AddEventHandler indicates an expected call of AddEventHandler
 func (mr *MockGatewayEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, h}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockGatewayEventWatcher)(nil).AddEventHandler), varargs...)
 }
 
-// MockServiceEntryEventHandler is a mock of ServiceEntryEventHandler interface.
+// MockServiceEntryEventHandler is a mock of ServiceEntryEventHandler interface
 type MockServiceEntryEventHandler struct {
 	ctrl     *gomock.Controller
 	recorder *MockServiceEntryEventHandlerMockRecorder
 }
 
-// MockServiceEntryEventHandlerMockRecorder is the mock recorder for MockServiceEntryEventHandler.
+// MockServiceEntryEventHandlerMockRecorder is the mock recorder for MockServiceEntryEventHandler
 type MockServiceEntryEventHandlerMockRecorder struct {
 	mock *MockServiceEntryEventHandler
 }
 
-// NewMockServiceEntryEventHandler creates a new mock instance.
+// NewMockServiceEntryEventHandler creates a new mock instance
 func NewMockServiceEntryEventHandler(ctrl *gomock.Controller) *MockServiceEntryEventHandler {
 	mock := &MockServiceEntryEventHandler{ctrl: ctrl}
 	mock.recorder = &MockServiceEntryEventHandlerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockServiceEntryEventHandler) EXPECT() *MockServiceEntryEventHandlerMockRecorder {
 	return m.recorder
 }
 
-// CreateServiceEntry mocks base method.
+// CreateServiceEntry mocks base method
 func (m *MockServiceEntryEventHandler) CreateServiceEntry(obj *v1alpha3.ServiceEntry) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateServiceEntry", obj)
@@ -408,13 +408,13 @@ func (m *MockServiceEntryEventHandler) CreateServiceEntry(obj *v1alpha3.ServiceE
 	return ret0
 }
 
-// CreateServiceEntry indicates an expected call of CreateServiceEntry.
+// CreateServiceEntry indicates an expected call of CreateServiceEntry
 func (mr *MockServiceEntryEventHandlerMockRecorder) CreateServiceEntry(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateServiceEntry", reflect.TypeOf((*MockServiceEntryEventHandler)(nil).CreateServiceEntry), obj)
 }
 
-// UpdateServiceEntry mocks base method.
+// UpdateServiceEntry mocks base method
 func (m *MockServiceEntryEventHandler) UpdateServiceEntry(old, new *v1alpha3.ServiceEntry) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateServiceEntry", old, new)
@@ -422,13 +422,13 @@ func (m *MockServiceEntryEventHandler) UpdateServiceEntry(old, new *v1alpha3.Ser
 	return ret0
 }
 
-// UpdateServiceEntry indicates an expected call of UpdateServiceEntry.
+// UpdateServiceEntry indicates an expected call of UpdateServiceEntry
 func (mr *MockServiceEntryEventHandlerMockRecorder) UpdateServiceEntry(old, new interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateServiceEntry", reflect.TypeOf((*MockServiceEntryEventHandler)(nil).UpdateServiceEntry), old, new)
 }
 
-// DeleteServiceEntry mocks base method.
+// DeleteServiceEntry mocks base method
 func (m *MockServiceEntryEventHandler) DeleteServiceEntry(obj *v1alpha3.ServiceEntry) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteServiceEntry", obj)
@@ -436,13 +436,13 @@ func (m *MockServiceEntryEventHandler) DeleteServiceEntry(obj *v1alpha3.ServiceE
 	return ret0
 }
 
-// DeleteServiceEntry indicates an expected call of DeleteServiceEntry.
+// DeleteServiceEntry indicates an expected call of DeleteServiceEntry
 func (mr *MockServiceEntryEventHandlerMockRecorder) DeleteServiceEntry(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteServiceEntry", reflect.TypeOf((*MockServiceEntryEventHandler)(nil).DeleteServiceEntry), obj)
 }
 
-// GenericServiceEntry mocks base method.
+// GenericServiceEntry mocks base method
 func (m *MockServiceEntryEventHandler) GenericServiceEntry(obj *v1alpha3.ServiceEntry) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GenericServiceEntry", obj)
@@ -450,36 +450,36 @@ func (m *MockServiceEntryEventHandler) GenericServiceEntry(obj *v1alpha3.Service
 	return ret0
 }
 
-// GenericServiceEntry indicates an expected call of GenericServiceEntry.
+// GenericServiceEntry indicates an expected call of GenericServiceEntry
 func (mr *MockServiceEntryEventHandlerMockRecorder) GenericServiceEntry(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericServiceEntry", reflect.TypeOf((*MockServiceEntryEventHandler)(nil).GenericServiceEntry), obj)
 }
 
-// MockServiceEntryEventWatcher is a mock of ServiceEntryEventWatcher interface.
+// MockServiceEntryEventWatcher is a mock of ServiceEntryEventWatcher interface
 type MockServiceEntryEventWatcher struct {
 	ctrl     *gomock.Controller
 	recorder *MockServiceEntryEventWatcherMockRecorder
 }
 
-// MockServiceEntryEventWatcherMockRecorder is the mock recorder for MockServiceEntryEventWatcher.
+// MockServiceEntryEventWatcherMockRecorder is the mock recorder for MockServiceEntryEventWatcher
 type MockServiceEntryEventWatcherMockRecorder struct {
 	mock *MockServiceEntryEventWatcher
 }
 
-// NewMockServiceEntryEventWatcher creates a new mock instance.
+// NewMockServiceEntryEventWatcher creates a new mock instance
 func NewMockServiceEntryEventWatcher(ctrl *gomock.Controller) *MockServiceEntryEventWatcher {
 	mock := &MockServiceEntryEventWatcher{ctrl: ctrl}
 	mock.recorder = &MockServiceEntryEventWatcherMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockServiceEntryEventWatcher) EXPECT() *MockServiceEntryEventWatcherMockRecorder {
 	return m.recorder
 }
 
-// AddEventHandler mocks base method.
+// AddEventHandler mocks base method
 func (m *MockServiceEntryEventWatcher) AddEventHandler(ctx context.Context, h controller.ServiceEntryEventHandler, predicates ...predicate.Predicate) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, h}
@@ -491,37 +491,37 @@ func (m *MockServiceEntryEventWatcher) AddEventHandler(ctx context.Context, h co
 	return ret0
 }
 
-// AddEventHandler indicates an expected call of AddEventHandler.
+// AddEventHandler indicates an expected call of AddEventHandler
 func (mr *MockServiceEntryEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, h}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockServiceEntryEventWatcher)(nil).AddEventHandler), varargs...)
 }
 
-// MockVirtualServiceEventHandler is a mock of VirtualServiceEventHandler interface.
+// MockVirtualServiceEventHandler is a mock of VirtualServiceEventHandler interface
 type MockVirtualServiceEventHandler struct {
 	ctrl     *gomock.Controller
 	recorder *MockVirtualServiceEventHandlerMockRecorder
 }
 
-// MockVirtualServiceEventHandlerMockRecorder is the mock recorder for MockVirtualServiceEventHandler.
+// MockVirtualServiceEventHandlerMockRecorder is the mock recorder for MockVirtualServiceEventHandler
 type MockVirtualServiceEventHandlerMockRecorder struct {
 	mock *MockVirtualServiceEventHandler
 }
 
-// NewMockVirtualServiceEventHandler creates a new mock instance.
+// NewMockVirtualServiceEventHandler creates a new mock instance
 func NewMockVirtualServiceEventHandler(ctrl *gomock.Controller) *MockVirtualServiceEventHandler {
 	mock := &MockVirtualServiceEventHandler{ctrl: ctrl}
 	mock.recorder = &MockVirtualServiceEventHandlerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockVirtualServiceEventHandler) EXPECT() *MockVirtualServiceEventHandlerMockRecorder {
 	return m.recorder
 }
 
-// CreateVirtualService mocks base method.
+// CreateVirtualService mocks base method
 func (m *MockVirtualServiceEventHandler) CreateVirtualService(obj *v1alpha3.VirtualService) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateVirtualService", obj)
@@ -529,13 +529,13 @@ func (m *MockVirtualServiceEventHandler) CreateVirtualService(obj *v1alpha3.Virt
 	return ret0
 }
 
-// CreateVirtualService indicates an expected call of CreateVirtualService.
+// CreateVirtualService indicates an expected call of CreateVirtualService
 func (mr *MockVirtualServiceEventHandlerMockRecorder) CreateVirtualService(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVirtualService", reflect.TypeOf((*MockVirtualServiceEventHandler)(nil).CreateVirtualService), obj)
 }
 
-// UpdateVirtualService mocks base method.
+// UpdateVirtualService mocks base method
 func (m *MockVirtualServiceEventHandler) UpdateVirtualService(old, new *v1alpha3.VirtualService) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateVirtualService", old, new)
@@ -543,13 +543,13 @@ func (m *MockVirtualServiceEventHandler) UpdateVirtualService(old, new *v1alpha3
 	return ret0
 }
 
-// UpdateVirtualService indicates an expected call of UpdateVirtualService.
+// UpdateVirtualService indicates an expected call of UpdateVirtualService
 func (mr *MockVirtualServiceEventHandlerMockRecorder) UpdateVirtualService(old, new interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateVirtualService", reflect.TypeOf((*MockVirtualServiceEventHandler)(nil).UpdateVirtualService), old, new)
 }
 
-// DeleteVirtualService mocks base method.
+// DeleteVirtualService mocks base method
 func (m *MockVirtualServiceEventHandler) DeleteVirtualService(obj *v1alpha3.VirtualService) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteVirtualService", obj)
@@ -557,13 +557,13 @@ func (m *MockVirtualServiceEventHandler) DeleteVirtualService(obj *v1alpha3.Virt
 	return ret0
 }
 
-// DeleteVirtualService indicates an expected call of DeleteVirtualService.
+// DeleteVirtualService indicates an expected call of DeleteVirtualService
 func (mr *MockVirtualServiceEventHandlerMockRecorder) DeleteVirtualService(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteVirtualService", reflect.TypeOf((*MockVirtualServiceEventHandler)(nil).DeleteVirtualService), obj)
 }
 
-// GenericVirtualService mocks base method.
+// GenericVirtualService mocks base method
 func (m *MockVirtualServiceEventHandler) GenericVirtualService(obj *v1alpha3.VirtualService) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GenericVirtualService", obj)
@@ -571,36 +571,36 @@ func (m *MockVirtualServiceEventHandler) GenericVirtualService(obj *v1alpha3.Vir
 	return ret0
 }
 
-// GenericVirtualService indicates an expected call of GenericVirtualService.
+// GenericVirtualService indicates an expected call of GenericVirtualService
 func (mr *MockVirtualServiceEventHandlerMockRecorder) GenericVirtualService(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericVirtualService", reflect.TypeOf((*MockVirtualServiceEventHandler)(nil).GenericVirtualService), obj)
 }
 
-// MockVirtualServiceEventWatcher is a mock of VirtualServiceEventWatcher interface.
+// MockVirtualServiceEventWatcher is a mock of VirtualServiceEventWatcher interface
 type MockVirtualServiceEventWatcher struct {
 	ctrl     *gomock.Controller
 	recorder *MockVirtualServiceEventWatcherMockRecorder
 }
 
-// MockVirtualServiceEventWatcherMockRecorder is the mock recorder for MockVirtualServiceEventWatcher.
+// MockVirtualServiceEventWatcherMockRecorder is the mock recorder for MockVirtualServiceEventWatcher
 type MockVirtualServiceEventWatcherMockRecorder struct {
 	mock *MockVirtualServiceEventWatcher
 }
 
-// NewMockVirtualServiceEventWatcher creates a new mock instance.
+// NewMockVirtualServiceEventWatcher creates a new mock instance
 func NewMockVirtualServiceEventWatcher(ctrl *gomock.Controller) *MockVirtualServiceEventWatcher {
 	mock := &MockVirtualServiceEventWatcher{ctrl: ctrl}
 	mock.recorder = &MockVirtualServiceEventWatcherMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockVirtualServiceEventWatcher) EXPECT() *MockVirtualServiceEventWatcherMockRecorder {
 	return m.recorder
 }
 
-// AddEventHandler mocks base method.
+// AddEventHandler mocks base method
 func (m *MockVirtualServiceEventWatcher) AddEventHandler(ctx context.Context, h controller.VirtualServiceEventHandler, predicates ...predicate.Predicate) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, h}
@@ -612,7 +612,7 @@ func (m *MockVirtualServiceEventWatcher) AddEventHandler(ctx context.Context, h 
 	return ret0
 }
 
-// AddEventHandler indicates an expected call of AddEventHandler.
+// AddEventHandler indicates an expected call of AddEventHandler
 func (mr *MockVirtualServiceEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, h}, predicates...)

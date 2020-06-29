@@ -24,6 +24,7 @@ type DeploymentSet interface {
 	Difference(set DeploymentSet) DeploymentSet
 	Intersection(set DeploymentSet) DeploymentSet
 	Find(id ezkube.ResourceId) (*apps_v1.Deployment, error)
+	Length() int
 }
 
 func makeGenericDeploymentSet(deploymentList []*apps_v1.Deployment) sksets.ResourceSet {
@@ -42,11 +43,19 @@ func NewDeploymentSet(deploymentList ...*apps_v1.Deployment) DeploymentSet {
 	return &deploymentSet{set: makeGenericDeploymentSet(deploymentList)}
 }
 
-func (s deploymentSet) Keys() sets.String {
+func NewDeploymentSetFromList(deploymentList *apps_v1.DeploymentList) DeploymentSet {
+	list := make([]*apps_v1.Deployment, 0, len(deploymentList.Items))
+	for idx := range deploymentList.Items {
+		list = append(list, &deploymentList.Items[idx])
+	}
+	return &deploymentSet{set: makeGenericDeploymentSet(list)}
+}
+
+func (s *deploymentSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s deploymentSet) List() []*apps_v1.Deployment {
+func (s *deploymentSet) List() []*apps_v1.Deployment {
 	var deploymentList []*apps_v1.Deployment
 	for _, obj := range s.set.List() {
 		deploymentList = append(deploymentList, obj.(*apps_v1.Deployment))
@@ -54,7 +63,7 @@ func (s deploymentSet) List() []*apps_v1.Deployment {
 	return deploymentList
 }
 
-func (s deploymentSet) Map() map[string]*apps_v1.Deployment {
+func (s *deploymentSet) Map() map[string]*apps_v1.Deployment {
 	newMap := map[string]*apps_v1.Deployment{}
 	for k, v := range s.set.Map() {
 		newMap[k] = v.(*apps_v1.Deployment)
@@ -62,7 +71,7 @@ func (s deploymentSet) Map() map[string]*apps_v1.Deployment {
 	return newMap
 }
 
-func (s deploymentSet) Insert(
+func (s *deploymentSet) Insert(
 	deploymentList ...*apps_v1.Deployment,
 ) {
 	for _, obj := range deploymentList {
@@ -70,30 +79,30 @@ func (s deploymentSet) Insert(
 	}
 }
 
-func (s deploymentSet) Has(deployment *apps_v1.Deployment) bool {
+func (s *deploymentSet) Has(deployment *apps_v1.Deployment) bool {
 	return s.set.Has(deployment)
 }
 
-func (s deploymentSet) Equal(
+func (s *deploymentSet) Equal(
 	deploymentSet DeploymentSet,
 ) bool {
 	return s.set.Equal(makeGenericDeploymentSet(deploymentSet.List()))
 }
 
-func (s deploymentSet) Delete(Deployment *apps_v1.Deployment) {
+func (s *deploymentSet) Delete(Deployment *apps_v1.Deployment) {
 	s.set.Delete(Deployment)
 }
 
-func (s deploymentSet) Union(set DeploymentSet) DeploymentSet {
+func (s *deploymentSet) Union(set DeploymentSet) DeploymentSet {
 	return NewDeploymentSet(append(s.List(), set.List()...)...)
 }
 
-func (s deploymentSet) Difference(set DeploymentSet) DeploymentSet {
+func (s *deploymentSet) Difference(set DeploymentSet) DeploymentSet {
 	newSet := s.set.Difference(makeGenericDeploymentSet(set.List()))
-	return deploymentSet{set: newSet}
+	return &deploymentSet{set: newSet}
 }
 
-func (s deploymentSet) Intersection(set DeploymentSet) DeploymentSet {
+func (s *deploymentSet) Intersection(set DeploymentSet) DeploymentSet {
 	newSet := s.set.Intersection(makeGenericDeploymentSet(set.List()))
 	var deploymentList []*apps_v1.Deployment
 	for _, obj := range newSet.List() {
@@ -102,13 +111,17 @@ func (s deploymentSet) Intersection(set DeploymentSet) DeploymentSet {
 	return NewDeploymentSet(deploymentList...)
 }
 
-func (s deploymentSet) Find(id ezkube.ResourceId) (*apps_v1.Deployment, error) {
+func (s *deploymentSet) Find(id ezkube.ResourceId) (*apps_v1.Deployment, error) {
 	obj, err := s.set.Find(&apps_v1.Deployment{}, id)
 	if err != nil {
 		return nil, err
 	}
 
 	return obj.(*apps_v1.Deployment), nil
+}
+
+func (s *deploymentSet) Length() int {
+	return s.set.Length()
 }
 
 type ReplicaSetSet interface {
@@ -123,6 +136,7 @@ type ReplicaSetSet interface {
 	Difference(set ReplicaSetSet) ReplicaSetSet
 	Intersection(set ReplicaSetSet) ReplicaSetSet
 	Find(id ezkube.ResourceId) (*apps_v1.ReplicaSet, error)
+	Length() int
 }
 
 func makeGenericReplicaSetSet(replicaSetList []*apps_v1.ReplicaSet) sksets.ResourceSet {
@@ -141,11 +155,19 @@ func NewReplicaSetSet(replicaSetList ...*apps_v1.ReplicaSet) ReplicaSetSet {
 	return &replicaSetSet{set: makeGenericReplicaSetSet(replicaSetList)}
 }
 
-func (s replicaSetSet) Keys() sets.String {
+func NewReplicaSetSetFromList(replicaSetList *apps_v1.ReplicaSetList) ReplicaSetSet {
+	list := make([]*apps_v1.ReplicaSet, 0, len(replicaSetList.Items))
+	for idx := range replicaSetList.Items {
+		list = append(list, &replicaSetList.Items[idx])
+	}
+	return &replicaSetSet{set: makeGenericReplicaSetSet(list)}
+}
+
+func (s *replicaSetSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s replicaSetSet) List() []*apps_v1.ReplicaSet {
+func (s *replicaSetSet) List() []*apps_v1.ReplicaSet {
 	var replicaSetList []*apps_v1.ReplicaSet
 	for _, obj := range s.set.List() {
 		replicaSetList = append(replicaSetList, obj.(*apps_v1.ReplicaSet))
@@ -153,7 +175,7 @@ func (s replicaSetSet) List() []*apps_v1.ReplicaSet {
 	return replicaSetList
 }
 
-func (s replicaSetSet) Map() map[string]*apps_v1.ReplicaSet {
+func (s *replicaSetSet) Map() map[string]*apps_v1.ReplicaSet {
 	newMap := map[string]*apps_v1.ReplicaSet{}
 	for k, v := range s.set.Map() {
 		newMap[k] = v.(*apps_v1.ReplicaSet)
@@ -161,7 +183,7 @@ func (s replicaSetSet) Map() map[string]*apps_v1.ReplicaSet {
 	return newMap
 }
 
-func (s replicaSetSet) Insert(
+func (s *replicaSetSet) Insert(
 	replicaSetList ...*apps_v1.ReplicaSet,
 ) {
 	for _, obj := range replicaSetList {
@@ -169,30 +191,30 @@ func (s replicaSetSet) Insert(
 	}
 }
 
-func (s replicaSetSet) Has(replicaSet *apps_v1.ReplicaSet) bool {
+func (s *replicaSetSet) Has(replicaSet *apps_v1.ReplicaSet) bool {
 	return s.set.Has(replicaSet)
 }
 
-func (s replicaSetSet) Equal(
+func (s *replicaSetSet) Equal(
 	replicaSetSet ReplicaSetSet,
 ) bool {
 	return s.set.Equal(makeGenericReplicaSetSet(replicaSetSet.List()))
 }
 
-func (s replicaSetSet) Delete(ReplicaSet *apps_v1.ReplicaSet) {
+func (s *replicaSetSet) Delete(ReplicaSet *apps_v1.ReplicaSet) {
 	s.set.Delete(ReplicaSet)
 }
 
-func (s replicaSetSet) Union(set ReplicaSetSet) ReplicaSetSet {
+func (s *replicaSetSet) Union(set ReplicaSetSet) ReplicaSetSet {
 	return NewReplicaSetSet(append(s.List(), set.List()...)...)
 }
 
-func (s replicaSetSet) Difference(set ReplicaSetSet) ReplicaSetSet {
+func (s *replicaSetSet) Difference(set ReplicaSetSet) ReplicaSetSet {
 	newSet := s.set.Difference(makeGenericReplicaSetSet(set.List()))
-	return replicaSetSet{set: newSet}
+	return &replicaSetSet{set: newSet}
 }
 
-func (s replicaSetSet) Intersection(set ReplicaSetSet) ReplicaSetSet {
+func (s *replicaSetSet) Intersection(set ReplicaSetSet) ReplicaSetSet {
 	newSet := s.set.Intersection(makeGenericReplicaSetSet(set.List()))
 	var replicaSetList []*apps_v1.ReplicaSet
 	for _, obj := range newSet.List() {
@@ -201,13 +223,17 @@ func (s replicaSetSet) Intersection(set ReplicaSetSet) ReplicaSetSet {
 	return NewReplicaSetSet(replicaSetList...)
 }
 
-func (s replicaSetSet) Find(id ezkube.ResourceId) (*apps_v1.ReplicaSet, error) {
+func (s *replicaSetSet) Find(id ezkube.ResourceId) (*apps_v1.ReplicaSet, error) {
 	obj, err := s.set.Find(&apps_v1.ReplicaSet{}, id)
 	if err != nil {
 		return nil, err
 	}
 
 	return obj.(*apps_v1.ReplicaSet), nil
+}
+
+func (s *replicaSetSet) Length() int {
+	return s.set.Length()
 }
 
 type DaemonSetSet interface {
@@ -222,6 +248,7 @@ type DaemonSetSet interface {
 	Difference(set DaemonSetSet) DaemonSetSet
 	Intersection(set DaemonSetSet) DaemonSetSet
 	Find(id ezkube.ResourceId) (*apps_v1.DaemonSet, error)
+	Length() int
 }
 
 func makeGenericDaemonSetSet(daemonSetList []*apps_v1.DaemonSet) sksets.ResourceSet {
@@ -240,11 +267,19 @@ func NewDaemonSetSet(daemonSetList ...*apps_v1.DaemonSet) DaemonSetSet {
 	return &daemonSetSet{set: makeGenericDaemonSetSet(daemonSetList)}
 }
 
-func (s daemonSetSet) Keys() sets.String {
+func NewDaemonSetSetFromList(daemonSetList *apps_v1.DaemonSetList) DaemonSetSet {
+	list := make([]*apps_v1.DaemonSet, 0, len(daemonSetList.Items))
+	for idx := range daemonSetList.Items {
+		list = append(list, &daemonSetList.Items[idx])
+	}
+	return &daemonSetSet{set: makeGenericDaemonSetSet(list)}
+}
+
+func (s *daemonSetSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s daemonSetSet) List() []*apps_v1.DaemonSet {
+func (s *daemonSetSet) List() []*apps_v1.DaemonSet {
 	var daemonSetList []*apps_v1.DaemonSet
 	for _, obj := range s.set.List() {
 		daemonSetList = append(daemonSetList, obj.(*apps_v1.DaemonSet))
@@ -252,7 +287,7 @@ func (s daemonSetSet) List() []*apps_v1.DaemonSet {
 	return daemonSetList
 }
 
-func (s daemonSetSet) Map() map[string]*apps_v1.DaemonSet {
+func (s *daemonSetSet) Map() map[string]*apps_v1.DaemonSet {
 	newMap := map[string]*apps_v1.DaemonSet{}
 	for k, v := range s.set.Map() {
 		newMap[k] = v.(*apps_v1.DaemonSet)
@@ -260,7 +295,7 @@ func (s daemonSetSet) Map() map[string]*apps_v1.DaemonSet {
 	return newMap
 }
 
-func (s daemonSetSet) Insert(
+func (s *daemonSetSet) Insert(
 	daemonSetList ...*apps_v1.DaemonSet,
 ) {
 	for _, obj := range daemonSetList {
@@ -268,30 +303,30 @@ func (s daemonSetSet) Insert(
 	}
 }
 
-func (s daemonSetSet) Has(daemonSet *apps_v1.DaemonSet) bool {
+func (s *daemonSetSet) Has(daemonSet *apps_v1.DaemonSet) bool {
 	return s.set.Has(daemonSet)
 }
 
-func (s daemonSetSet) Equal(
+func (s *daemonSetSet) Equal(
 	daemonSetSet DaemonSetSet,
 ) bool {
 	return s.set.Equal(makeGenericDaemonSetSet(daemonSetSet.List()))
 }
 
-func (s daemonSetSet) Delete(DaemonSet *apps_v1.DaemonSet) {
+func (s *daemonSetSet) Delete(DaemonSet *apps_v1.DaemonSet) {
 	s.set.Delete(DaemonSet)
 }
 
-func (s daemonSetSet) Union(set DaemonSetSet) DaemonSetSet {
+func (s *daemonSetSet) Union(set DaemonSetSet) DaemonSetSet {
 	return NewDaemonSetSet(append(s.List(), set.List()...)...)
 }
 
-func (s daemonSetSet) Difference(set DaemonSetSet) DaemonSetSet {
+func (s *daemonSetSet) Difference(set DaemonSetSet) DaemonSetSet {
 	newSet := s.set.Difference(makeGenericDaemonSetSet(set.List()))
-	return daemonSetSet{set: newSet}
+	return &daemonSetSet{set: newSet}
 }
 
-func (s daemonSetSet) Intersection(set DaemonSetSet) DaemonSetSet {
+func (s *daemonSetSet) Intersection(set DaemonSetSet) DaemonSetSet {
 	newSet := s.set.Intersection(makeGenericDaemonSetSet(set.List()))
 	var daemonSetList []*apps_v1.DaemonSet
 	for _, obj := range newSet.List() {
@@ -300,13 +335,17 @@ func (s daemonSetSet) Intersection(set DaemonSetSet) DaemonSetSet {
 	return NewDaemonSetSet(daemonSetList...)
 }
 
-func (s daemonSetSet) Find(id ezkube.ResourceId) (*apps_v1.DaemonSet, error) {
+func (s *daemonSetSet) Find(id ezkube.ResourceId) (*apps_v1.DaemonSet, error) {
 	obj, err := s.set.Find(&apps_v1.DaemonSet{}, id)
 	if err != nil {
 		return nil, err
 	}
 
 	return obj.(*apps_v1.DaemonSet), nil
+}
+
+func (s *daemonSetSet) Length() int {
+	return s.set.Length()
 }
 
 type StatefulSetSet interface {
@@ -321,6 +360,7 @@ type StatefulSetSet interface {
 	Difference(set StatefulSetSet) StatefulSetSet
 	Intersection(set StatefulSetSet) StatefulSetSet
 	Find(id ezkube.ResourceId) (*apps_v1.StatefulSet, error)
+	Length() int
 }
 
 func makeGenericStatefulSetSet(statefulSetList []*apps_v1.StatefulSet) sksets.ResourceSet {
@@ -339,11 +379,19 @@ func NewStatefulSetSet(statefulSetList ...*apps_v1.StatefulSet) StatefulSetSet {
 	return &statefulSetSet{set: makeGenericStatefulSetSet(statefulSetList)}
 }
 
-func (s statefulSetSet) Keys() sets.String {
+func NewStatefulSetSetFromList(statefulSetList *apps_v1.StatefulSetList) StatefulSetSet {
+	list := make([]*apps_v1.StatefulSet, 0, len(statefulSetList.Items))
+	for idx := range statefulSetList.Items {
+		list = append(list, &statefulSetList.Items[idx])
+	}
+	return &statefulSetSet{set: makeGenericStatefulSetSet(list)}
+}
+
+func (s *statefulSetSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s statefulSetSet) List() []*apps_v1.StatefulSet {
+func (s *statefulSetSet) List() []*apps_v1.StatefulSet {
 	var statefulSetList []*apps_v1.StatefulSet
 	for _, obj := range s.set.List() {
 		statefulSetList = append(statefulSetList, obj.(*apps_v1.StatefulSet))
@@ -351,7 +399,7 @@ func (s statefulSetSet) List() []*apps_v1.StatefulSet {
 	return statefulSetList
 }
 
-func (s statefulSetSet) Map() map[string]*apps_v1.StatefulSet {
+func (s *statefulSetSet) Map() map[string]*apps_v1.StatefulSet {
 	newMap := map[string]*apps_v1.StatefulSet{}
 	for k, v := range s.set.Map() {
 		newMap[k] = v.(*apps_v1.StatefulSet)
@@ -359,7 +407,7 @@ func (s statefulSetSet) Map() map[string]*apps_v1.StatefulSet {
 	return newMap
 }
 
-func (s statefulSetSet) Insert(
+func (s *statefulSetSet) Insert(
 	statefulSetList ...*apps_v1.StatefulSet,
 ) {
 	for _, obj := range statefulSetList {
@@ -367,30 +415,30 @@ func (s statefulSetSet) Insert(
 	}
 }
 
-func (s statefulSetSet) Has(statefulSet *apps_v1.StatefulSet) bool {
+func (s *statefulSetSet) Has(statefulSet *apps_v1.StatefulSet) bool {
 	return s.set.Has(statefulSet)
 }
 
-func (s statefulSetSet) Equal(
+func (s *statefulSetSet) Equal(
 	statefulSetSet StatefulSetSet,
 ) bool {
 	return s.set.Equal(makeGenericStatefulSetSet(statefulSetSet.List()))
 }
 
-func (s statefulSetSet) Delete(StatefulSet *apps_v1.StatefulSet) {
+func (s *statefulSetSet) Delete(StatefulSet *apps_v1.StatefulSet) {
 	s.set.Delete(StatefulSet)
 }
 
-func (s statefulSetSet) Union(set StatefulSetSet) StatefulSetSet {
+func (s *statefulSetSet) Union(set StatefulSetSet) StatefulSetSet {
 	return NewStatefulSetSet(append(s.List(), set.List()...)...)
 }
 
-func (s statefulSetSet) Difference(set StatefulSetSet) StatefulSetSet {
+func (s *statefulSetSet) Difference(set StatefulSetSet) StatefulSetSet {
 	newSet := s.set.Difference(makeGenericStatefulSetSet(set.List()))
-	return statefulSetSet{set: newSet}
+	return &statefulSetSet{set: newSet}
 }
 
-func (s statefulSetSet) Intersection(set StatefulSetSet) StatefulSetSet {
+func (s *statefulSetSet) Intersection(set StatefulSetSet) StatefulSetSet {
 	newSet := s.set.Intersection(makeGenericStatefulSetSet(set.List()))
 	var statefulSetList []*apps_v1.StatefulSet
 	for _, obj := range newSet.List() {
@@ -399,11 +447,15 @@ func (s statefulSetSet) Intersection(set StatefulSetSet) StatefulSetSet {
 	return NewStatefulSetSet(statefulSetList...)
 }
 
-func (s statefulSetSet) Find(id ezkube.ResourceId) (*apps_v1.StatefulSet, error) {
+func (s *statefulSetSet) Find(id ezkube.ResourceId) (*apps_v1.StatefulSet, error) {
 	obj, err := s.set.Find(&apps_v1.StatefulSet{}, id)
 	if err != nil {
 		return nil, err
 	}
 
 	return obj.(*apps_v1.StatefulSet), nil
+}
+
+func (s *statefulSetSet) Length() int {
+	return s.set.Length()
 }
