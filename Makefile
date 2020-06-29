@@ -10,8 +10,8 @@ mod-download:
 # Dependencies for code generation
 .PHONY: codegen-deps
 codegen-deps: mod-download
-	GO111MODULE=off go get -v github.com/golang/mock/mockgen
-	GO111MODULE=off go get -v golang.org/x/tools/cmd/goimports
+	go get -v github.com/golang/mock/mockgen@v1.4.3
+	go get -v golang.org/x/tools/cmd/goimports@v0.0.0-20200423205358-59e73619c742
 
 .PHONY: generated-code
 generated-code:

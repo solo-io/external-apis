@@ -24,6 +24,7 @@ type AuthorizationPolicySet interface {
 	Difference(set AuthorizationPolicySet) AuthorizationPolicySet
 	Intersection(set AuthorizationPolicySet) AuthorizationPolicySet
 	Find(id ezkube.ResourceId) (*security_istio_io_v1beta1.AuthorizationPolicy, error)
+	Length() int
 }
 
 func makeGenericAuthorizationPolicySet(authorizationPolicyList []*security_istio_io_v1beta1.AuthorizationPolicy) sksets.ResourceSet {
@@ -42,11 +43,19 @@ func NewAuthorizationPolicySet(authorizationPolicyList ...*security_istio_io_v1b
 	return &authorizationPolicySet{set: makeGenericAuthorizationPolicySet(authorizationPolicyList)}
 }
 
-func (s authorizationPolicySet) Keys() sets.String {
+func NewAuthorizationPolicySetFromList(authorizationPolicyList *security_istio_io_v1beta1.AuthorizationPolicyList) AuthorizationPolicySet {
+	list := make([]*security_istio_io_v1beta1.AuthorizationPolicy, 0, len(authorizationPolicyList.Items))
+	for idx := range authorizationPolicyList.Items {
+		list = append(list, &authorizationPolicyList.Items[idx])
+	}
+	return &authorizationPolicySet{set: makeGenericAuthorizationPolicySet(list)}
+}
+
+func (s *authorizationPolicySet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s authorizationPolicySet) List() []*security_istio_io_v1beta1.AuthorizationPolicy {
+func (s *authorizationPolicySet) List() []*security_istio_io_v1beta1.AuthorizationPolicy {
 	var authorizationPolicyList []*security_istio_io_v1beta1.AuthorizationPolicy
 	for _, obj := range s.set.List() {
 		authorizationPolicyList = append(authorizationPolicyList, obj.(*security_istio_io_v1beta1.AuthorizationPolicy))
@@ -54,7 +63,7 @@ func (s authorizationPolicySet) List() []*security_istio_io_v1beta1.Authorizatio
 	return authorizationPolicyList
 }
 
-func (s authorizationPolicySet) Map() map[string]*security_istio_io_v1beta1.AuthorizationPolicy {
+func (s *authorizationPolicySet) Map() map[string]*security_istio_io_v1beta1.AuthorizationPolicy {
 	newMap := map[string]*security_istio_io_v1beta1.AuthorizationPolicy{}
 	for k, v := range s.set.Map() {
 		newMap[k] = v.(*security_istio_io_v1beta1.AuthorizationPolicy)
@@ -62,7 +71,7 @@ func (s authorizationPolicySet) Map() map[string]*security_istio_io_v1beta1.Auth
 	return newMap
 }
 
-func (s authorizationPolicySet) Insert(
+func (s *authorizationPolicySet) Insert(
 	authorizationPolicyList ...*security_istio_io_v1beta1.AuthorizationPolicy,
 ) {
 	for _, obj := range authorizationPolicyList {
@@ -70,30 +79,30 @@ func (s authorizationPolicySet) Insert(
 	}
 }
 
-func (s authorizationPolicySet) Has(authorizationPolicy *security_istio_io_v1beta1.AuthorizationPolicy) bool {
+func (s *authorizationPolicySet) Has(authorizationPolicy *security_istio_io_v1beta1.AuthorizationPolicy) bool {
 	return s.set.Has(authorizationPolicy)
 }
 
-func (s authorizationPolicySet) Equal(
+func (s *authorizationPolicySet) Equal(
 	authorizationPolicySet AuthorizationPolicySet,
 ) bool {
 	return s.set.Equal(makeGenericAuthorizationPolicySet(authorizationPolicySet.List()))
 }
 
-func (s authorizationPolicySet) Delete(AuthorizationPolicy *security_istio_io_v1beta1.AuthorizationPolicy) {
+func (s *authorizationPolicySet) Delete(AuthorizationPolicy *security_istio_io_v1beta1.AuthorizationPolicy) {
 	s.set.Delete(AuthorizationPolicy)
 }
 
-func (s authorizationPolicySet) Union(set AuthorizationPolicySet) AuthorizationPolicySet {
+func (s *authorizationPolicySet) Union(set AuthorizationPolicySet) AuthorizationPolicySet {
 	return NewAuthorizationPolicySet(append(s.List(), set.List()...)...)
 }
 
-func (s authorizationPolicySet) Difference(set AuthorizationPolicySet) AuthorizationPolicySet {
+func (s *authorizationPolicySet) Difference(set AuthorizationPolicySet) AuthorizationPolicySet {
 	newSet := s.set.Difference(makeGenericAuthorizationPolicySet(set.List()))
-	return authorizationPolicySet{set: newSet}
+	return &authorizationPolicySet{set: newSet}
 }
 
-func (s authorizationPolicySet) Intersection(set AuthorizationPolicySet) AuthorizationPolicySet {
+func (s *authorizationPolicySet) Intersection(set AuthorizationPolicySet) AuthorizationPolicySet {
 	newSet := s.set.Intersection(makeGenericAuthorizationPolicySet(set.List()))
 	var authorizationPolicyList []*security_istio_io_v1beta1.AuthorizationPolicy
 	for _, obj := range newSet.List() {
@@ -102,11 +111,15 @@ func (s authorizationPolicySet) Intersection(set AuthorizationPolicySet) Authori
 	return NewAuthorizationPolicySet(authorizationPolicyList...)
 }
 
-func (s authorizationPolicySet) Find(id ezkube.ResourceId) (*security_istio_io_v1beta1.AuthorizationPolicy, error) {
+func (s *authorizationPolicySet) Find(id ezkube.ResourceId) (*security_istio_io_v1beta1.AuthorizationPolicy, error) {
 	obj, err := s.set.Find(&security_istio_io_v1beta1.AuthorizationPolicy{}, id)
 	if err != nil {
 		return nil, err
 	}
 
 	return obj.(*security_istio_io_v1beta1.AuthorizationPolicy), nil
+}
+
+func (s *authorizationPolicySet) Length() int {
+	return s.set.Length()
 }

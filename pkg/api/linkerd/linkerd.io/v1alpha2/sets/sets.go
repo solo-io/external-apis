@@ -24,6 +24,7 @@ type ServiceProfileSet interface {
 	Difference(set ServiceProfileSet) ServiceProfileSet
 	Intersection(set ServiceProfileSet) ServiceProfileSet
 	Find(id ezkube.ResourceId) (*linkerd_io_v1alpha2.ServiceProfile, error)
+	Length() int
 }
 
 func makeGenericServiceProfileSet(serviceProfileList []*linkerd_io_v1alpha2.ServiceProfile) sksets.ResourceSet {
@@ -42,11 +43,19 @@ func NewServiceProfileSet(serviceProfileList ...*linkerd_io_v1alpha2.ServiceProf
 	return &serviceProfileSet{set: makeGenericServiceProfileSet(serviceProfileList)}
 }
 
-func (s serviceProfileSet) Keys() sets.String {
+func NewServiceProfileSetFromList(serviceProfileList *linkerd_io_v1alpha2.ServiceProfileList) ServiceProfileSet {
+	list := make([]*linkerd_io_v1alpha2.ServiceProfile, 0, len(serviceProfileList.Items))
+	for idx := range serviceProfileList.Items {
+		list = append(list, &serviceProfileList.Items[idx])
+	}
+	return &serviceProfileSet{set: makeGenericServiceProfileSet(list)}
+}
+
+func (s *serviceProfileSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s serviceProfileSet) List() []*linkerd_io_v1alpha2.ServiceProfile {
+func (s *serviceProfileSet) List() []*linkerd_io_v1alpha2.ServiceProfile {
 	var serviceProfileList []*linkerd_io_v1alpha2.ServiceProfile
 	for _, obj := range s.set.List() {
 		serviceProfileList = append(serviceProfileList, obj.(*linkerd_io_v1alpha2.ServiceProfile))
@@ -54,7 +63,7 @@ func (s serviceProfileSet) List() []*linkerd_io_v1alpha2.ServiceProfile {
 	return serviceProfileList
 }
 
-func (s serviceProfileSet) Map() map[string]*linkerd_io_v1alpha2.ServiceProfile {
+func (s *serviceProfileSet) Map() map[string]*linkerd_io_v1alpha2.ServiceProfile {
 	newMap := map[string]*linkerd_io_v1alpha2.ServiceProfile{}
 	for k, v := range s.set.Map() {
 		newMap[k] = v.(*linkerd_io_v1alpha2.ServiceProfile)
@@ -62,7 +71,7 @@ func (s serviceProfileSet) Map() map[string]*linkerd_io_v1alpha2.ServiceProfile 
 	return newMap
 }
 
-func (s serviceProfileSet) Insert(
+func (s *serviceProfileSet) Insert(
 	serviceProfileList ...*linkerd_io_v1alpha2.ServiceProfile,
 ) {
 	for _, obj := range serviceProfileList {
@@ -70,30 +79,30 @@ func (s serviceProfileSet) Insert(
 	}
 }
 
-func (s serviceProfileSet) Has(serviceProfile *linkerd_io_v1alpha2.ServiceProfile) bool {
+func (s *serviceProfileSet) Has(serviceProfile *linkerd_io_v1alpha2.ServiceProfile) bool {
 	return s.set.Has(serviceProfile)
 }
 
-func (s serviceProfileSet) Equal(
+func (s *serviceProfileSet) Equal(
 	serviceProfileSet ServiceProfileSet,
 ) bool {
 	return s.set.Equal(makeGenericServiceProfileSet(serviceProfileSet.List()))
 }
 
-func (s serviceProfileSet) Delete(ServiceProfile *linkerd_io_v1alpha2.ServiceProfile) {
+func (s *serviceProfileSet) Delete(ServiceProfile *linkerd_io_v1alpha2.ServiceProfile) {
 	s.set.Delete(ServiceProfile)
 }
 
-func (s serviceProfileSet) Union(set ServiceProfileSet) ServiceProfileSet {
+func (s *serviceProfileSet) Union(set ServiceProfileSet) ServiceProfileSet {
 	return NewServiceProfileSet(append(s.List(), set.List()...)...)
 }
 
-func (s serviceProfileSet) Difference(set ServiceProfileSet) ServiceProfileSet {
+func (s *serviceProfileSet) Difference(set ServiceProfileSet) ServiceProfileSet {
 	newSet := s.set.Difference(makeGenericServiceProfileSet(set.List()))
-	return serviceProfileSet{set: newSet}
+	return &serviceProfileSet{set: newSet}
 }
 
-func (s serviceProfileSet) Intersection(set ServiceProfileSet) ServiceProfileSet {
+func (s *serviceProfileSet) Intersection(set ServiceProfileSet) ServiceProfileSet {
 	newSet := s.set.Intersection(makeGenericServiceProfileSet(set.List()))
 	var serviceProfileList []*linkerd_io_v1alpha2.ServiceProfile
 	for _, obj := range newSet.List() {
@@ -102,11 +111,15 @@ func (s serviceProfileSet) Intersection(set ServiceProfileSet) ServiceProfileSet
 	return NewServiceProfileSet(serviceProfileList...)
 }
 
-func (s serviceProfileSet) Find(id ezkube.ResourceId) (*linkerd_io_v1alpha2.ServiceProfile, error) {
+func (s *serviceProfileSet) Find(id ezkube.ResourceId) (*linkerd_io_v1alpha2.ServiceProfile, error) {
 	obj, err := s.set.Find(&linkerd_io_v1alpha2.ServiceProfile{}, id)
 	if err != nil {
 		return nil, err
 	}
 
 	return obj.(*linkerd_io_v1alpha2.ServiceProfile), nil
+}
+
+func (s *serviceProfileSet) Length() int {
+	return s.set.Length()
 }

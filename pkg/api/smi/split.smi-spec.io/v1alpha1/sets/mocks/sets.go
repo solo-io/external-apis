@@ -14,30 +14,30 @@ import (
 	sets "k8s.io/apimachinery/pkg/util/sets"
 )
 
-// MockTrafficSplitSet is a mock of TrafficSplitSet interface.
+// MockTrafficSplitSet is a mock of TrafficSplitSet interface
 type MockTrafficSplitSet struct {
 	ctrl     *gomock.Controller
 	recorder *MockTrafficSplitSetMockRecorder
 }
 
-// MockTrafficSplitSetMockRecorder is the mock recorder for MockTrafficSplitSet.
+// MockTrafficSplitSetMockRecorder is the mock recorder for MockTrafficSplitSet
 type MockTrafficSplitSetMockRecorder struct {
 	mock *MockTrafficSplitSet
 }
 
-// NewMockTrafficSplitSet creates a new mock instance.
+// NewMockTrafficSplitSet creates a new mock instance
 func NewMockTrafficSplitSet(ctrl *gomock.Controller) *MockTrafficSplitSet {
 	mock := &MockTrafficSplitSet{ctrl: ctrl}
 	mock.recorder = &MockTrafficSplitSetMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockTrafficSplitSet) EXPECT() *MockTrafficSplitSetMockRecorder {
 	return m.recorder
 }
 
-// Keys mocks base method.
+// Keys mocks base method
 func (m *MockTrafficSplitSet) Keys() sets.String {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Keys")
@@ -45,13 +45,13 @@ func (m *MockTrafficSplitSet) Keys() sets.String {
 	return ret0
 }
 
-// Keys indicates an expected call of Keys.
+// Keys indicates an expected call of Keys
 func (mr *MockTrafficSplitSetMockRecorder) Keys() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Keys", reflect.TypeOf((*MockTrafficSplitSet)(nil).Keys))
 }
 
-// List mocks base method.
+// List mocks base method
 func (m *MockTrafficSplitSet) List() []*v1alpha1.TrafficSplit {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List")
@@ -59,13 +59,13 @@ func (m *MockTrafficSplitSet) List() []*v1alpha1.TrafficSplit {
 	return ret0
 }
 
-// List indicates an expected call of List.
+// List indicates an expected call of List
 func (mr *MockTrafficSplitSetMockRecorder) List() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockTrafficSplitSet)(nil).List))
 }
 
-// Map mocks base method.
+// Map mocks base method
 func (m *MockTrafficSplitSet) Map() map[string]*v1alpha1.TrafficSplit {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Map")
@@ -73,13 +73,13 @@ func (m *MockTrafficSplitSet) Map() map[string]*v1alpha1.TrafficSplit {
 	return ret0
 }
 
-// Map indicates an expected call of Map.
+// Map indicates an expected call of Map
 func (mr *MockTrafficSplitSetMockRecorder) Map() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Map", reflect.TypeOf((*MockTrafficSplitSet)(nil).Map))
 }
 
-// Insert mocks base method.
+// Insert mocks base method
 func (m *MockTrafficSplitSet) Insert(trafficSplit ...*v1alpha1.TrafficSplit) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{}
@@ -89,13 +89,13 @@ func (m *MockTrafficSplitSet) Insert(trafficSplit ...*v1alpha1.TrafficSplit) {
 	m.ctrl.Call(m, "Insert", varargs...)
 }
 
-// Insert indicates an expected call of Insert.
+// Insert indicates an expected call of Insert
 func (mr *MockTrafficSplitSetMockRecorder) Insert(trafficSplit ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockTrafficSplitSet)(nil).Insert), trafficSplit...)
 }
 
-// Equal mocks base method.
+// Equal mocks base method
 func (m *MockTrafficSplitSet) Equal(trafficSplitSet v1alpha1sets.TrafficSplitSet) bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Equal", trafficSplitSet)
@@ -103,13 +103,13 @@ func (m *MockTrafficSplitSet) Equal(trafficSplitSet v1alpha1sets.TrafficSplitSet
 	return ret0
 }
 
-// Equal indicates an expected call of Equal.
+// Equal indicates an expected call of Equal
 func (mr *MockTrafficSplitSetMockRecorder) Equal(trafficSplitSet interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Equal", reflect.TypeOf((*MockTrafficSplitSet)(nil).Equal), trafficSplitSet)
 }
 
-// Has mocks base method.
+// Has mocks base method
 func (m *MockTrafficSplitSet) Has(trafficSplit *v1alpha1.TrafficSplit) bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Has", trafficSplit)
@@ -117,25 +117,25 @@ func (m *MockTrafficSplitSet) Has(trafficSplit *v1alpha1.TrafficSplit) bool {
 	return ret0
 }
 
-// Has indicates an expected call of Has.
+// Has indicates an expected call of Has
 func (mr *MockTrafficSplitSetMockRecorder) Has(trafficSplit interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Has", reflect.TypeOf((*MockTrafficSplitSet)(nil).Has), trafficSplit)
 }
 
-// Delete mocks base method.
+// Delete mocks base method
 func (m *MockTrafficSplitSet) Delete(trafficSplit *v1alpha1.TrafficSplit) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Delete", trafficSplit)
 }
 
-// Delete indicates an expected call of Delete.
+// Delete indicates an expected call of Delete
 func (mr *MockTrafficSplitSetMockRecorder) Delete(trafficSplit interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockTrafficSplitSet)(nil).Delete), trafficSplit)
 }
 
-// Union mocks base method.
+// Union mocks base method
 func (m *MockTrafficSplitSet) Union(set v1alpha1sets.TrafficSplitSet) v1alpha1sets.TrafficSplitSet {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Union", set)
@@ -143,13 +143,13 @@ func (m *MockTrafficSplitSet) Union(set v1alpha1sets.TrafficSplitSet) v1alpha1se
 	return ret0
 }
 
-// Union indicates an expected call of Union.
+// Union indicates an expected call of Union
 func (mr *MockTrafficSplitSetMockRecorder) Union(set interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Union", reflect.TypeOf((*MockTrafficSplitSet)(nil).Union), set)
 }
 
-// Difference mocks base method.
+// Difference mocks base method
 func (m *MockTrafficSplitSet) Difference(set v1alpha1sets.TrafficSplitSet) v1alpha1sets.TrafficSplitSet {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Difference", set)
@@ -157,13 +157,13 @@ func (m *MockTrafficSplitSet) Difference(set v1alpha1sets.TrafficSplitSet) v1alp
 	return ret0
 }
 
-// Difference indicates an expected call of Difference.
+// Difference indicates an expected call of Difference
 func (mr *MockTrafficSplitSetMockRecorder) Difference(set interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Difference", reflect.TypeOf((*MockTrafficSplitSet)(nil).Difference), set)
 }
 
-// Intersection mocks base method.
+// Intersection mocks base method
 func (m *MockTrafficSplitSet) Intersection(set v1alpha1sets.TrafficSplitSet) v1alpha1sets.TrafficSplitSet {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Intersection", set)
@@ -171,13 +171,13 @@ func (m *MockTrafficSplitSet) Intersection(set v1alpha1sets.TrafficSplitSet) v1a
 	return ret0
 }
 
-// Intersection indicates an expected call of Intersection.
+// Intersection indicates an expected call of Intersection
 func (mr *MockTrafficSplitSetMockRecorder) Intersection(set interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockTrafficSplitSet)(nil).Intersection), set)
 }
 
-// Find mocks base method.
+// Find mocks base method
 func (m *MockTrafficSplitSet) Find(id ezkube.ResourceId) (*v1alpha1.TrafficSplit, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Find", id)
@@ -186,8 +186,22 @@ func (m *MockTrafficSplitSet) Find(id ezkube.ResourceId) (*v1alpha1.TrafficSplit
 	return ret0, ret1
 }
 
-// Find indicates an expected call of Find.
+// Find indicates an expected call of Find
 func (mr *MockTrafficSplitSetMockRecorder) Find(id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockTrafficSplitSet)(nil).Find), id)
+}
+
+// Length mocks base method
+func (m *MockTrafficSplitSet) Length() int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Length")
+	ret0, _ := ret[0].(int)
+	return ret0
+}
+
+// Length indicates an expected call of Length
+func (mr *MockTrafficSplitSetMockRecorder) Length() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Length", reflect.TypeOf((*MockTrafficSplitSet)(nil).Length))
 }

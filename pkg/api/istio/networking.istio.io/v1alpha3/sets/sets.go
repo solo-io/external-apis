@@ -24,6 +24,7 @@ type DestinationRuleSet interface {
 	Difference(set DestinationRuleSet) DestinationRuleSet
 	Intersection(set DestinationRuleSet) DestinationRuleSet
 	Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.DestinationRule, error)
+	Length() int
 }
 
 func makeGenericDestinationRuleSet(destinationRuleList []*networking_istio_io_v1alpha3.DestinationRule) sksets.ResourceSet {
@@ -42,11 +43,19 @@ func NewDestinationRuleSet(destinationRuleList ...*networking_istio_io_v1alpha3.
 	return &destinationRuleSet{set: makeGenericDestinationRuleSet(destinationRuleList)}
 }
 
-func (s destinationRuleSet) Keys() sets.String {
+func NewDestinationRuleSetFromList(destinationRuleList *networking_istio_io_v1alpha3.DestinationRuleList) DestinationRuleSet {
+	list := make([]*networking_istio_io_v1alpha3.DestinationRule, 0, len(destinationRuleList.Items))
+	for idx := range destinationRuleList.Items {
+		list = append(list, &destinationRuleList.Items[idx])
+	}
+	return &destinationRuleSet{set: makeGenericDestinationRuleSet(list)}
+}
+
+func (s *destinationRuleSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s destinationRuleSet) List() []*networking_istio_io_v1alpha3.DestinationRule {
+func (s *destinationRuleSet) List() []*networking_istio_io_v1alpha3.DestinationRule {
 	var destinationRuleList []*networking_istio_io_v1alpha3.DestinationRule
 	for _, obj := range s.set.List() {
 		destinationRuleList = append(destinationRuleList, obj.(*networking_istio_io_v1alpha3.DestinationRule))
@@ -54,7 +63,7 @@ func (s destinationRuleSet) List() []*networking_istio_io_v1alpha3.DestinationRu
 	return destinationRuleList
 }
 
-func (s destinationRuleSet) Map() map[string]*networking_istio_io_v1alpha3.DestinationRule {
+func (s *destinationRuleSet) Map() map[string]*networking_istio_io_v1alpha3.DestinationRule {
 	newMap := map[string]*networking_istio_io_v1alpha3.DestinationRule{}
 	for k, v := range s.set.Map() {
 		newMap[k] = v.(*networking_istio_io_v1alpha3.DestinationRule)
@@ -62,7 +71,7 @@ func (s destinationRuleSet) Map() map[string]*networking_istio_io_v1alpha3.Desti
 	return newMap
 }
 
-func (s destinationRuleSet) Insert(
+func (s *destinationRuleSet) Insert(
 	destinationRuleList ...*networking_istio_io_v1alpha3.DestinationRule,
 ) {
 	for _, obj := range destinationRuleList {
@@ -70,30 +79,30 @@ func (s destinationRuleSet) Insert(
 	}
 }
 
-func (s destinationRuleSet) Has(destinationRule *networking_istio_io_v1alpha3.DestinationRule) bool {
+func (s *destinationRuleSet) Has(destinationRule *networking_istio_io_v1alpha3.DestinationRule) bool {
 	return s.set.Has(destinationRule)
 }
 
-func (s destinationRuleSet) Equal(
+func (s *destinationRuleSet) Equal(
 	destinationRuleSet DestinationRuleSet,
 ) bool {
 	return s.set.Equal(makeGenericDestinationRuleSet(destinationRuleSet.List()))
 }
 
-func (s destinationRuleSet) Delete(DestinationRule *networking_istio_io_v1alpha3.DestinationRule) {
+func (s *destinationRuleSet) Delete(DestinationRule *networking_istio_io_v1alpha3.DestinationRule) {
 	s.set.Delete(DestinationRule)
 }
 
-func (s destinationRuleSet) Union(set DestinationRuleSet) DestinationRuleSet {
+func (s *destinationRuleSet) Union(set DestinationRuleSet) DestinationRuleSet {
 	return NewDestinationRuleSet(append(s.List(), set.List()...)...)
 }
 
-func (s destinationRuleSet) Difference(set DestinationRuleSet) DestinationRuleSet {
+func (s *destinationRuleSet) Difference(set DestinationRuleSet) DestinationRuleSet {
 	newSet := s.set.Difference(makeGenericDestinationRuleSet(set.List()))
-	return destinationRuleSet{set: newSet}
+	return &destinationRuleSet{set: newSet}
 }
 
-func (s destinationRuleSet) Intersection(set DestinationRuleSet) DestinationRuleSet {
+func (s *destinationRuleSet) Intersection(set DestinationRuleSet) DestinationRuleSet {
 	newSet := s.set.Intersection(makeGenericDestinationRuleSet(set.List()))
 	var destinationRuleList []*networking_istio_io_v1alpha3.DestinationRule
 	for _, obj := range newSet.List() {
@@ -102,13 +111,17 @@ func (s destinationRuleSet) Intersection(set DestinationRuleSet) DestinationRule
 	return NewDestinationRuleSet(destinationRuleList...)
 }
 
-func (s destinationRuleSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.DestinationRule, error) {
+func (s *destinationRuleSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.DestinationRule, error) {
 	obj, err := s.set.Find(&networking_istio_io_v1alpha3.DestinationRule{}, id)
 	if err != nil {
 		return nil, err
 	}
 
 	return obj.(*networking_istio_io_v1alpha3.DestinationRule), nil
+}
+
+func (s *destinationRuleSet) Length() int {
+	return s.set.Length()
 }
 
 type EnvoyFilterSet interface {
@@ -123,6 +136,7 @@ type EnvoyFilterSet interface {
 	Difference(set EnvoyFilterSet) EnvoyFilterSet
 	Intersection(set EnvoyFilterSet) EnvoyFilterSet
 	Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.EnvoyFilter, error)
+	Length() int
 }
 
 func makeGenericEnvoyFilterSet(envoyFilterList []*networking_istio_io_v1alpha3.EnvoyFilter) sksets.ResourceSet {
@@ -141,11 +155,19 @@ func NewEnvoyFilterSet(envoyFilterList ...*networking_istio_io_v1alpha3.EnvoyFil
 	return &envoyFilterSet{set: makeGenericEnvoyFilterSet(envoyFilterList)}
 }
 
-func (s envoyFilterSet) Keys() sets.String {
+func NewEnvoyFilterSetFromList(envoyFilterList *networking_istio_io_v1alpha3.EnvoyFilterList) EnvoyFilterSet {
+	list := make([]*networking_istio_io_v1alpha3.EnvoyFilter, 0, len(envoyFilterList.Items))
+	for idx := range envoyFilterList.Items {
+		list = append(list, &envoyFilterList.Items[idx])
+	}
+	return &envoyFilterSet{set: makeGenericEnvoyFilterSet(list)}
+}
+
+func (s *envoyFilterSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s envoyFilterSet) List() []*networking_istio_io_v1alpha3.EnvoyFilter {
+func (s *envoyFilterSet) List() []*networking_istio_io_v1alpha3.EnvoyFilter {
 	var envoyFilterList []*networking_istio_io_v1alpha3.EnvoyFilter
 	for _, obj := range s.set.List() {
 		envoyFilterList = append(envoyFilterList, obj.(*networking_istio_io_v1alpha3.EnvoyFilter))
@@ -153,7 +175,7 @@ func (s envoyFilterSet) List() []*networking_istio_io_v1alpha3.EnvoyFilter {
 	return envoyFilterList
 }
 
-func (s envoyFilterSet) Map() map[string]*networking_istio_io_v1alpha3.EnvoyFilter {
+func (s *envoyFilterSet) Map() map[string]*networking_istio_io_v1alpha3.EnvoyFilter {
 	newMap := map[string]*networking_istio_io_v1alpha3.EnvoyFilter{}
 	for k, v := range s.set.Map() {
 		newMap[k] = v.(*networking_istio_io_v1alpha3.EnvoyFilter)
@@ -161,7 +183,7 @@ func (s envoyFilterSet) Map() map[string]*networking_istio_io_v1alpha3.EnvoyFilt
 	return newMap
 }
 
-func (s envoyFilterSet) Insert(
+func (s *envoyFilterSet) Insert(
 	envoyFilterList ...*networking_istio_io_v1alpha3.EnvoyFilter,
 ) {
 	for _, obj := range envoyFilterList {
@@ -169,30 +191,30 @@ func (s envoyFilterSet) Insert(
 	}
 }
 
-func (s envoyFilterSet) Has(envoyFilter *networking_istio_io_v1alpha3.EnvoyFilter) bool {
+func (s *envoyFilterSet) Has(envoyFilter *networking_istio_io_v1alpha3.EnvoyFilter) bool {
 	return s.set.Has(envoyFilter)
 }
 
-func (s envoyFilterSet) Equal(
+func (s *envoyFilterSet) Equal(
 	envoyFilterSet EnvoyFilterSet,
 ) bool {
 	return s.set.Equal(makeGenericEnvoyFilterSet(envoyFilterSet.List()))
 }
 
-func (s envoyFilterSet) Delete(EnvoyFilter *networking_istio_io_v1alpha3.EnvoyFilter) {
+func (s *envoyFilterSet) Delete(EnvoyFilter *networking_istio_io_v1alpha3.EnvoyFilter) {
 	s.set.Delete(EnvoyFilter)
 }
 
-func (s envoyFilterSet) Union(set EnvoyFilterSet) EnvoyFilterSet {
+func (s *envoyFilterSet) Union(set EnvoyFilterSet) EnvoyFilterSet {
 	return NewEnvoyFilterSet(append(s.List(), set.List()...)...)
 }
 
-func (s envoyFilterSet) Difference(set EnvoyFilterSet) EnvoyFilterSet {
+func (s *envoyFilterSet) Difference(set EnvoyFilterSet) EnvoyFilterSet {
 	newSet := s.set.Difference(makeGenericEnvoyFilterSet(set.List()))
-	return envoyFilterSet{set: newSet}
+	return &envoyFilterSet{set: newSet}
 }
 
-func (s envoyFilterSet) Intersection(set EnvoyFilterSet) EnvoyFilterSet {
+func (s *envoyFilterSet) Intersection(set EnvoyFilterSet) EnvoyFilterSet {
 	newSet := s.set.Intersection(makeGenericEnvoyFilterSet(set.List()))
 	var envoyFilterList []*networking_istio_io_v1alpha3.EnvoyFilter
 	for _, obj := range newSet.List() {
@@ -201,13 +223,17 @@ func (s envoyFilterSet) Intersection(set EnvoyFilterSet) EnvoyFilterSet {
 	return NewEnvoyFilterSet(envoyFilterList...)
 }
 
-func (s envoyFilterSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.EnvoyFilter, error) {
+func (s *envoyFilterSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.EnvoyFilter, error) {
 	obj, err := s.set.Find(&networking_istio_io_v1alpha3.EnvoyFilter{}, id)
 	if err != nil {
 		return nil, err
 	}
 
 	return obj.(*networking_istio_io_v1alpha3.EnvoyFilter), nil
+}
+
+func (s *envoyFilterSet) Length() int {
+	return s.set.Length()
 }
 
 type GatewaySet interface {
@@ -222,6 +248,7 @@ type GatewaySet interface {
 	Difference(set GatewaySet) GatewaySet
 	Intersection(set GatewaySet) GatewaySet
 	Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.Gateway, error)
+	Length() int
 }
 
 func makeGenericGatewaySet(gatewayList []*networking_istio_io_v1alpha3.Gateway) sksets.ResourceSet {
@@ -240,11 +267,19 @@ func NewGatewaySet(gatewayList ...*networking_istio_io_v1alpha3.Gateway) Gateway
 	return &gatewaySet{set: makeGenericGatewaySet(gatewayList)}
 }
 
-func (s gatewaySet) Keys() sets.String {
+func NewGatewaySetFromList(gatewayList *networking_istio_io_v1alpha3.GatewayList) GatewaySet {
+	list := make([]*networking_istio_io_v1alpha3.Gateway, 0, len(gatewayList.Items))
+	for idx := range gatewayList.Items {
+		list = append(list, &gatewayList.Items[idx])
+	}
+	return &gatewaySet{set: makeGenericGatewaySet(list)}
+}
+
+func (s *gatewaySet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s gatewaySet) List() []*networking_istio_io_v1alpha3.Gateway {
+func (s *gatewaySet) List() []*networking_istio_io_v1alpha3.Gateway {
 	var gatewayList []*networking_istio_io_v1alpha3.Gateway
 	for _, obj := range s.set.List() {
 		gatewayList = append(gatewayList, obj.(*networking_istio_io_v1alpha3.Gateway))
@@ -252,7 +287,7 @@ func (s gatewaySet) List() []*networking_istio_io_v1alpha3.Gateway {
 	return gatewayList
 }
 
-func (s gatewaySet) Map() map[string]*networking_istio_io_v1alpha3.Gateway {
+func (s *gatewaySet) Map() map[string]*networking_istio_io_v1alpha3.Gateway {
 	newMap := map[string]*networking_istio_io_v1alpha3.Gateway{}
 	for k, v := range s.set.Map() {
 		newMap[k] = v.(*networking_istio_io_v1alpha3.Gateway)
@@ -260,7 +295,7 @@ func (s gatewaySet) Map() map[string]*networking_istio_io_v1alpha3.Gateway {
 	return newMap
 }
 
-func (s gatewaySet) Insert(
+func (s *gatewaySet) Insert(
 	gatewayList ...*networking_istio_io_v1alpha3.Gateway,
 ) {
 	for _, obj := range gatewayList {
@@ -268,30 +303,30 @@ func (s gatewaySet) Insert(
 	}
 }
 
-func (s gatewaySet) Has(gateway *networking_istio_io_v1alpha3.Gateway) bool {
+func (s *gatewaySet) Has(gateway *networking_istio_io_v1alpha3.Gateway) bool {
 	return s.set.Has(gateway)
 }
 
-func (s gatewaySet) Equal(
+func (s *gatewaySet) Equal(
 	gatewaySet GatewaySet,
 ) bool {
 	return s.set.Equal(makeGenericGatewaySet(gatewaySet.List()))
 }
 
-func (s gatewaySet) Delete(Gateway *networking_istio_io_v1alpha3.Gateway) {
+func (s *gatewaySet) Delete(Gateway *networking_istio_io_v1alpha3.Gateway) {
 	s.set.Delete(Gateway)
 }
 
-func (s gatewaySet) Union(set GatewaySet) GatewaySet {
+func (s *gatewaySet) Union(set GatewaySet) GatewaySet {
 	return NewGatewaySet(append(s.List(), set.List()...)...)
 }
 
-func (s gatewaySet) Difference(set GatewaySet) GatewaySet {
+func (s *gatewaySet) Difference(set GatewaySet) GatewaySet {
 	newSet := s.set.Difference(makeGenericGatewaySet(set.List()))
-	return gatewaySet{set: newSet}
+	return &gatewaySet{set: newSet}
 }
 
-func (s gatewaySet) Intersection(set GatewaySet) GatewaySet {
+func (s *gatewaySet) Intersection(set GatewaySet) GatewaySet {
 	newSet := s.set.Intersection(makeGenericGatewaySet(set.List()))
 	var gatewayList []*networking_istio_io_v1alpha3.Gateway
 	for _, obj := range newSet.List() {
@@ -300,13 +335,17 @@ func (s gatewaySet) Intersection(set GatewaySet) GatewaySet {
 	return NewGatewaySet(gatewayList...)
 }
 
-func (s gatewaySet) Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.Gateway, error) {
+func (s *gatewaySet) Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.Gateway, error) {
 	obj, err := s.set.Find(&networking_istio_io_v1alpha3.Gateway{}, id)
 	if err != nil {
 		return nil, err
 	}
 
 	return obj.(*networking_istio_io_v1alpha3.Gateway), nil
+}
+
+func (s *gatewaySet) Length() int {
+	return s.set.Length()
 }
 
 type ServiceEntrySet interface {
@@ -321,6 +360,7 @@ type ServiceEntrySet interface {
 	Difference(set ServiceEntrySet) ServiceEntrySet
 	Intersection(set ServiceEntrySet) ServiceEntrySet
 	Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.ServiceEntry, error)
+	Length() int
 }
 
 func makeGenericServiceEntrySet(serviceEntryList []*networking_istio_io_v1alpha3.ServiceEntry) sksets.ResourceSet {
@@ -339,11 +379,19 @@ func NewServiceEntrySet(serviceEntryList ...*networking_istio_io_v1alpha3.Servic
 	return &serviceEntrySet{set: makeGenericServiceEntrySet(serviceEntryList)}
 }
 
-func (s serviceEntrySet) Keys() sets.String {
+func NewServiceEntrySetFromList(serviceEntryList *networking_istio_io_v1alpha3.ServiceEntryList) ServiceEntrySet {
+	list := make([]*networking_istio_io_v1alpha3.ServiceEntry, 0, len(serviceEntryList.Items))
+	for idx := range serviceEntryList.Items {
+		list = append(list, &serviceEntryList.Items[idx])
+	}
+	return &serviceEntrySet{set: makeGenericServiceEntrySet(list)}
+}
+
+func (s *serviceEntrySet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s serviceEntrySet) List() []*networking_istio_io_v1alpha3.ServiceEntry {
+func (s *serviceEntrySet) List() []*networking_istio_io_v1alpha3.ServiceEntry {
 	var serviceEntryList []*networking_istio_io_v1alpha3.ServiceEntry
 	for _, obj := range s.set.List() {
 		serviceEntryList = append(serviceEntryList, obj.(*networking_istio_io_v1alpha3.ServiceEntry))
@@ -351,7 +399,7 @@ func (s serviceEntrySet) List() []*networking_istio_io_v1alpha3.ServiceEntry {
 	return serviceEntryList
 }
 
-func (s serviceEntrySet) Map() map[string]*networking_istio_io_v1alpha3.ServiceEntry {
+func (s *serviceEntrySet) Map() map[string]*networking_istio_io_v1alpha3.ServiceEntry {
 	newMap := map[string]*networking_istio_io_v1alpha3.ServiceEntry{}
 	for k, v := range s.set.Map() {
 		newMap[k] = v.(*networking_istio_io_v1alpha3.ServiceEntry)
@@ -359,7 +407,7 @@ func (s serviceEntrySet) Map() map[string]*networking_istio_io_v1alpha3.ServiceE
 	return newMap
 }
 
-func (s serviceEntrySet) Insert(
+func (s *serviceEntrySet) Insert(
 	serviceEntryList ...*networking_istio_io_v1alpha3.ServiceEntry,
 ) {
 	for _, obj := range serviceEntryList {
@@ -367,30 +415,30 @@ func (s serviceEntrySet) Insert(
 	}
 }
 
-func (s serviceEntrySet) Has(serviceEntry *networking_istio_io_v1alpha3.ServiceEntry) bool {
+func (s *serviceEntrySet) Has(serviceEntry *networking_istio_io_v1alpha3.ServiceEntry) bool {
 	return s.set.Has(serviceEntry)
 }
 
-func (s serviceEntrySet) Equal(
+func (s *serviceEntrySet) Equal(
 	serviceEntrySet ServiceEntrySet,
 ) bool {
 	return s.set.Equal(makeGenericServiceEntrySet(serviceEntrySet.List()))
 }
 
-func (s serviceEntrySet) Delete(ServiceEntry *networking_istio_io_v1alpha3.ServiceEntry) {
+func (s *serviceEntrySet) Delete(ServiceEntry *networking_istio_io_v1alpha3.ServiceEntry) {
 	s.set.Delete(ServiceEntry)
 }
 
-func (s serviceEntrySet) Union(set ServiceEntrySet) ServiceEntrySet {
+func (s *serviceEntrySet) Union(set ServiceEntrySet) ServiceEntrySet {
 	return NewServiceEntrySet(append(s.List(), set.List()...)...)
 }
 
-func (s serviceEntrySet) Difference(set ServiceEntrySet) ServiceEntrySet {
+func (s *serviceEntrySet) Difference(set ServiceEntrySet) ServiceEntrySet {
 	newSet := s.set.Difference(makeGenericServiceEntrySet(set.List()))
-	return serviceEntrySet{set: newSet}
+	return &serviceEntrySet{set: newSet}
 }
 
-func (s serviceEntrySet) Intersection(set ServiceEntrySet) ServiceEntrySet {
+func (s *serviceEntrySet) Intersection(set ServiceEntrySet) ServiceEntrySet {
 	newSet := s.set.Intersection(makeGenericServiceEntrySet(set.List()))
 	var serviceEntryList []*networking_istio_io_v1alpha3.ServiceEntry
 	for _, obj := range newSet.List() {
@@ -399,13 +447,17 @@ func (s serviceEntrySet) Intersection(set ServiceEntrySet) ServiceEntrySet {
 	return NewServiceEntrySet(serviceEntryList...)
 }
 
-func (s serviceEntrySet) Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.ServiceEntry, error) {
+func (s *serviceEntrySet) Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.ServiceEntry, error) {
 	obj, err := s.set.Find(&networking_istio_io_v1alpha3.ServiceEntry{}, id)
 	if err != nil {
 		return nil, err
 	}
 
 	return obj.(*networking_istio_io_v1alpha3.ServiceEntry), nil
+}
+
+func (s *serviceEntrySet) Length() int {
+	return s.set.Length()
 }
 
 type VirtualServiceSet interface {
@@ -420,6 +472,7 @@ type VirtualServiceSet interface {
 	Difference(set VirtualServiceSet) VirtualServiceSet
 	Intersection(set VirtualServiceSet) VirtualServiceSet
 	Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.VirtualService, error)
+	Length() int
 }
 
 func makeGenericVirtualServiceSet(virtualServiceList []*networking_istio_io_v1alpha3.VirtualService) sksets.ResourceSet {
@@ -438,11 +491,19 @@ func NewVirtualServiceSet(virtualServiceList ...*networking_istio_io_v1alpha3.Vi
 	return &virtualServiceSet{set: makeGenericVirtualServiceSet(virtualServiceList)}
 }
 
-func (s virtualServiceSet) Keys() sets.String {
+func NewVirtualServiceSetFromList(virtualServiceList *networking_istio_io_v1alpha3.VirtualServiceList) VirtualServiceSet {
+	list := make([]*networking_istio_io_v1alpha3.VirtualService, 0, len(virtualServiceList.Items))
+	for idx := range virtualServiceList.Items {
+		list = append(list, &virtualServiceList.Items[idx])
+	}
+	return &virtualServiceSet{set: makeGenericVirtualServiceSet(list)}
+}
+
+func (s *virtualServiceSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s virtualServiceSet) List() []*networking_istio_io_v1alpha3.VirtualService {
+func (s *virtualServiceSet) List() []*networking_istio_io_v1alpha3.VirtualService {
 	var virtualServiceList []*networking_istio_io_v1alpha3.VirtualService
 	for _, obj := range s.set.List() {
 		virtualServiceList = append(virtualServiceList, obj.(*networking_istio_io_v1alpha3.VirtualService))
@@ -450,7 +511,7 @@ func (s virtualServiceSet) List() []*networking_istio_io_v1alpha3.VirtualService
 	return virtualServiceList
 }
 
-func (s virtualServiceSet) Map() map[string]*networking_istio_io_v1alpha3.VirtualService {
+func (s *virtualServiceSet) Map() map[string]*networking_istio_io_v1alpha3.VirtualService {
 	newMap := map[string]*networking_istio_io_v1alpha3.VirtualService{}
 	for k, v := range s.set.Map() {
 		newMap[k] = v.(*networking_istio_io_v1alpha3.VirtualService)
@@ -458,7 +519,7 @@ func (s virtualServiceSet) Map() map[string]*networking_istio_io_v1alpha3.Virtua
 	return newMap
 }
 
-func (s virtualServiceSet) Insert(
+func (s *virtualServiceSet) Insert(
 	virtualServiceList ...*networking_istio_io_v1alpha3.VirtualService,
 ) {
 	for _, obj := range virtualServiceList {
@@ -466,30 +527,30 @@ func (s virtualServiceSet) Insert(
 	}
 }
 
-func (s virtualServiceSet) Has(virtualService *networking_istio_io_v1alpha3.VirtualService) bool {
+func (s *virtualServiceSet) Has(virtualService *networking_istio_io_v1alpha3.VirtualService) bool {
 	return s.set.Has(virtualService)
 }
 
-func (s virtualServiceSet) Equal(
+func (s *virtualServiceSet) Equal(
 	virtualServiceSet VirtualServiceSet,
 ) bool {
 	return s.set.Equal(makeGenericVirtualServiceSet(virtualServiceSet.List()))
 }
 
-func (s virtualServiceSet) Delete(VirtualService *networking_istio_io_v1alpha3.VirtualService) {
+func (s *virtualServiceSet) Delete(VirtualService *networking_istio_io_v1alpha3.VirtualService) {
 	s.set.Delete(VirtualService)
 }
 
-func (s virtualServiceSet) Union(set VirtualServiceSet) VirtualServiceSet {
+func (s *virtualServiceSet) Union(set VirtualServiceSet) VirtualServiceSet {
 	return NewVirtualServiceSet(append(s.List(), set.List()...)...)
 }
 
-func (s virtualServiceSet) Difference(set VirtualServiceSet) VirtualServiceSet {
+func (s *virtualServiceSet) Difference(set VirtualServiceSet) VirtualServiceSet {
 	newSet := s.set.Difference(makeGenericVirtualServiceSet(set.List()))
-	return virtualServiceSet{set: newSet}
+	return &virtualServiceSet{set: newSet}
 }
 
-func (s virtualServiceSet) Intersection(set VirtualServiceSet) VirtualServiceSet {
+func (s *virtualServiceSet) Intersection(set VirtualServiceSet) VirtualServiceSet {
 	newSet := s.set.Intersection(makeGenericVirtualServiceSet(set.List()))
 	var virtualServiceList []*networking_istio_io_v1alpha3.VirtualService
 	for _, obj := range newSet.List() {
@@ -498,11 +559,15 @@ func (s virtualServiceSet) Intersection(set VirtualServiceSet) VirtualServiceSet
 	return NewVirtualServiceSet(virtualServiceList...)
 }
 
-func (s virtualServiceSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.VirtualService, error) {
+func (s *virtualServiceSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.VirtualService, error) {
 	obj, err := s.set.Find(&networking_istio_io_v1alpha3.VirtualService{}, id)
 	if err != nil {
 		return nil, err
 	}
 
 	return obj.(*networking_istio_io_v1alpha3.VirtualService), nil
+}
+
+func (s *virtualServiceSet) Length() int {
+	return s.set.Length()
 }

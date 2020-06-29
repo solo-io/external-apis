@@ -24,6 +24,7 @@ type JobSet interface {
 	Difference(set JobSet) JobSet
 	Intersection(set JobSet) JobSet
 	Find(id ezkube.ResourceId) (*batch_v1.Job, error)
+	Length() int
 }
 
 func makeGenericJobSet(jobList []*batch_v1.Job) sksets.ResourceSet {
@@ -42,11 +43,19 @@ func NewJobSet(jobList ...*batch_v1.Job) JobSet {
 	return &jobSet{set: makeGenericJobSet(jobList)}
 }
 
-func (s jobSet) Keys() sets.String {
+func NewJobSetFromList(jobList *batch_v1.JobList) JobSet {
+	list := make([]*batch_v1.Job, 0, len(jobList.Items))
+	for idx := range jobList.Items {
+		list = append(list, &jobList.Items[idx])
+	}
+	return &jobSet{set: makeGenericJobSet(list)}
+}
+
+func (s *jobSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s jobSet) List() []*batch_v1.Job {
+func (s *jobSet) List() []*batch_v1.Job {
 	var jobList []*batch_v1.Job
 	for _, obj := range s.set.List() {
 		jobList = append(jobList, obj.(*batch_v1.Job))
@@ -54,7 +63,7 @@ func (s jobSet) List() []*batch_v1.Job {
 	return jobList
 }
 
-func (s jobSet) Map() map[string]*batch_v1.Job {
+func (s *jobSet) Map() map[string]*batch_v1.Job {
 	newMap := map[string]*batch_v1.Job{}
 	for k, v := range s.set.Map() {
 		newMap[k] = v.(*batch_v1.Job)
@@ -62,7 +71,7 @@ func (s jobSet) Map() map[string]*batch_v1.Job {
 	return newMap
 }
 
-func (s jobSet) Insert(
+func (s *jobSet) Insert(
 	jobList ...*batch_v1.Job,
 ) {
 	for _, obj := range jobList {
@@ -70,30 +79,30 @@ func (s jobSet) Insert(
 	}
 }
 
-func (s jobSet) Has(job *batch_v1.Job) bool {
+func (s *jobSet) Has(job *batch_v1.Job) bool {
 	return s.set.Has(job)
 }
 
-func (s jobSet) Equal(
+func (s *jobSet) Equal(
 	jobSet JobSet,
 ) bool {
 	return s.set.Equal(makeGenericJobSet(jobSet.List()))
 }
 
-func (s jobSet) Delete(Job *batch_v1.Job) {
+func (s *jobSet) Delete(Job *batch_v1.Job) {
 	s.set.Delete(Job)
 }
 
-func (s jobSet) Union(set JobSet) JobSet {
+func (s *jobSet) Union(set JobSet) JobSet {
 	return NewJobSet(append(s.List(), set.List()...)...)
 }
 
-func (s jobSet) Difference(set JobSet) JobSet {
+func (s *jobSet) Difference(set JobSet) JobSet {
 	newSet := s.set.Difference(makeGenericJobSet(set.List()))
-	return jobSet{set: newSet}
+	return &jobSet{set: newSet}
 }
 
-func (s jobSet) Intersection(set JobSet) JobSet {
+func (s *jobSet) Intersection(set JobSet) JobSet {
 	newSet := s.set.Intersection(makeGenericJobSet(set.List()))
 	var jobList []*batch_v1.Job
 	for _, obj := range newSet.List() {
@@ -102,11 +111,15 @@ func (s jobSet) Intersection(set JobSet) JobSet {
 	return NewJobSet(jobList...)
 }
 
-func (s jobSet) Find(id ezkube.ResourceId) (*batch_v1.Job, error) {
+func (s *jobSet) Find(id ezkube.ResourceId) (*batch_v1.Job, error) {
 	obj, err := s.set.Find(&batch_v1.Job{}, id)
 	if err != nil {
 		return nil, err
 	}
 
 	return obj.(*batch_v1.Job), nil
+}
+
+func (s *jobSet) Length() int {
+	return s.set.Length()
 }
