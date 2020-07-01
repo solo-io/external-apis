@@ -77,9 +77,11 @@ func (m *MockAuthorizationPolicyDeletionReconciler) EXPECT() *MockAuthorizationP
 }
 
 // ReconcileAuthorizationPolicyDeletion mocks base method
-func (m *MockAuthorizationPolicyDeletionReconciler) ReconcileAuthorizationPolicyDeletion(req reconcile.Request) {
+func (m *MockAuthorizationPolicyDeletionReconciler) ReconcileAuthorizationPolicyDeletion(req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileAuthorizationPolicyDeletion", req)
+	ret := m.ctrl.Call(m, "ReconcileAuthorizationPolicyDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileAuthorizationPolicyDeletion indicates an expected call of ReconcileAuthorizationPolicyDeletion

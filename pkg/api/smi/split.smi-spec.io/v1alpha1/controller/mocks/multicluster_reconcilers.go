@@ -77,9 +77,11 @@ func (m *MockMulticlusterTrafficSplitDeletionReconciler) EXPECT() *MockMulticlus
 }
 
 // ReconcileTrafficSplitDeletion mocks base method
-func (m *MockMulticlusterTrafficSplitDeletionReconciler) ReconcileTrafficSplitDeletion(clusterName string, req reconcile.Request) {
+func (m *MockMulticlusterTrafficSplitDeletionReconciler) ReconcileTrafficSplitDeletion(clusterName string, req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileTrafficSplitDeletion", clusterName, req)
+	ret := m.ctrl.Call(m, "ReconcileTrafficSplitDeletion", clusterName, req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileTrafficSplitDeletion indicates an expected call of ReconcileTrafficSplitDeletion

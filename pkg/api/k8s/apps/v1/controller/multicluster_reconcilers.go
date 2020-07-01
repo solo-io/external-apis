@@ -29,12 +29,12 @@ type MulticlusterDeploymentReconciler interface {
 // before being deleted.
 // implemented by the user
 type MulticlusterDeploymentDeletionReconciler interface {
-	ReconcileDeploymentDeletion(clusterName string, req reconcile.Request)
+	ReconcileDeploymentDeletion(clusterName string, req reconcile.Request) error
 }
 
 type MulticlusterDeploymentReconcilerFuncs struct {
 	OnReconcileDeployment         func(clusterName string, obj *apps_v1.Deployment) (reconcile.Result, error)
-	OnReconcileDeploymentDeletion func(clusterName string, req reconcile.Request)
+	OnReconcileDeploymentDeletion func(clusterName string, req reconcile.Request) error
 }
 
 func (f *MulticlusterDeploymentReconcilerFuncs) ReconcileDeployment(clusterName string, obj *apps_v1.Deployment) (reconcile.Result, error) {
@@ -44,11 +44,11 @@ func (f *MulticlusterDeploymentReconcilerFuncs) ReconcileDeployment(clusterName 
 	return f.OnReconcileDeployment(clusterName, obj)
 }
 
-func (f *MulticlusterDeploymentReconcilerFuncs) ReconcileDeploymentDeletion(clusterName string, req reconcile.Request) {
+func (f *MulticlusterDeploymentReconcilerFuncs) ReconcileDeploymentDeletion(clusterName string, req reconcile.Request) error {
 	if f.OnReconcileDeploymentDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileDeploymentDeletion(clusterName, req)
+	return f.OnReconcileDeploymentDeletion(clusterName, req)
 }
 
 type MulticlusterDeploymentReconcileLoop interface {
@@ -74,10 +74,11 @@ type genericDeploymentMulticlusterReconciler struct {
 	reconciler MulticlusterDeploymentReconciler
 }
 
-func (g genericDeploymentMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) {
+func (g genericDeploymentMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) error {
 	if deletionReconciler, ok := g.reconciler.(MulticlusterDeploymentDeletionReconciler); ok {
-		deletionReconciler.ReconcileDeploymentDeletion(cluster, req)
+		return deletionReconciler.ReconcileDeploymentDeletion(cluster, req)
 	}
+	return nil
 }
 
 func (g genericDeploymentMulticlusterReconciler) Reconcile(cluster string, object ezkube.Object) (reconcile.Result, error) {
@@ -99,12 +100,12 @@ type MulticlusterReplicaSetReconciler interface {
 // before being deleted.
 // implemented by the user
 type MulticlusterReplicaSetDeletionReconciler interface {
-	ReconcileReplicaSetDeletion(clusterName string, req reconcile.Request)
+	ReconcileReplicaSetDeletion(clusterName string, req reconcile.Request) error
 }
 
 type MulticlusterReplicaSetReconcilerFuncs struct {
 	OnReconcileReplicaSet         func(clusterName string, obj *apps_v1.ReplicaSet) (reconcile.Result, error)
-	OnReconcileReplicaSetDeletion func(clusterName string, req reconcile.Request)
+	OnReconcileReplicaSetDeletion func(clusterName string, req reconcile.Request) error
 }
 
 func (f *MulticlusterReplicaSetReconcilerFuncs) ReconcileReplicaSet(clusterName string, obj *apps_v1.ReplicaSet) (reconcile.Result, error) {
@@ -114,11 +115,11 @@ func (f *MulticlusterReplicaSetReconcilerFuncs) ReconcileReplicaSet(clusterName 
 	return f.OnReconcileReplicaSet(clusterName, obj)
 }
 
-func (f *MulticlusterReplicaSetReconcilerFuncs) ReconcileReplicaSetDeletion(clusterName string, req reconcile.Request) {
+func (f *MulticlusterReplicaSetReconcilerFuncs) ReconcileReplicaSetDeletion(clusterName string, req reconcile.Request) error {
 	if f.OnReconcileReplicaSetDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileReplicaSetDeletion(clusterName, req)
+	return f.OnReconcileReplicaSetDeletion(clusterName, req)
 }
 
 type MulticlusterReplicaSetReconcileLoop interface {
@@ -144,10 +145,11 @@ type genericReplicaSetMulticlusterReconciler struct {
 	reconciler MulticlusterReplicaSetReconciler
 }
 
-func (g genericReplicaSetMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) {
+func (g genericReplicaSetMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) error {
 	if deletionReconciler, ok := g.reconciler.(MulticlusterReplicaSetDeletionReconciler); ok {
-		deletionReconciler.ReconcileReplicaSetDeletion(cluster, req)
+		return deletionReconciler.ReconcileReplicaSetDeletion(cluster, req)
 	}
+	return nil
 }
 
 func (g genericReplicaSetMulticlusterReconciler) Reconcile(cluster string, object ezkube.Object) (reconcile.Result, error) {
@@ -169,12 +171,12 @@ type MulticlusterDaemonSetReconciler interface {
 // before being deleted.
 // implemented by the user
 type MulticlusterDaemonSetDeletionReconciler interface {
-	ReconcileDaemonSetDeletion(clusterName string, req reconcile.Request)
+	ReconcileDaemonSetDeletion(clusterName string, req reconcile.Request) error
 }
 
 type MulticlusterDaemonSetReconcilerFuncs struct {
 	OnReconcileDaemonSet         func(clusterName string, obj *apps_v1.DaemonSet) (reconcile.Result, error)
-	OnReconcileDaemonSetDeletion func(clusterName string, req reconcile.Request)
+	OnReconcileDaemonSetDeletion func(clusterName string, req reconcile.Request) error
 }
 
 func (f *MulticlusterDaemonSetReconcilerFuncs) ReconcileDaemonSet(clusterName string, obj *apps_v1.DaemonSet) (reconcile.Result, error) {
@@ -184,11 +186,11 @@ func (f *MulticlusterDaemonSetReconcilerFuncs) ReconcileDaemonSet(clusterName st
 	return f.OnReconcileDaemonSet(clusterName, obj)
 }
 
-func (f *MulticlusterDaemonSetReconcilerFuncs) ReconcileDaemonSetDeletion(clusterName string, req reconcile.Request) {
+func (f *MulticlusterDaemonSetReconcilerFuncs) ReconcileDaemonSetDeletion(clusterName string, req reconcile.Request) error {
 	if f.OnReconcileDaemonSetDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileDaemonSetDeletion(clusterName, req)
+	return f.OnReconcileDaemonSetDeletion(clusterName, req)
 }
 
 type MulticlusterDaemonSetReconcileLoop interface {
@@ -214,10 +216,11 @@ type genericDaemonSetMulticlusterReconciler struct {
 	reconciler MulticlusterDaemonSetReconciler
 }
 
-func (g genericDaemonSetMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) {
+func (g genericDaemonSetMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) error {
 	if deletionReconciler, ok := g.reconciler.(MulticlusterDaemonSetDeletionReconciler); ok {
-		deletionReconciler.ReconcileDaemonSetDeletion(cluster, req)
+		return deletionReconciler.ReconcileDaemonSetDeletion(cluster, req)
 	}
+	return nil
 }
 
 func (g genericDaemonSetMulticlusterReconciler) Reconcile(cluster string, object ezkube.Object) (reconcile.Result, error) {
@@ -239,12 +242,12 @@ type MulticlusterStatefulSetReconciler interface {
 // before being deleted.
 // implemented by the user
 type MulticlusterStatefulSetDeletionReconciler interface {
-	ReconcileStatefulSetDeletion(clusterName string, req reconcile.Request)
+	ReconcileStatefulSetDeletion(clusterName string, req reconcile.Request) error
 }
 
 type MulticlusterStatefulSetReconcilerFuncs struct {
 	OnReconcileStatefulSet         func(clusterName string, obj *apps_v1.StatefulSet) (reconcile.Result, error)
-	OnReconcileStatefulSetDeletion func(clusterName string, req reconcile.Request)
+	OnReconcileStatefulSetDeletion func(clusterName string, req reconcile.Request) error
 }
 
 func (f *MulticlusterStatefulSetReconcilerFuncs) ReconcileStatefulSet(clusterName string, obj *apps_v1.StatefulSet) (reconcile.Result, error) {
@@ -254,11 +257,11 @@ func (f *MulticlusterStatefulSetReconcilerFuncs) ReconcileStatefulSet(clusterNam
 	return f.OnReconcileStatefulSet(clusterName, obj)
 }
 
-func (f *MulticlusterStatefulSetReconcilerFuncs) ReconcileStatefulSetDeletion(clusterName string, req reconcile.Request) {
+func (f *MulticlusterStatefulSetReconcilerFuncs) ReconcileStatefulSetDeletion(clusterName string, req reconcile.Request) error {
 	if f.OnReconcileStatefulSetDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileStatefulSetDeletion(clusterName, req)
+	return f.OnReconcileStatefulSetDeletion(clusterName, req)
 }
 
 type MulticlusterStatefulSetReconcileLoop interface {
@@ -284,10 +287,11 @@ type genericStatefulSetMulticlusterReconciler struct {
 	reconciler MulticlusterStatefulSetReconciler
 }
 
-func (g genericStatefulSetMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) {
+func (g genericStatefulSetMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) error {
 	if deletionReconciler, ok := g.reconciler.(MulticlusterStatefulSetDeletionReconciler); ok {
-		deletionReconciler.ReconcileStatefulSetDeletion(cluster, req)
+		return deletionReconciler.ReconcileStatefulSetDeletion(cluster, req)
 	}
+	return nil
 }
 
 func (g genericStatefulSetMulticlusterReconciler) Reconcile(cluster string, object ezkube.Object) (reconcile.Result, error) {

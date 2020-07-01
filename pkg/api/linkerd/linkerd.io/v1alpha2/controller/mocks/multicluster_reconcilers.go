@@ -77,9 +77,11 @@ func (m *MockMulticlusterServiceProfileDeletionReconciler) EXPECT() *MockMulticl
 }
 
 // ReconcileServiceProfileDeletion mocks base method
-func (m *MockMulticlusterServiceProfileDeletionReconciler) ReconcileServiceProfileDeletion(clusterName string, req reconcile.Request) {
+func (m *MockMulticlusterServiceProfileDeletionReconciler) ReconcileServiceProfileDeletion(clusterName string, req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileServiceProfileDeletion", clusterName, req)
+	ret := m.ctrl.Call(m, "ReconcileServiceProfileDeletion", clusterName, req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileServiceProfileDeletion indicates an expected call of ReconcileServiceProfileDeletion

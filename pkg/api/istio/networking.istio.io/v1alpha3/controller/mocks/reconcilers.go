@@ -77,9 +77,11 @@ func (m *MockDestinationRuleDeletionReconciler) EXPECT() *MockDestinationRuleDel
 }
 
 // ReconcileDestinationRuleDeletion mocks base method
-func (m *MockDestinationRuleDeletionReconciler) ReconcileDestinationRuleDeletion(req reconcile.Request) {
+func (m *MockDestinationRuleDeletionReconciler) ReconcileDestinationRuleDeletion(req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileDestinationRuleDeletion", req)
+	ret := m.ctrl.Call(m, "ReconcileDestinationRuleDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileDestinationRuleDeletion indicates an expected call of ReconcileDestinationRuleDeletion
@@ -258,9 +260,11 @@ func (m *MockEnvoyFilterDeletionReconciler) EXPECT() *MockEnvoyFilterDeletionRec
 }
 
 // ReconcileEnvoyFilterDeletion mocks base method
-func (m *MockEnvoyFilterDeletionReconciler) ReconcileEnvoyFilterDeletion(req reconcile.Request) {
+func (m *MockEnvoyFilterDeletionReconciler) ReconcileEnvoyFilterDeletion(req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileEnvoyFilterDeletion", req)
+	ret := m.ctrl.Call(m, "ReconcileEnvoyFilterDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileEnvoyFilterDeletion indicates an expected call of ReconcileEnvoyFilterDeletion
@@ -439,9 +443,11 @@ func (m *MockGatewayDeletionReconciler) EXPECT() *MockGatewayDeletionReconcilerM
 }
 
 // ReconcileGatewayDeletion mocks base method
-func (m *MockGatewayDeletionReconciler) ReconcileGatewayDeletion(req reconcile.Request) {
+func (m *MockGatewayDeletionReconciler) ReconcileGatewayDeletion(req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileGatewayDeletion", req)
+	ret := m.ctrl.Call(m, "ReconcileGatewayDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileGatewayDeletion indicates an expected call of ReconcileGatewayDeletion
@@ -620,9 +626,11 @@ func (m *MockServiceEntryDeletionReconciler) EXPECT() *MockServiceEntryDeletionR
 }
 
 // ReconcileServiceEntryDeletion mocks base method
-func (m *MockServiceEntryDeletionReconciler) ReconcileServiceEntryDeletion(req reconcile.Request) {
+func (m *MockServiceEntryDeletionReconciler) ReconcileServiceEntryDeletion(req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileServiceEntryDeletion", req)
+	ret := m.ctrl.Call(m, "ReconcileServiceEntryDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileServiceEntryDeletion indicates an expected call of ReconcileServiceEntryDeletion
@@ -801,9 +809,11 @@ func (m *MockVirtualServiceDeletionReconciler) EXPECT() *MockVirtualServiceDelet
 }
 
 // ReconcileVirtualServiceDeletion mocks base method
-func (m *MockVirtualServiceDeletionReconciler) ReconcileVirtualServiceDeletion(req reconcile.Request) {
+func (m *MockVirtualServiceDeletionReconciler) ReconcileVirtualServiceDeletion(req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileVirtualServiceDeletion", req)
+	ret := m.ctrl.Call(m, "ReconcileVirtualServiceDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileVirtualServiceDeletion indicates an expected call of ReconcileVirtualServiceDeletion

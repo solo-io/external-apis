@@ -77,9 +77,11 @@ func (m *MockMulticlusterSecretDeletionReconciler) EXPECT() *MockMulticlusterSec
 }
 
 // ReconcileSecretDeletion mocks base method
-func (m *MockMulticlusterSecretDeletionReconciler) ReconcileSecretDeletion(clusterName string, req reconcile.Request) {
+func (m *MockMulticlusterSecretDeletionReconciler) ReconcileSecretDeletion(clusterName string, req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileSecretDeletion", clusterName, req)
+	ret := m.ctrl.Call(m, "ReconcileSecretDeletion", clusterName, req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileSecretDeletion indicates an expected call of ReconcileSecretDeletion
@@ -190,9 +192,11 @@ func (m *MockMulticlusterServiceAccountDeletionReconciler) EXPECT() *MockMulticl
 }
 
 // ReconcileServiceAccountDeletion mocks base method
-func (m *MockMulticlusterServiceAccountDeletionReconciler) ReconcileServiceAccountDeletion(clusterName string, req reconcile.Request) {
+func (m *MockMulticlusterServiceAccountDeletionReconciler) ReconcileServiceAccountDeletion(clusterName string, req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileServiceAccountDeletion", clusterName, req)
+	ret := m.ctrl.Call(m, "ReconcileServiceAccountDeletion", clusterName, req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileServiceAccountDeletion indicates an expected call of ReconcileServiceAccountDeletion
@@ -303,9 +307,11 @@ func (m *MockMulticlusterConfigMapDeletionReconciler) EXPECT() *MockMulticluster
 }
 
 // ReconcileConfigMapDeletion mocks base method
-func (m *MockMulticlusterConfigMapDeletionReconciler) ReconcileConfigMapDeletion(clusterName string, req reconcile.Request) {
+func (m *MockMulticlusterConfigMapDeletionReconciler) ReconcileConfigMapDeletion(clusterName string, req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileConfigMapDeletion", clusterName, req)
+	ret := m.ctrl.Call(m, "ReconcileConfigMapDeletion", clusterName, req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileConfigMapDeletion indicates an expected call of ReconcileConfigMapDeletion
@@ -416,9 +422,11 @@ func (m *MockMulticlusterServiceDeletionReconciler) EXPECT() *MockMulticlusterSe
 }
 
 // ReconcileServiceDeletion mocks base method
-func (m *MockMulticlusterServiceDeletionReconciler) ReconcileServiceDeletion(clusterName string, req reconcile.Request) {
+func (m *MockMulticlusterServiceDeletionReconciler) ReconcileServiceDeletion(clusterName string, req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileServiceDeletion", clusterName, req)
+	ret := m.ctrl.Call(m, "ReconcileServiceDeletion", clusterName, req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileServiceDeletion indicates an expected call of ReconcileServiceDeletion
@@ -529,9 +537,11 @@ func (m *MockMulticlusterPodDeletionReconciler) EXPECT() *MockMulticlusterPodDel
 }
 
 // ReconcilePodDeletion mocks base method
-func (m *MockMulticlusterPodDeletionReconciler) ReconcilePodDeletion(clusterName string, req reconcile.Request) {
+func (m *MockMulticlusterPodDeletionReconciler) ReconcilePodDeletion(clusterName string, req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcilePodDeletion", clusterName, req)
+	ret := m.ctrl.Call(m, "ReconcilePodDeletion", clusterName, req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcilePodDeletion indicates an expected call of ReconcilePodDeletion
@@ -642,9 +652,11 @@ func (m *MockMulticlusterNamespaceDeletionReconciler) EXPECT() *MockMulticluster
 }
 
 // ReconcileNamespaceDeletion mocks base method
-func (m *MockMulticlusterNamespaceDeletionReconciler) ReconcileNamespaceDeletion(clusterName string, req reconcile.Request) {
+func (m *MockMulticlusterNamespaceDeletionReconciler) ReconcileNamespaceDeletion(clusterName string, req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileNamespaceDeletion", clusterName, req)
+	ret := m.ctrl.Call(m, "ReconcileNamespaceDeletion", clusterName, req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileNamespaceDeletion indicates an expected call of ReconcileNamespaceDeletion
@@ -755,9 +767,11 @@ func (m *MockMulticlusterNodeDeletionReconciler) EXPECT() *MockMulticlusterNodeD
 }
 
 // ReconcileNodeDeletion mocks base method
-func (m *MockMulticlusterNodeDeletionReconciler) ReconcileNodeDeletion(clusterName string, req reconcile.Request) {
+func (m *MockMulticlusterNodeDeletionReconciler) ReconcileNodeDeletion(clusterName string, req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileNodeDeletion", clusterName, req)
+	ret := m.ctrl.Call(m, "ReconcileNodeDeletion", clusterName, req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileNodeDeletion indicates an expected call of ReconcileNodeDeletion

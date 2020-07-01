@@ -28,12 +28,12 @@ type DestinationRuleReconciler interface {
 // before being deleted.
 // implemented by the user
 type DestinationRuleDeletionReconciler interface {
-	ReconcileDestinationRuleDeletion(req reconcile.Request)
+	ReconcileDestinationRuleDeletion(req reconcile.Request) error
 }
 
 type DestinationRuleReconcilerFuncs struct {
 	OnReconcileDestinationRule         func(obj *networking_istio_io_v1alpha3.DestinationRule) (reconcile.Result, error)
-	OnReconcileDestinationRuleDeletion func(req reconcile.Request)
+	OnReconcileDestinationRuleDeletion func(req reconcile.Request) error
 }
 
 func (f *DestinationRuleReconcilerFuncs) ReconcileDestinationRule(obj *networking_istio_io_v1alpha3.DestinationRule) (reconcile.Result, error) {
@@ -43,11 +43,11 @@ func (f *DestinationRuleReconcilerFuncs) ReconcileDestinationRule(obj *networkin
 	return f.OnReconcileDestinationRule(obj)
 }
 
-func (f *DestinationRuleReconcilerFuncs) ReconcileDestinationRuleDeletion(req reconcile.Request) {
+func (f *DestinationRuleReconcilerFuncs) ReconcileDestinationRuleDeletion(req reconcile.Request) error {
 	if f.OnReconcileDestinationRuleDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileDestinationRuleDeletion(req)
+	return f.OnReconcileDestinationRuleDeletion(req)
 }
 
 // Reconcile and finalize the DestinationRule Resource
@@ -108,10 +108,11 @@ func (r genericDestinationRuleReconciler) Reconcile(object ezkube.Object) (recon
 	return r.reconciler.ReconcileDestinationRule(obj)
 }
 
-func (r genericDestinationRuleReconciler) ReconcileDeletion(request reconcile.Request) {
+func (r genericDestinationRuleReconciler) ReconcileDeletion(request reconcile.Request) error {
 	if deletionReconciler, ok := r.reconciler.(DestinationRuleDeletionReconciler); ok {
-		deletionReconciler.ReconcileDestinationRuleDeletion(request)
+		return deletionReconciler.ReconcileDestinationRuleDeletion(request)
 	}
+	return nil
 }
 
 // genericDestinationRuleFinalizer implements a generic reconcile.FinalizingReconciler
@@ -143,12 +144,12 @@ type EnvoyFilterReconciler interface {
 // before being deleted.
 // implemented by the user
 type EnvoyFilterDeletionReconciler interface {
-	ReconcileEnvoyFilterDeletion(req reconcile.Request)
+	ReconcileEnvoyFilterDeletion(req reconcile.Request) error
 }
 
 type EnvoyFilterReconcilerFuncs struct {
 	OnReconcileEnvoyFilter         func(obj *networking_istio_io_v1alpha3.EnvoyFilter) (reconcile.Result, error)
-	OnReconcileEnvoyFilterDeletion func(req reconcile.Request)
+	OnReconcileEnvoyFilterDeletion func(req reconcile.Request) error
 }
 
 func (f *EnvoyFilterReconcilerFuncs) ReconcileEnvoyFilter(obj *networking_istio_io_v1alpha3.EnvoyFilter) (reconcile.Result, error) {
@@ -158,11 +159,11 @@ func (f *EnvoyFilterReconcilerFuncs) ReconcileEnvoyFilter(obj *networking_istio_
 	return f.OnReconcileEnvoyFilter(obj)
 }
 
-func (f *EnvoyFilterReconcilerFuncs) ReconcileEnvoyFilterDeletion(req reconcile.Request) {
+func (f *EnvoyFilterReconcilerFuncs) ReconcileEnvoyFilterDeletion(req reconcile.Request) error {
 	if f.OnReconcileEnvoyFilterDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileEnvoyFilterDeletion(req)
+	return f.OnReconcileEnvoyFilterDeletion(req)
 }
 
 // Reconcile and finalize the EnvoyFilter Resource
@@ -223,10 +224,11 @@ func (r genericEnvoyFilterReconciler) Reconcile(object ezkube.Object) (reconcile
 	return r.reconciler.ReconcileEnvoyFilter(obj)
 }
 
-func (r genericEnvoyFilterReconciler) ReconcileDeletion(request reconcile.Request) {
+func (r genericEnvoyFilterReconciler) ReconcileDeletion(request reconcile.Request) error {
 	if deletionReconciler, ok := r.reconciler.(EnvoyFilterDeletionReconciler); ok {
-		deletionReconciler.ReconcileEnvoyFilterDeletion(request)
+		return deletionReconciler.ReconcileEnvoyFilterDeletion(request)
 	}
+	return nil
 }
 
 // genericEnvoyFilterFinalizer implements a generic reconcile.FinalizingReconciler
@@ -258,12 +260,12 @@ type GatewayReconciler interface {
 // before being deleted.
 // implemented by the user
 type GatewayDeletionReconciler interface {
-	ReconcileGatewayDeletion(req reconcile.Request)
+	ReconcileGatewayDeletion(req reconcile.Request) error
 }
 
 type GatewayReconcilerFuncs struct {
 	OnReconcileGateway         func(obj *networking_istio_io_v1alpha3.Gateway) (reconcile.Result, error)
-	OnReconcileGatewayDeletion func(req reconcile.Request)
+	OnReconcileGatewayDeletion func(req reconcile.Request) error
 }
 
 func (f *GatewayReconcilerFuncs) ReconcileGateway(obj *networking_istio_io_v1alpha3.Gateway) (reconcile.Result, error) {
@@ -273,11 +275,11 @@ func (f *GatewayReconcilerFuncs) ReconcileGateway(obj *networking_istio_io_v1alp
 	return f.OnReconcileGateway(obj)
 }
 
-func (f *GatewayReconcilerFuncs) ReconcileGatewayDeletion(req reconcile.Request) {
+func (f *GatewayReconcilerFuncs) ReconcileGatewayDeletion(req reconcile.Request) error {
 	if f.OnReconcileGatewayDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileGatewayDeletion(req)
+	return f.OnReconcileGatewayDeletion(req)
 }
 
 // Reconcile and finalize the Gateway Resource
@@ -338,10 +340,11 @@ func (r genericGatewayReconciler) Reconcile(object ezkube.Object) (reconcile.Res
 	return r.reconciler.ReconcileGateway(obj)
 }
 
-func (r genericGatewayReconciler) ReconcileDeletion(request reconcile.Request) {
+func (r genericGatewayReconciler) ReconcileDeletion(request reconcile.Request) error {
 	if deletionReconciler, ok := r.reconciler.(GatewayDeletionReconciler); ok {
-		deletionReconciler.ReconcileGatewayDeletion(request)
+		return deletionReconciler.ReconcileGatewayDeletion(request)
 	}
+	return nil
 }
 
 // genericGatewayFinalizer implements a generic reconcile.FinalizingReconciler
@@ -373,12 +376,12 @@ type ServiceEntryReconciler interface {
 // before being deleted.
 // implemented by the user
 type ServiceEntryDeletionReconciler interface {
-	ReconcileServiceEntryDeletion(req reconcile.Request)
+	ReconcileServiceEntryDeletion(req reconcile.Request) error
 }
 
 type ServiceEntryReconcilerFuncs struct {
 	OnReconcileServiceEntry         func(obj *networking_istio_io_v1alpha3.ServiceEntry) (reconcile.Result, error)
-	OnReconcileServiceEntryDeletion func(req reconcile.Request)
+	OnReconcileServiceEntryDeletion func(req reconcile.Request) error
 }
 
 func (f *ServiceEntryReconcilerFuncs) ReconcileServiceEntry(obj *networking_istio_io_v1alpha3.ServiceEntry) (reconcile.Result, error) {
@@ -388,11 +391,11 @@ func (f *ServiceEntryReconcilerFuncs) ReconcileServiceEntry(obj *networking_isti
 	return f.OnReconcileServiceEntry(obj)
 }
 
-func (f *ServiceEntryReconcilerFuncs) ReconcileServiceEntryDeletion(req reconcile.Request) {
+func (f *ServiceEntryReconcilerFuncs) ReconcileServiceEntryDeletion(req reconcile.Request) error {
 	if f.OnReconcileServiceEntryDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileServiceEntryDeletion(req)
+	return f.OnReconcileServiceEntryDeletion(req)
 }
 
 // Reconcile and finalize the ServiceEntry Resource
@@ -453,10 +456,11 @@ func (r genericServiceEntryReconciler) Reconcile(object ezkube.Object) (reconcil
 	return r.reconciler.ReconcileServiceEntry(obj)
 }
 
-func (r genericServiceEntryReconciler) ReconcileDeletion(request reconcile.Request) {
+func (r genericServiceEntryReconciler) ReconcileDeletion(request reconcile.Request) error {
 	if deletionReconciler, ok := r.reconciler.(ServiceEntryDeletionReconciler); ok {
-		deletionReconciler.ReconcileServiceEntryDeletion(request)
+		return deletionReconciler.ReconcileServiceEntryDeletion(request)
 	}
+	return nil
 }
 
 // genericServiceEntryFinalizer implements a generic reconcile.FinalizingReconciler
@@ -488,12 +492,12 @@ type VirtualServiceReconciler interface {
 // before being deleted.
 // implemented by the user
 type VirtualServiceDeletionReconciler interface {
-	ReconcileVirtualServiceDeletion(req reconcile.Request)
+	ReconcileVirtualServiceDeletion(req reconcile.Request) error
 }
 
 type VirtualServiceReconcilerFuncs struct {
 	OnReconcileVirtualService         func(obj *networking_istio_io_v1alpha3.VirtualService) (reconcile.Result, error)
-	OnReconcileVirtualServiceDeletion func(req reconcile.Request)
+	OnReconcileVirtualServiceDeletion func(req reconcile.Request) error
 }
 
 func (f *VirtualServiceReconcilerFuncs) ReconcileVirtualService(obj *networking_istio_io_v1alpha3.VirtualService) (reconcile.Result, error) {
@@ -503,11 +507,11 @@ func (f *VirtualServiceReconcilerFuncs) ReconcileVirtualService(obj *networking_
 	return f.OnReconcileVirtualService(obj)
 }
 
-func (f *VirtualServiceReconcilerFuncs) ReconcileVirtualServiceDeletion(req reconcile.Request) {
+func (f *VirtualServiceReconcilerFuncs) ReconcileVirtualServiceDeletion(req reconcile.Request) error {
 	if f.OnReconcileVirtualServiceDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileVirtualServiceDeletion(req)
+	return f.OnReconcileVirtualServiceDeletion(req)
 }
 
 // Reconcile and finalize the VirtualService Resource
@@ -568,10 +572,11 @@ func (r genericVirtualServiceReconciler) Reconcile(object ezkube.Object) (reconc
 	return r.reconciler.ReconcileVirtualService(obj)
 }
 
-func (r genericVirtualServiceReconciler) ReconcileDeletion(request reconcile.Request) {
+func (r genericVirtualServiceReconciler) ReconcileDeletion(request reconcile.Request) error {
 	if deletionReconciler, ok := r.reconciler.(VirtualServiceDeletionReconciler); ok {
-		deletionReconciler.ReconcileVirtualServiceDeletion(request)
+		return deletionReconciler.ReconcileVirtualServiceDeletion(request)
 	}
+	return nil
 }
 
 // genericVirtualServiceFinalizer implements a generic reconcile.FinalizingReconciler

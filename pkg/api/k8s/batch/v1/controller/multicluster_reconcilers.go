@@ -29,12 +29,12 @@ type MulticlusterJobReconciler interface {
 // before being deleted.
 // implemented by the user
 type MulticlusterJobDeletionReconciler interface {
-	ReconcileJobDeletion(clusterName string, req reconcile.Request)
+	ReconcileJobDeletion(clusterName string, req reconcile.Request) error
 }
 
 type MulticlusterJobReconcilerFuncs struct {
 	OnReconcileJob         func(clusterName string, obj *batch_v1.Job) (reconcile.Result, error)
-	OnReconcileJobDeletion func(clusterName string, req reconcile.Request)
+	OnReconcileJobDeletion func(clusterName string, req reconcile.Request) error
 }
 
 func (f *MulticlusterJobReconcilerFuncs) ReconcileJob(clusterName string, obj *batch_v1.Job) (reconcile.Result, error) {
@@ -44,11 +44,11 @@ func (f *MulticlusterJobReconcilerFuncs) ReconcileJob(clusterName string, obj *b
 	return f.OnReconcileJob(clusterName, obj)
 }
 
-func (f *MulticlusterJobReconcilerFuncs) ReconcileJobDeletion(clusterName string, req reconcile.Request) {
+func (f *MulticlusterJobReconcilerFuncs) ReconcileJobDeletion(clusterName string, req reconcile.Request) error {
 	if f.OnReconcileJobDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileJobDeletion(clusterName, req)
+	return f.OnReconcileJobDeletion(clusterName, req)
 }
 
 type MulticlusterJobReconcileLoop interface {
@@ -74,10 +74,11 @@ type genericJobMulticlusterReconciler struct {
 	reconciler MulticlusterJobReconciler
 }
 
-func (g genericJobMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) {
+func (g genericJobMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) error {
 	if deletionReconciler, ok := g.reconciler.(MulticlusterJobDeletionReconciler); ok {
-		deletionReconciler.ReconcileJobDeletion(cluster, req)
+		return deletionReconciler.ReconcileJobDeletion(cluster, req)
 	}
+	return nil
 }
 
 func (g genericJobMulticlusterReconciler) Reconcile(cluster string, object ezkube.Object) (reconcile.Result, error) {

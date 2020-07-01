@@ -77,9 +77,11 @@ func (m *MockSecretDeletionReconciler) EXPECT() *MockSecretDeletionReconcilerMoc
 }
 
 // ReconcileSecretDeletion mocks base method
-func (m *MockSecretDeletionReconciler) ReconcileSecretDeletion(req reconcile.Request) {
+func (m *MockSecretDeletionReconciler) ReconcileSecretDeletion(req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileSecretDeletion", req)
+	ret := m.ctrl.Call(m, "ReconcileSecretDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileSecretDeletion indicates an expected call of ReconcileSecretDeletion
@@ -258,9 +260,11 @@ func (m *MockServiceAccountDeletionReconciler) EXPECT() *MockServiceAccountDelet
 }
 
 // ReconcileServiceAccountDeletion mocks base method
-func (m *MockServiceAccountDeletionReconciler) ReconcileServiceAccountDeletion(req reconcile.Request) {
+func (m *MockServiceAccountDeletionReconciler) ReconcileServiceAccountDeletion(req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileServiceAccountDeletion", req)
+	ret := m.ctrl.Call(m, "ReconcileServiceAccountDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileServiceAccountDeletion indicates an expected call of ReconcileServiceAccountDeletion
@@ -439,9 +443,11 @@ func (m *MockConfigMapDeletionReconciler) EXPECT() *MockConfigMapDeletionReconci
 }
 
 // ReconcileConfigMapDeletion mocks base method
-func (m *MockConfigMapDeletionReconciler) ReconcileConfigMapDeletion(req reconcile.Request) {
+func (m *MockConfigMapDeletionReconciler) ReconcileConfigMapDeletion(req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileConfigMapDeletion", req)
+	ret := m.ctrl.Call(m, "ReconcileConfigMapDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileConfigMapDeletion indicates an expected call of ReconcileConfigMapDeletion
@@ -620,9 +626,11 @@ func (m *MockServiceDeletionReconciler) EXPECT() *MockServiceDeletionReconcilerM
 }
 
 // ReconcileServiceDeletion mocks base method
-func (m *MockServiceDeletionReconciler) ReconcileServiceDeletion(req reconcile.Request) {
+func (m *MockServiceDeletionReconciler) ReconcileServiceDeletion(req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileServiceDeletion", req)
+	ret := m.ctrl.Call(m, "ReconcileServiceDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileServiceDeletion indicates an expected call of ReconcileServiceDeletion
@@ -801,9 +809,11 @@ func (m *MockPodDeletionReconciler) EXPECT() *MockPodDeletionReconcilerMockRecor
 }
 
 // ReconcilePodDeletion mocks base method
-func (m *MockPodDeletionReconciler) ReconcilePodDeletion(req reconcile.Request) {
+func (m *MockPodDeletionReconciler) ReconcilePodDeletion(req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcilePodDeletion", req)
+	ret := m.ctrl.Call(m, "ReconcilePodDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcilePodDeletion indicates an expected call of ReconcilePodDeletion
@@ -982,9 +992,11 @@ func (m *MockNamespaceDeletionReconciler) EXPECT() *MockNamespaceDeletionReconci
 }
 
 // ReconcileNamespaceDeletion mocks base method
-func (m *MockNamespaceDeletionReconciler) ReconcileNamespaceDeletion(req reconcile.Request) {
+func (m *MockNamespaceDeletionReconciler) ReconcileNamespaceDeletion(req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileNamespaceDeletion", req)
+	ret := m.ctrl.Call(m, "ReconcileNamespaceDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileNamespaceDeletion indicates an expected call of ReconcileNamespaceDeletion
@@ -1163,9 +1175,11 @@ func (m *MockNodeDeletionReconciler) EXPECT() *MockNodeDeletionReconcilerMockRec
 }
 
 // ReconcileNodeDeletion mocks base method
-func (m *MockNodeDeletionReconciler) ReconcileNodeDeletion(req reconcile.Request) {
+func (m *MockNodeDeletionReconciler) ReconcileNodeDeletion(req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileNodeDeletion", req)
+	ret := m.ctrl.Call(m, "ReconcileNodeDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileNodeDeletion indicates an expected call of ReconcileNodeDeletion

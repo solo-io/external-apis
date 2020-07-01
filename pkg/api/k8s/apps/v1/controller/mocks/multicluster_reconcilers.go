@@ -77,9 +77,11 @@ func (m *MockMulticlusterDeploymentDeletionReconciler) EXPECT() *MockMulticluste
 }
 
 // ReconcileDeploymentDeletion mocks base method
-func (m *MockMulticlusterDeploymentDeletionReconciler) ReconcileDeploymentDeletion(clusterName string, req reconcile.Request) {
+func (m *MockMulticlusterDeploymentDeletionReconciler) ReconcileDeploymentDeletion(clusterName string, req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileDeploymentDeletion", clusterName, req)
+	ret := m.ctrl.Call(m, "ReconcileDeploymentDeletion", clusterName, req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileDeploymentDeletion indicates an expected call of ReconcileDeploymentDeletion
@@ -190,9 +192,11 @@ func (m *MockMulticlusterReplicaSetDeletionReconciler) EXPECT() *MockMulticluste
 }
 
 // ReconcileReplicaSetDeletion mocks base method
-func (m *MockMulticlusterReplicaSetDeletionReconciler) ReconcileReplicaSetDeletion(clusterName string, req reconcile.Request) {
+func (m *MockMulticlusterReplicaSetDeletionReconciler) ReconcileReplicaSetDeletion(clusterName string, req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileReplicaSetDeletion", clusterName, req)
+	ret := m.ctrl.Call(m, "ReconcileReplicaSetDeletion", clusterName, req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileReplicaSetDeletion indicates an expected call of ReconcileReplicaSetDeletion
@@ -303,9 +307,11 @@ func (m *MockMulticlusterDaemonSetDeletionReconciler) EXPECT() *MockMulticluster
 }
 
 // ReconcileDaemonSetDeletion mocks base method
-func (m *MockMulticlusterDaemonSetDeletionReconciler) ReconcileDaemonSetDeletion(clusterName string, req reconcile.Request) {
+func (m *MockMulticlusterDaemonSetDeletionReconciler) ReconcileDaemonSetDeletion(clusterName string, req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileDaemonSetDeletion", clusterName, req)
+	ret := m.ctrl.Call(m, "ReconcileDaemonSetDeletion", clusterName, req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileDaemonSetDeletion indicates an expected call of ReconcileDaemonSetDeletion
@@ -416,9 +422,11 @@ func (m *MockMulticlusterStatefulSetDeletionReconciler) EXPECT() *MockMulticlust
 }
 
 // ReconcileStatefulSetDeletion mocks base method
-func (m *MockMulticlusterStatefulSetDeletionReconciler) ReconcileStatefulSetDeletion(clusterName string, req reconcile.Request) {
+func (m *MockMulticlusterStatefulSetDeletionReconciler) ReconcileStatefulSetDeletion(clusterName string, req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileStatefulSetDeletion", clusterName, req)
+	ret := m.ctrl.Call(m, "ReconcileStatefulSetDeletion", clusterName, req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileStatefulSetDeletion indicates an expected call of ReconcileStatefulSetDeletion

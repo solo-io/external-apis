@@ -77,9 +77,11 @@ func (m *MockServiceProfileDeletionReconciler) EXPECT() *MockServiceProfileDelet
 }
 
 // ReconcileServiceProfileDeletion mocks base method
-func (m *MockServiceProfileDeletionReconciler) ReconcileServiceProfileDeletion(req reconcile.Request) {
+func (m *MockServiceProfileDeletionReconciler) ReconcileServiceProfileDeletion(req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileServiceProfileDeletion", req)
+	ret := m.ctrl.Call(m, "ReconcileServiceProfileDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileServiceProfileDeletion indicates an expected call of ReconcileServiceProfileDeletion

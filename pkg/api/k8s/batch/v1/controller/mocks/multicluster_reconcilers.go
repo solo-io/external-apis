@@ -77,9 +77,11 @@ func (m *MockMulticlusterJobDeletionReconciler) EXPECT() *MockMulticlusterJobDel
 }
 
 // ReconcileJobDeletion mocks base method
-func (m *MockMulticlusterJobDeletionReconciler) ReconcileJobDeletion(clusterName string, req reconcile.Request) {
+func (m *MockMulticlusterJobDeletionReconciler) ReconcileJobDeletion(clusterName string, req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileJobDeletion", clusterName, req)
+	ret := m.ctrl.Call(m, "ReconcileJobDeletion", clusterName, req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileJobDeletion indicates an expected call of ReconcileJobDeletion

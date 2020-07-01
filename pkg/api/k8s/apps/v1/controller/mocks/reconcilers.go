@@ -77,9 +77,11 @@ func (m *MockDeploymentDeletionReconciler) EXPECT() *MockDeploymentDeletionRecon
 }
 
 // ReconcileDeploymentDeletion mocks base method
-func (m *MockDeploymentDeletionReconciler) ReconcileDeploymentDeletion(req reconcile.Request) {
+func (m *MockDeploymentDeletionReconciler) ReconcileDeploymentDeletion(req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileDeploymentDeletion", req)
+	ret := m.ctrl.Call(m, "ReconcileDeploymentDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileDeploymentDeletion indicates an expected call of ReconcileDeploymentDeletion
@@ -258,9 +260,11 @@ func (m *MockReplicaSetDeletionReconciler) EXPECT() *MockReplicaSetDeletionRecon
 }
 
 // ReconcileReplicaSetDeletion mocks base method
-func (m *MockReplicaSetDeletionReconciler) ReconcileReplicaSetDeletion(req reconcile.Request) {
+func (m *MockReplicaSetDeletionReconciler) ReconcileReplicaSetDeletion(req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileReplicaSetDeletion", req)
+	ret := m.ctrl.Call(m, "ReconcileReplicaSetDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileReplicaSetDeletion indicates an expected call of ReconcileReplicaSetDeletion
@@ -439,9 +443,11 @@ func (m *MockDaemonSetDeletionReconciler) EXPECT() *MockDaemonSetDeletionReconci
 }
 
 // ReconcileDaemonSetDeletion mocks base method
-func (m *MockDaemonSetDeletionReconciler) ReconcileDaemonSetDeletion(req reconcile.Request) {
+func (m *MockDaemonSetDeletionReconciler) ReconcileDaemonSetDeletion(req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileDaemonSetDeletion", req)
+	ret := m.ctrl.Call(m, "ReconcileDaemonSetDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileDaemonSetDeletion indicates an expected call of ReconcileDaemonSetDeletion
@@ -620,9 +626,11 @@ func (m *MockStatefulSetDeletionReconciler) EXPECT() *MockStatefulSetDeletionRec
 }
 
 // ReconcileStatefulSetDeletion mocks base method
-func (m *MockStatefulSetDeletionReconciler) ReconcileStatefulSetDeletion(req reconcile.Request) {
+func (m *MockStatefulSetDeletionReconciler) ReconcileStatefulSetDeletion(req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReconcileStatefulSetDeletion", req)
+	ret := m.ctrl.Call(m, "ReconcileStatefulSetDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // ReconcileStatefulSetDeletion indicates an expected call of ReconcileStatefulSetDeletion
