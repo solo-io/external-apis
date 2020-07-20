@@ -13,17 +13,29 @@ import (
 )
 
 type DeploymentSet interface {
+	// Get the set stored keys
 	Keys() sets.String
-	List() []*apps_v1.Deployment
+	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	List(filterResource ...func(*apps_v1.Deployment) bool) []*apps_v1.Deployment
+	// Return the Set as a map of key to resource.
 	Map() map[string]*apps_v1.Deployment
+	// Insert a resource into the set.
 	Insert(deployment ...*apps_v1.Deployment)
+	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(deploymentSet DeploymentSet) bool
-	Has(deployment *apps_v1.Deployment) bool
-	Delete(deployment *apps_v1.Deployment)
+	// Check if the set contains a key matching the resource (not the resource itself)
+	Has(deployment ezkube.ResourceId) bool
+	// Delete the key matching the resource
+	Delete(deployment ezkube.ResourceId)
+	// Return the union with the provided set
 	Union(set DeploymentSet) DeploymentSet
+	// Return the difference with the provided set
 	Difference(set DeploymentSet) DeploymentSet
+	// Return the intersection with the provided set
 	Intersection(set DeploymentSet) DeploymentSet
+	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*apps_v1.Deployment, error)
+	// Get the length of the set
 	Length() int
 }
 
@@ -55,9 +67,17 @@ func (s *deploymentSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *deploymentSet) List() []*apps_v1.Deployment {
+func (s *deploymentSet) List(filterResource ...func(*apps_v1.Deployment) bool) []*apps_v1.Deployment {
+
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*apps_v1.Deployment))
+		})
+	}
+
 	var deploymentList []*apps_v1.Deployment
-	for _, obj := range s.set.List() {
+	for _, obj := range s.set.List(genericFilters...) {
 		deploymentList = append(deploymentList, obj.(*apps_v1.Deployment))
 	}
 	return deploymentList
@@ -79,7 +99,7 @@ func (s *deploymentSet) Insert(
 	}
 }
 
-func (s *deploymentSet) Has(deployment *apps_v1.Deployment) bool {
+func (s *deploymentSet) Has(deployment ezkube.ResourceId) bool {
 	return s.set.Has(deployment)
 }
 
@@ -89,7 +109,7 @@ func (s *deploymentSet) Equal(
 	return s.set.Equal(makeGenericDeploymentSet(deploymentSet.List()))
 }
 
-func (s *deploymentSet) Delete(Deployment *apps_v1.Deployment) {
+func (s *deploymentSet) Delete(Deployment ezkube.ResourceId) {
 	s.set.Delete(Deployment)
 }
 
@@ -125,17 +145,29 @@ func (s *deploymentSet) Length() int {
 }
 
 type ReplicaSetSet interface {
+	// Get the set stored keys
 	Keys() sets.String
-	List() []*apps_v1.ReplicaSet
+	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	List(filterResource ...func(*apps_v1.ReplicaSet) bool) []*apps_v1.ReplicaSet
+	// Return the Set as a map of key to resource.
 	Map() map[string]*apps_v1.ReplicaSet
+	// Insert a resource into the set.
 	Insert(replicaSet ...*apps_v1.ReplicaSet)
+	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(replicaSetSet ReplicaSetSet) bool
-	Has(replicaSet *apps_v1.ReplicaSet) bool
-	Delete(replicaSet *apps_v1.ReplicaSet)
+	// Check if the set contains a key matching the resource (not the resource itself)
+	Has(replicaSet ezkube.ResourceId) bool
+	// Delete the key matching the resource
+	Delete(replicaSet ezkube.ResourceId)
+	// Return the union with the provided set
 	Union(set ReplicaSetSet) ReplicaSetSet
+	// Return the difference with the provided set
 	Difference(set ReplicaSetSet) ReplicaSetSet
+	// Return the intersection with the provided set
 	Intersection(set ReplicaSetSet) ReplicaSetSet
+	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*apps_v1.ReplicaSet, error)
+	// Get the length of the set
 	Length() int
 }
 
@@ -167,9 +199,17 @@ func (s *replicaSetSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *replicaSetSet) List() []*apps_v1.ReplicaSet {
+func (s *replicaSetSet) List(filterResource ...func(*apps_v1.ReplicaSet) bool) []*apps_v1.ReplicaSet {
+
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*apps_v1.ReplicaSet))
+		})
+	}
+
 	var replicaSetList []*apps_v1.ReplicaSet
-	for _, obj := range s.set.List() {
+	for _, obj := range s.set.List(genericFilters...) {
 		replicaSetList = append(replicaSetList, obj.(*apps_v1.ReplicaSet))
 	}
 	return replicaSetList
@@ -191,7 +231,7 @@ func (s *replicaSetSet) Insert(
 	}
 }
 
-func (s *replicaSetSet) Has(replicaSet *apps_v1.ReplicaSet) bool {
+func (s *replicaSetSet) Has(replicaSet ezkube.ResourceId) bool {
 	return s.set.Has(replicaSet)
 }
 
@@ -201,7 +241,7 @@ func (s *replicaSetSet) Equal(
 	return s.set.Equal(makeGenericReplicaSetSet(replicaSetSet.List()))
 }
 
-func (s *replicaSetSet) Delete(ReplicaSet *apps_v1.ReplicaSet) {
+func (s *replicaSetSet) Delete(ReplicaSet ezkube.ResourceId) {
 	s.set.Delete(ReplicaSet)
 }
 
@@ -237,17 +277,29 @@ func (s *replicaSetSet) Length() int {
 }
 
 type DaemonSetSet interface {
+	// Get the set stored keys
 	Keys() sets.String
-	List() []*apps_v1.DaemonSet
+	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	List(filterResource ...func(*apps_v1.DaemonSet) bool) []*apps_v1.DaemonSet
+	// Return the Set as a map of key to resource.
 	Map() map[string]*apps_v1.DaemonSet
+	// Insert a resource into the set.
 	Insert(daemonSet ...*apps_v1.DaemonSet)
+	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(daemonSetSet DaemonSetSet) bool
-	Has(daemonSet *apps_v1.DaemonSet) bool
-	Delete(daemonSet *apps_v1.DaemonSet)
+	// Check if the set contains a key matching the resource (not the resource itself)
+	Has(daemonSet ezkube.ResourceId) bool
+	// Delete the key matching the resource
+	Delete(daemonSet ezkube.ResourceId)
+	// Return the union with the provided set
 	Union(set DaemonSetSet) DaemonSetSet
+	// Return the difference with the provided set
 	Difference(set DaemonSetSet) DaemonSetSet
+	// Return the intersection with the provided set
 	Intersection(set DaemonSetSet) DaemonSetSet
+	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*apps_v1.DaemonSet, error)
+	// Get the length of the set
 	Length() int
 }
 
@@ -279,9 +331,17 @@ func (s *daemonSetSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *daemonSetSet) List() []*apps_v1.DaemonSet {
+func (s *daemonSetSet) List(filterResource ...func(*apps_v1.DaemonSet) bool) []*apps_v1.DaemonSet {
+
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*apps_v1.DaemonSet))
+		})
+	}
+
 	var daemonSetList []*apps_v1.DaemonSet
-	for _, obj := range s.set.List() {
+	for _, obj := range s.set.List(genericFilters...) {
 		daemonSetList = append(daemonSetList, obj.(*apps_v1.DaemonSet))
 	}
 	return daemonSetList
@@ -303,7 +363,7 @@ func (s *daemonSetSet) Insert(
 	}
 }
 
-func (s *daemonSetSet) Has(daemonSet *apps_v1.DaemonSet) bool {
+func (s *daemonSetSet) Has(daemonSet ezkube.ResourceId) bool {
 	return s.set.Has(daemonSet)
 }
 
@@ -313,7 +373,7 @@ func (s *daemonSetSet) Equal(
 	return s.set.Equal(makeGenericDaemonSetSet(daemonSetSet.List()))
 }
 
-func (s *daemonSetSet) Delete(DaemonSet *apps_v1.DaemonSet) {
+func (s *daemonSetSet) Delete(DaemonSet ezkube.ResourceId) {
 	s.set.Delete(DaemonSet)
 }
 
@@ -349,17 +409,29 @@ func (s *daemonSetSet) Length() int {
 }
 
 type StatefulSetSet interface {
+	// Get the set stored keys
 	Keys() sets.String
-	List() []*apps_v1.StatefulSet
+	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	List(filterResource ...func(*apps_v1.StatefulSet) bool) []*apps_v1.StatefulSet
+	// Return the Set as a map of key to resource.
 	Map() map[string]*apps_v1.StatefulSet
+	// Insert a resource into the set.
 	Insert(statefulSet ...*apps_v1.StatefulSet)
+	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(statefulSetSet StatefulSetSet) bool
-	Has(statefulSet *apps_v1.StatefulSet) bool
-	Delete(statefulSet *apps_v1.StatefulSet)
+	// Check if the set contains a key matching the resource (not the resource itself)
+	Has(statefulSet ezkube.ResourceId) bool
+	// Delete the key matching the resource
+	Delete(statefulSet ezkube.ResourceId)
+	// Return the union with the provided set
 	Union(set StatefulSetSet) StatefulSetSet
+	// Return the difference with the provided set
 	Difference(set StatefulSetSet) StatefulSetSet
+	// Return the intersection with the provided set
 	Intersection(set StatefulSetSet) StatefulSetSet
+	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*apps_v1.StatefulSet, error)
+	// Get the length of the set
 	Length() int
 }
 
@@ -391,9 +463,17 @@ func (s *statefulSetSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *statefulSetSet) List() []*apps_v1.StatefulSet {
+func (s *statefulSetSet) List(filterResource ...func(*apps_v1.StatefulSet) bool) []*apps_v1.StatefulSet {
+
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*apps_v1.StatefulSet))
+		})
+	}
+
 	var statefulSetList []*apps_v1.StatefulSet
-	for _, obj := range s.set.List() {
+	for _, obj := range s.set.List(genericFilters...) {
 		statefulSetList = append(statefulSetList, obj.(*apps_v1.StatefulSet))
 	}
 	return statefulSetList
@@ -415,7 +495,7 @@ func (s *statefulSetSet) Insert(
 	}
 }
 
-func (s *statefulSetSet) Has(statefulSet *apps_v1.StatefulSet) bool {
+func (s *statefulSetSet) Has(statefulSet ezkube.ResourceId) bool {
 	return s.set.Has(statefulSet)
 }
 
@@ -425,7 +505,7 @@ func (s *statefulSetSet) Equal(
 	return s.set.Equal(makeGenericStatefulSetSet(statefulSetSet.List()))
 }
 
-func (s *statefulSetSet) Delete(StatefulSet *apps_v1.StatefulSet) {
+func (s *statefulSetSet) Delete(StatefulSet ezkube.ResourceId) {
 	s.set.Delete(StatefulSet)
 }
 

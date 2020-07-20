@@ -13,17 +13,29 @@ import (
 )
 
 type ServiceProfileSet interface {
+	// Get the set stored keys
 	Keys() sets.String
-	List() []*linkerd_io_v1alpha2.ServiceProfile
+	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	List(filterResource ...func(*linkerd_io_v1alpha2.ServiceProfile) bool) []*linkerd_io_v1alpha2.ServiceProfile
+	// Return the Set as a map of key to resource.
 	Map() map[string]*linkerd_io_v1alpha2.ServiceProfile
+	// Insert a resource into the set.
 	Insert(serviceProfile ...*linkerd_io_v1alpha2.ServiceProfile)
+	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(serviceProfileSet ServiceProfileSet) bool
-	Has(serviceProfile *linkerd_io_v1alpha2.ServiceProfile) bool
-	Delete(serviceProfile *linkerd_io_v1alpha2.ServiceProfile)
+	// Check if the set contains a key matching the resource (not the resource itself)
+	Has(serviceProfile ezkube.ResourceId) bool
+	// Delete the key matching the resource
+	Delete(serviceProfile ezkube.ResourceId)
+	// Return the union with the provided set
 	Union(set ServiceProfileSet) ServiceProfileSet
+	// Return the difference with the provided set
 	Difference(set ServiceProfileSet) ServiceProfileSet
+	// Return the intersection with the provided set
 	Intersection(set ServiceProfileSet) ServiceProfileSet
+	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*linkerd_io_v1alpha2.ServiceProfile, error)
+	// Get the length of the set
 	Length() int
 }
 
@@ -55,9 +67,17 @@ func (s *serviceProfileSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *serviceProfileSet) List() []*linkerd_io_v1alpha2.ServiceProfile {
+func (s *serviceProfileSet) List(filterResource ...func(*linkerd_io_v1alpha2.ServiceProfile) bool) []*linkerd_io_v1alpha2.ServiceProfile {
+
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*linkerd_io_v1alpha2.ServiceProfile))
+		})
+	}
+
 	var serviceProfileList []*linkerd_io_v1alpha2.ServiceProfile
-	for _, obj := range s.set.List() {
+	for _, obj := range s.set.List(genericFilters...) {
 		serviceProfileList = append(serviceProfileList, obj.(*linkerd_io_v1alpha2.ServiceProfile))
 	}
 	return serviceProfileList
@@ -79,7 +99,7 @@ func (s *serviceProfileSet) Insert(
 	}
 }
 
-func (s *serviceProfileSet) Has(serviceProfile *linkerd_io_v1alpha2.ServiceProfile) bool {
+func (s *serviceProfileSet) Has(serviceProfile ezkube.ResourceId) bool {
 	return s.set.Has(serviceProfile)
 }
 
@@ -89,7 +109,7 @@ func (s *serviceProfileSet) Equal(
 	return s.set.Equal(makeGenericServiceProfileSet(serviceProfileSet.List()))
 }
 
-func (s *serviceProfileSet) Delete(ServiceProfile *linkerd_io_v1alpha2.ServiceProfile) {
+func (s *serviceProfileSet) Delete(ServiceProfile ezkube.ResourceId) {
 	s.set.Delete(ServiceProfile)
 }
 

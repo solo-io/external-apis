@@ -25,14 +25,13 @@ require (
 	github.com/servicemeshinterface/smi-sdk-go v0.3.0
 	github.com/solo-io/go-utils v0.15.2 // indirect
 	github.com/solo-io/protoc-gen-ext v0.0.9 // indirect
-	github.com/solo-io/skv2 v0.6.1
+	github.com/solo-io/skv2 v0.7.3-0.20200720193056-82d0f8632ef9
 	github.com/solo-io/solo-kit v0.13.8 // indirect
 	golang.org/x/mod v0.3.0 // indirect
-	golang.org/x/sys v0.0.0-20200117145432-59e60aa80a0c // indirect
 	gonum.org/v1/netlib v0.0.0-20191031114514-eccb95939662 // indirect
 	istio.io/client-go v0.0.0-20200610222318-1cfead1f1938
-	k8s.io/api v0.18.1
-	k8s.io/apiextensions-apiserver v0.18.1
+	k8s.io/api v0.18.2
+	k8s.io/apiextensions-apiserver v0.18.2
 	k8s.io/apimachinery v0.18.3
 	k8s.io/client-go v8.0.0+incompatible
 	k8s.io/utils v0.0.0-20200414100711-2df71ebbae66 // indirect

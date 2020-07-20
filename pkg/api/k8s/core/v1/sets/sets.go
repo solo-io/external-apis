@@ -13,17 +13,29 @@ import (
 )
 
 type SecretSet interface {
+	// Get the set stored keys
 	Keys() sets.String
-	List() []*v1.Secret
+	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	List(filterResource ...func(*v1.Secret) bool) []*v1.Secret
+	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.Secret
+	// Insert a resource into the set.
 	Insert(secret ...*v1.Secret)
+	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(secretSet SecretSet) bool
-	Has(secret *v1.Secret) bool
-	Delete(secret *v1.Secret)
+	// Check if the set contains a key matching the resource (not the resource itself)
+	Has(secret ezkube.ResourceId) bool
+	// Delete the key matching the resource
+	Delete(secret ezkube.ResourceId)
+	// Return the union with the provided set
 	Union(set SecretSet) SecretSet
+	// Return the difference with the provided set
 	Difference(set SecretSet) SecretSet
+	// Return the intersection with the provided set
 	Intersection(set SecretSet) SecretSet
+	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*v1.Secret, error)
+	// Get the length of the set
 	Length() int
 }
 
@@ -55,9 +67,17 @@ func (s *secretSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *secretSet) List() []*v1.Secret {
+func (s *secretSet) List(filterResource ...func(*v1.Secret) bool) []*v1.Secret {
+
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*v1.Secret))
+		})
+	}
+
 	var secretList []*v1.Secret
-	for _, obj := range s.set.List() {
+	for _, obj := range s.set.List(genericFilters...) {
 		secretList = append(secretList, obj.(*v1.Secret))
 	}
 	return secretList
@@ -79,7 +99,7 @@ func (s *secretSet) Insert(
 	}
 }
 
-func (s *secretSet) Has(secret *v1.Secret) bool {
+func (s *secretSet) Has(secret ezkube.ResourceId) bool {
 	return s.set.Has(secret)
 }
 
@@ -89,7 +109,7 @@ func (s *secretSet) Equal(
 	return s.set.Equal(makeGenericSecretSet(secretSet.List()))
 }
 
-func (s *secretSet) Delete(Secret *v1.Secret) {
+func (s *secretSet) Delete(Secret ezkube.ResourceId) {
 	s.set.Delete(Secret)
 }
 
@@ -125,17 +145,29 @@ func (s *secretSet) Length() int {
 }
 
 type ServiceAccountSet interface {
+	// Get the set stored keys
 	Keys() sets.String
-	List() []*v1.ServiceAccount
+	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	List(filterResource ...func(*v1.ServiceAccount) bool) []*v1.ServiceAccount
+	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.ServiceAccount
+	// Insert a resource into the set.
 	Insert(serviceAccount ...*v1.ServiceAccount)
+	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(serviceAccountSet ServiceAccountSet) bool
-	Has(serviceAccount *v1.ServiceAccount) bool
-	Delete(serviceAccount *v1.ServiceAccount)
+	// Check if the set contains a key matching the resource (not the resource itself)
+	Has(serviceAccount ezkube.ResourceId) bool
+	// Delete the key matching the resource
+	Delete(serviceAccount ezkube.ResourceId)
+	// Return the union with the provided set
 	Union(set ServiceAccountSet) ServiceAccountSet
+	// Return the difference with the provided set
 	Difference(set ServiceAccountSet) ServiceAccountSet
+	// Return the intersection with the provided set
 	Intersection(set ServiceAccountSet) ServiceAccountSet
+	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*v1.ServiceAccount, error)
+	// Get the length of the set
 	Length() int
 }
 
@@ -167,9 +199,17 @@ func (s *serviceAccountSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *serviceAccountSet) List() []*v1.ServiceAccount {
+func (s *serviceAccountSet) List(filterResource ...func(*v1.ServiceAccount) bool) []*v1.ServiceAccount {
+
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*v1.ServiceAccount))
+		})
+	}
+
 	var serviceAccountList []*v1.ServiceAccount
-	for _, obj := range s.set.List() {
+	for _, obj := range s.set.List(genericFilters...) {
 		serviceAccountList = append(serviceAccountList, obj.(*v1.ServiceAccount))
 	}
 	return serviceAccountList
@@ -191,7 +231,7 @@ func (s *serviceAccountSet) Insert(
 	}
 }
 
-func (s *serviceAccountSet) Has(serviceAccount *v1.ServiceAccount) bool {
+func (s *serviceAccountSet) Has(serviceAccount ezkube.ResourceId) bool {
 	return s.set.Has(serviceAccount)
 }
 
@@ -201,7 +241,7 @@ func (s *serviceAccountSet) Equal(
 	return s.set.Equal(makeGenericServiceAccountSet(serviceAccountSet.List()))
 }
 
-func (s *serviceAccountSet) Delete(ServiceAccount *v1.ServiceAccount) {
+func (s *serviceAccountSet) Delete(ServiceAccount ezkube.ResourceId) {
 	s.set.Delete(ServiceAccount)
 }
 
@@ -237,17 +277,29 @@ func (s *serviceAccountSet) Length() int {
 }
 
 type ConfigMapSet interface {
+	// Get the set stored keys
 	Keys() sets.String
-	List() []*v1.ConfigMap
+	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	List(filterResource ...func(*v1.ConfigMap) bool) []*v1.ConfigMap
+	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.ConfigMap
+	// Insert a resource into the set.
 	Insert(configMap ...*v1.ConfigMap)
+	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(configMapSet ConfigMapSet) bool
-	Has(configMap *v1.ConfigMap) bool
-	Delete(configMap *v1.ConfigMap)
+	// Check if the set contains a key matching the resource (not the resource itself)
+	Has(configMap ezkube.ResourceId) bool
+	// Delete the key matching the resource
+	Delete(configMap ezkube.ResourceId)
+	// Return the union with the provided set
 	Union(set ConfigMapSet) ConfigMapSet
+	// Return the difference with the provided set
 	Difference(set ConfigMapSet) ConfigMapSet
+	// Return the intersection with the provided set
 	Intersection(set ConfigMapSet) ConfigMapSet
+	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*v1.ConfigMap, error)
+	// Get the length of the set
 	Length() int
 }
 
@@ -279,9 +331,17 @@ func (s *configMapSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *configMapSet) List() []*v1.ConfigMap {
+func (s *configMapSet) List(filterResource ...func(*v1.ConfigMap) bool) []*v1.ConfigMap {
+
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*v1.ConfigMap))
+		})
+	}
+
 	var configMapList []*v1.ConfigMap
-	for _, obj := range s.set.List() {
+	for _, obj := range s.set.List(genericFilters...) {
 		configMapList = append(configMapList, obj.(*v1.ConfigMap))
 	}
 	return configMapList
@@ -303,7 +363,7 @@ func (s *configMapSet) Insert(
 	}
 }
 
-func (s *configMapSet) Has(configMap *v1.ConfigMap) bool {
+func (s *configMapSet) Has(configMap ezkube.ResourceId) bool {
 	return s.set.Has(configMap)
 }
 
@@ -313,7 +373,7 @@ func (s *configMapSet) Equal(
 	return s.set.Equal(makeGenericConfigMapSet(configMapSet.List()))
 }
 
-func (s *configMapSet) Delete(ConfigMap *v1.ConfigMap) {
+func (s *configMapSet) Delete(ConfigMap ezkube.ResourceId) {
 	s.set.Delete(ConfigMap)
 }
 
@@ -349,17 +409,29 @@ func (s *configMapSet) Length() int {
 }
 
 type ServiceSet interface {
+	// Get the set stored keys
 	Keys() sets.String
-	List() []*v1.Service
+	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	List(filterResource ...func(*v1.Service) bool) []*v1.Service
+	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.Service
+	// Insert a resource into the set.
 	Insert(service ...*v1.Service)
+	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(serviceSet ServiceSet) bool
-	Has(service *v1.Service) bool
-	Delete(service *v1.Service)
+	// Check if the set contains a key matching the resource (not the resource itself)
+	Has(service ezkube.ResourceId) bool
+	// Delete the key matching the resource
+	Delete(service ezkube.ResourceId)
+	// Return the union with the provided set
 	Union(set ServiceSet) ServiceSet
+	// Return the difference with the provided set
 	Difference(set ServiceSet) ServiceSet
+	// Return the intersection with the provided set
 	Intersection(set ServiceSet) ServiceSet
+	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*v1.Service, error)
+	// Get the length of the set
 	Length() int
 }
 
@@ -391,9 +463,17 @@ func (s *serviceSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *serviceSet) List() []*v1.Service {
+func (s *serviceSet) List(filterResource ...func(*v1.Service) bool) []*v1.Service {
+
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*v1.Service))
+		})
+	}
+
 	var serviceList []*v1.Service
-	for _, obj := range s.set.List() {
+	for _, obj := range s.set.List(genericFilters...) {
 		serviceList = append(serviceList, obj.(*v1.Service))
 	}
 	return serviceList
@@ -415,7 +495,7 @@ func (s *serviceSet) Insert(
 	}
 }
 
-func (s *serviceSet) Has(service *v1.Service) bool {
+func (s *serviceSet) Has(service ezkube.ResourceId) bool {
 	return s.set.Has(service)
 }
 
@@ -425,7 +505,7 @@ func (s *serviceSet) Equal(
 	return s.set.Equal(makeGenericServiceSet(serviceSet.List()))
 }
 
-func (s *serviceSet) Delete(Service *v1.Service) {
+func (s *serviceSet) Delete(Service ezkube.ResourceId) {
 	s.set.Delete(Service)
 }
 
@@ -461,17 +541,29 @@ func (s *serviceSet) Length() int {
 }
 
 type PodSet interface {
+	// Get the set stored keys
 	Keys() sets.String
-	List() []*v1.Pod
+	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	List(filterResource ...func(*v1.Pod) bool) []*v1.Pod
+	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.Pod
+	// Insert a resource into the set.
 	Insert(pod ...*v1.Pod)
+	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(podSet PodSet) bool
-	Has(pod *v1.Pod) bool
-	Delete(pod *v1.Pod)
+	// Check if the set contains a key matching the resource (not the resource itself)
+	Has(pod ezkube.ResourceId) bool
+	// Delete the key matching the resource
+	Delete(pod ezkube.ResourceId)
+	// Return the union with the provided set
 	Union(set PodSet) PodSet
+	// Return the difference with the provided set
 	Difference(set PodSet) PodSet
+	// Return the intersection with the provided set
 	Intersection(set PodSet) PodSet
+	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*v1.Pod, error)
+	// Get the length of the set
 	Length() int
 }
 
@@ -503,9 +595,17 @@ func (s *podSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *podSet) List() []*v1.Pod {
+func (s *podSet) List(filterResource ...func(*v1.Pod) bool) []*v1.Pod {
+
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*v1.Pod))
+		})
+	}
+
 	var podList []*v1.Pod
-	for _, obj := range s.set.List() {
+	for _, obj := range s.set.List(genericFilters...) {
 		podList = append(podList, obj.(*v1.Pod))
 	}
 	return podList
@@ -527,7 +627,7 @@ func (s *podSet) Insert(
 	}
 }
 
-func (s *podSet) Has(pod *v1.Pod) bool {
+func (s *podSet) Has(pod ezkube.ResourceId) bool {
 	return s.set.Has(pod)
 }
 
@@ -537,7 +637,7 @@ func (s *podSet) Equal(
 	return s.set.Equal(makeGenericPodSet(podSet.List()))
 }
 
-func (s *podSet) Delete(Pod *v1.Pod) {
+func (s *podSet) Delete(Pod ezkube.ResourceId) {
 	s.set.Delete(Pod)
 }
 
@@ -573,17 +673,29 @@ func (s *podSet) Length() int {
 }
 
 type NamespaceSet interface {
+	// Get the set stored keys
 	Keys() sets.String
-	List() []*v1.Namespace
+	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	List(filterResource ...func(*v1.Namespace) bool) []*v1.Namespace
+	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.Namespace
+	// Insert a resource into the set.
 	Insert(namespace ...*v1.Namespace)
+	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(namespaceSet NamespaceSet) bool
-	Has(namespace *v1.Namespace) bool
-	Delete(namespace *v1.Namespace)
+	// Check if the set contains a key matching the resource (not the resource itself)
+	Has(namespace ezkube.ResourceId) bool
+	// Delete the key matching the resource
+	Delete(namespace ezkube.ResourceId)
+	// Return the union with the provided set
 	Union(set NamespaceSet) NamespaceSet
+	// Return the difference with the provided set
 	Difference(set NamespaceSet) NamespaceSet
+	// Return the intersection with the provided set
 	Intersection(set NamespaceSet) NamespaceSet
+	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*v1.Namespace, error)
+	// Get the length of the set
 	Length() int
 }
 
@@ -615,9 +727,17 @@ func (s *namespaceSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *namespaceSet) List() []*v1.Namespace {
+func (s *namespaceSet) List(filterResource ...func(*v1.Namespace) bool) []*v1.Namespace {
+
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*v1.Namespace))
+		})
+	}
+
 	var namespaceList []*v1.Namespace
-	for _, obj := range s.set.List() {
+	for _, obj := range s.set.List(genericFilters...) {
 		namespaceList = append(namespaceList, obj.(*v1.Namespace))
 	}
 	return namespaceList
@@ -639,7 +759,7 @@ func (s *namespaceSet) Insert(
 	}
 }
 
-func (s *namespaceSet) Has(namespace *v1.Namespace) bool {
+func (s *namespaceSet) Has(namespace ezkube.ResourceId) bool {
 	return s.set.Has(namespace)
 }
 
@@ -649,7 +769,7 @@ func (s *namespaceSet) Equal(
 	return s.set.Equal(makeGenericNamespaceSet(namespaceSet.List()))
 }
 
-func (s *namespaceSet) Delete(Namespace *v1.Namespace) {
+func (s *namespaceSet) Delete(Namespace ezkube.ResourceId) {
 	s.set.Delete(Namespace)
 }
 
@@ -685,17 +805,29 @@ func (s *namespaceSet) Length() int {
 }
 
 type NodeSet interface {
+	// Get the set stored keys
 	Keys() sets.String
-	List() []*v1.Node
+	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	List(filterResource ...func(*v1.Node) bool) []*v1.Node
+	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.Node
+	// Insert a resource into the set.
 	Insert(node ...*v1.Node)
+	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(nodeSet NodeSet) bool
-	Has(node *v1.Node) bool
-	Delete(node *v1.Node)
+	// Check if the set contains a key matching the resource (not the resource itself)
+	Has(node ezkube.ResourceId) bool
+	// Delete the key matching the resource
+	Delete(node ezkube.ResourceId)
+	// Return the union with the provided set
 	Union(set NodeSet) NodeSet
+	// Return the difference with the provided set
 	Difference(set NodeSet) NodeSet
+	// Return the intersection with the provided set
 	Intersection(set NodeSet) NodeSet
+	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*v1.Node, error)
+	// Get the length of the set
 	Length() int
 }
 
@@ -727,9 +859,17 @@ func (s *nodeSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *nodeSet) List() []*v1.Node {
+func (s *nodeSet) List(filterResource ...func(*v1.Node) bool) []*v1.Node {
+
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*v1.Node))
+		})
+	}
+
 	var nodeList []*v1.Node
-	for _, obj := range s.set.List() {
+	for _, obj := range s.set.List(genericFilters...) {
 		nodeList = append(nodeList, obj.(*v1.Node))
 	}
 	return nodeList
@@ -751,7 +891,7 @@ func (s *nodeSet) Insert(
 	}
 }
 
-func (s *nodeSet) Has(node *v1.Node) bool {
+func (s *nodeSet) Has(node ezkube.ResourceId) bool {
 	return s.set.Has(node)
 }
 
@@ -761,7 +901,7 @@ func (s *nodeSet) Equal(
 	return s.set.Equal(makeGenericNodeSet(nodeSet.List()))
 }
 
-func (s *nodeSet) Delete(Node *v1.Node) {
+func (s *nodeSet) Delete(Node ezkube.ResourceId) {
 	s.set.Delete(Node)
 }
 
