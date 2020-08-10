@@ -2,10 +2,10 @@
 
 //go:generate mockgen -source ./sets.go -destination mocks/sets.go
 
-package v1alpha1sets
+package v1alpha3sets
 
 import (
-	split_smi_spec_io_v1alpha1 "github.com/servicemeshinterface/smi-sdk-go/pkg/apis/split/v1alpha1"
+	split_smi_spec_io_v1alpha3 "github.com/servicemeshinterface/smi-sdk-go/pkg/apis/split/v1alpha3"
 
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"
 	"github.com/solo-io/skv2/pkg/ezkube"
@@ -14,20 +14,20 @@ import (
 
 type TrafficSplitSet interface {
 	Keys() sets.String
-	List() []*split_smi_spec_io_v1alpha1.TrafficSplit
-	Map() map[string]*split_smi_spec_io_v1alpha1.TrafficSplit
-	Insert(trafficSplit ...*split_smi_spec_io_v1alpha1.TrafficSplit)
+	List() []*split_smi_spec_io_v1alpha3.TrafficSplit
+	Map() map[string]*split_smi_spec_io_v1alpha3.TrafficSplit
+	Insert(trafficSplit ...*split_smi_spec_io_v1alpha3.TrafficSplit)
 	Equal(trafficSplitSet TrafficSplitSet) bool
-	Has(trafficSplit *split_smi_spec_io_v1alpha1.TrafficSplit) bool
-	Delete(trafficSplit *split_smi_spec_io_v1alpha1.TrafficSplit)
+	Has(trafficSplit *split_smi_spec_io_v1alpha3.TrafficSplit) bool
+	Delete(trafficSplit *split_smi_spec_io_v1alpha3.TrafficSplit)
 	Union(set TrafficSplitSet) TrafficSplitSet
 	Difference(set TrafficSplitSet) TrafficSplitSet
 	Intersection(set TrafficSplitSet) TrafficSplitSet
-	Find(id ezkube.ResourceId) (*split_smi_spec_io_v1alpha1.TrafficSplit, error)
+	Find(id ezkube.ResourceId) (*split_smi_spec_io_v1alpha3.TrafficSplit, error)
 	Length() int
 }
 
-func makeGenericTrafficSplitSet(trafficSplitList []*split_smi_spec_io_v1alpha1.TrafficSplit) sksets.ResourceSet {
+func makeGenericTrafficSplitSet(trafficSplitList []*split_smi_spec_io_v1alpha3.TrafficSplit) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range trafficSplitList {
 		genericResources = append(genericResources, obj)
@@ -39,12 +39,12 @@ type trafficSplitSet struct {
 	set sksets.ResourceSet
 }
 
-func NewTrafficSplitSet(trafficSplitList ...*split_smi_spec_io_v1alpha1.TrafficSplit) TrafficSplitSet {
+func NewTrafficSplitSet(trafficSplitList ...*split_smi_spec_io_v1alpha3.TrafficSplit) TrafficSplitSet {
 	return &trafficSplitSet{set: makeGenericTrafficSplitSet(trafficSplitList)}
 }
 
-func NewTrafficSplitSetFromList(trafficSplitList *split_smi_spec_io_v1alpha1.TrafficSplitList) TrafficSplitSet {
-	list := make([]*split_smi_spec_io_v1alpha1.TrafficSplit, 0, len(trafficSplitList.Items))
+func NewTrafficSplitSetFromList(trafficSplitList *split_smi_spec_io_v1alpha3.TrafficSplitList) TrafficSplitSet {
+	list := make([]*split_smi_spec_io_v1alpha3.TrafficSplit, 0, len(trafficSplitList.Items))
 	for idx := range trafficSplitList.Items {
 		list = append(list, &trafficSplitList.Items[idx])
 	}
@@ -55,31 +55,31 @@ func (s *trafficSplitSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *trafficSplitSet) List() []*split_smi_spec_io_v1alpha1.TrafficSplit {
-	var trafficSplitList []*split_smi_spec_io_v1alpha1.TrafficSplit
+func (s *trafficSplitSet) List() []*split_smi_spec_io_v1alpha3.TrafficSplit {
+	var trafficSplitList []*split_smi_spec_io_v1alpha3.TrafficSplit
 	for _, obj := range s.set.List() {
-		trafficSplitList = append(trafficSplitList, obj.(*split_smi_spec_io_v1alpha1.TrafficSplit))
+		trafficSplitList = append(trafficSplitList, obj.(*split_smi_spec_io_v1alpha3.TrafficSplit))
 	}
 	return trafficSplitList
 }
 
-func (s *trafficSplitSet) Map() map[string]*split_smi_spec_io_v1alpha1.TrafficSplit {
-	newMap := map[string]*split_smi_spec_io_v1alpha1.TrafficSplit{}
+func (s *trafficSplitSet) Map() map[string]*split_smi_spec_io_v1alpha3.TrafficSplit {
+	newMap := map[string]*split_smi_spec_io_v1alpha3.TrafficSplit{}
 	for k, v := range s.set.Map() {
-		newMap[k] = v.(*split_smi_spec_io_v1alpha1.TrafficSplit)
+		newMap[k] = v.(*split_smi_spec_io_v1alpha3.TrafficSplit)
 	}
 	return newMap
 }
 
 func (s *trafficSplitSet) Insert(
-	trafficSplitList ...*split_smi_spec_io_v1alpha1.TrafficSplit,
+	trafficSplitList ...*split_smi_spec_io_v1alpha3.TrafficSplit,
 ) {
 	for _, obj := range trafficSplitList {
 		s.set.Insert(obj)
 	}
 }
 
-func (s *trafficSplitSet) Has(trafficSplit *split_smi_spec_io_v1alpha1.TrafficSplit) bool {
+func (s *trafficSplitSet) Has(trafficSplit *split_smi_spec_io_v1alpha3.TrafficSplit) bool {
 	return s.set.Has(trafficSplit)
 }
 
@@ -89,7 +89,7 @@ func (s *trafficSplitSet) Equal(
 	return s.set.Equal(makeGenericTrafficSplitSet(trafficSplitSet.List()))
 }
 
-func (s *trafficSplitSet) Delete(TrafficSplit *split_smi_spec_io_v1alpha1.TrafficSplit) {
+func (s *trafficSplitSet) Delete(TrafficSplit *split_smi_spec_io_v1alpha3.TrafficSplit) {
 	s.set.Delete(TrafficSplit)
 }
 
@@ -104,20 +104,20 @@ func (s *trafficSplitSet) Difference(set TrafficSplitSet) TrafficSplitSet {
 
 func (s *trafficSplitSet) Intersection(set TrafficSplitSet) TrafficSplitSet {
 	newSet := s.set.Intersection(makeGenericTrafficSplitSet(set.List()))
-	var trafficSplitList []*split_smi_spec_io_v1alpha1.TrafficSplit
+	var trafficSplitList []*split_smi_spec_io_v1alpha3.TrafficSplit
 	for _, obj := range newSet.List() {
-		trafficSplitList = append(trafficSplitList, obj.(*split_smi_spec_io_v1alpha1.TrafficSplit))
+		trafficSplitList = append(trafficSplitList, obj.(*split_smi_spec_io_v1alpha3.TrafficSplit))
 	}
 	return NewTrafficSplitSet(trafficSplitList...)
 }
 
-func (s *trafficSplitSet) Find(id ezkube.ResourceId) (*split_smi_spec_io_v1alpha1.TrafficSplit, error) {
-	obj, err := s.set.Find(&split_smi_spec_io_v1alpha1.TrafficSplit{}, id)
+func (s *trafficSplitSet) Find(id ezkube.ResourceId) (*split_smi_spec_io_v1alpha3.TrafficSplit, error) {
+	obj, err := s.set.Find(&split_smi_spec_io_v1alpha3.TrafficSplit{}, id)
 	if err != nil {
 		return nil, err
 	}
 
-	return obj.(*split_smi_spec_io_v1alpha1.TrafficSplit), nil
+	return obj.(*split_smi_spec_io_v1alpha3.TrafficSplit), nil
 }
 
 func (s *trafficSplitSet) Length() int {
