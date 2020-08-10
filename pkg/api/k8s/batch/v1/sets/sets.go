@@ -13,29 +13,17 @@ import (
 )
 
 type JobSet interface {
-	// Get the set stored keys
 	Keys() sets.String
-	// List of resources stored in the set. Pass an optional filter function to filter on the list.
-	List(filterResource ...func(*batch_v1.Job) bool) []*batch_v1.Job
-	// Return the Set as a map of key to resource.
+	List() []*batch_v1.Job
 	Map() map[string]*batch_v1.Job
-	// Insert a resource into the set.
 	Insert(job ...*batch_v1.Job)
-	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(jobSet JobSet) bool
-	// Check if the set contains a key matching the resource (not the resource itself)
-	Has(job ezkube.ResourceId) bool
-	// Delete the key matching the resource
-	Delete(job ezkube.ResourceId)
-	// Return the union with the provided set
+	Has(job *batch_v1.Job) bool
+	Delete(job *batch_v1.Job)
 	Union(set JobSet) JobSet
-	// Return the difference with the provided set
 	Difference(set JobSet) JobSet
-	// Return the intersection with the provided set
 	Intersection(set JobSet) JobSet
-	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*batch_v1.Job, error)
-	// Get the length of the set
 	Length() int
 }
 
@@ -67,17 +55,9 @@ func (s *jobSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *jobSet) List(filterResource ...func(*batch_v1.Job) bool) []*batch_v1.Job {
-
-	var genericFilters []func(ezkube.ResourceId) bool
-	for _, filter := range filterResource {
-		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
-			return filter(obj.(*batch_v1.Job))
-		})
-	}
-
+func (s *jobSet) List() []*batch_v1.Job {
 	var jobList []*batch_v1.Job
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.set.List() {
 		jobList = append(jobList, obj.(*batch_v1.Job))
 	}
 	return jobList
@@ -99,7 +79,7 @@ func (s *jobSet) Insert(
 	}
 }
 
-func (s *jobSet) Has(job ezkube.ResourceId) bool {
+func (s *jobSet) Has(job *batch_v1.Job) bool {
 	return s.set.Has(job)
 }
 
@@ -109,7 +89,7 @@ func (s *jobSet) Equal(
 	return s.set.Equal(makeGenericJobSet(jobSet.List()))
 }
 
-func (s *jobSet) Delete(Job ezkube.ResourceId) {
+func (s *jobSet) Delete(Job *batch_v1.Job) {
 	s.set.Delete(Job)
 }
 

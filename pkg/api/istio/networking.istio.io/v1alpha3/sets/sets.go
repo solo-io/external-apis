@@ -13,29 +13,17 @@ import (
 )
 
 type DestinationRuleSet interface {
-	// Get the set stored keys
 	Keys() sets.String
-	// List of resources stored in the set. Pass an optional filter function to filter on the list.
-	List(filterResource ...func(*networking_istio_io_v1alpha3.DestinationRule) bool) []*networking_istio_io_v1alpha3.DestinationRule
-	// Return the Set as a map of key to resource.
+	List() []*networking_istio_io_v1alpha3.DestinationRule
 	Map() map[string]*networking_istio_io_v1alpha3.DestinationRule
-	// Insert a resource into the set.
 	Insert(destinationRule ...*networking_istio_io_v1alpha3.DestinationRule)
-	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(destinationRuleSet DestinationRuleSet) bool
-	// Check if the set contains a key matching the resource (not the resource itself)
-	Has(destinationRule ezkube.ResourceId) bool
-	// Delete the key matching the resource
-	Delete(destinationRule ezkube.ResourceId)
-	// Return the union with the provided set
+	Has(destinationRule *networking_istio_io_v1alpha3.DestinationRule) bool
+	Delete(destinationRule *networking_istio_io_v1alpha3.DestinationRule)
 	Union(set DestinationRuleSet) DestinationRuleSet
-	// Return the difference with the provided set
 	Difference(set DestinationRuleSet) DestinationRuleSet
-	// Return the intersection with the provided set
 	Intersection(set DestinationRuleSet) DestinationRuleSet
-	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.DestinationRule, error)
-	// Get the length of the set
 	Length() int
 }
 
@@ -67,17 +55,9 @@ func (s *destinationRuleSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *destinationRuleSet) List(filterResource ...func(*networking_istio_io_v1alpha3.DestinationRule) bool) []*networking_istio_io_v1alpha3.DestinationRule {
-
-	var genericFilters []func(ezkube.ResourceId) bool
-	for _, filter := range filterResource {
-		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
-			return filter(obj.(*networking_istio_io_v1alpha3.DestinationRule))
-		})
-	}
-
+func (s *destinationRuleSet) List() []*networking_istio_io_v1alpha3.DestinationRule {
 	var destinationRuleList []*networking_istio_io_v1alpha3.DestinationRule
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.set.List() {
 		destinationRuleList = append(destinationRuleList, obj.(*networking_istio_io_v1alpha3.DestinationRule))
 	}
 	return destinationRuleList
@@ -99,7 +79,7 @@ func (s *destinationRuleSet) Insert(
 	}
 }
 
-func (s *destinationRuleSet) Has(destinationRule ezkube.ResourceId) bool {
+func (s *destinationRuleSet) Has(destinationRule *networking_istio_io_v1alpha3.DestinationRule) bool {
 	return s.set.Has(destinationRule)
 }
 
@@ -109,7 +89,7 @@ func (s *destinationRuleSet) Equal(
 	return s.set.Equal(makeGenericDestinationRuleSet(destinationRuleSet.List()))
 }
 
-func (s *destinationRuleSet) Delete(DestinationRule ezkube.ResourceId) {
+func (s *destinationRuleSet) Delete(DestinationRule *networking_istio_io_v1alpha3.DestinationRule) {
 	s.set.Delete(DestinationRule)
 }
 
@@ -145,29 +125,17 @@ func (s *destinationRuleSet) Length() int {
 }
 
 type EnvoyFilterSet interface {
-	// Get the set stored keys
 	Keys() sets.String
-	// List of resources stored in the set. Pass an optional filter function to filter on the list.
-	List(filterResource ...func(*networking_istio_io_v1alpha3.EnvoyFilter) bool) []*networking_istio_io_v1alpha3.EnvoyFilter
-	// Return the Set as a map of key to resource.
+	List() []*networking_istio_io_v1alpha3.EnvoyFilter
 	Map() map[string]*networking_istio_io_v1alpha3.EnvoyFilter
-	// Insert a resource into the set.
 	Insert(envoyFilter ...*networking_istio_io_v1alpha3.EnvoyFilter)
-	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(envoyFilterSet EnvoyFilterSet) bool
-	// Check if the set contains a key matching the resource (not the resource itself)
-	Has(envoyFilter ezkube.ResourceId) bool
-	// Delete the key matching the resource
-	Delete(envoyFilter ezkube.ResourceId)
-	// Return the union with the provided set
+	Has(envoyFilter *networking_istio_io_v1alpha3.EnvoyFilter) bool
+	Delete(envoyFilter *networking_istio_io_v1alpha3.EnvoyFilter)
 	Union(set EnvoyFilterSet) EnvoyFilterSet
-	// Return the difference with the provided set
 	Difference(set EnvoyFilterSet) EnvoyFilterSet
-	// Return the intersection with the provided set
 	Intersection(set EnvoyFilterSet) EnvoyFilterSet
-	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.EnvoyFilter, error)
-	// Get the length of the set
 	Length() int
 }
 
@@ -199,17 +167,9 @@ func (s *envoyFilterSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *envoyFilterSet) List(filterResource ...func(*networking_istio_io_v1alpha3.EnvoyFilter) bool) []*networking_istio_io_v1alpha3.EnvoyFilter {
-
-	var genericFilters []func(ezkube.ResourceId) bool
-	for _, filter := range filterResource {
-		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
-			return filter(obj.(*networking_istio_io_v1alpha3.EnvoyFilter))
-		})
-	}
-
+func (s *envoyFilterSet) List() []*networking_istio_io_v1alpha3.EnvoyFilter {
 	var envoyFilterList []*networking_istio_io_v1alpha3.EnvoyFilter
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.set.List() {
 		envoyFilterList = append(envoyFilterList, obj.(*networking_istio_io_v1alpha3.EnvoyFilter))
 	}
 	return envoyFilterList
@@ -231,7 +191,7 @@ func (s *envoyFilterSet) Insert(
 	}
 }
 
-func (s *envoyFilterSet) Has(envoyFilter ezkube.ResourceId) bool {
+func (s *envoyFilterSet) Has(envoyFilter *networking_istio_io_v1alpha3.EnvoyFilter) bool {
 	return s.set.Has(envoyFilter)
 }
 
@@ -241,7 +201,7 @@ func (s *envoyFilterSet) Equal(
 	return s.set.Equal(makeGenericEnvoyFilterSet(envoyFilterSet.List()))
 }
 
-func (s *envoyFilterSet) Delete(EnvoyFilter ezkube.ResourceId) {
+func (s *envoyFilterSet) Delete(EnvoyFilter *networking_istio_io_v1alpha3.EnvoyFilter) {
 	s.set.Delete(EnvoyFilter)
 }
 
@@ -277,29 +237,17 @@ func (s *envoyFilterSet) Length() int {
 }
 
 type GatewaySet interface {
-	// Get the set stored keys
 	Keys() sets.String
-	// List of resources stored in the set. Pass an optional filter function to filter on the list.
-	List(filterResource ...func(*networking_istio_io_v1alpha3.Gateway) bool) []*networking_istio_io_v1alpha3.Gateway
-	// Return the Set as a map of key to resource.
+	List() []*networking_istio_io_v1alpha3.Gateway
 	Map() map[string]*networking_istio_io_v1alpha3.Gateway
-	// Insert a resource into the set.
 	Insert(gateway ...*networking_istio_io_v1alpha3.Gateway)
-	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(gatewaySet GatewaySet) bool
-	// Check if the set contains a key matching the resource (not the resource itself)
-	Has(gateway ezkube.ResourceId) bool
-	// Delete the key matching the resource
-	Delete(gateway ezkube.ResourceId)
-	// Return the union with the provided set
+	Has(gateway *networking_istio_io_v1alpha3.Gateway) bool
+	Delete(gateway *networking_istio_io_v1alpha3.Gateway)
 	Union(set GatewaySet) GatewaySet
-	// Return the difference with the provided set
 	Difference(set GatewaySet) GatewaySet
-	// Return the intersection with the provided set
 	Intersection(set GatewaySet) GatewaySet
-	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.Gateway, error)
-	// Get the length of the set
 	Length() int
 }
 
@@ -331,17 +279,9 @@ func (s *gatewaySet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *gatewaySet) List(filterResource ...func(*networking_istio_io_v1alpha3.Gateway) bool) []*networking_istio_io_v1alpha3.Gateway {
-
-	var genericFilters []func(ezkube.ResourceId) bool
-	for _, filter := range filterResource {
-		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
-			return filter(obj.(*networking_istio_io_v1alpha3.Gateway))
-		})
-	}
-
+func (s *gatewaySet) List() []*networking_istio_io_v1alpha3.Gateway {
 	var gatewayList []*networking_istio_io_v1alpha3.Gateway
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.set.List() {
 		gatewayList = append(gatewayList, obj.(*networking_istio_io_v1alpha3.Gateway))
 	}
 	return gatewayList
@@ -363,7 +303,7 @@ func (s *gatewaySet) Insert(
 	}
 }
 
-func (s *gatewaySet) Has(gateway ezkube.ResourceId) bool {
+func (s *gatewaySet) Has(gateway *networking_istio_io_v1alpha3.Gateway) bool {
 	return s.set.Has(gateway)
 }
 
@@ -373,7 +313,7 @@ func (s *gatewaySet) Equal(
 	return s.set.Equal(makeGenericGatewaySet(gatewaySet.List()))
 }
 
-func (s *gatewaySet) Delete(Gateway ezkube.ResourceId) {
+func (s *gatewaySet) Delete(Gateway *networking_istio_io_v1alpha3.Gateway) {
 	s.set.Delete(Gateway)
 }
 
@@ -409,29 +349,17 @@ func (s *gatewaySet) Length() int {
 }
 
 type ServiceEntrySet interface {
-	// Get the set stored keys
 	Keys() sets.String
-	// List of resources stored in the set. Pass an optional filter function to filter on the list.
-	List(filterResource ...func(*networking_istio_io_v1alpha3.ServiceEntry) bool) []*networking_istio_io_v1alpha3.ServiceEntry
-	// Return the Set as a map of key to resource.
+	List() []*networking_istio_io_v1alpha3.ServiceEntry
 	Map() map[string]*networking_istio_io_v1alpha3.ServiceEntry
-	// Insert a resource into the set.
 	Insert(serviceEntry ...*networking_istio_io_v1alpha3.ServiceEntry)
-	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(serviceEntrySet ServiceEntrySet) bool
-	// Check if the set contains a key matching the resource (not the resource itself)
-	Has(serviceEntry ezkube.ResourceId) bool
-	// Delete the key matching the resource
-	Delete(serviceEntry ezkube.ResourceId)
-	// Return the union with the provided set
+	Has(serviceEntry *networking_istio_io_v1alpha3.ServiceEntry) bool
+	Delete(serviceEntry *networking_istio_io_v1alpha3.ServiceEntry)
 	Union(set ServiceEntrySet) ServiceEntrySet
-	// Return the difference with the provided set
 	Difference(set ServiceEntrySet) ServiceEntrySet
-	// Return the intersection with the provided set
 	Intersection(set ServiceEntrySet) ServiceEntrySet
-	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.ServiceEntry, error)
-	// Get the length of the set
 	Length() int
 }
 
@@ -463,17 +391,9 @@ func (s *serviceEntrySet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *serviceEntrySet) List(filterResource ...func(*networking_istio_io_v1alpha3.ServiceEntry) bool) []*networking_istio_io_v1alpha3.ServiceEntry {
-
-	var genericFilters []func(ezkube.ResourceId) bool
-	for _, filter := range filterResource {
-		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
-			return filter(obj.(*networking_istio_io_v1alpha3.ServiceEntry))
-		})
-	}
-
+func (s *serviceEntrySet) List() []*networking_istio_io_v1alpha3.ServiceEntry {
 	var serviceEntryList []*networking_istio_io_v1alpha3.ServiceEntry
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.set.List() {
 		serviceEntryList = append(serviceEntryList, obj.(*networking_istio_io_v1alpha3.ServiceEntry))
 	}
 	return serviceEntryList
@@ -495,7 +415,7 @@ func (s *serviceEntrySet) Insert(
 	}
 }
 
-func (s *serviceEntrySet) Has(serviceEntry ezkube.ResourceId) bool {
+func (s *serviceEntrySet) Has(serviceEntry *networking_istio_io_v1alpha3.ServiceEntry) bool {
 	return s.set.Has(serviceEntry)
 }
 
@@ -505,7 +425,7 @@ func (s *serviceEntrySet) Equal(
 	return s.set.Equal(makeGenericServiceEntrySet(serviceEntrySet.List()))
 }
 
-func (s *serviceEntrySet) Delete(ServiceEntry ezkube.ResourceId) {
+func (s *serviceEntrySet) Delete(ServiceEntry *networking_istio_io_v1alpha3.ServiceEntry) {
 	s.set.Delete(ServiceEntry)
 }
 
@@ -541,29 +461,17 @@ func (s *serviceEntrySet) Length() int {
 }
 
 type VirtualServiceSet interface {
-	// Get the set stored keys
 	Keys() sets.String
-	// List of resources stored in the set. Pass an optional filter function to filter on the list.
-	List(filterResource ...func(*networking_istio_io_v1alpha3.VirtualService) bool) []*networking_istio_io_v1alpha3.VirtualService
-	// Return the Set as a map of key to resource.
+	List() []*networking_istio_io_v1alpha3.VirtualService
 	Map() map[string]*networking_istio_io_v1alpha3.VirtualService
-	// Insert a resource into the set.
 	Insert(virtualService ...*networking_istio_io_v1alpha3.VirtualService)
-	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(virtualServiceSet VirtualServiceSet) bool
-	// Check if the set contains a key matching the resource (not the resource itself)
-	Has(virtualService ezkube.ResourceId) bool
-	// Delete the key matching the resource
-	Delete(virtualService ezkube.ResourceId)
-	// Return the union with the provided set
+	Has(virtualService *networking_istio_io_v1alpha3.VirtualService) bool
+	Delete(virtualService *networking_istio_io_v1alpha3.VirtualService)
 	Union(set VirtualServiceSet) VirtualServiceSet
-	// Return the difference with the provided set
 	Difference(set VirtualServiceSet) VirtualServiceSet
-	// Return the intersection with the provided set
 	Intersection(set VirtualServiceSet) VirtualServiceSet
-	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.VirtualService, error)
-	// Get the length of the set
 	Length() int
 }
 
@@ -595,17 +503,9 @@ func (s *virtualServiceSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *virtualServiceSet) List(filterResource ...func(*networking_istio_io_v1alpha3.VirtualService) bool) []*networking_istio_io_v1alpha3.VirtualService {
-
-	var genericFilters []func(ezkube.ResourceId) bool
-	for _, filter := range filterResource {
-		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
-			return filter(obj.(*networking_istio_io_v1alpha3.VirtualService))
-		})
-	}
-
+func (s *virtualServiceSet) List() []*networking_istio_io_v1alpha3.VirtualService {
 	var virtualServiceList []*networking_istio_io_v1alpha3.VirtualService
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.set.List() {
 		virtualServiceList = append(virtualServiceList, obj.(*networking_istio_io_v1alpha3.VirtualService))
 	}
 	return virtualServiceList
@@ -627,7 +527,7 @@ func (s *virtualServiceSet) Insert(
 	}
 }
 
-func (s *virtualServiceSet) Has(virtualService ezkube.ResourceId) bool {
+func (s *virtualServiceSet) Has(virtualService *networking_istio_io_v1alpha3.VirtualService) bool {
 	return s.set.Has(virtualService)
 }
 
@@ -637,7 +537,7 @@ func (s *virtualServiceSet) Equal(
 	return s.set.Equal(makeGenericVirtualServiceSet(virtualServiceSet.List()))
 }
 
-func (s *virtualServiceSet) Delete(VirtualService ezkube.ResourceId) {
+func (s *virtualServiceSet) Delete(VirtualService *networking_istio_io_v1alpha3.VirtualService) {
 	s.set.Delete(VirtualService)
 }
 

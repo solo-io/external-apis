@@ -13,29 +13,17 @@ import (
 )
 
 type ValidatingWebhookConfigurationSet interface {
-	// Get the set stored keys
 	Keys() sets.String
-	// List of resources stored in the set. Pass an optional filter function to filter on the list.
-	List(filterResource ...func(*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration) bool) []*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration
-	// Return the Set as a map of key to resource.
+	List() []*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration
 	Map() map[string]*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration
-	// Insert a resource into the set.
 	Insert(validatingWebhookConfiguration ...*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration)
-	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(validatingWebhookConfigurationSet ValidatingWebhookConfigurationSet) bool
-	// Check if the set contains a key matching the resource (not the resource itself)
-	Has(validatingWebhookConfiguration ezkube.ResourceId) bool
-	// Delete the key matching the resource
-	Delete(validatingWebhookConfiguration ezkube.ResourceId)
-	// Return the union with the provided set
+	Has(validatingWebhookConfiguration *admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration) bool
+	Delete(validatingWebhookConfiguration *admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration)
 	Union(set ValidatingWebhookConfigurationSet) ValidatingWebhookConfigurationSet
-	// Return the difference with the provided set
 	Difference(set ValidatingWebhookConfigurationSet) ValidatingWebhookConfigurationSet
-	// Return the intersection with the provided set
 	Intersection(set ValidatingWebhookConfigurationSet) ValidatingWebhookConfigurationSet
-	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration, error)
-	// Get the length of the set
 	Length() int
 }
 
@@ -67,17 +55,9 @@ func (s *validatingWebhookConfigurationSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *validatingWebhookConfigurationSet) List(filterResource ...func(*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration) bool) []*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration {
-
-	var genericFilters []func(ezkube.ResourceId) bool
-	for _, filter := range filterResource {
-		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
-			return filter(obj.(*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration))
-		})
-	}
-
+func (s *validatingWebhookConfigurationSet) List() []*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration {
 	var validatingWebhookConfigurationList []*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.set.List() {
 		validatingWebhookConfigurationList = append(validatingWebhookConfigurationList, obj.(*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration))
 	}
 	return validatingWebhookConfigurationList
@@ -99,7 +79,7 @@ func (s *validatingWebhookConfigurationSet) Insert(
 	}
 }
 
-func (s *validatingWebhookConfigurationSet) Has(validatingWebhookConfiguration ezkube.ResourceId) bool {
+func (s *validatingWebhookConfigurationSet) Has(validatingWebhookConfiguration *admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration) bool {
 	return s.set.Has(validatingWebhookConfiguration)
 }
 
@@ -109,7 +89,7 @@ func (s *validatingWebhookConfigurationSet) Equal(
 	return s.set.Equal(makeGenericValidatingWebhookConfigurationSet(validatingWebhookConfigurationSet.List()))
 }
 
-func (s *validatingWebhookConfigurationSet) Delete(ValidatingWebhookConfiguration ezkube.ResourceId) {
+func (s *validatingWebhookConfigurationSet) Delete(ValidatingWebhookConfiguration *admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration) {
 	s.set.Delete(ValidatingWebhookConfiguration)
 }
 

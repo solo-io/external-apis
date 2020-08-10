@@ -13,29 +13,17 @@ import (
 )
 
 type RoleSet interface {
-	// Get the set stored keys
 	Keys() sets.String
-	// List of resources stored in the set. Pass an optional filter function to filter on the list.
-	List(filterResource ...func(*rbac_authorization_k8s_io_v1.Role) bool) []*rbac_authorization_k8s_io_v1.Role
-	// Return the Set as a map of key to resource.
+	List() []*rbac_authorization_k8s_io_v1.Role
 	Map() map[string]*rbac_authorization_k8s_io_v1.Role
-	// Insert a resource into the set.
 	Insert(role ...*rbac_authorization_k8s_io_v1.Role)
-	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(roleSet RoleSet) bool
-	// Check if the set contains a key matching the resource (not the resource itself)
-	Has(role ezkube.ResourceId) bool
-	// Delete the key matching the resource
-	Delete(role ezkube.ResourceId)
-	// Return the union with the provided set
+	Has(role *rbac_authorization_k8s_io_v1.Role) bool
+	Delete(role *rbac_authorization_k8s_io_v1.Role)
 	Union(set RoleSet) RoleSet
-	// Return the difference with the provided set
 	Difference(set RoleSet) RoleSet
-	// Return the intersection with the provided set
 	Intersection(set RoleSet) RoleSet
-	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*rbac_authorization_k8s_io_v1.Role, error)
-	// Get the length of the set
 	Length() int
 }
 
@@ -67,17 +55,9 @@ func (s *roleSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *roleSet) List(filterResource ...func(*rbac_authorization_k8s_io_v1.Role) bool) []*rbac_authorization_k8s_io_v1.Role {
-
-	var genericFilters []func(ezkube.ResourceId) bool
-	for _, filter := range filterResource {
-		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
-			return filter(obj.(*rbac_authorization_k8s_io_v1.Role))
-		})
-	}
-
+func (s *roleSet) List() []*rbac_authorization_k8s_io_v1.Role {
 	var roleList []*rbac_authorization_k8s_io_v1.Role
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.set.List() {
 		roleList = append(roleList, obj.(*rbac_authorization_k8s_io_v1.Role))
 	}
 	return roleList
@@ -99,7 +79,7 @@ func (s *roleSet) Insert(
 	}
 }
 
-func (s *roleSet) Has(role ezkube.ResourceId) bool {
+func (s *roleSet) Has(role *rbac_authorization_k8s_io_v1.Role) bool {
 	return s.set.Has(role)
 }
 
@@ -109,7 +89,7 @@ func (s *roleSet) Equal(
 	return s.set.Equal(makeGenericRoleSet(roleSet.List()))
 }
 
-func (s *roleSet) Delete(Role ezkube.ResourceId) {
+func (s *roleSet) Delete(Role *rbac_authorization_k8s_io_v1.Role) {
 	s.set.Delete(Role)
 }
 
@@ -145,29 +125,17 @@ func (s *roleSet) Length() int {
 }
 
 type RoleBindingSet interface {
-	// Get the set stored keys
 	Keys() sets.String
-	// List of resources stored in the set. Pass an optional filter function to filter on the list.
-	List(filterResource ...func(*rbac_authorization_k8s_io_v1.RoleBinding) bool) []*rbac_authorization_k8s_io_v1.RoleBinding
-	// Return the Set as a map of key to resource.
+	List() []*rbac_authorization_k8s_io_v1.RoleBinding
 	Map() map[string]*rbac_authorization_k8s_io_v1.RoleBinding
-	// Insert a resource into the set.
 	Insert(roleBinding ...*rbac_authorization_k8s_io_v1.RoleBinding)
-	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(roleBindingSet RoleBindingSet) bool
-	// Check if the set contains a key matching the resource (not the resource itself)
-	Has(roleBinding ezkube.ResourceId) bool
-	// Delete the key matching the resource
-	Delete(roleBinding ezkube.ResourceId)
-	// Return the union with the provided set
+	Has(roleBinding *rbac_authorization_k8s_io_v1.RoleBinding) bool
+	Delete(roleBinding *rbac_authorization_k8s_io_v1.RoleBinding)
 	Union(set RoleBindingSet) RoleBindingSet
-	// Return the difference with the provided set
 	Difference(set RoleBindingSet) RoleBindingSet
-	// Return the intersection with the provided set
 	Intersection(set RoleBindingSet) RoleBindingSet
-	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*rbac_authorization_k8s_io_v1.RoleBinding, error)
-	// Get the length of the set
 	Length() int
 }
 
@@ -199,17 +167,9 @@ func (s *roleBindingSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *roleBindingSet) List(filterResource ...func(*rbac_authorization_k8s_io_v1.RoleBinding) bool) []*rbac_authorization_k8s_io_v1.RoleBinding {
-
-	var genericFilters []func(ezkube.ResourceId) bool
-	for _, filter := range filterResource {
-		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
-			return filter(obj.(*rbac_authorization_k8s_io_v1.RoleBinding))
-		})
-	}
-
+func (s *roleBindingSet) List() []*rbac_authorization_k8s_io_v1.RoleBinding {
 	var roleBindingList []*rbac_authorization_k8s_io_v1.RoleBinding
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.set.List() {
 		roleBindingList = append(roleBindingList, obj.(*rbac_authorization_k8s_io_v1.RoleBinding))
 	}
 	return roleBindingList
@@ -231,7 +191,7 @@ func (s *roleBindingSet) Insert(
 	}
 }
 
-func (s *roleBindingSet) Has(roleBinding ezkube.ResourceId) bool {
+func (s *roleBindingSet) Has(roleBinding *rbac_authorization_k8s_io_v1.RoleBinding) bool {
 	return s.set.Has(roleBinding)
 }
 
@@ -241,7 +201,7 @@ func (s *roleBindingSet) Equal(
 	return s.set.Equal(makeGenericRoleBindingSet(roleBindingSet.List()))
 }
 
-func (s *roleBindingSet) Delete(RoleBinding ezkube.ResourceId) {
+func (s *roleBindingSet) Delete(RoleBinding *rbac_authorization_k8s_io_v1.RoleBinding) {
 	s.set.Delete(RoleBinding)
 }
 
@@ -277,29 +237,17 @@ func (s *roleBindingSet) Length() int {
 }
 
 type ClusterRoleSet interface {
-	// Get the set stored keys
 	Keys() sets.String
-	// List of resources stored in the set. Pass an optional filter function to filter on the list.
-	List(filterResource ...func(*rbac_authorization_k8s_io_v1.ClusterRole) bool) []*rbac_authorization_k8s_io_v1.ClusterRole
-	// Return the Set as a map of key to resource.
+	List() []*rbac_authorization_k8s_io_v1.ClusterRole
 	Map() map[string]*rbac_authorization_k8s_io_v1.ClusterRole
-	// Insert a resource into the set.
 	Insert(clusterRole ...*rbac_authorization_k8s_io_v1.ClusterRole)
-	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(clusterRoleSet ClusterRoleSet) bool
-	// Check if the set contains a key matching the resource (not the resource itself)
-	Has(clusterRole ezkube.ResourceId) bool
-	// Delete the key matching the resource
-	Delete(clusterRole ezkube.ResourceId)
-	// Return the union with the provided set
+	Has(clusterRole *rbac_authorization_k8s_io_v1.ClusterRole) bool
+	Delete(clusterRole *rbac_authorization_k8s_io_v1.ClusterRole)
 	Union(set ClusterRoleSet) ClusterRoleSet
-	// Return the difference with the provided set
 	Difference(set ClusterRoleSet) ClusterRoleSet
-	// Return the intersection with the provided set
 	Intersection(set ClusterRoleSet) ClusterRoleSet
-	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*rbac_authorization_k8s_io_v1.ClusterRole, error)
-	// Get the length of the set
 	Length() int
 }
 
@@ -331,17 +279,9 @@ func (s *clusterRoleSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *clusterRoleSet) List(filterResource ...func(*rbac_authorization_k8s_io_v1.ClusterRole) bool) []*rbac_authorization_k8s_io_v1.ClusterRole {
-
-	var genericFilters []func(ezkube.ResourceId) bool
-	for _, filter := range filterResource {
-		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
-			return filter(obj.(*rbac_authorization_k8s_io_v1.ClusterRole))
-		})
-	}
-
+func (s *clusterRoleSet) List() []*rbac_authorization_k8s_io_v1.ClusterRole {
 	var clusterRoleList []*rbac_authorization_k8s_io_v1.ClusterRole
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.set.List() {
 		clusterRoleList = append(clusterRoleList, obj.(*rbac_authorization_k8s_io_v1.ClusterRole))
 	}
 	return clusterRoleList
@@ -363,7 +303,7 @@ func (s *clusterRoleSet) Insert(
 	}
 }
 
-func (s *clusterRoleSet) Has(clusterRole ezkube.ResourceId) bool {
+func (s *clusterRoleSet) Has(clusterRole *rbac_authorization_k8s_io_v1.ClusterRole) bool {
 	return s.set.Has(clusterRole)
 }
 
@@ -373,7 +313,7 @@ func (s *clusterRoleSet) Equal(
 	return s.set.Equal(makeGenericClusterRoleSet(clusterRoleSet.List()))
 }
 
-func (s *clusterRoleSet) Delete(ClusterRole ezkube.ResourceId) {
+func (s *clusterRoleSet) Delete(ClusterRole *rbac_authorization_k8s_io_v1.ClusterRole) {
 	s.set.Delete(ClusterRole)
 }
 
@@ -409,29 +349,17 @@ func (s *clusterRoleSet) Length() int {
 }
 
 type ClusterRoleBindingSet interface {
-	// Get the set stored keys
 	Keys() sets.String
-	// List of resources stored in the set. Pass an optional filter function to filter on the list.
-	List(filterResource ...func(*rbac_authorization_k8s_io_v1.ClusterRoleBinding) bool) []*rbac_authorization_k8s_io_v1.ClusterRoleBinding
-	// Return the Set as a map of key to resource.
+	List() []*rbac_authorization_k8s_io_v1.ClusterRoleBinding
 	Map() map[string]*rbac_authorization_k8s_io_v1.ClusterRoleBinding
-	// Insert a resource into the set.
 	Insert(clusterRoleBinding ...*rbac_authorization_k8s_io_v1.ClusterRoleBinding)
-	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(clusterRoleBindingSet ClusterRoleBindingSet) bool
-	// Check if the set contains a key matching the resource (not the resource itself)
-	Has(clusterRoleBinding ezkube.ResourceId) bool
-	// Delete the key matching the resource
-	Delete(clusterRoleBinding ezkube.ResourceId)
-	// Return the union with the provided set
+	Has(clusterRoleBinding *rbac_authorization_k8s_io_v1.ClusterRoleBinding) bool
+	Delete(clusterRoleBinding *rbac_authorization_k8s_io_v1.ClusterRoleBinding)
 	Union(set ClusterRoleBindingSet) ClusterRoleBindingSet
-	// Return the difference with the provided set
 	Difference(set ClusterRoleBindingSet) ClusterRoleBindingSet
-	// Return the intersection with the provided set
 	Intersection(set ClusterRoleBindingSet) ClusterRoleBindingSet
-	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*rbac_authorization_k8s_io_v1.ClusterRoleBinding, error)
-	// Get the length of the set
 	Length() int
 }
 
@@ -463,17 +391,9 @@ func (s *clusterRoleBindingSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *clusterRoleBindingSet) List(filterResource ...func(*rbac_authorization_k8s_io_v1.ClusterRoleBinding) bool) []*rbac_authorization_k8s_io_v1.ClusterRoleBinding {
-
-	var genericFilters []func(ezkube.ResourceId) bool
-	for _, filter := range filterResource {
-		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
-			return filter(obj.(*rbac_authorization_k8s_io_v1.ClusterRoleBinding))
-		})
-	}
-
+func (s *clusterRoleBindingSet) List() []*rbac_authorization_k8s_io_v1.ClusterRoleBinding {
 	var clusterRoleBindingList []*rbac_authorization_k8s_io_v1.ClusterRoleBinding
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.set.List() {
 		clusterRoleBindingList = append(clusterRoleBindingList, obj.(*rbac_authorization_k8s_io_v1.ClusterRoleBinding))
 	}
 	return clusterRoleBindingList
@@ -495,7 +415,7 @@ func (s *clusterRoleBindingSet) Insert(
 	}
 }
 
-func (s *clusterRoleBindingSet) Has(clusterRoleBinding ezkube.ResourceId) bool {
+func (s *clusterRoleBindingSet) Has(clusterRoleBinding *rbac_authorization_k8s_io_v1.ClusterRoleBinding) bool {
 	return s.set.Has(clusterRoleBinding)
 }
 
@@ -505,7 +425,7 @@ func (s *clusterRoleBindingSet) Equal(
 	return s.set.Equal(makeGenericClusterRoleBindingSet(clusterRoleBindingSet.List()))
 }
 
-func (s *clusterRoleBindingSet) Delete(ClusterRoleBinding ezkube.ResourceId) {
+func (s *clusterRoleBindingSet) Delete(ClusterRoleBinding *rbac_authorization_k8s_io_v1.ClusterRoleBinding) {
 	s.set.Delete(ClusterRoleBinding)
 }
 

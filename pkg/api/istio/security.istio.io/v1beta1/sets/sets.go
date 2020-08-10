@@ -13,29 +13,17 @@ import (
 )
 
 type AuthorizationPolicySet interface {
-	// Get the set stored keys
 	Keys() sets.String
-	// List of resources stored in the set. Pass an optional filter function to filter on the list.
-	List(filterResource ...func(*security_istio_io_v1beta1.AuthorizationPolicy) bool) []*security_istio_io_v1beta1.AuthorizationPolicy
-	// Return the Set as a map of key to resource.
+	List() []*security_istio_io_v1beta1.AuthorizationPolicy
 	Map() map[string]*security_istio_io_v1beta1.AuthorizationPolicy
-	// Insert a resource into the set.
 	Insert(authorizationPolicy ...*security_istio_io_v1beta1.AuthorizationPolicy)
-	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(authorizationPolicySet AuthorizationPolicySet) bool
-	// Check if the set contains a key matching the resource (not the resource itself)
-	Has(authorizationPolicy ezkube.ResourceId) bool
-	// Delete the key matching the resource
-	Delete(authorizationPolicy ezkube.ResourceId)
-	// Return the union with the provided set
+	Has(authorizationPolicy *security_istio_io_v1beta1.AuthorizationPolicy) bool
+	Delete(authorizationPolicy *security_istio_io_v1beta1.AuthorizationPolicy)
 	Union(set AuthorizationPolicySet) AuthorizationPolicySet
-	// Return the difference with the provided set
 	Difference(set AuthorizationPolicySet) AuthorizationPolicySet
-	// Return the intersection with the provided set
 	Intersection(set AuthorizationPolicySet) AuthorizationPolicySet
-	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*security_istio_io_v1beta1.AuthorizationPolicy, error)
-	// Get the length of the set
 	Length() int
 }
 
@@ -67,17 +55,9 @@ func (s *authorizationPolicySet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *authorizationPolicySet) List(filterResource ...func(*security_istio_io_v1beta1.AuthorizationPolicy) bool) []*security_istio_io_v1beta1.AuthorizationPolicy {
-
-	var genericFilters []func(ezkube.ResourceId) bool
-	for _, filter := range filterResource {
-		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
-			return filter(obj.(*security_istio_io_v1beta1.AuthorizationPolicy))
-		})
-	}
-
+func (s *authorizationPolicySet) List() []*security_istio_io_v1beta1.AuthorizationPolicy {
 	var authorizationPolicyList []*security_istio_io_v1beta1.AuthorizationPolicy
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.set.List() {
 		authorizationPolicyList = append(authorizationPolicyList, obj.(*security_istio_io_v1beta1.AuthorizationPolicy))
 	}
 	return authorizationPolicyList
@@ -99,7 +79,7 @@ func (s *authorizationPolicySet) Insert(
 	}
 }
 
-func (s *authorizationPolicySet) Has(authorizationPolicy ezkube.ResourceId) bool {
+func (s *authorizationPolicySet) Has(authorizationPolicy *security_istio_io_v1beta1.AuthorizationPolicy) bool {
 	return s.set.Has(authorizationPolicy)
 }
 
@@ -109,7 +89,7 @@ func (s *authorizationPolicySet) Equal(
 	return s.set.Equal(makeGenericAuthorizationPolicySet(authorizationPolicySet.List()))
 }
 
-func (s *authorizationPolicySet) Delete(AuthorizationPolicy ezkube.ResourceId) {
+func (s *authorizationPolicySet) Delete(AuthorizationPolicy *security_istio_io_v1beta1.AuthorizationPolicy) {
 	s.set.Delete(AuthorizationPolicy)
 }
 

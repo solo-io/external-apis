@@ -13,29 +13,17 @@ import (
 )
 
 type CustomResourceDefinitionSet interface {
-	// Get the set stored keys
 	Keys() sets.String
-	// List of resources stored in the set. Pass an optional filter function to filter on the list.
-	List(filterResource ...func(*apiextensions_k8s_io_v1beta1.CustomResourceDefinition) bool) []*apiextensions_k8s_io_v1beta1.CustomResourceDefinition
-	// Return the Set as a map of key to resource.
+	List() []*apiextensions_k8s_io_v1beta1.CustomResourceDefinition
 	Map() map[string]*apiextensions_k8s_io_v1beta1.CustomResourceDefinition
-	// Insert a resource into the set.
 	Insert(customResourceDefinition ...*apiextensions_k8s_io_v1beta1.CustomResourceDefinition)
-	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(customResourceDefinitionSet CustomResourceDefinitionSet) bool
-	// Check if the set contains a key matching the resource (not the resource itself)
-	Has(customResourceDefinition ezkube.ResourceId) bool
-	// Delete the key matching the resource
-	Delete(customResourceDefinition ezkube.ResourceId)
-	// Return the union with the provided set
+	Has(customResourceDefinition *apiextensions_k8s_io_v1beta1.CustomResourceDefinition) bool
+	Delete(customResourceDefinition *apiextensions_k8s_io_v1beta1.CustomResourceDefinition)
 	Union(set CustomResourceDefinitionSet) CustomResourceDefinitionSet
-	// Return the difference with the provided set
 	Difference(set CustomResourceDefinitionSet) CustomResourceDefinitionSet
-	// Return the intersection with the provided set
 	Intersection(set CustomResourceDefinitionSet) CustomResourceDefinitionSet
-	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*apiextensions_k8s_io_v1beta1.CustomResourceDefinition, error)
-	// Get the length of the set
 	Length() int
 }
 
@@ -67,17 +55,9 @@ func (s *customResourceDefinitionSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *customResourceDefinitionSet) List(filterResource ...func(*apiextensions_k8s_io_v1beta1.CustomResourceDefinition) bool) []*apiextensions_k8s_io_v1beta1.CustomResourceDefinition {
-
-	var genericFilters []func(ezkube.ResourceId) bool
-	for _, filter := range filterResource {
-		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
-			return filter(obj.(*apiextensions_k8s_io_v1beta1.CustomResourceDefinition))
-		})
-	}
-
+func (s *customResourceDefinitionSet) List() []*apiextensions_k8s_io_v1beta1.CustomResourceDefinition {
 	var customResourceDefinitionList []*apiextensions_k8s_io_v1beta1.CustomResourceDefinition
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.set.List() {
 		customResourceDefinitionList = append(customResourceDefinitionList, obj.(*apiextensions_k8s_io_v1beta1.CustomResourceDefinition))
 	}
 	return customResourceDefinitionList
@@ -99,7 +79,7 @@ func (s *customResourceDefinitionSet) Insert(
 	}
 }
 
-func (s *customResourceDefinitionSet) Has(customResourceDefinition ezkube.ResourceId) bool {
+func (s *customResourceDefinitionSet) Has(customResourceDefinition *apiextensions_k8s_io_v1beta1.CustomResourceDefinition) bool {
 	return s.set.Has(customResourceDefinition)
 }
 
@@ -109,7 +89,7 @@ func (s *customResourceDefinitionSet) Equal(
 	return s.set.Equal(makeGenericCustomResourceDefinitionSet(customResourceDefinitionSet.List()))
 }
 
-func (s *customResourceDefinitionSet) Delete(CustomResourceDefinition ezkube.ResourceId) {
+func (s *customResourceDefinitionSet) Delete(CustomResourceDefinition *apiextensions_k8s_io_v1beta1.CustomResourceDefinition) {
 	s.set.Delete(CustomResourceDefinition)
 }
 
