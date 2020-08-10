@@ -14,30 +14,30 @@ import (
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
-// MockJobEventHandler is a mock of JobEventHandler interface
+// MockJobEventHandler is a mock of JobEventHandler interface.
 type MockJobEventHandler struct {
 	ctrl     *gomock.Controller
 	recorder *MockJobEventHandlerMockRecorder
 }
 
-// MockJobEventHandlerMockRecorder is the mock recorder for MockJobEventHandler
+// MockJobEventHandlerMockRecorder is the mock recorder for MockJobEventHandler.
 type MockJobEventHandlerMockRecorder struct {
 	mock *MockJobEventHandler
 }
 
-// NewMockJobEventHandler creates a new mock instance
+// NewMockJobEventHandler creates a new mock instance.
 func NewMockJobEventHandler(ctrl *gomock.Controller) *MockJobEventHandler {
 	mock := &MockJobEventHandler{ctrl: ctrl}
 	mock.recorder = &MockJobEventHandlerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockJobEventHandler) EXPECT() *MockJobEventHandlerMockRecorder {
 	return m.recorder
 }
 
-// CreateJob mocks base method
+// CreateJob mocks base method.
 func (m *MockJobEventHandler) CreateJob(obj *v1.Job) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateJob", obj)
@@ -45,13 +45,13 @@ func (m *MockJobEventHandler) CreateJob(obj *v1.Job) error {
 	return ret0
 }
 
-// CreateJob indicates an expected call of CreateJob
+// CreateJob indicates an expected call of CreateJob.
 func (mr *MockJobEventHandlerMockRecorder) CreateJob(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateJob", reflect.TypeOf((*MockJobEventHandler)(nil).CreateJob), obj)
 }
 
-// UpdateJob mocks base method
+// UpdateJob mocks base method.
 func (m *MockJobEventHandler) UpdateJob(old, new *v1.Job) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateJob", old, new)
@@ -59,13 +59,13 @@ func (m *MockJobEventHandler) UpdateJob(old, new *v1.Job) error {
 	return ret0
 }
 
-// UpdateJob indicates an expected call of UpdateJob
+// UpdateJob indicates an expected call of UpdateJob.
 func (mr *MockJobEventHandlerMockRecorder) UpdateJob(old, new interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateJob", reflect.TypeOf((*MockJobEventHandler)(nil).UpdateJob), old, new)
 }
 
-// DeleteJob mocks base method
+// DeleteJob mocks base method.
 func (m *MockJobEventHandler) DeleteJob(obj *v1.Job) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteJob", obj)
@@ -73,13 +73,13 @@ func (m *MockJobEventHandler) DeleteJob(obj *v1.Job) error {
 	return ret0
 }
 
-// DeleteJob indicates an expected call of DeleteJob
+// DeleteJob indicates an expected call of DeleteJob.
 func (mr *MockJobEventHandlerMockRecorder) DeleteJob(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteJob", reflect.TypeOf((*MockJobEventHandler)(nil).DeleteJob), obj)
 }
 
-// GenericJob mocks base method
+// GenericJob mocks base method.
 func (m *MockJobEventHandler) GenericJob(obj *v1.Job) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GenericJob", obj)
@@ -87,36 +87,36 @@ func (m *MockJobEventHandler) GenericJob(obj *v1.Job) error {
 	return ret0
 }
 
-// GenericJob indicates an expected call of GenericJob
+// GenericJob indicates an expected call of GenericJob.
 func (mr *MockJobEventHandlerMockRecorder) GenericJob(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericJob", reflect.TypeOf((*MockJobEventHandler)(nil).GenericJob), obj)
 }
 
-// MockJobEventWatcher is a mock of JobEventWatcher interface
+// MockJobEventWatcher is a mock of JobEventWatcher interface.
 type MockJobEventWatcher struct {
 	ctrl     *gomock.Controller
 	recorder *MockJobEventWatcherMockRecorder
 }
 
-// MockJobEventWatcherMockRecorder is the mock recorder for MockJobEventWatcher
+// MockJobEventWatcherMockRecorder is the mock recorder for MockJobEventWatcher.
 type MockJobEventWatcherMockRecorder struct {
 	mock *MockJobEventWatcher
 }
 
-// NewMockJobEventWatcher creates a new mock instance
+// NewMockJobEventWatcher creates a new mock instance.
 func NewMockJobEventWatcher(ctrl *gomock.Controller) *MockJobEventWatcher {
 	mock := &MockJobEventWatcher{ctrl: ctrl}
 	mock.recorder = &MockJobEventWatcherMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockJobEventWatcher) EXPECT() *MockJobEventWatcherMockRecorder {
 	return m.recorder
 }
 
-// AddEventHandler mocks base method
+// AddEventHandler mocks base method.
 func (m *MockJobEventWatcher) AddEventHandler(ctx context.Context, h controller.JobEventHandler, predicates ...predicate.Predicate) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, h}
@@ -128,7 +128,7 @@ func (m *MockJobEventWatcher) AddEventHandler(ctx context.Context, h controller.
 	return ret0
 }
 
-// AddEventHandler indicates an expected call of AddEventHandler
+// AddEventHandler indicates an expected call of AddEventHandler.
 func (mr *MockJobEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, h}, predicates...)

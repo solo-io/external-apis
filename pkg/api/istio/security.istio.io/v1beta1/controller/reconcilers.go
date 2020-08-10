@@ -28,12 +28,12 @@ type AuthorizationPolicyReconciler interface {
 // before being deleted.
 // implemented by the user
 type AuthorizationPolicyDeletionReconciler interface {
-	ReconcileAuthorizationPolicyDeletion(req reconcile.Request)
+	ReconcileAuthorizationPolicyDeletion(req reconcile.Request) error
 }
 
 type AuthorizationPolicyReconcilerFuncs struct {
 	OnReconcileAuthorizationPolicy         func(obj *security_istio_io_v1beta1.AuthorizationPolicy) (reconcile.Result, error)
-	OnReconcileAuthorizationPolicyDeletion func(req reconcile.Request)
+	OnReconcileAuthorizationPolicyDeletion func(req reconcile.Request) error
 }
 
 func (f *AuthorizationPolicyReconcilerFuncs) ReconcileAuthorizationPolicy(obj *security_istio_io_v1beta1.AuthorizationPolicy) (reconcile.Result, error) {
@@ -43,11 +43,11 @@ func (f *AuthorizationPolicyReconcilerFuncs) ReconcileAuthorizationPolicy(obj *s
 	return f.OnReconcileAuthorizationPolicy(obj)
 }
 
-func (f *AuthorizationPolicyReconcilerFuncs) ReconcileAuthorizationPolicyDeletion(req reconcile.Request) {
+func (f *AuthorizationPolicyReconcilerFuncs) ReconcileAuthorizationPolicyDeletion(req reconcile.Request) error {
 	if f.OnReconcileAuthorizationPolicyDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileAuthorizationPolicyDeletion(req)
+	return f.OnReconcileAuthorizationPolicyDeletion(req)
 }
 
 // Reconcile and finalize the AuthorizationPolicy Resource
@@ -108,10 +108,11 @@ func (r genericAuthorizationPolicyReconciler) Reconcile(object ezkube.Object) (r
 	return r.reconciler.ReconcileAuthorizationPolicy(obj)
 }
 
-func (r genericAuthorizationPolicyReconciler) ReconcileDeletion(request reconcile.Request) {
+func (r genericAuthorizationPolicyReconciler) ReconcileDeletion(request reconcile.Request) error {
 	if deletionReconciler, ok := r.reconciler.(AuthorizationPolicyDeletionReconciler); ok {
-		deletionReconciler.ReconcileAuthorizationPolicyDeletion(request)
+		return deletionReconciler.ReconcileAuthorizationPolicyDeletion(request)
 	}
+	return nil
 }
 
 // genericAuthorizationPolicyFinalizer implements a generic reconcile.FinalizingReconciler

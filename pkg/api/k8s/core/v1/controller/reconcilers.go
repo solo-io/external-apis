@@ -28,12 +28,12 @@ type SecretReconciler interface {
 // before being deleted.
 // implemented by the user
 type SecretDeletionReconciler interface {
-	ReconcileSecretDeletion(req reconcile.Request)
+	ReconcileSecretDeletion(req reconcile.Request) error
 }
 
 type SecretReconcilerFuncs struct {
 	OnReconcileSecret         func(obj *v1.Secret) (reconcile.Result, error)
-	OnReconcileSecretDeletion func(req reconcile.Request)
+	OnReconcileSecretDeletion func(req reconcile.Request) error
 }
 
 func (f *SecretReconcilerFuncs) ReconcileSecret(obj *v1.Secret) (reconcile.Result, error) {
@@ -43,11 +43,11 @@ func (f *SecretReconcilerFuncs) ReconcileSecret(obj *v1.Secret) (reconcile.Resul
 	return f.OnReconcileSecret(obj)
 }
 
-func (f *SecretReconcilerFuncs) ReconcileSecretDeletion(req reconcile.Request) {
+func (f *SecretReconcilerFuncs) ReconcileSecretDeletion(req reconcile.Request) error {
 	if f.OnReconcileSecretDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileSecretDeletion(req)
+	return f.OnReconcileSecretDeletion(req)
 }
 
 // Reconcile and finalize the Secret Resource
@@ -108,10 +108,11 @@ func (r genericSecretReconciler) Reconcile(object ezkube.Object) (reconcile.Resu
 	return r.reconciler.ReconcileSecret(obj)
 }
 
-func (r genericSecretReconciler) ReconcileDeletion(request reconcile.Request) {
+func (r genericSecretReconciler) ReconcileDeletion(request reconcile.Request) error {
 	if deletionReconciler, ok := r.reconciler.(SecretDeletionReconciler); ok {
-		deletionReconciler.ReconcileSecretDeletion(request)
+		return deletionReconciler.ReconcileSecretDeletion(request)
 	}
+	return nil
 }
 
 // genericSecretFinalizer implements a generic reconcile.FinalizingReconciler
@@ -143,12 +144,12 @@ type ServiceAccountReconciler interface {
 // before being deleted.
 // implemented by the user
 type ServiceAccountDeletionReconciler interface {
-	ReconcileServiceAccountDeletion(req reconcile.Request)
+	ReconcileServiceAccountDeletion(req reconcile.Request) error
 }
 
 type ServiceAccountReconcilerFuncs struct {
 	OnReconcileServiceAccount         func(obj *v1.ServiceAccount) (reconcile.Result, error)
-	OnReconcileServiceAccountDeletion func(req reconcile.Request)
+	OnReconcileServiceAccountDeletion func(req reconcile.Request) error
 }
 
 func (f *ServiceAccountReconcilerFuncs) ReconcileServiceAccount(obj *v1.ServiceAccount) (reconcile.Result, error) {
@@ -158,11 +159,11 @@ func (f *ServiceAccountReconcilerFuncs) ReconcileServiceAccount(obj *v1.ServiceA
 	return f.OnReconcileServiceAccount(obj)
 }
 
-func (f *ServiceAccountReconcilerFuncs) ReconcileServiceAccountDeletion(req reconcile.Request) {
+func (f *ServiceAccountReconcilerFuncs) ReconcileServiceAccountDeletion(req reconcile.Request) error {
 	if f.OnReconcileServiceAccountDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileServiceAccountDeletion(req)
+	return f.OnReconcileServiceAccountDeletion(req)
 }
 
 // Reconcile and finalize the ServiceAccount Resource
@@ -223,10 +224,11 @@ func (r genericServiceAccountReconciler) Reconcile(object ezkube.Object) (reconc
 	return r.reconciler.ReconcileServiceAccount(obj)
 }
 
-func (r genericServiceAccountReconciler) ReconcileDeletion(request reconcile.Request) {
+func (r genericServiceAccountReconciler) ReconcileDeletion(request reconcile.Request) error {
 	if deletionReconciler, ok := r.reconciler.(ServiceAccountDeletionReconciler); ok {
-		deletionReconciler.ReconcileServiceAccountDeletion(request)
+		return deletionReconciler.ReconcileServiceAccountDeletion(request)
 	}
+	return nil
 }
 
 // genericServiceAccountFinalizer implements a generic reconcile.FinalizingReconciler
@@ -258,12 +260,12 @@ type ConfigMapReconciler interface {
 // before being deleted.
 // implemented by the user
 type ConfigMapDeletionReconciler interface {
-	ReconcileConfigMapDeletion(req reconcile.Request)
+	ReconcileConfigMapDeletion(req reconcile.Request) error
 }
 
 type ConfigMapReconcilerFuncs struct {
 	OnReconcileConfigMap         func(obj *v1.ConfigMap) (reconcile.Result, error)
-	OnReconcileConfigMapDeletion func(req reconcile.Request)
+	OnReconcileConfigMapDeletion func(req reconcile.Request) error
 }
 
 func (f *ConfigMapReconcilerFuncs) ReconcileConfigMap(obj *v1.ConfigMap) (reconcile.Result, error) {
@@ -273,11 +275,11 @@ func (f *ConfigMapReconcilerFuncs) ReconcileConfigMap(obj *v1.ConfigMap) (reconc
 	return f.OnReconcileConfigMap(obj)
 }
 
-func (f *ConfigMapReconcilerFuncs) ReconcileConfigMapDeletion(req reconcile.Request) {
+func (f *ConfigMapReconcilerFuncs) ReconcileConfigMapDeletion(req reconcile.Request) error {
 	if f.OnReconcileConfigMapDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileConfigMapDeletion(req)
+	return f.OnReconcileConfigMapDeletion(req)
 }
 
 // Reconcile and finalize the ConfigMap Resource
@@ -338,10 +340,11 @@ func (r genericConfigMapReconciler) Reconcile(object ezkube.Object) (reconcile.R
 	return r.reconciler.ReconcileConfigMap(obj)
 }
 
-func (r genericConfigMapReconciler) ReconcileDeletion(request reconcile.Request) {
+func (r genericConfigMapReconciler) ReconcileDeletion(request reconcile.Request) error {
 	if deletionReconciler, ok := r.reconciler.(ConfigMapDeletionReconciler); ok {
-		deletionReconciler.ReconcileConfigMapDeletion(request)
+		return deletionReconciler.ReconcileConfigMapDeletion(request)
 	}
+	return nil
 }
 
 // genericConfigMapFinalizer implements a generic reconcile.FinalizingReconciler
@@ -373,12 +376,12 @@ type ServiceReconciler interface {
 // before being deleted.
 // implemented by the user
 type ServiceDeletionReconciler interface {
-	ReconcileServiceDeletion(req reconcile.Request)
+	ReconcileServiceDeletion(req reconcile.Request) error
 }
 
 type ServiceReconcilerFuncs struct {
 	OnReconcileService         func(obj *v1.Service) (reconcile.Result, error)
-	OnReconcileServiceDeletion func(req reconcile.Request)
+	OnReconcileServiceDeletion func(req reconcile.Request) error
 }
 
 func (f *ServiceReconcilerFuncs) ReconcileService(obj *v1.Service) (reconcile.Result, error) {
@@ -388,11 +391,11 @@ func (f *ServiceReconcilerFuncs) ReconcileService(obj *v1.Service) (reconcile.Re
 	return f.OnReconcileService(obj)
 }
 
-func (f *ServiceReconcilerFuncs) ReconcileServiceDeletion(req reconcile.Request) {
+func (f *ServiceReconcilerFuncs) ReconcileServiceDeletion(req reconcile.Request) error {
 	if f.OnReconcileServiceDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileServiceDeletion(req)
+	return f.OnReconcileServiceDeletion(req)
 }
 
 // Reconcile and finalize the Service Resource
@@ -453,10 +456,11 @@ func (r genericServiceReconciler) Reconcile(object ezkube.Object) (reconcile.Res
 	return r.reconciler.ReconcileService(obj)
 }
 
-func (r genericServiceReconciler) ReconcileDeletion(request reconcile.Request) {
+func (r genericServiceReconciler) ReconcileDeletion(request reconcile.Request) error {
 	if deletionReconciler, ok := r.reconciler.(ServiceDeletionReconciler); ok {
-		deletionReconciler.ReconcileServiceDeletion(request)
+		return deletionReconciler.ReconcileServiceDeletion(request)
 	}
+	return nil
 }
 
 // genericServiceFinalizer implements a generic reconcile.FinalizingReconciler
@@ -488,12 +492,12 @@ type PodReconciler interface {
 // before being deleted.
 // implemented by the user
 type PodDeletionReconciler interface {
-	ReconcilePodDeletion(req reconcile.Request)
+	ReconcilePodDeletion(req reconcile.Request) error
 }
 
 type PodReconcilerFuncs struct {
 	OnReconcilePod         func(obj *v1.Pod) (reconcile.Result, error)
-	OnReconcilePodDeletion func(req reconcile.Request)
+	OnReconcilePodDeletion func(req reconcile.Request) error
 }
 
 func (f *PodReconcilerFuncs) ReconcilePod(obj *v1.Pod) (reconcile.Result, error) {
@@ -503,11 +507,11 @@ func (f *PodReconcilerFuncs) ReconcilePod(obj *v1.Pod) (reconcile.Result, error)
 	return f.OnReconcilePod(obj)
 }
 
-func (f *PodReconcilerFuncs) ReconcilePodDeletion(req reconcile.Request) {
+func (f *PodReconcilerFuncs) ReconcilePodDeletion(req reconcile.Request) error {
 	if f.OnReconcilePodDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcilePodDeletion(req)
+	return f.OnReconcilePodDeletion(req)
 }
 
 // Reconcile and finalize the Pod Resource
@@ -568,10 +572,11 @@ func (r genericPodReconciler) Reconcile(object ezkube.Object) (reconcile.Result,
 	return r.reconciler.ReconcilePod(obj)
 }
 
-func (r genericPodReconciler) ReconcileDeletion(request reconcile.Request) {
+func (r genericPodReconciler) ReconcileDeletion(request reconcile.Request) error {
 	if deletionReconciler, ok := r.reconciler.(PodDeletionReconciler); ok {
-		deletionReconciler.ReconcilePodDeletion(request)
+		return deletionReconciler.ReconcilePodDeletion(request)
 	}
+	return nil
 }
 
 // genericPodFinalizer implements a generic reconcile.FinalizingReconciler
@@ -603,12 +608,12 @@ type NamespaceReconciler interface {
 // before being deleted.
 // implemented by the user
 type NamespaceDeletionReconciler interface {
-	ReconcileNamespaceDeletion(req reconcile.Request)
+	ReconcileNamespaceDeletion(req reconcile.Request) error
 }
 
 type NamespaceReconcilerFuncs struct {
 	OnReconcileNamespace         func(obj *v1.Namespace) (reconcile.Result, error)
-	OnReconcileNamespaceDeletion func(req reconcile.Request)
+	OnReconcileNamespaceDeletion func(req reconcile.Request) error
 }
 
 func (f *NamespaceReconcilerFuncs) ReconcileNamespace(obj *v1.Namespace) (reconcile.Result, error) {
@@ -618,11 +623,11 @@ func (f *NamespaceReconcilerFuncs) ReconcileNamespace(obj *v1.Namespace) (reconc
 	return f.OnReconcileNamespace(obj)
 }
 
-func (f *NamespaceReconcilerFuncs) ReconcileNamespaceDeletion(req reconcile.Request) {
+func (f *NamespaceReconcilerFuncs) ReconcileNamespaceDeletion(req reconcile.Request) error {
 	if f.OnReconcileNamespaceDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileNamespaceDeletion(req)
+	return f.OnReconcileNamespaceDeletion(req)
 }
 
 // Reconcile and finalize the Namespace Resource
@@ -683,10 +688,11 @@ func (r genericNamespaceReconciler) Reconcile(object ezkube.Object) (reconcile.R
 	return r.reconciler.ReconcileNamespace(obj)
 }
 
-func (r genericNamespaceReconciler) ReconcileDeletion(request reconcile.Request) {
+func (r genericNamespaceReconciler) ReconcileDeletion(request reconcile.Request) error {
 	if deletionReconciler, ok := r.reconciler.(NamespaceDeletionReconciler); ok {
-		deletionReconciler.ReconcileNamespaceDeletion(request)
+		return deletionReconciler.ReconcileNamespaceDeletion(request)
 	}
+	return nil
 }
 
 // genericNamespaceFinalizer implements a generic reconcile.FinalizingReconciler
@@ -718,12 +724,12 @@ type NodeReconciler interface {
 // before being deleted.
 // implemented by the user
 type NodeDeletionReconciler interface {
-	ReconcileNodeDeletion(req reconcile.Request)
+	ReconcileNodeDeletion(req reconcile.Request) error
 }
 
 type NodeReconcilerFuncs struct {
 	OnReconcileNode         func(obj *v1.Node) (reconcile.Result, error)
-	OnReconcileNodeDeletion func(req reconcile.Request)
+	OnReconcileNodeDeletion func(req reconcile.Request) error
 }
 
 func (f *NodeReconcilerFuncs) ReconcileNode(obj *v1.Node) (reconcile.Result, error) {
@@ -733,11 +739,11 @@ func (f *NodeReconcilerFuncs) ReconcileNode(obj *v1.Node) (reconcile.Result, err
 	return f.OnReconcileNode(obj)
 }
 
-func (f *NodeReconcilerFuncs) ReconcileNodeDeletion(req reconcile.Request) {
+func (f *NodeReconcilerFuncs) ReconcileNodeDeletion(req reconcile.Request) error {
 	if f.OnReconcileNodeDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileNodeDeletion(req)
+	return f.OnReconcileNodeDeletion(req)
 }
 
 // Reconcile and finalize the Node Resource
@@ -798,10 +804,11 @@ func (r genericNodeReconciler) Reconcile(object ezkube.Object) (reconcile.Result
 	return r.reconciler.ReconcileNode(obj)
 }
 
-func (r genericNodeReconciler) ReconcileDeletion(request reconcile.Request) {
+func (r genericNodeReconciler) ReconcileDeletion(request reconcile.Request) error {
 	if deletionReconciler, ok := r.reconciler.(NodeDeletionReconciler); ok {
-		deletionReconciler.ReconcileNodeDeletion(request)
+		return deletionReconciler.ReconcileNodeDeletion(request)
 	}
+	return nil
 }
 
 // genericNodeFinalizer implements a generic reconcile.FinalizingReconciler

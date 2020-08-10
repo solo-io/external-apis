@@ -29,12 +29,12 @@ type MulticlusterTrafficSplitReconciler interface {
 // before being deleted.
 // implemented by the user
 type MulticlusterTrafficSplitDeletionReconciler interface {
-	ReconcileTrafficSplitDeletion(clusterName string, req reconcile.Request)
+	ReconcileTrafficSplitDeletion(clusterName string, req reconcile.Request) error
 }
 
 type MulticlusterTrafficSplitReconcilerFuncs struct {
 	OnReconcileTrafficSplit         func(clusterName string, obj *split_smi_spec_io_v1alpha1.TrafficSplit) (reconcile.Result, error)
-	OnReconcileTrafficSplitDeletion func(clusterName string, req reconcile.Request)
+	OnReconcileTrafficSplitDeletion func(clusterName string, req reconcile.Request) error
 }
 
 func (f *MulticlusterTrafficSplitReconcilerFuncs) ReconcileTrafficSplit(clusterName string, obj *split_smi_spec_io_v1alpha1.TrafficSplit) (reconcile.Result, error) {
@@ -44,11 +44,11 @@ func (f *MulticlusterTrafficSplitReconcilerFuncs) ReconcileTrafficSplit(clusterN
 	return f.OnReconcileTrafficSplit(clusterName, obj)
 }
 
-func (f *MulticlusterTrafficSplitReconcilerFuncs) ReconcileTrafficSplitDeletion(clusterName string, req reconcile.Request) {
+func (f *MulticlusterTrafficSplitReconcilerFuncs) ReconcileTrafficSplitDeletion(clusterName string, req reconcile.Request) error {
 	if f.OnReconcileTrafficSplitDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileTrafficSplitDeletion(clusterName, req)
+	return f.OnReconcileTrafficSplitDeletion(clusterName, req)
 }
 
 type MulticlusterTrafficSplitReconcileLoop interface {
@@ -74,10 +74,11 @@ type genericTrafficSplitMulticlusterReconciler struct {
 	reconciler MulticlusterTrafficSplitReconciler
 }
 
-func (g genericTrafficSplitMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) {
+func (g genericTrafficSplitMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) error {
 	if deletionReconciler, ok := g.reconciler.(MulticlusterTrafficSplitDeletionReconciler); ok {
-		deletionReconciler.ReconcileTrafficSplitDeletion(cluster, req)
+		return deletionReconciler.ReconcileTrafficSplitDeletion(cluster, req)
 	}
+	return nil
 }
 
 func (g genericTrafficSplitMulticlusterReconciler) Reconcile(cluster string, object ezkube.Object) (reconcile.Result, error) {

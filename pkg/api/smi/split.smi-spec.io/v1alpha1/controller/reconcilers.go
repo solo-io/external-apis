@@ -28,12 +28,12 @@ type TrafficSplitReconciler interface {
 // before being deleted.
 // implemented by the user
 type TrafficSplitDeletionReconciler interface {
-	ReconcileTrafficSplitDeletion(req reconcile.Request)
+	ReconcileTrafficSplitDeletion(req reconcile.Request) error
 }
 
 type TrafficSplitReconcilerFuncs struct {
 	OnReconcileTrafficSplit         func(obj *split_smi_spec_io_v1alpha1.TrafficSplit) (reconcile.Result, error)
-	OnReconcileTrafficSplitDeletion func(req reconcile.Request)
+	OnReconcileTrafficSplitDeletion func(req reconcile.Request) error
 }
 
 func (f *TrafficSplitReconcilerFuncs) ReconcileTrafficSplit(obj *split_smi_spec_io_v1alpha1.TrafficSplit) (reconcile.Result, error) {
@@ -43,11 +43,11 @@ func (f *TrafficSplitReconcilerFuncs) ReconcileTrafficSplit(obj *split_smi_spec_
 	return f.OnReconcileTrafficSplit(obj)
 }
 
-func (f *TrafficSplitReconcilerFuncs) ReconcileTrafficSplitDeletion(req reconcile.Request) {
+func (f *TrafficSplitReconcilerFuncs) ReconcileTrafficSplitDeletion(req reconcile.Request) error {
 	if f.OnReconcileTrafficSplitDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileTrafficSplitDeletion(req)
+	return f.OnReconcileTrafficSplitDeletion(req)
 }
 
 // Reconcile and finalize the TrafficSplit Resource
@@ -108,10 +108,11 @@ func (r genericTrafficSplitReconciler) Reconcile(object ezkube.Object) (reconcil
 	return r.reconciler.ReconcileTrafficSplit(obj)
 }
 
-func (r genericTrafficSplitReconciler) ReconcileDeletion(request reconcile.Request) {
+func (r genericTrafficSplitReconciler) ReconcileDeletion(request reconcile.Request) error {
 	if deletionReconciler, ok := r.reconciler.(TrafficSplitDeletionReconciler); ok {
-		deletionReconciler.ReconcileTrafficSplitDeletion(request)
+		return deletionReconciler.ReconcileTrafficSplitDeletion(request)
 	}
+	return nil
 }
 
 // genericTrafficSplitFinalizer implements a generic reconcile.FinalizingReconciler

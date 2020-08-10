@@ -28,12 +28,12 @@ type DeploymentReconciler interface {
 // before being deleted.
 // implemented by the user
 type DeploymentDeletionReconciler interface {
-	ReconcileDeploymentDeletion(req reconcile.Request)
+	ReconcileDeploymentDeletion(req reconcile.Request) error
 }
 
 type DeploymentReconcilerFuncs struct {
 	OnReconcileDeployment         func(obj *apps_v1.Deployment) (reconcile.Result, error)
-	OnReconcileDeploymentDeletion func(req reconcile.Request)
+	OnReconcileDeploymentDeletion func(req reconcile.Request) error
 }
 
 func (f *DeploymentReconcilerFuncs) ReconcileDeployment(obj *apps_v1.Deployment) (reconcile.Result, error) {
@@ -43,11 +43,11 @@ func (f *DeploymentReconcilerFuncs) ReconcileDeployment(obj *apps_v1.Deployment)
 	return f.OnReconcileDeployment(obj)
 }
 
-func (f *DeploymentReconcilerFuncs) ReconcileDeploymentDeletion(req reconcile.Request) {
+func (f *DeploymentReconcilerFuncs) ReconcileDeploymentDeletion(req reconcile.Request) error {
 	if f.OnReconcileDeploymentDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileDeploymentDeletion(req)
+	return f.OnReconcileDeploymentDeletion(req)
 }
 
 // Reconcile and finalize the Deployment Resource
@@ -108,10 +108,11 @@ func (r genericDeploymentReconciler) Reconcile(object ezkube.Object) (reconcile.
 	return r.reconciler.ReconcileDeployment(obj)
 }
 
-func (r genericDeploymentReconciler) ReconcileDeletion(request reconcile.Request) {
+func (r genericDeploymentReconciler) ReconcileDeletion(request reconcile.Request) error {
 	if deletionReconciler, ok := r.reconciler.(DeploymentDeletionReconciler); ok {
-		deletionReconciler.ReconcileDeploymentDeletion(request)
+		return deletionReconciler.ReconcileDeploymentDeletion(request)
 	}
+	return nil
 }
 
 // genericDeploymentFinalizer implements a generic reconcile.FinalizingReconciler
@@ -143,12 +144,12 @@ type ReplicaSetReconciler interface {
 // before being deleted.
 // implemented by the user
 type ReplicaSetDeletionReconciler interface {
-	ReconcileReplicaSetDeletion(req reconcile.Request)
+	ReconcileReplicaSetDeletion(req reconcile.Request) error
 }
 
 type ReplicaSetReconcilerFuncs struct {
 	OnReconcileReplicaSet         func(obj *apps_v1.ReplicaSet) (reconcile.Result, error)
-	OnReconcileReplicaSetDeletion func(req reconcile.Request)
+	OnReconcileReplicaSetDeletion func(req reconcile.Request) error
 }
 
 func (f *ReplicaSetReconcilerFuncs) ReconcileReplicaSet(obj *apps_v1.ReplicaSet) (reconcile.Result, error) {
@@ -158,11 +159,11 @@ func (f *ReplicaSetReconcilerFuncs) ReconcileReplicaSet(obj *apps_v1.ReplicaSet)
 	return f.OnReconcileReplicaSet(obj)
 }
 
-func (f *ReplicaSetReconcilerFuncs) ReconcileReplicaSetDeletion(req reconcile.Request) {
+func (f *ReplicaSetReconcilerFuncs) ReconcileReplicaSetDeletion(req reconcile.Request) error {
 	if f.OnReconcileReplicaSetDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileReplicaSetDeletion(req)
+	return f.OnReconcileReplicaSetDeletion(req)
 }
 
 // Reconcile and finalize the ReplicaSet Resource
@@ -223,10 +224,11 @@ func (r genericReplicaSetReconciler) Reconcile(object ezkube.Object) (reconcile.
 	return r.reconciler.ReconcileReplicaSet(obj)
 }
 
-func (r genericReplicaSetReconciler) ReconcileDeletion(request reconcile.Request) {
+func (r genericReplicaSetReconciler) ReconcileDeletion(request reconcile.Request) error {
 	if deletionReconciler, ok := r.reconciler.(ReplicaSetDeletionReconciler); ok {
-		deletionReconciler.ReconcileReplicaSetDeletion(request)
+		return deletionReconciler.ReconcileReplicaSetDeletion(request)
 	}
+	return nil
 }
 
 // genericReplicaSetFinalizer implements a generic reconcile.FinalizingReconciler
@@ -258,12 +260,12 @@ type DaemonSetReconciler interface {
 // before being deleted.
 // implemented by the user
 type DaemonSetDeletionReconciler interface {
-	ReconcileDaemonSetDeletion(req reconcile.Request)
+	ReconcileDaemonSetDeletion(req reconcile.Request) error
 }
 
 type DaemonSetReconcilerFuncs struct {
 	OnReconcileDaemonSet         func(obj *apps_v1.DaemonSet) (reconcile.Result, error)
-	OnReconcileDaemonSetDeletion func(req reconcile.Request)
+	OnReconcileDaemonSetDeletion func(req reconcile.Request) error
 }
 
 func (f *DaemonSetReconcilerFuncs) ReconcileDaemonSet(obj *apps_v1.DaemonSet) (reconcile.Result, error) {
@@ -273,11 +275,11 @@ func (f *DaemonSetReconcilerFuncs) ReconcileDaemonSet(obj *apps_v1.DaemonSet) (r
 	return f.OnReconcileDaemonSet(obj)
 }
 
-func (f *DaemonSetReconcilerFuncs) ReconcileDaemonSetDeletion(req reconcile.Request) {
+func (f *DaemonSetReconcilerFuncs) ReconcileDaemonSetDeletion(req reconcile.Request) error {
 	if f.OnReconcileDaemonSetDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileDaemonSetDeletion(req)
+	return f.OnReconcileDaemonSetDeletion(req)
 }
 
 // Reconcile and finalize the DaemonSet Resource
@@ -338,10 +340,11 @@ func (r genericDaemonSetReconciler) Reconcile(object ezkube.Object) (reconcile.R
 	return r.reconciler.ReconcileDaemonSet(obj)
 }
 
-func (r genericDaemonSetReconciler) ReconcileDeletion(request reconcile.Request) {
+func (r genericDaemonSetReconciler) ReconcileDeletion(request reconcile.Request) error {
 	if deletionReconciler, ok := r.reconciler.(DaemonSetDeletionReconciler); ok {
-		deletionReconciler.ReconcileDaemonSetDeletion(request)
+		return deletionReconciler.ReconcileDaemonSetDeletion(request)
 	}
+	return nil
 }
 
 // genericDaemonSetFinalizer implements a generic reconcile.FinalizingReconciler
@@ -373,12 +376,12 @@ type StatefulSetReconciler interface {
 // before being deleted.
 // implemented by the user
 type StatefulSetDeletionReconciler interface {
-	ReconcileStatefulSetDeletion(req reconcile.Request)
+	ReconcileStatefulSetDeletion(req reconcile.Request) error
 }
 
 type StatefulSetReconcilerFuncs struct {
 	OnReconcileStatefulSet         func(obj *apps_v1.StatefulSet) (reconcile.Result, error)
-	OnReconcileStatefulSetDeletion func(req reconcile.Request)
+	OnReconcileStatefulSetDeletion func(req reconcile.Request) error
 }
 
 func (f *StatefulSetReconcilerFuncs) ReconcileStatefulSet(obj *apps_v1.StatefulSet) (reconcile.Result, error) {
@@ -388,11 +391,11 @@ func (f *StatefulSetReconcilerFuncs) ReconcileStatefulSet(obj *apps_v1.StatefulS
 	return f.OnReconcileStatefulSet(obj)
 }
 
-func (f *StatefulSetReconcilerFuncs) ReconcileStatefulSetDeletion(req reconcile.Request) {
+func (f *StatefulSetReconcilerFuncs) ReconcileStatefulSetDeletion(req reconcile.Request) error {
 	if f.OnReconcileStatefulSetDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileStatefulSetDeletion(req)
+	return f.OnReconcileStatefulSetDeletion(req)
 }
 
 // Reconcile and finalize the StatefulSet Resource
@@ -453,10 +456,11 @@ func (r genericStatefulSetReconciler) Reconcile(object ezkube.Object) (reconcile
 	return r.reconciler.ReconcileStatefulSet(obj)
 }
 
-func (r genericStatefulSetReconciler) ReconcileDeletion(request reconcile.Request) {
+func (r genericStatefulSetReconciler) ReconcileDeletion(request reconcile.Request) error {
 	if deletionReconciler, ok := r.reconciler.(StatefulSetDeletionReconciler); ok {
-		deletionReconciler.ReconcileStatefulSetDeletion(request)
+		return deletionReconciler.ReconcileStatefulSetDeletion(request)
 	}
+	return nil
 }
 
 // genericStatefulSetFinalizer implements a generic reconcile.FinalizingReconciler

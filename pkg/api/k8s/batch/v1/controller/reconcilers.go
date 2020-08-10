@@ -28,12 +28,12 @@ type JobReconciler interface {
 // before being deleted.
 // implemented by the user
 type JobDeletionReconciler interface {
-	ReconcileJobDeletion(req reconcile.Request)
+	ReconcileJobDeletion(req reconcile.Request) error
 }
 
 type JobReconcilerFuncs struct {
 	OnReconcileJob         func(obj *batch_v1.Job) (reconcile.Result, error)
-	OnReconcileJobDeletion func(req reconcile.Request)
+	OnReconcileJobDeletion func(req reconcile.Request) error
 }
 
 func (f *JobReconcilerFuncs) ReconcileJob(obj *batch_v1.Job) (reconcile.Result, error) {
@@ -43,11 +43,11 @@ func (f *JobReconcilerFuncs) ReconcileJob(obj *batch_v1.Job) (reconcile.Result, 
 	return f.OnReconcileJob(obj)
 }
 
-func (f *JobReconcilerFuncs) ReconcileJobDeletion(req reconcile.Request) {
+func (f *JobReconcilerFuncs) ReconcileJobDeletion(req reconcile.Request) error {
 	if f.OnReconcileJobDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileJobDeletion(req)
+	return f.OnReconcileJobDeletion(req)
 }
 
 // Reconcile and finalize the Job Resource
@@ -108,10 +108,11 @@ func (r genericJobReconciler) Reconcile(object ezkube.Object) (reconcile.Result,
 	return r.reconciler.ReconcileJob(obj)
 }
 
-func (r genericJobReconciler) ReconcileDeletion(request reconcile.Request) {
+func (r genericJobReconciler) ReconcileDeletion(request reconcile.Request) error {
 	if deletionReconciler, ok := r.reconciler.(JobDeletionReconciler); ok {
-		deletionReconciler.ReconcileJobDeletion(request)
+		return deletionReconciler.ReconcileJobDeletion(request)
 	}
+	return nil
 }
 
 // genericJobFinalizer implements a generic reconcile.FinalizingReconciler

@@ -29,12 +29,12 @@ type MulticlusterAuthorizationPolicyReconciler interface {
 // before being deleted.
 // implemented by the user
 type MulticlusterAuthorizationPolicyDeletionReconciler interface {
-	ReconcileAuthorizationPolicyDeletion(clusterName string, req reconcile.Request)
+	ReconcileAuthorizationPolicyDeletion(clusterName string, req reconcile.Request) error
 }
 
 type MulticlusterAuthorizationPolicyReconcilerFuncs struct {
 	OnReconcileAuthorizationPolicy         func(clusterName string, obj *security_istio_io_v1beta1.AuthorizationPolicy) (reconcile.Result, error)
-	OnReconcileAuthorizationPolicyDeletion func(clusterName string, req reconcile.Request)
+	OnReconcileAuthorizationPolicyDeletion func(clusterName string, req reconcile.Request) error
 }
 
 func (f *MulticlusterAuthorizationPolicyReconcilerFuncs) ReconcileAuthorizationPolicy(clusterName string, obj *security_istio_io_v1beta1.AuthorizationPolicy) (reconcile.Result, error) {
@@ -44,11 +44,11 @@ func (f *MulticlusterAuthorizationPolicyReconcilerFuncs) ReconcileAuthorizationP
 	return f.OnReconcileAuthorizationPolicy(clusterName, obj)
 }
 
-func (f *MulticlusterAuthorizationPolicyReconcilerFuncs) ReconcileAuthorizationPolicyDeletion(clusterName string, req reconcile.Request) {
+func (f *MulticlusterAuthorizationPolicyReconcilerFuncs) ReconcileAuthorizationPolicyDeletion(clusterName string, req reconcile.Request) error {
 	if f.OnReconcileAuthorizationPolicyDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileAuthorizationPolicyDeletion(clusterName, req)
+	return f.OnReconcileAuthorizationPolicyDeletion(clusterName, req)
 }
 
 type MulticlusterAuthorizationPolicyReconcileLoop interface {
@@ -74,10 +74,11 @@ type genericAuthorizationPolicyMulticlusterReconciler struct {
 	reconciler MulticlusterAuthorizationPolicyReconciler
 }
 
-func (g genericAuthorizationPolicyMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) {
+func (g genericAuthorizationPolicyMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) error {
 	if deletionReconciler, ok := g.reconciler.(MulticlusterAuthorizationPolicyDeletionReconciler); ok {
-		deletionReconciler.ReconcileAuthorizationPolicyDeletion(cluster, req)
+		return deletionReconciler.ReconcileAuthorizationPolicyDeletion(cluster, req)
 	}
+	return nil
 }
 
 func (g genericAuthorizationPolicyMulticlusterReconciler) Reconcile(cluster string, object ezkube.Object) (reconcile.Result, error) {

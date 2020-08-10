@@ -3,19 +3,22 @@
 # Generated Code and Docs
 #----------------------------------------------------------------------------------
 
+DEPSGOBIN=$(shell pwd)/_output/.bin
+
 .PHONY: mod-download
 mod-download:
-	go mod download
+	PATH=$(DEPSGOBIN):$$PATH go mod download
 
 # Dependencies for code generation
 .PHONY: codegen-deps
 codegen-deps: mod-download
-	go get -v github.com/golang/mock/mockgen@v1.4.3
-	go get -v golang.org/x/tools/cmd/goimports@v0.0.0-20200423205358-59e73619c742
+	mkdir -p $(DEPSGOBIN)
+	GOBIN=$(DEPSGOBIN) go install github.com/golang/mock/mockgen
+	GOBIN=$(DEPSGOBIN) go install golang.org/x/tools/cmd/goimports
 
 .PHONY: generated-code
 generated-code:
-	go run generate.go
-	go generate -v ./...
-	goimports -w .
+	PATH=$(DEPSGOBIN):$$PATH go run generate.go
+	PATH=$(DEPSGOBIN):$$PATH go generate -v ./...
+	PATH=$(DEPSGOBIN):$$PATH goimports -w .
 

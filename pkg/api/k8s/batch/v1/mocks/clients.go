@@ -14,30 +14,30 @@ import (
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// MockMulticlusterClientset is a mock of MulticlusterClientset interface
+// MockMulticlusterClientset is a mock of MulticlusterClientset interface.
 type MockMulticlusterClientset struct {
 	ctrl     *gomock.Controller
 	recorder *MockMulticlusterClientsetMockRecorder
 }
 
-// MockMulticlusterClientsetMockRecorder is the mock recorder for MockMulticlusterClientset
+// MockMulticlusterClientsetMockRecorder is the mock recorder for MockMulticlusterClientset.
 type MockMulticlusterClientsetMockRecorder struct {
 	mock *MockMulticlusterClientset
 }
 
-// NewMockMulticlusterClientset creates a new mock instance
+// NewMockMulticlusterClientset creates a new mock instance.
 func NewMockMulticlusterClientset(ctrl *gomock.Controller) *MockMulticlusterClientset {
 	mock := &MockMulticlusterClientset{ctrl: ctrl}
 	mock.recorder = &MockMulticlusterClientsetMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockMulticlusterClientset) EXPECT() *MockMulticlusterClientsetMockRecorder {
 	return m.recorder
 }
 
-// Cluster mocks base method
+// Cluster mocks base method.
 func (m *MockMulticlusterClientset) Cluster(cluster string) (v1.Clientset, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Cluster", cluster)
@@ -46,36 +46,36 @@ func (m *MockMulticlusterClientset) Cluster(cluster string) (v1.Clientset, error
 	return ret0, ret1
 }
 
-// Cluster indicates an expected call of Cluster
+// Cluster indicates an expected call of Cluster.
 func (mr *MockMulticlusterClientsetMockRecorder) Cluster(cluster interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterClientset)(nil).Cluster), cluster)
 }
 
-// MockClientset is a mock of Clientset interface
+// MockClientset is a mock of Clientset interface.
 type MockClientset struct {
 	ctrl     *gomock.Controller
 	recorder *MockClientsetMockRecorder
 }
 
-// MockClientsetMockRecorder is the mock recorder for MockClientset
+// MockClientsetMockRecorder is the mock recorder for MockClientset.
 type MockClientsetMockRecorder struct {
 	mock *MockClientset
 }
 
-// NewMockClientset creates a new mock instance
+// NewMockClientset creates a new mock instance.
 func NewMockClientset(ctrl *gomock.Controller) *MockClientset {
 	mock := &MockClientset{ctrl: ctrl}
 	mock.recorder = &MockClientsetMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockClientset) EXPECT() *MockClientsetMockRecorder {
 	return m.recorder
 }
 
-// Jobs mocks base method
+// Jobs mocks base method.
 func (m *MockClientset) Jobs() v1.JobClient {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Jobs")
@@ -83,36 +83,36 @@ func (m *MockClientset) Jobs() v1.JobClient {
 	return ret0
 }
 
-// Jobs indicates an expected call of Jobs
+// Jobs indicates an expected call of Jobs.
 func (mr *MockClientsetMockRecorder) Jobs() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Jobs", reflect.TypeOf((*MockClientset)(nil).Jobs))
 }
 
-// MockJobReader is a mock of JobReader interface
+// MockJobReader is a mock of JobReader interface.
 type MockJobReader struct {
 	ctrl     *gomock.Controller
 	recorder *MockJobReaderMockRecorder
 }
 
-// MockJobReaderMockRecorder is the mock recorder for MockJobReader
+// MockJobReaderMockRecorder is the mock recorder for MockJobReader.
 type MockJobReaderMockRecorder struct {
 	mock *MockJobReader
 }
 
-// NewMockJobReader creates a new mock instance
+// NewMockJobReader creates a new mock instance.
 func NewMockJobReader(ctrl *gomock.Controller) *MockJobReader {
 	mock := &MockJobReader{ctrl: ctrl}
 	mock.recorder = &MockJobReaderMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockJobReader) EXPECT() *MockJobReaderMockRecorder {
 	return m.recorder
 }
 
-// GetJob mocks base method
+// GetJob mocks base method.
 func (m *MockJobReader) GetJob(ctx context.Context, key client.ObjectKey) (*v10.Job, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetJob", ctx, key)
@@ -121,13 +121,13 @@ func (m *MockJobReader) GetJob(ctx context.Context, key client.ObjectKey) (*v10.
 	return ret0, ret1
 }
 
-// GetJob indicates an expected call of GetJob
+// GetJob indicates an expected call of GetJob.
 func (mr *MockJobReaderMockRecorder) GetJob(ctx, key interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetJob", reflect.TypeOf((*MockJobReader)(nil).GetJob), ctx, key)
 }
 
-// ListJob mocks base method
+// ListJob mocks base method.
 func (m *MockJobReader) ListJob(ctx context.Context, opts ...client.ListOption) (*v10.JobList, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx}
@@ -140,37 +140,37 @@ func (m *MockJobReader) ListJob(ctx context.Context, opts ...client.ListOption) 
 	return ret0, ret1
 }
 
-// ListJob indicates an expected call of ListJob
+// ListJob indicates an expected call of ListJob.
 func (mr *MockJobReaderMockRecorder) ListJob(ctx interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListJob", reflect.TypeOf((*MockJobReader)(nil).ListJob), varargs...)
 }
 
-// MockJobWriter is a mock of JobWriter interface
+// MockJobWriter is a mock of JobWriter interface.
 type MockJobWriter struct {
 	ctrl     *gomock.Controller
 	recorder *MockJobWriterMockRecorder
 }
 
-// MockJobWriterMockRecorder is the mock recorder for MockJobWriter
+// MockJobWriterMockRecorder is the mock recorder for MockJobWriter.
 type MockJobWriterMockRecorder struct {
 	mock *MockJobWriter
 }
 
-// NewMockJobWriter creates a new mock instance
+// NewMockJobWriter creates a new mock instance.
 func NewMockJobWriter(ctrl *gomock.Controller) *MockJobWriter {
 	mock := &MockJobWriter{ctrl: ctrl}
 	mock.recorder = &MockJobWriterMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockJobWriter) EXPECT() *MockJobWriterMockRecorder {
 	return m.recorder
 }
 
-// CreateJob mocks base method
+// CreateJob mocks base method.
 func (m *MockJobWriter) CreateJob(ctx context.Context, obj *v10.Job, opts ...client.CreateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
@@ -182,14 +182,14 @@ func (m *MockJobWriter) CreateJob(ctx context.Context, obj *v10.Job, opts ...cli
 	return ret0
 }
 
-// CreateJob indicates an expected call of CreateJob
+// CreateJob indicates an expected call of CreateJob.
 func (mr *MockJobWriterMockRecorder) CreateJob(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateJob", reflect.TypeOf((*MockJobWriter)(nil).CreateJob), varargs...)
 }
 
-// DeleteJob mocks base method
+// DeleteJob mocks base method.
 func (m *MockJobWriter) DeleteJob(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, key}
@@ -201,14 +201,14 @@ func (m *MockJobWriter) DeleteJob(ctx context.Context, key client.ObjectKey, opt
 	return ret0
 }
 
-// DeleteJob indicates an expected call of DeleteJob
+// DeleteJob indicates an expected call of DeleteJob.
 func (mr *MockJobWriterMockRecorder) DeleteJob(ctx, key interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, key}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteJob", reflect.TypeOf((*MockJobWriter)(nil).DeleteJob), varargs...)
 }
 
-// UpdateJob mocks base method
+// UpdateJob mocks base method.
 func (m *MockJobWriter) UpdateJob(ctx context.Context, obj *v10.Job, opts ...client.UpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
@@ -220,14 +220,14 @@ func (m *MockJobWriter) UpdateJob(ctx context.Context, obj *v10.Job, opts ...cli
 	return ret0
 }
 
-// UpdateJob indicates an expected call of UpdateJob
+// UpdateJob indicates an expected call of UpdateJob.
 func (mr *MockJobWriterMockRecorder) UpdateJob(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateJob", reflect.TypeOf((*MockJobWriter)(nil).UpdateJob), varargs...)
 }
 
-// PatchJob mocks base method
+// PatchJob mocks base method.
 func (m *MockJobWriter) PatchJob(ctx context.Context, obj *v10.Job, patch client.Patch, opts ...client.PatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
@@ -239,14 +239,14 @@ func (m *MockJobWriter) PatchJob(ctx context.Context, obj *v10.Job, patch client
 	return ret0
 }
 
-// PatchJob indicates an expected call of PatchJob
+// PatchJob indicates an expected call of PatchJob.
 func (mr *MockJobWriterMockRecorder) PatchJob(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj, patch}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchJob", reflect.TypeOf((*MockJobWriter)(nil).PatchJob), varargs...)
 }
 
-// DeleteAllOfJob mocks base method
+// DeleteAllOfJob mocks base method.
 func (m *MockJobWriter) DeleteAllOfJob(ctx context.Context, opts ...client.DeleteAllOfOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx}
@@ -258,14 +258,14 @@ func (m *MockJobWriter) DeleteAllOfJob(ctx context.Context, opts ...client.Delet
 	return ret0
 }
 
-// DeleteAllOfJob indicates an expected call of DeleteAllOfJob
+// DeleteAllOfJob indicates an expected call of DeleteAllOfJob.
 func (mr *MockJobWriterMockRecorder) DeleteAllOfJob(ctx interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfJob", reflect.TypeOf((*MockJobWriter)(nil).DeleteAllOfJob), varargs...)
 }
 
-// UpsertJob mocks base method
+// UpsertJob mocks base method.
 func (m *MockJobWriter) UpsertJob(ctx context.Context, obj *v10.Job, transitionFuncs ...v1.JobTransitionFunction) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
@@ -277,37 +277,37 @@ func (m *MockJobWriter) UpsertJob(ctx context.Context, obj *v10.Job, transitionF
 	return ret0
 }
 
-// UpsertJob indicates an expected call of UpsertJob
+// UpsertJob indicates an expected call of UpsertJob.
 func (mr *MockJobWriterMockRecorder) UpsertJob(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertJob", reflect.TypeOf((*MockJobWriter)(nil).UpsertJob), varargs...)
 }
 
-// MockJobStatusWriter is a mock of JobStatusWriter interface
+// MockJobStatusWriter is a mock of JobStatusWriter interface.
 type MockJobStatusWriter struct {
 	ctrl     *gomock.Controller
 	recorder *MockJobStatusWriterMockRecorder
 }
 
-// MockJobStatusWriterMockRecorder is the mock recorder for MockJobStatusWriter
+// MockJobStatusWriterMockRecorder is the mock recorder for MockJobStatusWriter.
 type MockJobStatusWriterMockRecorder struct {
 	mock *MockJobStatusWriter
 }
 
-// NewMockJobStatusWriter creates a new mock instance
+// NewMockJobStatusWriter creates a new mock instance.
 func NewMockJobStatusWriter(ctrl *gomock.Controller) *MockJobStatusWriter {
 	mock := &MockJobStatusWriter{ctrl: ctrl}
 	mock.recorder = &MockJobStatusWriterMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockJobStatusWriter) EXPECT() *MockJobStatusWriterMockRecorder {
 	return m.recorder
 }
 
-// UpdateJobStatus mocks base method
+// UpdateJobStatus mocks base method.
 func (m *MockJobStatusWriter) UpdateJobStatus(ctx context.Context, obj *v10.Job, opts ...client.UpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
@@ -319,14 +319,14 @@ func (m *MockJobStatusWriter) UpdateJobStatus(ctx context.Context, obj *v10.Job,
 	return ret0
 }
 
-// UpdateJobStatus indicates an expected call of UpdateJobStatus
+// UpdateJobStatus indicates an expected call of UpdateJobStatus.
 func (mr *MockJobStatusWriterMockRecorder) UpdateJobStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateJobStatus", reflect.TypeOf((*MockJobStatusWriter)(nil).UpdateJobStatus), varargs...)
 }
 
-// PatchJobStatus mocks base method
+// PatchJobStatus mocks base method.
 func (m *MockJobStatusWriter) PatchJobStatus(ctx context.Context, obj *v10.Job, patch client.Patch, opts ...client.PatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
@@ -338,37 +338,37 @@ func (m *MockJobStatusWriter) PatchJobStatus(ctx context.Context, obj *v10.Job, 
 	return ret0
 }
 
-// PatchJobStatus indicates an expected call of PatchJobStatus
+// PatchJobStatus indicates an expected call of PatchJobStatus.
 func (mr *MockJobStatusWriterMockRecorder) PatchJobStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj, patch}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchJobStatus", reflect.TypeOf((*MockJobStatusWriter)(nil).PatchJobStatus), varargs...)
 }
 
-// MockJobClient is a mock of JobClient interface
+// MockJobClient is a mock of JobClient interface.
 type MockJobClient struct {
 	ctrl     *gomock.Controller
 	recorder *MockJobClientMockRecorder
 }
 
-// MockJobClientMockRecorder is the mock recorder for MockJobClient
+// MockJobClientMockRecorder is the mock recorder for MockJobClient.
 type MockJobClientMockRecorder struct {
 	mock *MockJobClient
 }
 
-// NewMockJobClient creates a new mock instance
+// NewMockJobClient creates a new mock instance.
 func NewMockJobClient(ctrl *gomock.Controller) *MockJobClient {
 	mock := &MockJobClient{ctrl: ctrl}
 	mock.recorder = &MockJobClientMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockJobClient) EXPECT() *MockJobClientMockRecorder {
 	return m.recorder
 }
 
-// GetJob mocks base method
+// GetJob mocks base method.
 func (m *MockJobClient) GetJob(ctx context.Context, key client.ObjectKey) (*v10.Job, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetJob", ctx, key)
@@ -377,13 +377,13 @@ func (m *MockJobClient) GetJob(ctx context.Context, key client.ObjectKey) (*v10.
 	return ret0, ret1
 }
 
-// GetJob indicates an expected call of GetJob
+// GetJob indicates an expected call of GetJob.
 func (mr *MockJobClientMockRecorder) GetJob(ctx, key interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetJob", reflect.TypeOf((*MockJobClient)(nil).GetJob), ctx, key)
 }
 
-// ListJob mocks base method
+// ListJob mocks base method.
 func (m *MockJobClient) ListJob(ctx context.Context, opts ...client.ListOption) (*v10.JobList, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx}
@@ -396,14 +396,14 @@ func (m *MockJobClient) ListJob(ctx context.Context, opts ...client.ListOption) 
 	return ret0, ret1
 }
 
-// ListJob indicates an expected call of ListJob
+// ListJob indicates an expected call of ListJob.
 func (mr *MockJobClientMockRecorder) ListJob(ctx interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListJob", reflect.TypeOf((*MockJobClient)(nil).ListJob), varargs...)
 }
 
-// CreateJob mocks base method
+// CreateJob mocks base method.
 func (m *MockJobClient) CreateJob(ctx context.Context, obj *v10.Job, opts ...client.CreateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
@@ -415,14 +415,14 @@ func (m *MockJobClient) CreateJob(ctx context.Context, obj *v10.Job, opts ...cli
 	return ret0
 }
 
-// CreateJob indicates an expected call of CreateJob
+// CreateJob indicates an expected call of CreateJob.
 func (mr *MockJobClientMockRecorder) CreateJob(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateJob", reflect.TypeOf((*MockJobClient)(nil).CreateJob), varargs...)
 }
 
-// DeleteJob mocks base method
+// DeleteJob mocks base method.
 func (m *MockJobClient) DeleteJob(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, key}
@@ -434,14 +434,14 @@ func (m *MockJobClient) DeleteJob(ctx context.Context, key client.ObjectKey, opt
 	return ret0
 }
 
-// DeleteJob indicates an expected call of DeleteJob
+// DeleteJob indicates an expected call of DeleteJob.
 func (mr *MockJobClientMockRecorder) DeleteJob(ctx, key interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, key}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteJob", reflect.TypeOf((*MockJobClient)(nil).DeleteJob), varargs...)
 }
 
-// UpdateJob mocks base method
+// UpdateJob mocks base method.
 func (m *MockJobClient) UpdateJob(ctx context.Context, obj *v10.Job, opts ...client.UpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
@@ -453,14 +453,14 @@ func (m *MockJobClient) UpdateJob(ctx context.Context, obj *v10.Job, opts ...cli
 	return ret0
 }
 
-// UpdateJob indicates an expected call of UpdateJob
+// UpdateJob indicates an expected call of UpdateJob.
 func (mr *MockJobClientMockRecorder) UpdateJob(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateJob", reflect.TypeOf((*MockJobClient)(nil).UpdateJob), varargs...)
 }
 
-// PatchJob mocks base method
+// PatchJob mocks base method.
 func (m *MockJobClient) PatchJob(ctx context.Context, obj *v10.Job, patch client.Patch, opts ...client.PatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
@@ -472,14 +472,14 @@ func (m *MockJobClient) PatchJob(ctx context.Context, obj *v10.Job, patch client
 	return ret0
 }
 
-// PatchJob indicates an expected call of PatchJob
+// PatchJob indicates an expected call of PatchJob.
 func (mr *MockJobClientMockRecorder) PatchJob(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj, patch}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchJob", reflect.TypeOf((*MockJobClient)(nil).PatchJob), varargs...)
 }
 
-// DeleteAllOfJob mocks base method
+// DeleteAllOfJob mocks base method.
 func (m *MockJobClient) DeleteAllOfJob(ctx context.Context, opts ...client.DeleteAllOfOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx}
@@ -491,14 +491,14 @@ func (m *MockJobClient) DeleteAllOfJob(ctx context.Context, opts ...client.Delet
 	return ret0
 }
 
-// DeleteAllOfJob indicates an expected call of DeleteAllOfJob
+// DeleteAllOfJob indicates an expected call of DeleteAllOfJob.
 func (mr *MockJobClientMockRecorder) DeleteAllOfJob(ctx interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfJob", reflect.TypeOf((*MockJobClient)(nil).DeleteAllOfJob), varargs...)
 }
 
-// UpsertJob mocks base method
+// UpsertJob mocks base method.
 func (m *MockJobClient) UpsertJob(ctx context.Context, obj *v10.Job, transitionFuncs ...v1.JobTransitionFunction) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
@@ -510,14 +510,14 @@ func (m *MockJobClient) UpsertJob(ctx context.Context, obj *v10.Job, transitionF
 	return ret0
 }
 
-// UpsertJob indicates an expected call of UpsertJob
+// UpsertJob indicates an expected call of UpsertJob.
 func (mr *MockJobClientMockRecorder) UpsertJob(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertJob", reflect.TypeOf((*MockJobClient)(nil).UpsertJob), varargs...)
 }
 
-// UpdateJobStatus mocks base method
+// UpdateJobStatus mocks base method.
 func (m *MockJobClient) UpdateJobStatus(ctx context.Context, obj *v10.Job, opts ...client.UpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
@@ -529,14 +529,14 @@ func (m *MockJobClient) UpdateJobStatus(ctx context.Context, obj *v10.Job, opts 
 	return ret0
 }
 
-// UpdateJobStatus indicates an expected call of UpdateJobStatus
+// UpdateJobStatus indicates an expected call of UpdateJobStatus.
 func (mr *MockJobClientMockRecorder) UpdateJobStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateJobStatus", reflect.TypeOf((*MockJobClient)(nil).UpdateJobStatus), varargs...)
 }
 
-// PatchJobStatus mocks base method
+// PatchJobStatus mocks base method.
 func (m *MockJobClient) PatchJobStatus(ctx context.Context, obj *v10.Job, patch client.Patch, opts ...client.PatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
@@ -548,37 +548,37 @@ func (m *MockJobClient) PatchJobStatus(ctx context.Context, obj *v10.Job, patch 
 	return ret0
 }
 
-// PatchJobStatus indicates an expected call of PatchJobStatus
+// PatchJobStatus indicates an expected call of PatchJobStatus.
 func (mr *MockJobClientMockRecorder) PatchJobStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj, patch}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchJobStatus", reflect.TypeOf((*MockJobClient)(nil).PatchJobStatus), varargs...)
 }
 
-// MockMulticlusterJobClient is a mock of MulticlusterJobClient interface
+// MockMulticlusterJobClient is a mock of MulticlusterJobClient interface.
 type MockMulticlusterJobClient struct {
 	ctrl     *gomock.Controller
 	recorder *MockMulticlusterJobClientMockRecorder
 }
 
-// MockMulticlusterJobClientMockRecorder is the mock recorder for MockMulticlusterJobClient
+// MockMulticlusterJobClientMockRecorder is the mock recorder for MockMulticlusterJobClient.
 type MockMulticlusterJobClientMockRecorder struct {
 	mock *MockMulticlusterJobClient
 }
 
-// NewMockMulticlusterJobClient creates a new mock instance
+// NewMockMulticlusterJobClient creates a new mock instance.
 func NewMockMulticlusterJobClient(ctrl *gomock.Controller) *MockMulticlusterJobClient {
 	mock := &MockMulticlusterJobClient{ctrl: ctrl}
 	mock.recorder = &MockMulticlusterJobClientMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockMulticlusterJobClient) EXPECT() *MockMulticlusterJobClientMockRecorder {
 	return m.recorder
 }
 
-// Cluster mocks base method
+// Cluster mocks base method.
 func (m *MockMulticlusterJobClient) Cluster(cluster string) (v1.JobClient, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Cluster", cluster)
@@ -587,7 +587,7 @@ func (m *MockMulticlusterJobClient) Cluster(cluster string) (v1.JobClient, error
 	return ret0, ret1
 }
 
-// Cluster indicates an expected call of Cluster
+// Cluster indicates an expected call of Cluster.
 func (mr *MockMulticlusterJobClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterJobClient)(nil).Cluster), cluster)

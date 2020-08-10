@@ -28,12 +28,12 @@ type ServiceProfileReconciler interface {
 // before being deleted.
 // implemented by the user
 type ServiceProfileDeletionReconciler interface {
-	ReconcileServiceProfileDeletion(req reconcile.Request)
+	ReconcileServiceProfileDeletion(req reconcile.Request) error
 }
 
 type ServiceProfileReconcilerFuncs struct {
 	OnReconcileServiceProfile         func(obj *linkerd_io_v1alpha2.ServiceProfile) (reconcile.Result, error)
-	OnReconcileServiceProfileDeletion func(req reconcile.Request)
+	OnReconcileServiceProfileDeletion func(req reconcile.Request) error
 }
 
 func (f *ServiceProfileReconcilerFuncs) ReconcileServiceProfile(obj *linkerd_io_v1alpha2.ServiceProfile) (reconcile.Result, error) {
@@ -43,11 +43,11 @@ func (f *ServiceProfileReconcilerFuncs) ReconcileServiceProfile(obj *linkerd_io_
 	return f.OnReconcileServiceProfile(obj)
 }
 
-func (f *ServiceProfileReconcilerFuncs) ReconcileServiceProfileDeletion(req reconcile.Request) {
+func (f *ServiceProfileReconcilerFuncs) ReconcileServiceProfileDeletion(req reconcile.Request) error {
 	if f.OnReconcileServiceProfileDeletion == nil {
-		return
+		return nil
 	}
-	f.OnReconcileServiceProfileDeletion(req)
+	return f.OnReconcileServiceProfileDeletion(req)
 }
 
 // Reconcile and finalize the ServiceProfile Resource
@@ -108,10 +108,11 @@ func (r genericServiceProfileReconciler) Reconcile(object ezkube.Object) (reconc
 	return r.reconciler.ReconcileServiceProfile(obj)
 }
 
-func (r genericServiceProfileReconciler) ReconcileDeletion(request reconcile.Request) {
+func (r genericServiceProfileReconciler) ReconcileDeletion(request reconcile.Request) error {
 	if deletionReconciler, ok := r.reconciler.(ServiceProfileDeletionReconciler); ok {
-		deletionReconciler.ReconcileServiceProfileDeletion(request)
+		return deletionReconciler.ReconcileServiceProfileDeletion(request)
 	}
+	return nil
 }
 
 // genericServiceProfileFinalizer implements a generic reconcile.FinalizingReconciler
