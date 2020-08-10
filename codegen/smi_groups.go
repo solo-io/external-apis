@@ -1,10 +1,10 @@
 package codegen
 
 import (
-	access_v1alpha2 "github.com/servicemeshinterface/smi-sdk-go/pkg/apis/access/v1alpha2"
-	specs_v1alpha3 "github.com/servicemeshinterface/smi-sdk-go/pkg/apis/specs/v1alpha3"
-	split_v1alpha1 "github.com/servicemeshinterface/smi-sdk-go/pkg/apis/split/v1alpha1"
-	split_v1alpha3 "github.com/servicemeshinterface/smi-sdk-go/pkg/apis/split/v1alpha3"
+	accessv1alpha2 "github.com/servicemeshinterface/smi-sdk-go/pkg/apis/access/v1alpha2"
+	specsv1alpha3 "github.com/servicemeshinterface/smi-sdk-go/pkg/apis/specs/v1alpha3"
+	splitv1alpha1 "github.com/servicemeshinterface/smi-sdk-go/pkg/apis/split/v1alpha1"
+	splitv1alpha3 "github.com/servicemeshinterface/smi-sdk-go/pkg/apis/split/v1alpha3"
 	"github.com/solo-io/skv2/codegen/model"
 )
 
@@ -19,7 +19,7 @@ const (
 func smiGroups() []model.Group {
 	return []model.Group{
 		{
-			GroupVersion: split_v1alpha1.SchemeGroupVersion,
+			GroupVersion: splitv1alpha1.SchemeGroupVersion,
 			Module:       "github.com/servicemeshinterface/smi-sdk-go",
 			Resources: []model.Resource{
 				{
@@ -30,7 +30,7 @@ func smiGroups() []model.Group {
 			ApiRoot:               smiApiRoot,
 		},
 		{
-			GroupVersion: split_v1alpha3.SchemeGroupVersion,
+			GroupVersion: splitv1alpha3.SchemeGroupVersion,
 			Module:       "github.com/servicemeshinterface/smi-sdk-go",
 			Resources: []model.Resource{
 				{
@@ -41,7 +41,7 @@ func smiGroups() []model.Group {
 			ApiRoot:               smiApiRoot,
 		},
 		{
-			GroupVersion: access_v1alpha2.SchemeGroupVersion,
+			GroupVersion: accessv1alpha2.SchemeGroupVersion,
 			Module:       "github.com/servicemeshinterface/smi-sdk-go",
 			Resources: []model.Resource{
 				{
@@ -52,7 +52,7 @@ func smiGroups() []model.Group {
 			ApiRoot:               smiApiRoot,
 		},
 		{
-			GroupVersion: specs_v1alpha3.SchemeGroupVersion,
+			GroupVersion: specsv1alpha3.SchemeGroupVersion,
 			Module:       "github.com/servicemeshinterface/smi-sdk-go",
 			Resources: []model.Resource{
 				{
