@@ -3,7 +3,7 @@
 # Generated Code and Docs
 #----------------------------------------------------------------------------------
 
-DEPSGOBIN=$(shell pwd)/_output/.bin
+DEPSGOBIN=$(shell pwd)/.bin
 export PATH:=$(DEPSGOBIN):$(PATH)
 export GOBIN:=$(DEPSGOBIN)
 
