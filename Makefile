@@ -4,11 +4,10 @@
 #----------------------------------------------------------------------------------
 
 DEPSGOBIN=$(shell pwd)/_output/.bin
-PATH=$(DEPSGOBIN):$$PATH
 
 .PHONY: mod-download
 mod-download:
-	go mod download
+	PATH=$(DEPSGOBIN):$$PATH go mod download
 
 # Dependencies for code generation
 .PHONY: codegen-deps
@@ -19,8 +18,8 @@ codegen-deps: mod-download
 
 .PHONY: generated-code
 generated-code:
-	go run generate.go
-	go generate -v ./...
-	goimports -w .
-	go mod tidy
+	PATH=$(DEPSGOBIN):$$PATH go run generate.go
+	PATH=$(DEPSGOBIN):$$PATH go generate -v ./...
+	PATH=$(DEPSGOBIN):$$PATH goimports -w .
+	PATH=$(DEPSGOBIN):$$PATH go mod tidy 
 
