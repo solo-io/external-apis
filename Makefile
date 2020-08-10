@@ -5,6 +5,7 @@
 
 DEPSGOBIN=$(shell pwd)/_output/.bin
 export PATH:=$(DEPSGOBIN):$(PATH)
+export GOBIN:=$(DEPSGOBIN)
 
 .PHONY: mod-download
 mod-download:
@@ -14,8 +15,8 @@ mod-download:
 .PHONY: codegen-deps
 codegen-deps: mod-download
 	mkdir -p $(DEPSGOBIN)
-	GOBIN=$(DEPSGOBIN) go install github.com/golang/mock/mockgen
-	GOBIN=$(DEPSGOBIN) go install golang.org/x/tools/cmd/goimports
+	go install github.com/golang/mock/mockgen
+	go install golang.org/x/tools/cmd/goimports
 
 .PHONY: generated-code
 generated-code:
