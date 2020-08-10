@@ -4,7 +4,7 @@
 #----------------------------------------------------------------------------------
 
 DEPSGOBIN=$(shell pwd)/_output/.bin
-export PATH:=$(DEPSGOBIN):$PATH
+export PATH:=$(DEPSGOBIN):$(PATH)
 
 .PHONY: mod-download
 mod-download:
