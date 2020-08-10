@@ -56,7 +56,7 @@ func smiGroups() []model.Group {
 			Module:       "github.com/servicemeshinterface/smi-sdk-go",
 			Resources: []model.Resource{
 				{
-					Kind: "HttpRouteGroup",
+					Kind: "HTTPRouteGroup",
 				},
 			},
 			CustomTypesImportPath: "github.com/servicemeshinterface/smi-sdk-go/pkg/apis/specs/v1alpha3",

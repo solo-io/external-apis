@@ -41,7 +41,7 @@ func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
 // clienset for the specs.smi-spec.io/v1alpha3 APIs
 type Clientset interface {
 	// clienset for the specs.smi-spec.io/v1alpha3/v1alpha3 APIs
-	HttpRouteGroups() HttpRouteGroupClient
+	HTTPRouteGroups() HTTPRouteGroupClient
 }
 
 type clientSet struct {
@@ -67,113 +67,113 @@ func NewClientset(client client.Client) Clientset {
 }
 
 // clienset for the specs.smi-spec.io/v1alpha3/v1alpha3 APIs
-func (c *clientSet) HttpRouteGroups() HttpRouteGroupClient {
-	return NewHttpRouteGroupClient(c.client)
+func (c *clientSet) HTTPRouteGroups() HTTPRouteGroupClient {
+	return NewHTTPRouteGroupClient(c.client)
 }
 
-// Reader knows how to read and list HttpRouteGroups.
-type HttpRouteGroupReader interface {
-	// Get retrieves a HttpRouteGroup for the given object key
-	GetHttpRouteGroup(ctx context.Context, key client.ObjectKey) (*specs_smi_spec_io_v1alpha3.HttpRouteGroup, error)
+// Reader knows how to read and list HTTPRouteGroups.
+type HTTPRouteGroupReader interface {
+	// Get retrieves a HTTPRouteGroup for the given object key
+	GetHTTPRouteGroup(ctx context.Context, key client.ObjectKey) (*specs_smi_spec_io_v1alpha3.HTTPRouteGroup, error)
 
-	// List retrieves list of HttpRouteGroups for a given namespace and list options.
-	ListHttpRouteGroup(ctx context.Context, opts ...client.ListOption) (*specs_smi_spec_io_v1alpha3.HttpRouteGroupList, error)
+	// List retrieves list of HTTPRouteGroups for a given namespace and list options.
+	ListHTTPRouteGroup(ctx context.Context, opts ...client.ListOption) (*specs_smi_spec_io_v1alpha3.HTTPRouteGroupList, error)
 }
 
-// HttpRouteGroupTransitionFunction instructs the HttpRouteGroupWriter how to transition between an existing
-// HttpRouteGroup object and a desired on an Upsert
-type HttpRouteGroupTransitionFunction func(existing, desired *specs_smi_spec_io_v1alpha3.HttpRouteGroup) error
+// HTTPRouteGroupTransitionFunction instructs the HTTPRouteGroupWriter how to transition between an existing
+// HTTPRouteGroup object and a desired on an Upsert
+type HTTPRouteGroupTransitionFunction func(existing, desired *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) error
 
-// Writer knows how to create, delete, and update HttpRouteGroups.
-type HttpRouteGroupWriter interface {
-	// Create saves the HttpRouteGroup object.
-	CreateHttpRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup, opts ...client.CreateOption) error
+// Writer knows how to create, delete, and update HTTPRouteGroups.
+type HTTPRouteGroupWriter interface {
+	// Create saves the HTTPRouteGroup object.
+	CreateHTTPRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, opts ...client.CreateOption) error
 
-	// Delete deletes the HttpRouteGroup object.
-	DeleteHttpRouteGroup(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error
+	// Delete deletes the HTTPRouteGroup object.
+	DeleteHTTPRouteGroup(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error
 
-	// Update updates the given HttpRouteGroup object.
-	UpdateHttpRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup, opts ...client.UpdateOption) error
+	// Update updates the given HTTPRouteGroup object.
+	UpdateHTTPRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, opts ...client.UpdateOption) error
 
-	// Patch patches the given HttpRouteGroup object.
-	PatchHttpRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup, patch client.Patch, opts ...client.PatchOption) error
+	// Patch patches the given HTTPRouteGroup object.
+	PatchHTTPRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, patch client.Patch, opts ...client.PatchOption) error
 
-	// DeleteAllOf deletes all HttpRouteGroup objects matching the given options.
-	DeleteAllOfHttpRouteGroup(ctx context.Context, opts ...client.DeleteAllOfOption) error
+	// DeleteAllOf deletes all HTTPRouteGroup objects matching the given options.
+	DeleteAllOfHTTPRouteGroup(ctx context.Context, opts ...client.DeleteAllOfOption) error
 
-	// Create or Update the HttpRouteGroup object.
-	UpsertHttpRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup, transitionFuncs ...HttpRouteGroupTransitionFunction) error
+	// Create or Update the HTTPRouteGroup object.
+	UpsertHTTPRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, transitionFuncs ...HTTPRouteGroupTransitionFunction) error
 }
 
-// StatusWriter knows how to update status subresource of a HttpRouteGroup object.
-type HttpRouteGroupStatusWriter interface {
+// StatusWriter knows how to update status subresource of a HTTPRouteGroup object.
+type HTTPRouteGroupStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
-	// given HttpRouteGroup object.
-	UpdateHttpRouteGroupStatus(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup, opts ...client.UpdateOption) error
+	// given HTTPRouteGroup object.
+	UpdateHTTPRouteGroupStatus(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, opts ...client.UpdateOption) error
 
-	// Patch patches the given HttpRouteGroup object's subresource.
-	PatchHttpRouteGroupStatus(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup, patch client.Patch, opts ...client.PatchOption) error
+	// Patch patches the given HTTPRouteGroup object's subresource.
+	PatchHTTPRouteGroupStatus(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, patch client.Patch, opts ...client.PatchOption) error
 }
 
-// Client knows how to perform CRUD operations on HttpRouteGroups.
-type HttpRouteGroupClient interface {
-	HttpRouteGroupReader
-	HttpRouteGroupWriter
-	HttpRouteGroupStatusWriter
+// Client knows how to perform CRUD operations on HTTPRouteGroups.
+type HTTPRouteGroupClient interface {
+	HTTPRouteGroupReader
+	HTTPRouteGroupWriter
+	HTTPRouteGroupStatusWriter
 }
 
-type httpRouteGroupClient struct {
+type hTTPRouteGroupClient struct {
 	client client.Client
 }
 
-func NewHttpRouteGroupClient(client client.Client) *httpRouteGroupClient {
-	return &httpRouteGroupClient{client: client}
+func NewHTTPRouteGroupClient(client client.Client) *hTTPRouteGroupClient {
+	return &hTTPRouteGroupClient{client: client}
 }
 
-func (c *httpRouteGroupClient) GetHttpRouteGroup(ctx context.Context, key client.ObjectKey) (*specs_smi_spec_io_v1alpha3.HttpRouteGroup, error) {
-	obj := &specs_smi_spec_io_v1alpha3.HttpRouteGroup{}
+func (c *hTTPRouteGroupClient) GetHTTPRouteGroup(ctx context.Context, key client.ObjectKey) (*specs_smi_spec_io_v1alpha3.HTTPRouteGroup, error) {
+	obj := &specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
 	}
 	return obj, nil
 }
 
-func (c *httpRouteGroupClient) ListHttpRouteGroup(ctx context.Context, opts ...client.ListOption) (*specs_smi_spec_io_v1alpha3.HttpRouteGroupList, error) {
-	list := &specs_smi_spec_io_v1alpha3.HttpRouteGroupList{}
+func (c *hTTPRouteGroupClient) ListHTTPRouteGroup(ctx context.Context, opts ...client.ListOption) (*specs_smi_spec_io_v1alpha3.HTTPRouteGroupList, error) {
+	list := &specs_smi_spec_io_v1alpha3.HTTPRouteGroupList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
 	return list, nil
 }
 
-func (c *httpRouteGroupClient) CreateHttpRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup, opts ...client.CreateOption) error {
+func (c *hTTPRouteGroupClient) CreateHTTPRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, opts ...client.CreateOption) error {
 	return c.client.Create(ctx, obj, opts...)
 }
 
-func (c *httpRouteGroupClient) DeleteHttpRouteGroup(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	obj := &specs_smi_spec_io_v1alpha3.HttpRouteGroup{}
+func (c *hTTPRouteGroupClient) DeleteHTTPRouteGroup(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	obj := &specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}
 	obj.SetName(key.Name)
 	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
 }
 
-func (c *httpRouteGroupClient) UpdateHttpRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup, opts ...client.UpdateOption) error {
+func (c *hTTPRouteGroupClient) UpdateHTTPRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, opts ...client.UpdateOption) error {
 	return c.client.Update(ctx, obj, opts...)
 }
 
-func (c *httpRouteGroupClient) PatchHttpRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup, patch client.Patch, opts ...client.PatchOption) error {
+func (c *hTTPRouteGroupClient) PatchHTTPRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, patch client.Patch, opts ...client.PatchOption) error {
 	return c.client.Patch(ctx, obj, patch, opts...)
 }
 
-func (c *httpRouteGroupClient) DeleteAllOfHttpRouteGroup(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &specs_smi_spec_io_v1alpha3.HttpRouteGroup{}
+func (c *hTTPRouteGroupClient) DeleteAllOfHTTPRouteGroup(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	obj := &specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 
-func (c *httpRouteGroupClient) UpsertHttpRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup, transitionFuncs ...HttpRouteGroupTransitionFunction) error {
+func (c *hTTPRouteGroupClient) UpsertHTTPRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, transitionFuncs ...HTTPRouteGroupTransitionFunction) error {
 	genericTxFunc := func(existing, desired runtime.Object) error {
 		for _, txFunc := range transitionFuncs {
-			if err := txFunc(existing.(*specs_smi_spec_io_v1alpha3.HttpRouteGroup), desired.(*specs_smi_spec_io_v1alpha3.HttpRouteGroup)); err != nil {
+			if err := txFunc(existing.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup), desired.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup)); err != nil {
 				return err
 			}
 		}
@@ -183,32 +183,32 @@ func (c *httpRouteGroupClient) UpsertHttpRouteGroup(ctx context.Context, obj *sp
 	return err
 }
 
-func (c *httpRouteGroupClient) UpdateHttpRouteGroupStatus(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup, opts ...client.UpdateOption) error {
+func (c *hTTPRouteGroupClient) UpdateHTTPRouteGroupStatus(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, opts ...client.UpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *httpRouteGroupClient) PatchHttpRouteGroupStatus(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup, patch client.Patch, opts ...client.PatchOption) error {
+func (c *hTTPRouteGroupClient) PatchHTTPRouteGroupStatus(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, patch client.Patch, opts ...client.PatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
-// Provides HttpRouteGroupClients for multiple clusters.
-type MulticlusterHttpRouteGroupClient interface {
-	// Cluster returns a HttpRouteGroupClient for the given cluster
-	Cluster(cluster string) (HttpRouteGroupClient, error)
+// Provides HTTPRouteGroupClients for multiple clusters.
+type MulticlusterHTTPRouteGroupClient interface {
+	// Cluster returns a HTTPRouteGroupClient for the given cluster
+	Cluster(cluster string) (HTTPRouteGroupClient, error)
 }
 
-type multiclusterHttpRouteGroupClient struct {
+type multiclusterHTTPRouteGroupClient struct {
 	client multicluster.Client
 }
 
-func NewMulticlusterHttpRouteGroupClient(client multicluster.Client) MulticlusterHttpRouteGroupClient {
-	return &multiclusterHttpRouteGroupClient{client: client}
+func NewMulticlusterHTTPRouteGroupClient(client multicluster.Client) MulticlusterHTTPRouteGroupClient {
+	return &multiclusterHTTPRouteGroupClient{client: client}
 }
 
-func (m *multiclusterHttpRouteGroupClient) Cluster(cluster string) (HttpRouteGroupClient, error) {
+func (m *multiclusterHTTPRouteGroupClient) Cluster(cluster string) (HTTPRouteGroupClient, error) {
 	client, err := m.client.Cluster(cluster)
 	if err != nil {
 		return nil, err
 	}
-	return NewHttpRouteGroupClient(client), nil
+	return NewHTTPRouteGroupClient(client), nil
 }

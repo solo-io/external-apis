@@ -12,114 +12,114 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
-type HttpRouteGroupSet interface {
+type HTTPRouteGroupSet interface {
 	Keys() sets.String
-	List() []*specs_smi_spec_io_v1alpha3.HttpRouteGroup
-	Map() map[string]*specs_smi_spec_io_v1alpha3.HttpRouteGroup
-	Insert(httpRouteGroup ...*specs_smi_spec_io_v1alpha3.HttpRouteGroup)
-	Equal(httpRouteGroupSet HttpRouteGroupSet) bool
-	Has(httpRouteGroup *specs_smi_spec_io_v1alpha3.HttpRouteGroup) bool
-	Delete(httpRouteGroup *specs_smi_spec_io_v1alpha3.HttpRouteGroup)
-	Union(set HttpRouteGroupSet) HttpRouteGroupSet
-	Difference(set HttpRouteGroupSet) HttpRouteGroupSet
-	Intersection(set HttpRouteGroupSet) HttpRouteGroupSet
-	Find(id ezkube.ResourceId) (*specs_smi_spec_io_v1alpha3.HttpRouteGroup, error)
+	List() []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup
+	Map() map[string]*specs_smi_spec_io_v1alpha3.HTTPRouteGroup
+	Insert(hTTPRouteGroup ...*specs_smi_spec_io_v1alpha3.HTTPRouteGroup)
+	Equal(hTTPRouteGroupSet HTTPRouteGroupSet) bool
+	Has(hTTPRouteGroup *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) bool
+	Delete(hTTPRouteGroup *specs_smi_spec_io_v1alpha3.HTTPRouteGroup)
+	Union(set HTTPRouteGroupSet) HTTPRouteGroupSet
+	Difference(set HTTPRouteGroupSet) HTTPRouteGroupSet
+	Intersection(set HTTPRouteGroupSet) HTTPRouteGroupSet
+	Find(id ezkube.ResourceId) (*specs_smi_spec_io_v1alpha3.HTTPRouteGroup, error)
 	Length() int
 }
 
-func makeGenericHttpRouteGroupSet(httpRouteGroupList []*specs_smi_spec_io_v1alpha3.HttpRouteGroup) sksets.ResourceSet {
+func makeGenericHTTPRouteGroupSet(hTTPRouteGroupList []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
-	for _, obj := range httpRouteGroupList {
+	for _, obj := range hTTPRouteGroupList {
 		genericResources = append(genericResources, obj)
 	}
 	return sksets.NewResourceSet(genericResources...)
 }
 
-type httpRouteGroupSet struct {
+type hTTPRouteGroupSet struct {
 	set sksets.ResourceSet
 }
 
-func NewHttpRouteGroupSet(httpRouteGroupList ...*specs_smi_spec_io_v1alpha3.HttpRouteGroup) HttpRouteGroupSet {
-	return &httpRouteGroupSet{set: makeGenericHttpRouteGroupSet(httpRouteGroupList)}
+func NewHTTPRouteGroupSet(hTTPRouteGroupList ...*specs_smi_spec_io_v1alpha3.HTTPRouteGroup) HTTPRouteGroupSet {
+	return &hTTPRouteGroupSet{set: makeGenericHTTPRouteGroupSet(hTTPRouteGroupList)}
 }
 
-func NewHttpRouteGroupSetFromList(httpRouteGroupList *specs_smi_spec_io_v1alpha3.HttpRouteGroupList) HttpRouteGroupSet {
-	list := make([]*specs_smi_spec_io_v1alpha3.HttpRouteGroup, 0, len(httpRouteGroupList.Items))
-	for idx := range httpRouteGroupList.Items {
-		list = append(list, &httpRouteGroupList.Items[idx])
+func NewHTTPRouteGroupSetFromList(hTTPRouteGroupList *specs_smi_spec_io_v1alpha3.HTTPRouteGroupList) HTTPRouteGroupSet {
+	list := make([]*specs_smi_spec_io_v1alpha3.HTTPRouteGroup, 0, len(hTTPRouteGroupList.Items))
+	for idx := range hTTPRouteGroupList.Items {
+		list = append(list, &hTTPRouteGroupList.Items[idx])
 	}
-	return &httpRouteGroupSet{set: makeGenericHttpRouteGroupSet(list)}
+	return &hTTPRouteGroupSet{set: makeGenericHTTPRouteGroupSet(list)}
 }
 
-func (s *httpRouteGroupSet) Keys() sets.String {
+func (s *hTTPRouteGroupSet) Keys() sets.String {
 	return s.set.Keys()
 }
 
-func (s *httpRouteGroupSet) List() []*specs_smi_spec_io_v1alpha3.HttpRouteGroup {
-	var httpRouteGroupList []*specs_smi_spec_io_v1alpha3.HttpRouteGroup
+func (s *hTTPRouteGroupSet) List() []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup {
+	var hTTPRouteGroupList []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup
 	for _, obj := range s.set.List() {
-		httpRouteGroupList = append(httpRouteGroupList, obj.(*specs_smi_spec_io_v1alpha3.HttpRouteGroup))
+		hTTPRouteGroupList = append(hTTPRouteGroupList, obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
 	}
-	return httpRouteGroupList
+	return hTTPRouteGroupList
 }
 
-func (s *httpRouteGroupSet) Map() map[string]*specs_smi_spec_io_v1alpha3.HttpRouteGroup {
-	newMap := map[string]*specs_smi_spec_io_v1alpha3.HttpRouteGroup{}
+func (s *hTTPRouteGroupSet) Map() map[string]*specs_smi_spec_io_v1alpha3.HTTPRouteGroup {
+	newMap := map[string]*specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}
 	for k, v := range s.set.Map() {
-		newMap[k] = v.(*specs_smi_spec_io_v1alpha3.HttpRouteGroup)
+		newMap[k] = v.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup)
 	}
 	return newMap
 }
 
-func (s *httpRouteGroupSet) Insert(
-	httpRouteGroupList ...*specs_smi_spec_io_v1alpha3.HttpRouteGroup,
+func (s *hTTPRouteGroupSet) Insert(
+	hTTPRouteGroupList ...*specs_smi_spec_io_v1alpha3.HTTPRouteGroup,
 ) {
-	for _, obj := range httpRouteGroupList {
+	for _, obj := range hTTPRouteGroupList {
 		s.set.Insert(obj)
 	}
 }
 
-func (s *httpRouteGroupSet) Has(httpRouteGroup *specs_smi_spec_io_v1alpha3.HttpRouteGroup) bool {
-	return s.set.Has(httpRouteGroup)
+func (s *hTTPRouteGroupSet) Has(hTTPRouteGroup *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) bool {
+	return s.set.Has(hTTPRouteGroup)
 }
 
-func (s *httpRouteGroupSet) Equal(
-	httpRouteGroupSet HttpRouteGroupSet,
+func (s *hTTPRouteGroupSet) Equal(
+	hTTPRouteGroupSet HTTPRouteGroupSet,
 ) bool {
-	return s.set.Equal(makeGenericHttpRouteGroupSet(httpRouteGroupSet.List()))
+	return s.set.Equal(makeGenericHTTPRouteGroupSet(hTTPRouteGroupSet.List()))
 }
 
-func (s *httpRouteGroupSet) Delete(HttpRouteGroup *specs_smi_spec_io_v1alpha3.HttpRouteGroup) {
-	s.set.Delete(HttpRouteGroup)
+func (s *hTTPRouteGroupSet) Delete(HTTPRouteGroup *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) {
+	s.set.Delete(HTTPRouteGroup)
 }
 
-func (s *httpRouteGroupSet) Union(set HttpRouteGroupSet) HttpRouteGroupSet {
-	return NewHttpRouteGroupSet(append(s.List(), set.List()...)...)
+func (s *hTTPRouteGroupSet) Union(set HTTPRouteGroupSet) HTTPRouteGroupSet {
+	return NewHTTPRouteGroupSet(append(s.List(), set.List()...)...)
 }
 
-func (s *httpRouteGroupSet) Difference(set HttpRouteGroupSet) HttpRouteGroupSet {
-	newSet := s.set.Difference(makeGenericHttpRouteGroupSet(set.List()))
-	return &httpRouteGroupSet{set: newSet}
+func (s *hTTPRouteGroupSet) Difference(set HTTPRouteGroupSet) HTTPRouteGroupSet {
+	newSet := s.set.Difference(makeGenericHTTPRouteGroupSet(set.List()))
+	return &hTTPRouteGroupSet{set: newSet}
 }
 
-func (s *httpRouteGroupSet) Intersection(set HttpRouteGroupSet) HttpRouteGroupSet {
-	newSet := s.set.Intersection(makeGenericHttpRouteGroupSet(set.List()))
-	var httpRouteGroupList []*specs_smi_spec_io_v1alpha3.HttpRouteGroup
+func (s *hTTPRouteGroupSet) Intersection(set HTTPRouteGroupSet) HTTPRouteGroupSet {
+	newSet := s.set.Intersection(makeGenericHTTPRouteGroupSet(set.List()))
+	var hTTPRouteGroupList []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup
 	for _, obj := range newSet.List() {
-		httpRouteGroupList = append(httpRouteGroupList, obj.(*specs_smi_spec_io_v1alpha3.HttpRouteGroup))
+		hTTPRouteGroupList = append(hTTPRouteGroupList, obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
 	}
-	return NewHttpRouteGroupSet(httpRouteGroupList...)
+	return NewHTTPRouteGroupSet(hTTPRouteGroupList...)
 }
 
-func (s *httpRouteGroupSet) Find(id ezkube.ResourceId) (*specs_smi_spec_io_v1alpha3.HttpRouteGroup, error) {
-	obj, err := s.set.Find(&specs_smi_spec_io_v1alpha3.HttpRouteGroup{}, id)
+func (s *hTTPRouteGroupSet) Find(id ezkube.ResourceId) (*specs_smi_spec_io_v1alpha3.HTTPRouteGroup, error) {
+	obj, err := s.set.Find(&specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}, id)
 	if err != nil {
 		return nil, err
 	}
 
-	return obj.(*specs_smi_spec_io_v1alpha3.HttpRouteGroup), nil
+	return obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup), nil
 }
 
-func (s *httpRouteGroupSet) Length() int {
+func (s *hTTPRouteGroupSet) Length() int {
 	return s.set.Length()
 }

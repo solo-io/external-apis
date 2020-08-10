@@ -18,73 +18,73 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
-// Reconcile Upsert events for the HttpRouteGroup Resource across clusters.
+// Reconcile Upsert events for the HTTPRouteGroup Resource across clusters.
 // implemented by the user
-type MulticlusterHttpRouteGroupReconciler interface {
-	ReconcileHttpRouteGroup(clusterName string, obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup) (reconcile.Result, error)
+type MulticlusterHTTPRouteGroupReconciler interface {
+	ReconcileHTTPRouteGroup(clusterName string, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) (reconcile.Result, error)
 }
 
-// Reconcile deletion events for the HttpRouteGroup Resource across clusters.
+// Reconcile deletion events for the HTTPRouteGroup Resource across clusters.
 // Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
 // before being deleted.
 // implemented by the user
-type MulticlusterHttpRouteGroupDeletionReconciler interface {
-	ReconcileHttpRouteGroupDeletion(clusterName string, req reconcile.Request) error
+type MulticlusterHTTPRouteGroupDeletionReconciler interface {
+	ReconcileHTTPRouteGroupDeletion(clusterName string, req reconcile.Request) error
 }
 
-type MulticlusterHttpRouteGroupReconcilerFuncs struct {
-	OnReconcileHttpRouteGroup         func(clusterName string, obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup) (reconcile.Result, error)
-	OnReconcileHttpRouteGroupDeletion func(clusterName string, req reconcile.Request) error
+type MulticlusterHTTPRouteGroupReconcilerFuncs struct {
+	OnReconcileHTTPRouteGroup         func(clusterName string, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) (reconcile.Result, error)
+	OnReconcileHTTPRouteGroupDeletion func(clusterName string, req reconcile.Request) error
 }
 
-func (f *MulticlusterHttpRouteGroupReconcilerFuncs) ReconcileHttpRouteGroup(clusterName string, obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup) (reconcile.Result, error) {
-	if f.OnReconcileHttpRouteGroup == nil {
+func (f *MulticlusterHTTPRouteGroupReconcilerFuncs) ReconcileHTTPRouteGroup(clusterName string, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) (reconcile.Result, error) {
+	if f.OnReconcileHTTPRouteGroup == nil {
 		return reconcile.Result{}, nil
 	}
-	return f.OnReconcileHttpRouteGroup(clusterName, obj)
+	return f.OnReconcileHTTPRouteGroup(clusterName, obj)
 }
 
-func (f *MulticlusterHttpRouteGroupReconcilerFuncs) ReconcileHttpRouteGroupDeletion(clusterName string, req reconcile.Request) error {
-	if f.OnReconcileHttpRouteGroupDeletion == nil {
+func (f *MulticlusterHTTPRouteGroupReconcilerFuncs) ReconcileHTTPRouteGroupDeletion(clusterName string, req reconcile.Request) error {
+	if f.OnReconcileHTTPRouteGroupDeletion == nil {
 		return nil
 	}
-	return f.OnReconcileHttpRouteGroupDeletion(clusterName, req)
+	return f.OnReconcileHTTPRouteGroupDeletion(clusterName, req)
 }
 
-type MulticlusterHttpRouteGroupReconcileLoop interface {
-	// AddMulticlusterHttpRouteGroupReconciler adds a MulticlusterHttpRouteGroupReconciler to the MulticlusterHttpRouteGroupReconcileLoop.
-	AddMulticlusterHttpRouteGroupReconciler(ctx context.Context, rec MulticlusterHttpRouteGroupReconciler, predicates ...predicate.Predicate)
+type MulticlusterHTTPRouteGroupReconcileLoop interface {
+	// AddMulticlusterHTTPRouteGroupReconciler adds a MulticlusterHTTPRouteGroupReconciler to the MulticlusterHTTPRouteGroupReconcileLoop.
+	AddMulticlusterHTTPRouteGroupReconciler(ctx context.Context, rec MulticlusterHTTPRouteGroupReconciler, predicates ...predicate.Predicate)
 }
 
-type multiclusterHttpRouteGroupReconcileLoop struct {
+type multiclusterHTTPRouteGroupReconcileLoop struct {
 	loop multicluster.Loop
 }
 
-func (m *multiclusterHttpRouteGroupReconcileLoop) AddMulticlusterHttpRouteGroupReconciler(ctx context.Context, rec MulticlusterHttpRouteGroupReconciler, predicates ...predicate.Predicate) {
-	genericReconciler := genericHttpRouteGroupMulticlusterReconciler{reconciler: rec}
+func (m *multiclusterHTTPRouteGroupReconcileLoop) AddMulticlusterHTTPRouteGroupReconciler(ctx context.Context, rec MulticlusterHTTPRouteGroupReconciler, predicates ...predicate.Predicate) {
+	genericReconciler := genericHTTPRouteGroupMulticlusterReconciler{reconciler: rec}
 
 	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
 }
 
-func NewMulticlusterHttpRouteGroupReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterHttpRouteGroupReconcileLoop {
-	return &multiclusterHttpRouteGroupReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &specs_smi_spec_io_v1alpha3.HttpRouteGroup{})}
+func NewMulticlusterHTTPRouteGroupReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterHTTPRouteGroupReconcileLoop {
+	return &multiclusterHTTPRouteGroupReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &specs_smi_spec_io_v1alpha3.HTTPRouteGroup{})}
 }
 
-type genericHttpRouteGroupMulticlusterReconciler struct {
-	reconciler MulticlusterHttpRouteGroupReconciler
+type genericHTTPRouteGroupMulticlusterReconciler struct {
+	reconciler MulticlusterHTTPRouteGroupReconciler
 }
 
-func (g genericHttpRouteGroupMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) error {
-	if deletionReconciler, ok := g.reconciler.(MulticlusterHttpRouteGroupDeletionReconciler); ok {
-		return deletionReconciler.ReconcileHttpRouteGroupDeletion(cluster, req)
+func (g genericHTTPRouteGroupMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) error {
+	if deletionReconciler, ok := g.reconciler.(MulticlusterHTTPRouteGroupDeletionReconciler); ok {
+		return deletionReconciler.ReconcileHTTPRouteGroupDeletion(cluster, req)
 	}
 	return nil
 }
 
-func (g genericHttpRouteGroupMulticlusterReconciler) Reconcile(cluster string, object ezkube.Object) (reconcile.Result, error) {
-	obj, ok := object.(*specs_smi_spec_io_v1alpha3.HttpRouteGroup)
+func (g genericHTTPRouteGroupMulticlusterReconciler) Reconcile(cluster string, object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup)
 	if !ok {
-		return reconcile.Result{}, errors.Errorf("internal error: HttpRouteGroup handler received event for %T", object)
+		return reconcile.Result{}, errors.Errorf("internal error: HTTPRouteGroup handler received event for %T", object)
 	}
-	return g.reconciler.ReconcileHttpRouteGroup(cluster, obj)
+	return g.reconciler.ReconcileHTTPRouteGroup(cluster, obj)
 }

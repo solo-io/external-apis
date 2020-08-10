@@ -75,520 +75,520 @@ func (m *MockClientset) EXPECT() *MockClientsetMockRecorder {
 	return m.recorder
 }
 
-// HttpRouteGroups mocks base method
-func (m *MockClientset) HttpRouteGroups() v1alpha30.HttpRouteGroupClient {
+// HTTPRouteGroups mocks base method
+func (m *MockClientset) HTTPRouteGroups() v1alpha30.HTTPRouteGroupClient {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "HttpRouteGroups")
-	ret0, _ := ret[0].(v1alpha30.HttpRouteGroupClient)
+	ret := m.ctrl.Call(m, "HTTPRouteGroups")
+	ret0, _ := ret[0].(v1alpha30.HTTPRouteGroupClient)
 	return ret0
 }
 
-// HttpRouteGroups indicates an expected call of HttpRouteGroups
-func (mr *MockClientsetMockRecorder) HttpRouteGroups() *gomock.Call {
+// HTTPRouteGroups indicates an expected call of HTTPRouteGroups
+func (mr *MockClientsetMockRecorder) HTTPRouteGroups() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HttpRouteGroups", reflect.TypeOf((*MockClientset)(nil).HttpRouteGroups))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HTTPRouteGroups", reflect.TypeOf((*MockClientset)(nil).HTTPRouteGroups))
 }
 
-// MockHttpRouteGroupReader is a mock of HttpRouteGroupReader interface
-type MockHttpRouteGroupReader struct {
+// MockHTTPRouteGroupReader is a mock of HTTPRouteGroupReader interface
+type MockHTTPRouteGroupReader struct {
 	ctrl     *gomock.Controller
-	recorder *MockHttpRouteGroupReaderMockRecorder
+	recorder *MockHTTPRouteGroupReaderMockRecorder
 }
 
-// MockHttpRouteGroupReaderMockRecorder is the mock recorder for MockHttpRouteGroupReader
-type MockHttpRouteGroupReaderMockRecorder struct {
-	mock *MockHttpRouteGroupReader
+// MockHTTPRouteGroupReaderMockRecorder is the mock recorder for MockHTTPRouteGroupReader
+type MockHTTPRouteGroupReaderMockRecorder struct {
+	mock *MockHTTPRouteGroupReader
 }
 
-// NewMockHttpRouteGroupReader creates a new mock instance
-func NewMockHttpRouteGroupReader(ctrl *gomock.Controller) *MockHttpRouteGroupReader {
-	mock := &MockHttpRouteGroupReader{ctrl: ctrl}
-	mock.recorder = &MockHttpRouteGroupReaderMockRecorder{mock}
+// NewMockHTTPRouteGroupReader creates a new mock instance
+func NewMockHTTPRouteGroupReader(ctrl *gomock.Controller) *MockHTTPRouteGroupReader {
+	mock := &MockHTTPRouteGroupReader{ctrl: ctrl}
+	mock.recorder = &MockHTTPRouteGroupReaderMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use
-func (m *MockHttpRouteGroupReader) EXPECT() *MockHttpRouteGroupReaderMockRecorder {
+func (m *MockHTTPRouteGroupReader) EXPECT() *MockHTTPRouteGroupReaderMockRecorder {
 	return m.recorder
 }
 
-// GetHttpRouteGroup mocks base method
-func (m *MockHttpRouteGroupReader) GetHttpRouteGroup(ctx context.Context, key client.ObjectKey) (*v1alpha3.HttpRouteGroup, error) {
+// GetHTTPRouteGroup mocks base method
+func (m *MockHTTPRouteGroupReader) GetHTTPRouteGroup(ctx context.Context, key client.ObjectKey) (*v1alpha3.HTTPRouteGroup, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetHttpRouteGroup", ctx, key)
-	ret0, _ := ret[0].(*v1alpha3.HttpRouteGroup)
+	ret := m.ctrl.Call(m, "GetHTTPRouteGroup", ctx, key)
+	ret0, _ := ret[0].(*v1alpha3.HTTPRouteGroup)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetHttpRouteGroup indicates an expected call of GetHttpRouteGroup
-func (mr *MockHttpRouteGroupReaderMockRecorder) GetHttpRouteGroup(ctx, key interface{}) *gomock.Call {
+// GetHTTPRouteGroup indicates an expected call of GetHTTPRouteGroup
+func (mr *MockHTTPRouteGroupReaderMockRecorder) GetHTTPRouteGroup(ctx, key interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetHttpRouteGroup", reflect.TypeOf((*MockHttpRouteGroupReader)(nil).GetHttpRouteGroup), ctx, key)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetHTTPRouteGroup", reflect.TypeOf((*MockHTTPRouteGroupReader)(nil).GetHTTPRouteGroup), ctx, key)
 }
 
-// ListHttpRouteGroup mocks base method
-func (m *MockHttpRouteGroupReader) ListHttpRouteGroup(ctx context.Context, opts ...client.ListOption) (*v1alpha3.HttpRouteGroupList, error) {
+// ListHTTPRouteGroup mocks base method
+func (m *MockHTTPRouteGroupReader) ListHTTPRouteGroup(ctx context.Context, opts ...client.ListOption) (*v1alpha3.HTTPRouteGroupList, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "ListHttpRouteGroup", varargs...)
-	ret0, _ := ret[0].(*v1alpha3.HttpRouteGroupList)
+	ret := m.ctrl.Call(m, "ListHTTPRouteGroup", varargs...)
+	ret0, _ := ret[0].(*v1alpha3.HTTPRouteGroupList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// ListHttpRouteGroup indicates an expected call of ListHttpRouteGroup
-func (mr *MockHttpRouteGroupReaderMockRecorder) ListHttpRouteGroup(ctx interface{}, opts ...interface{}) *gomock.Call {
+// ListHTTPRouteGroup indicates an expected call of ListHTTPRouteGroup
+func (mr *MockHTTPRouteGroupReaderMockRecorder) ListHTTPRouteGroup(ctx interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListHttpRouteGroup", reflect.TypeOf((*MockHttpRouteGroupReader)(nil).ListHttpRouteGroup), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListHTTPRouteGroup", reflect.TypeOf((*MockHTTPRouteGroupReader)(nil).ListHTTPRouteGroup), varargs...)
 }
 
-// MockHttpRouteGroupWriter is a mock of HttpRouteGroupWriter interface
-type MockHttpRouteGroupWriter struct {
+// MockHTTPRouteGroupWriter is a mock of HTTPRouteGroupWriter interface
+type MockHTTPRouteGroupWriter struct {
 	ctrl     *gomock.Controller
-	recorder *MockHttpRouteGroupWriterMockRecorder
+	recorder *MockHTTPRouteGroupWriterMockRecorder
 }
 
-// MockHttpRouteGroupWriterMockRecorder is the mock recorder for MockHttpRouteGroupWriter
-type MockHttpRouteGroupWriterMockRecorder struct {
-	mock *MockHttpRouteGroupWriter
+// MockHTTPRouteGroupWriterMockRecorder is the mock recorder for MockHTTPRouteGroupWriter
+type MockHTTPRouteGroupWriterMockRecorder struct {
+	mock *MockHTTPRouteGroupWriter
 }
 
-// NewMockHttpRouteGroupWriter creates a new mock instance
-func NewMockHttpRouteGroupWriter(ctrl *gomock.Controller) *MockHttpRouteGroupWriter {
-	mock := &MockHttpRouteGroupWriter{ctrl: ctrl}
-	mock.recorder = &MockHttpRouteGroupWriterMockRecorder{mock}
+// NewMockHTTPRouteGroupWriter creates a new mock instance
+func NewMockHTTPRouteGroupWriter(ctrl *gomock.Controller) *MockHTTPRouteGroupWriter {
+	mock := &MockHTTPRouteGroupWriter{ctrl: ctrl}
+	mock.recorder = &MockHTTPRouteGroupWriterMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use
-func (m *MockHttpRouteGroupWriter) EXPECT() *MockHttpRouteGroupWriterMockRecorder {
+func (m *MockHTTPRouteGroupWriter) EXPECT() *MockHTTPRouteGroupWriterMockRecorder {
 	return m.recorder
 }
 
-// CreateHttpRouteGroup mocks base method
-func (m *MockHttpRouteGroupWriter) CreateHttpRouteGroup(ctx context.Context, obj *v1alpha3.HttpRouteGroup, opts ...client.CreateOption) error {
+// CreateHTTPRouteGroup mocks base method
+func (m *MockHTTPRouteGroupWriter) CreateHTTPRouteGroup(ctx context.Context, obj *v1alpha3.HTTPRouteGroup, opts ...client.CreateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "CreateHttpRouteGroup", varargs...)
+	ret := m.ctrl.Call(m, "CreateHTTPRouteGroup", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// CreateHttpRouteGroup indicates an expected call of CreateHttpRouteGroup
-func (mr *MockHttpRouteGroupWriterMockRecorder) CreateHttpRouteGroup(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+// CreateHTTPRouteGroup indicates an expected call of CreateHTTPRouteGroup
+func (mr *MockHTTPRouteGroupWriterMockRecorder) CreateHTTPRouteGroup(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateHttpRouteGroup", reflect.TypeOf((*MockHttpRouteGroupWriter)(nil).CreateHttpRouteGroup), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateHTTPRouteGroup", reflect.TypeOf((*MockHTTPRouteGroupWriter)(nil).CreateHTTPRouteGroup), varargs...)
 }
 
-// DeleteHttpRouteGroup mocks base method
-func (m *MockHttpRouteGroupWriter) DeleteHttpRouteGroup(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+// DeleteHTTPRouteGroup mocks base method
+func (m *MockHTTPRouteGroupWriter) DeleteHTTPRouteGroup(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, key}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "DeleteHttpRouteGroup", varargs...)
+	ret := m.ctrl.Call(m, "DeleteHTTPRouteGroup", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// DeleteHttpRouteGroup indicates an expected call of DeleteHttpRouteGroup
-func (mr *MockHttpRouteGroupWriterMockRecorder) DeleteHttpRouteGroup(ctx, key interface{}, opts ...interface{}) *gomock.Call {
+// DeleteHTTPRouteGroup indicates an expected call of DeleteHTTPRouteGroup
+func (mr *MockHTTPRouteGroupWriterMockRecorder) DeleteHTTPRouteGroup(ctx, key interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, key}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteHttpRouteGroup", reflect.TypeOf((*MockHttpRouteGroupWriter)(nil).DeleteHttpRouteGroup), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteHTTPRouteGroup", reflect.TypeOf((*MockHTTPRouteGroupWriter)(nil).DeleteHTTPRouteGroup), varargs...)
 }
 
-// UpdateHttpRouteGroup mocks base method
-func (m *MockHttpRouteGroupWriter) UpdateHttpRouteGroup(ctx context.Context, obj *v1alpha3.HttpRouteGroup, opts ...client.UpdateOption) error {
+// UpdateHTTPRouteGroup mocks base method
+func (m *MockHTTPRouteGroupWriter) UpdateHTTPRouteGroup(ctx context.Context, obj *v1alpha3.HTTPRouteGroup, opts ...client.UpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "UpdateHttpRouteGroup", varargs...)
+	ret := m.ctrl.Call(m, "UpdateHTTPRouteGroup", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// UpdateHttpRouteGroup indicates an expected call of UpdateHttpRouteGroup
-func (mr *MockHttpRouteGroupWriterMockRecorder) UpdateHttpRouteGroup(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+// UpdateHTTPRouteGroup indicates an expected call of UpdateHTTPRouteGroup
+func (mr *MockHTTPRouteGroupWriterMockRecorder) UpdateHTTPRouteGroup(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateHttpRouteGroup", reflect.TypeOf((*MockHttpRouteGroupWriter)(nil).UpdateHttpRouteGroup), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateHTTPRouteGroup", reflect.TypeOf((*MockHTTPRouteGroupWriter)(nil).UpdateHTTPRouteGroup), varargs...)
 }
 
-// PatchHttpRouteGroup mocks base method
-func (m *MockHttpRouteGroupWriter) PatchHttpRouteGroup(ctx context.Context, obj *v1alpha3.HttpRouteGroup, patch client.Patch, opts ...client.PatchOption) error {
+// PatchHTTPRouteGroup mocks base method
+func (m *MockHTTPRouteGroupWriter) PatchHTTPRouteGroup(ctx context.Context, obj *v1alpha3.HTTPRouteGroup, patch client.Patch, opts ...client.PatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "PatchHttpRouteGroup", varargs...)
+	ret := m.ctrl.Call(m, "PatchHTTPRouteGroup", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// PatchHttpRouteGroup indicates an expected call of PatchHttpRouteGroup
-func (mr *MockHttpRouteGroupWriterMockRecorder) PatchHttpRouteGroup(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+// PatchHTTPRouteGroup indicates an expected call of PatchHTTPRouteGroup
+func (mr *MockHTTPRouteGroupWriterMockRecorder) PatchHTTPRouteGroup(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj, patch}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchHttpRouteGroup", reflect.TypeOf((*MockHttpRouteGroupWriter)(nil).PatchHttpRouteGroup), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchHTTPRouteGroup", reflect.TypeOf((*MockHTTPRouteGroupWriter)(nil).PatchHTTPRouteGroup), varargs...)
 }
 
-// DeleteAllOfHttpRouteGroup mocks base method
-func (m *MockHttpRouteGroupWriter) DeleteAllOfHttpRouteGroup(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+// DeleteAllOfHTTPRouteGroup mocks base method
+func (m *MockHTTPRouteGroupWriter) DeleteAllOfHTTPRouteGroup(ctx context.Context, opts ...client.DeleteAllOfOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "DeleteAllOfHttpRouteGroup", varargs...)
+	ret := m.ctrl.Call(m, "DeleteAllOfHTTPRouteGroup", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// DeleteAllOfHttpRouteGroup indicates an expected call of DeleteAllOfHttpRouteGroup
-func (mr *MockHttpRouteGroupWriterMockRecorder) DeleteAllOfHttpRouteGroup(ctx interface{}, opts ...interface{}) *gomock.Call {
+// DeleteAllOfHTTPRouteGroup indicates an expected call of DeleteAllOfHTTPRouteGroup
+func (mr *MockHTTPRouteGroupWriterMockRecorder) DeleteAllOfHTTPRouteGroup(ctx interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfHttpRouteGroup", reflect.TypeOf((*MockHttpRouteGroupWriter)(nil).DeleteAllOfHttpRouteGroup), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfHTTPRouteGroup", reflect.TypeOf((*MockHTTPRouteGroupWriter)(nil).DeleteAllOfHTTPRouteGroup), varargs...)
 }
 
-// UpsertHttpRouteGroup mocks base method
-func (m *MockHttpRouteGroupWriter) UpsertHttpRouteGroup(ctx context.Context, obj *v1alpha3.HttpRouteGroup, transitionFuncs ...v1alpha30.HttpRouteGroupTransitionFunction) error {
+// UpsertHTTPRouteGroup mocks base method
+func (m *MockHTTPRouteGroupWriter) UpsertHTTPRouteGroup(ctx context.Context, obj *v1alpha3.HTTPRouteGroup, transitionFuncs ...v1alpha30.HTTPRouteGroupTransitionFunction) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range transitionFuncs {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "UpsertHttpRouteGroup", varargs...)
+	ret := m.ctrl.Call(m, "UpsertHTTPRouteGroup", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// UpsertHttpRouteGroup indicates an expected call of UpsertHttpRouteGroup
-func (mr *MockHttpRouteGroupWriterMockRecorder) UpsertHttpRouteGroup(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
+// UpsertHTTPRouteGroup indicates an expected call of UpsertHTTPRouteGroup
+func (mr *MockHTTPRouteGroupWriterMockRecorder) UpsertHTTPRouteGroup(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertHttpRouteGroup", reflect.TypeOf((*MockHttpRouteGroupWriter)(nil).UpsertHttpRouteGroup), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertHTTPRouteGroup", reflect.TypeOf((*MockHTTPRouteGroupWriter)(nil).UpsertHTTPRouteGroup), varargs...)
 }
 
-// MockHttpRouteGroupStatusWriter is a mock of HttpRouteGroupStatusWriter interface
-type MockHttpRouteGroupStatusWriter struct {
+// MockHTTPRouteGroupStatusWriter is a mock of HTTPRouteGroupStatusWriter interface
+type MockHTTPRouteGroupStatusWriter struct {
 	ctrl     *gomock.Controller
-	recorder *MockHttpRouteGroupStatusWriterMockRecorder
+	recorder *MockHTTPRouteGroupStatusWriterMockRecorder
 }
 
-// MockHttpRouteGroupStatusWriterMockRecorder is the mock recorder for MockHttpRouteGroupStatusWriter
-type MockHttpRouteGroupStatusWriterMockRecorder struct {
-	mock *MockHttpRouteGroupStatusWriter
+// MockHTTPRouteGroupStatusWriterMockRecorder is the mock recorder for MockHTTPRouteGroupStatusWriter
+type MockHTTPRouteGroupStatusWriterMockRecorder struct {
+	mock *MockHTTPRouteGroupStatusWriter
 }
 
-// NewMockHttpRouteGroupStatusWriter creates a new mock instance
-func NewMockHttpRouteGroupStatusWriter(ctrl *gomock.Controller) *MockHttpRouteGroupStatusWriter {
-	mock := &MockHttpRouteGroupStatusWriter{ctrl: ctrl}
-	mock.recorder = &MockHttpRouteGroupStatusWriterMockRecorder{mock}
+// NewMockHTTPRouteGroupStatusWriter creates a new mock instance
+func NewMockHTTPRouteGroupStatusWriter(ctrl *gomock.Controller) *MockHTTPRouteGroupStatusWriter {
+	mock := &MockHTTPRouteGroupStatusWriter{ctrl: ctrl}
+	mock.recorder = &MockHTTPRouteGroupStatusWriterMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use
-func (m *MockHttpRouteGroupStatusWriter) EXPECT() *MockHttpRouteGroupStatusWriterMockRecorder {
+func (m *MockHTTPRouteGroupStatusWriter) EXPECT() *MockHTTPRouteGroupStatusWriterMockRecorder {
 	return m.recorder
 }
 
-// UpdateHttpRouteGroupStatus mocks base method
-func (m *MockHttpRouteGroupStatusWriter) UpdateHttpRouteGroupStatus(ctx context.Context, obj *v1alpha3.HttpRouteGroup, opts ...client.UpdateOption) error {
+// UpdateHTTPRouteGroupStatus mocks base method
+func (m *MockHTTPRouteGroupStatusWriter) UpdateHTTPRouteGroupStatus(ctx context.Context, obj *v1alpha3.HTTPRouteGroup, opts ...client.UpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "UpdateHttpRouteGroupStatus", varargs...)
+	ret := m.ctrl.Call(m, "UpdateHTTPRouteGroupStatus", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// UpdateHttpRouteGroupStatus indicates an expected call of UpdateHttpRouteGroupStatus
-func (mr *MockHttpRouteGroupStatusWriterMockRecorder) UpdateHttpRouteGroupStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+// UpdateHTTPRouteGroupStatus indicates an expected call of UpdateHTTPRouteGroupStatus
+func (mr *MockHTTPRouteGroupStatusWriterMockRecorder) UpdateHTTPRouteGroupStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateHttpRouteGroupStatus", reflect.TypeOf((*MockHttpRouteGroupStatusWriter)(nil).UpdateHttpRouteGroupStatus), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateHTTPRouteGroupStatus", reflect.TypeOf((*MockHTTPRouteGroupStatusWriter)(nil).UpdateHTTPRouteGroupStatus), varargs...)
 }
 
-// PatchHttpRouteGroupStatus mocks base method
-func (m *MockHttpRouteGroupStatusWriter) PatchHttpRouteGroupStatus(ctx context.Context, obj *v1alpha3.HttpRouteGroup, patch client.Patch, opts ...client.PatchOption) error {
+// PatchHTTPRouteGroupStatus mocks base method
+func (m *MockHTTPRouteGroupStatusWriter) PatchHTTPRouteGroupStatus(ctx context.Context, obj *v1alpha3.HTTPRouteGroup, patch client.Patch, opts ...client.PatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "PatchHttpRouteGroupStatus", varargs...)
+	ret := m.ctrl.Call(m, "PatchHTTPRouteGroupStatus", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// PatchHttpRouteGroupStatus indicates an expected call of PatchHttpRouteGroupStatus
-func (mr *MockHttpRouteGroupStatusWriterMockRecorder) PatchHttpRouteGroupStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+// PatchHTTPRouteGroupStatus indicates an expected call of PatchHTTPRouteGroupStatus
+func (mr *MockHTTPRouteGroupStatusWriterMockRecorder) PatchHTTPRouteGroupStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj, patch}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchHttpRouteGroupStatus", reflect.TypeOf((*MockHttpRouteGroupStatusWriter)(nil).PatchHttpRouteGroupStatus), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchHTTPRouteGroupStatus", reflect.TypeOf((*MockHTTPRouteGroupStatusWriter)(nil).PatchHTTPRouteGroupStatus), varargs...)
 }
 
-// MockHttpRouteGroupClient is a mock of HttpRouteGroupClient interface
-type MockHttpRouteGroupClient struct {
+// MockHTTPRouteGroupClient is a mock of HTTPRouteGroupClient interface
+type MockHTTPRouteGroupClient struct {
 	ctrl     *gomock.Controller
-	recorder *MockHttpRouteGroupClientMockRecorder
+	recorder *MockHTTPRouteGroupClientMockRecorder
 }
 
-// MockHttpRouteGroupClientMockRecorder is the mock recorder for MockHttpRouteGroupClient
-type MockHttpRouteGroupClientMockRecorder struct {
-	mock *MockHttpRouteGroupClient
+// MockHTTPRouteGroupClientMockRecorder is the mock recorder for MockHTTPRouteGroupClient
+type MockHTTPRouteGroupClientMockRecorder struct {
+	mock *MockHTTPRouteGroupClient
 }
 
-// NewMockHttpRouteGroupClient creates a new mock instance
-func NewMockHttpRouteGroupClient(ctrl *gomock.Controller) *MockHttpRouteGroupClient {
-	mock := &MockHttpRouteGroupClient{ctrl: ctrl}
-	mock.recorder = &MockHttpRouteGroupClientMockRecorder{mock}
+// NewMockHTTPRouteGroupClient creates a new mock instance
+func NewMockHTTPRouteGroupClient(ctrl *gomock.Controller) *MockHTTPRouteGroupClient {
+	mock := &MockHTTPRouteGroupClient{ctrl: ctrl}
+	mock.recorder = &MockHTTPRouteGroupClientMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use
-func (m *MockHttpRouteGroupClient) EXPECT() *MockHttpRouteGroupClientMockRecorder {
+func (m *MockHTTPRouteGroupClient) EXPECT() *MockHTTPRouteGroupClientMockRecorder {
 	return m.recorder
 }
 
-// GetHttpRouteGroup mocks base method
-func (m *MockHttpRouteGroupClient) GetHttpRouteGroup(ctx context.Context, key client.ObjectKey) (*v1alpha3.HttpRouteGroup, error) {
+// GetHTTPRouteGroup mocks base method
+func (m *MockHTTPRouteGroupClient) GetHTTPRouteGroup(ctx context.Context, key client.ObjectKey) (*v1alpha3.HTTPRouteGroup, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetHttpRouteGroup", ctx, key)
-	ret0, _ := ret[0].(*v1alpha3.HttpRouteGroup)
+	ret := m.ctrl.Call(m, "GetHTTPRouteGroup", ctx, key)
+	ret0, _ := ret[0].(*v1alpha3.HTTPRouteGroup)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetHttpRouteGroup indicates an expected call of GetHttpRouteGroup
-func (mr *MockHttpRouteGroupClientMockRecorder) GetHttpRouteGroup(ctx, key interface{}) *gomock.Call {
+// GetHTTPRouteGroup indicates an expected call of GetHTTPRouteGroup
+func (mr *MockHTTPRouteGroupClientMockRecorder) GetHTTPRouteGroup(ctx, key interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetHttpRouteGroup", reflect.TypeOf((*MockHttpRouteGroupClient)(nil).GetHttpRouteGroup), ctx, key)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetHTTPRouteGroup", reflect.TypeOf((*MockHTTPRouteGroupClient)(nil).GetHTTPRouteGroup), ctx, key)
 }
 
-// ListHttpRouteGroup mocks base method
-func (m *MockHttpRouteGroupClient) ListHttpRouteGroup(ctx context.Context, opts ...client.ListOption) (*v1alpha3.HttpRouteGroupList, error) {
+// ListHTTPRouteGroup mocks base method
+func (m *MockHTTPRouteGroupClient) ListHTTPRouteGroup(ctx context.Context, opts ...client.ListOption) (*v1alpha3.HTTPRouteGroupList, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "ListHttpRouteGroup", varargs...)
-	ret0, _ := ret[0].(*v1alpha3.HttpRouteGroupList)
+	ret := m.ctrl.Call(m, "ListHTTPRouteGroup", varargs...)
+	ret0, _ := ret[0].(*v1alpha3.HTTPRouteGroupList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// ListHttpRouteGroup indicates an expected call of ListHttpRouteGroup
-func (mr *MockHttpRouteGroupClientMockRecorder) ListHttpRouteGroup(ctx interface{}, opts ...interface{}) *gomock.Call {
+// ListHTTPRouteGroup indicates an expected call of ListHTTPRouteGroup
+func (mr *MockHTTPRouteGroupClientMockRecorder) ListHTTPRouteGroup(ctx interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListHttpRouteGroup", reflect.TypeOf((*MockHttpRouteGroupClient)(nil).ListHttpRouteGroup), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListHTTPRouteGroup", reflect.TypeOf((*MockHTTPRouteGroupClient)(nil).ListHTTPRouteGroup), varargs...)
 }
 
-// CreateHttpRouteGroup mocks base method
-func (m *MockHttpRouteGroupClient) CreateHttpRouteGroup(ctx context.Context, obj *v1alpha3.HttpRouteGroup, opts ...client.CreateOption) error {
+// CreateHTTPRouteGroup mocks base method
+func (m *MockHTTPRouteGroupClient) CreateHTTPRouteGroup(ctx context.Context, obj *v1alpha3.HTTPRouteGroup, opts ...client.CreateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "CreateHttpRouteGroup", varargs...)
+	ret := m.ctrl.Call(m, "CreateHTTPRouteGroup", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// CreateHttpRouteGroup indicates an expected call of CreateHttpRouteGroup
-func (mr *MockHttpRouteGroupClientMockRecorder) CreateHttpRouteGroup(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+// CreateHTTPRouteGroup indicates an expected call of CreateHTTPRouteGroup
+func (mr *MockHTTPRouteGroupClientMockRecorder) CreateHTTPRouteGroup(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateHttpRouteGroup", reflect.TypeOf((*MockHttpRouteGroupClient)(nil).CreateHttpRouteGroup), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateHTTPRouteGroup", reflect.TypeOf((*MockHTTPRouteGroupClient)(nil).CreateHTTPRouteGroup), varargs...)
 }
 
-// DeleteHttpRouteGroup mocks base method
-func (m *MockHttpRouteGroupClient) DeleteHttpRouteGroup(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+// DeleteHTTPRouteGroup mocks base method
+func (m *MockHTTPRouteGroupClient) DeleteHTTPRouteGroup(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, key}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "DeleteHttpRouteGroup", varargs...)
+	ret := m.ctrl.Call(m, "DeleteHTTPRouteGroup", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// DeleteHttpRouteGroup indicates an expected call of DeleteHttpRouteGroup
-func (mr *MockHttpRouteGroupClientMockRecorder) DeleteHttpRouteGroup(ctx, key interface{}, opts ...interface{}) *gomock.Call {
+// DeleteHTTPRouteGroup indicates an expected call of DeleteHTTPRouteGroup
+func (mr *MockHTTPRouteGroupClientMockRecorder) DeleteHTTPRouteGroup(ctx, key interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, key}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteHttpRouteGroup", reflect.TypeOf((*MockHttpRouteGroupClient)(nil).DeleteHttpRouteGroup), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteHTTPRouteGroup", reflect.TypeOf((*MockHTTPRouteGroupClient)(nil).DeleteHTTPRouteGroup), varargs...)
 }
 
-// UpdateHttpRouteGroup mocks base method
-func (m *MockHttpRouteGroupClient) UpdateHttpRouteGroup(ctx context.Context, obj *v1alpha3.HttpRouteGroup, opts ...client.UpdateOption) error {
+// UpdateHTTPRouteGroup mocks base method
+func (m *MockHTTPRouteGroupClient) UpdateHTTPRouteGroup(ctx context.Context, obj *v1alpha3.HTTPRouteGroup, opts ...client.UpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "UpdateHttpRouteGroup", varargs...)
+	ret := m.ctrl.Call(m, "UpdateHTTPRouteGroup", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// UpdateHttpRouteGroup indicates an expected call of UpdateHttpRouteGroup
-func (mr *MockHttpRouteGroupClientMockRecorder) UpdateHttpRouteGroup(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+// UpdateHTTPRouteGroup indicates an expected call of UpdateHTTPRouteGroup
+func (mr *MockHTTPRouteGroupClientMockRecorder) UpdateHTTPRouteGroup(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateHttpRouteGroup", reflect.TypeOf((*MockHttpRouteGroupClient)(nil).UpdateHttpRouteGroup), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateHTTPRouteGroup", reflect.TypeOf((*MockHTTPRouteGroupClient)(nil).UpdateHTTPRouteGroup), varargs...)
 }
 
-// PatchHttpRouteGroup mocks base method
-func (m *MockHttpRouteGroupClient) PatchHttpRouteGroup(ctx context.Context, obj *v1alpha3.HttpRouteGroup, patch client.Patch, opts ...client.PatchOption) error {
+// PatchHTTPRouteGroup mocks base method
+func (m *MockHTTPRouteGroupClient) PatchHTTPRouteGroup(ctx context.Context, obj *v1alpha3.HTTPRouteGroup, patch client.Patch, opts ...client.PatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "PatchHttpRouteGroup", varargs...)
+	ret := m.ctrl.Call(m, "PatchHTTPRouteGroup", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// PatchHttpRouteGroup indicates an expected call of PatchHttpRouteGroup
-func (mr *MockHttpRouteGroupClientMockRecorder) PatchHttpRouteGroup(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+// PatchHTTPRouteGroup indicates an expected call of PatchHTTPRouteGroup
+func (mr *MockHTTPRouteGroupClientMockRecorder) PatchHTTPRouteGroup(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj, patch}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchHttpRouteGroup", reflect.TypeOf((*MockHttpRouteGroupClient)(nil).PatchHttpRouteGroup), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchHTTPRouteGroup", reflect.TypeOf((*MockHTTPRouteGroupClient)(nil).PatchHTTPRouteGroup), varargs...)
 }
 
-// DeleteAllOfHttpRouteGroup mocks base method
-func (m *MockHttpRouteGroupClient) DeleteAllOfHttpRouteGroup(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+// DeleteAllOfHTTPRouteGroup mocks base method
+func (m *MockHTTPRouteGroupClient) DeleteAllOfHTTPRouteGroup(ctx context.Context, opts ...client.DeleteAllOfOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "DeleteAllOfHttpRouteGroup", varargs...)
+	ret := m.ctrl.Call(m, "DeleteAllOfHTTPRouteGroup", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// DeleteAllOfHttpRouteGroup indicates an expected call of DeleteAllOfHttpRouteGroup
-func (mr *MockHttpRouteGroupClientMockRecorder) DeleteAllOfHttpRouteGroup(ctx interface{}, opts ...interface{}) *gomock.Call {
+// DeleteAllOfHTTPRouteGroup indicates an expected call of DeleteAllOfHTTPRouteGroup
+func (mr *MockHTTPRouteGroupClientMockRecorder) DeleteAllOfHTTPRouteGroup(ctx interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfHttpRouteGroup", reflect.TypeOf((*MockHttpRouteGroupClient)(nil).DeleteAllOfHttpRouteGroup), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfHTTPRouteGroup", reflect.TypeOf((*MockHTTPRouteGroupClient)(nil).DeleteAllOfHTTPRouteGroup), varargs...)
 }
 
-// UpsertHttpRouteGroup mocks base method
-func (m *MockHttpRouteGroupClient) UpsertHttpRouteGroup(ctx context.Context, obj *v1alpha3.HttpRouteGroup, transitionFuncs ...v1alpha30.HttpRouteGroupTransitionFunction) error {
+// UpsertHTTPRouteGroup mocks base method
+func (m *MockHTTPRouteGroupClient) UpsertHTTPRouteGroup(ctx context.Context, obj *v1alpha3.HTTPRouteGroup, transitionFuncs ...v1alpha30.HTTPRouteGroupTransitionFunction) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range transitionFuncs {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "UpsertHttpRouteGroup", varargs...)
+	ret := m.ctrl.Call(m, "UpsertHTTPRouteGroup", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// UpsertHttpRouteGroup indicates an expected call of UpsertHttpRouteGroup
-func (mr *MockHttpRouteGroupClientMockRecorder) UpsertHttpRouteGroup(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
+// UpsertHTTPRouteGroup indicates an expected call of UpsertHTTPRouteGroup
+func (mr *MockHTTPRouteGroupClientMockRecorder) UpsertHTTPRouteGroup(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertHttpRouteGroup", reflect.TypeOf((*MockHttpRouteGroupClient)(nil).UpsertHttpRouteGroup), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertHTTPRouteGroup", reflect.TypeOf((*MockHTTPRouteGroupClient)(nil).UpsertHTTPRouteGroup), varargs...)
 }
 
-// UpdateHttpRouteGroupStatus mocks base method
-func (m *MockHttpRouteGroupClient) UpdateHttpRouteGroupStatus(ctx context.Context, obj *v1alpha3.HttpRouteGroup, opts ...client.UpdateOption) error {
+// UpdateHTTPRouteGroupStatus mocks base method
+func (m *MockHTTPRouteGroupClient) UpdateHTTPRouteGroupStatus(ctx context.Context, obj *v1alpha3.HTTPRouteGroup, opts ...client.UpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "UpdateHttpRouteGroupStatus", varargs...)
+	ret := m.ctrl.Call(m, "UpdateHTTPRouteGroupStatus", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// UpdateHttpRouteGroupStatus indicates an expected call of UpdateHttpRouteGroupStatus
-func (mr *MockHttpRouteGroupClientMockRecorder) UpdateHttpRouteGroupStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+// UpdateHTTPRouteGroupStatus indicates an expected call of UpdateHTTPRouteGroupStatus
+func (mr *MockHTTPRouteGroupClientMockRecorder) UpdateHTTPRouteGroupStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateHttpRouteGroupStatus", reflect.TypeOf((*MockHttpRouteGroupClient)(nil).UpdateHttpRouteGroupStatus), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateHTTPRouteGroupStatus", reflect.TypeOf((*MockHTTPRouteGroupClient)(nil).UpdateHTTPRouteGroupStatus), varargs...)
 }
 
-// PatchHttpRouteGroupStatus mocks base method
-func (m *MockHttpRouteGroupClient) PatchHttpRouteGroupStatus(ctx context.Context, obj *v1alpha3.HttpRouteGroup, patch client.Patch, opts ...client.PatchOption) error {
+// PatchHTTPRouteGroupStatus mocks base method
+func (m *MockHTTPRouteGroupClient) PatchHTTPRouteGroupStatus(ctx context.Context, obj *v1alpha3.HTTPRouteGroup, patch client.Patch, opts ...client.PatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "PatchHttpRouteGroupStatus", varargs...)
+	ret := m.ctrl.Call(m, "PatchHTTPRouteGroupStatus", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// PatchHttpRouteGroupStatus indicates an expected call of PatchHttpRouteGroupStatus
-func (mr *MockHttpRouteGroupClientMockRecorder) PatchHttpRouteGroupStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+// PatchHTTPRouteGroupStatus indicates an expected call of PatchHTTPRouteGroupStatus
+func (mr *MockHTTPRouteGroupClientMockRecorder) PatchHTTPRouteGroupStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj, patch}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchHttpRouteGroupStatus", reflect.TypeOf((*MockHttpRouteGroupClient)(nil).PatchHttpRouteGroupStatus), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchHTTPRouteGroupStatus", reflect.TypeOf((*MockHTTPRouteGroupClient)(nil).PatchHTTPRouteGroupStatus), varargs...)
 }
 
-// MockMulticlusterHttpRouteGroupClient is a mock of MulticlusterHttpRouteGroupClient interface
-type MockMulticlusterHttpRouteGroupClient struct {
+// MockMulticlusterHTTPRouteGroupClient is a mock of MulticlusterHTTPRouteGroupClient interface
+type MockMulticlusterHTTPRouteGroupClient struct {
 	ctrl     *gomock.Controller
-	recorder *MockMulticlusterHttpRouteGroupClientMockRecorder
+	recorder *MockMulticlusterHTTPRouteGroupClientMockRecorder
 }
 
-// MockMulticlusterHttpRouteGroupClientMockRecorder is the mock recorder for MockMulticlusterHttpRouteGroupClient
-type MockMulticlusterHttpRouteGroupClientMockRecorder struct {
-	mock *MockMulticlusterHttpRouteGroupClient
+// MockMulticlusterHTTPRouteGroupClientMockRecorder is the mock recorder for MockMulticlusterHTTPRouteGroupClient
+type MockMulticlusterHTTPRouteGroupClientMockRecorder struct {
+	mock *MockMulticlusterHTTPRouteGroupClient
 }
 
-// NewMockMulticlusterHttpRouteGroupClient creates a new mock instance
-func NewMockMulticlusterHttpRouteGroupClient(ctrl *gomock.Controller) *MockMulticlusterHttpRouteGroupClient {
-	mock := &MockMulticlusterHttpRouteGroupClient{ctrl: ctrl}
-	mock.recorder = &MockMulticlusterHttpRouteGroupClientMockRecorder{mock}
+// NewMockMulticlusterHTTPRouteGroupClient creates a new mock instance
+func NewMockMulticlusterHTTPRouteGroupClient(ctrl *gomock.Controller) *MockMulticlusterHTTPRouteGroupClient {
+	mock := &MockMulticlusterHTTPRouteGroupClient{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterHTTPRouteGroupClientMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use
-func (m *MockMulticlusterHttpRouteGroupClient) EXPECT() *MockMulticlusterHttpRouteGroupClientMockRecorder {
+func (m *MockMulticlusterHTTPRouteGroupClient) EXPECT() *MockMulticlusterHTTPRouteGroupClientMockRecorder {
 	return m.recorder
 }
 
 // Cluster mocks base method
-func (m *MockMulticlusterHttpRouteGroupClient) Cluster(cluster string) (v1alpha30.HttpRouteGroupClient, error) {
+func (m *MockMulticlusterHTTPRouteGroupClient) Cluster(cluster string) (v1alpha30.HTTPRouteGroupClient, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Cluster", cluster)
-	ret0, _ := ret[0].(v1alpha30.HttpRouteGroupClient)
+	ret0, _ := ret[0].(v1alpha30.HTTPRouteGroupClient)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Cluster indicates an expected call of Cluster
-func (mr *MockMulticlusterHttpRouteGroupClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
+func (mr *MockMulticlusterHTTPRouteGroupClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterHttpRouteGroupClient)(nil).Cluster), cluster)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterHTTPRouteGroupClient)(nil).Cluster), cluster)
 }

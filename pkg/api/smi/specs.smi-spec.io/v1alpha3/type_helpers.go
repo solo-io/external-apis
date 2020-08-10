@@ -7,5 +7,5 @@ import (
 	. "github.com/servicemeshinterface/smi-sdk-go/pkg/apis/specs/v1alpha3"
 )
 
-// HttpRouteGroupSlice represents a slice of *HttpRouteGroup
-type HttpRouteGroupSlice []*HttpRouteGroup
+// HTTPRouteGroupSlice represents a slice of *HTTPRouteGroup
+type HTTPRouteGroupSlice []*HTTPRouteGroup

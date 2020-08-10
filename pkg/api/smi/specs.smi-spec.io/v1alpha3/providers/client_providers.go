@@ -17,30 +17,30 @@ import (
   See package `github.com/solo-io/skv2/pkg/multicluster/register` for example
 */
 
-// Provider for HttpRouteGroupClient from Clientset
-func HttpRouteGroupClientFromClientsetProvider(clients specs_smi_spec_io_v1alpha3.Clientset) specs_smi_spec_io_v1alpha3.HttpRouteGroupClient {
-	return clients.HttpRouteGroups()
+// Provider for HTTPRouteGroupClient from Clientset
+func HTTPRouteGroupClientFromClientsetProvider(clients specs_smi_spec_io_v1alpha3.Clientset) specs_smi_spec_io_v1alpha3.HTTPRouteGroupClient {
+	return clients.HTTPRouteGroups()
 }
 
-// Provider for HttpRouteGroup Client from Client
-func HttpRouteGroupClientProvider(client client.Client) specs_smi_spec_io_v1alpha3.HttpRouteGroupClient {
-	return specs_smi_spec_io_v1alpha3.NewHttpRouteGroupClient(client)
+// Provider for HTTPRouteGroup Client from Client
+func HTTPRouteGroupClientProvider(client client.Client) specs_smi_spec_io_v1alpha3.HTTPRouteGroupClient {
+	return specs_smi_spec_io_v1alpha3.NewHTTPRouteGroupClient(client)
 }
 
-type HttpRouteGroupClientFactory func(client client.Client) specs_smi_spec_io_v1alpha3.HttpRouteGroupClient
+type HTTPRouteGroupClientFactory func(client client.Client) specs_smi_spec_io_v1alpha3.HTTPRouteGroupClient
 
-func HttpRouteGroupClientFactoryProvider() HttpRouteGroupClientFactory {
-	return HttpRouteGroupClientProvider
+func HTTPRouteGroupClientFactoryProvider() HTTPRouteGroupClientFactory {
+	return HTTPRouteGroupClientProvider
 }
 
-type HttpRouteGroupClientFromConfigFactory func(cfg *rest.Config) (specs_smi_spec_io_v1alpha3.HttpRouteGroupClient, error)
+type HTTPRouteGroupClientFromConfigFactory func(cfg *rest.Config) (specs_smi_spec_io_v1alpha3.HTTPRouteGroupClient, error)
 
-func HttpRouteGroupClientFromConfigFactoryProvider() HttpRouteGroupClientFromConfigFactory {
-	return func(cfg *rest.Config) (specs_smi_spec_io_v1alpha3.HttpRouteGroupClient, error) {
+func HTTPRouteGroupClientFromConfigFactoryProvider() HTTPRouteGroupClientFromConfigFactory {
+	return func(cfg *rest.Config) (specs_smi_spec_io_v1alpha3.HTTPRouteGroupClient, error) {
 		clients, err := specs_smi_spec_io_v1alpha3.NewClientsetFromConfig(cfg)
 		if err != nil {
 			return nil, err
 		}
-		return clients.HttpRouteGroups(), nil
+		return clients.HTTPRouteGroups(), nil
 	}
 }

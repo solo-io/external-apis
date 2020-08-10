@@ -15,185 +15,185 @@ import (
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
-// MockHttpRouteGroupReconciler is a mock of HttpRouteGroupReconciler interface
-type MockHttpRouteGroupReconciler struct {
+// MockHTTPRouteGroupReconciler is a mock of HTTPRouteGroupReconciler interface
+type MockHTTPRouteGroupReconciler struct {
 	ctrl     *gomock.Controller
-	recorder *MockHttpRouteGroupReconcilerMockRecorder
+	recorder *MockHTTPRouteGroupReconcilerMockRecorder
 }
 
-// MockHttpRouteGroupReconcilerMockRecorder is the mock recorder for MockHttpRouteGroupReconciler
-type MockHttpRouteGroupReconcilerMockRecorder struct {
-	mock *MockHttpRouteGroupReconciler
+// MockHTTPRouteGroupReconcilerMockRecorder is the mock recorder for MockHTTPRouteGroupReconciler
+type MockHTTPRouteGroupReconcilerMockRecorder struct {
+	mock *MockHTTPRouteGroupReconciler
 }
 
-// NewMockHttpRouteGroupReconciler creates a new mock instance
-func NewMockHttpRouteGroupReconciler(ctrl *gomock.Controller) *MockHttpRouteGroupReconciler {
-	mock := &MockHttpRouteGroupReconciler{ctrl: ctrl}
-	mock.recorder = &MockHttpRouteGroupReconcilerMockRecorder{mock}
+// NewMockHTTPRouteGroupReconciler creates a new mock instance
+func NewMockHTTPRouteGroupReconciler(ctrl *gomock.Controller) *MockHTTPRouteGroupReconciler {
+	mock := &MockHTTPRouteGroupReconciler{ctrl: ctrl}
+	mock.recorder = &MockHTTPRouteGroupReconcilerMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use
-func (m *MockHttpRouteGroupReconciler) EXPECT() *MockHttpRouteGroupReconcilerMockRecorder {
+func (m *MockHTTPRouteGroupReconciler) EXPECT() *MockHTTPRouteGroupReconcilerMockRecorder {
 	return m.recorder
 }
 
-// ReconcileHttpRouteGroup mocks base method
-func (m *MockHttpRouteGroupReconciler) ReconcileHttpRouteGroup(obj *v1alpha3.HttpRouteGroup) (reconcile.Result, error) {
+// ReconcileHTTPRouteGroup mocks base method
+func (m *MockHTTPRouteGroupReconciler) ReconcileHTTPRouteGroup(obj *v1alpha3.HTTPRouteGroup) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ReconcileHttpRouteGroup", obj)
+	ret := m.ctrl.Call(m, "ReconcileHTTPRouteGroup", obj)
 	ret0, _ := ret[0].(reconcile.Result)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// ReconcileHttpRouteGroup indicates an expected call of ReconcileHttpRouteGroup
-func (mr *MockHttpRouteGroupReconcilerMockRecorder) ReconcileHttpRouteGroup(obj interface{}) *gomock.Call {
+// ReconcileHTTPRouteGroup indicates an expected call of ReconcileHTTPRouteGroup
+func (mr *MockHTTPRouteGroupReconcilerMockRecorder) ReconcileHTTPRouteGroup(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileHttpRouteGroup", reflect.TypeOf((*MockHttpRouteGroupReconciler)(nil).ReconcileHttpRouteGroup), obj)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileHTTPRouteGroup", reflect.TypeOf((*MockHTTPRouteGroupReconciler)(nil).ReconcileHTTPRouteGroup), obj)
 }
 
-// MockHttpRouteGroupDeletionReconciler is a mock of HttpRouteGroupDeletionReconciler interface
-type MockHttpRouteGroupDeletionReconciler struct {
+// MockHTTPRouteGroupDeletionReconciler is a mock of HTTPRouteGroupDeletionReconciler interface
+type MockHTTPRouteGroupDeletionReconciler struct {
 	ctrl     *gomock.Controller
-	recorder *MockHttpRouteGroupDeletionReconcilerMockRecorder
+	recorder *MockHTTPRouteGroupDeletionReconcilerMockRecorder
 }
 
-// MockHttpRouteGroupDeletionReconcilerMockRecorder is the mock recorder for MockHttpRouteGroupDeletionReconciler
-type MockHttpRouteGroupDeletionReconcilerMockRecorder struct {
-	mock *MockHttpRouteGroupDeletionReconciler
+// MockHTTPRouteGroupDeletionReconcilerMockRecorder is the mock recorder for MockHTTPRouteGroupDeletionReconciler
+type MockHTTPRouteGroupDeletionReconcilerMockRecorder struct {
+	mock *MockHTTPRouteGroupDeletionReconciler
 }
 
-// NewMockHttpRouteGroupDeletionReconciler creates a new mock instance
-func NewMockHttpRouteGroupDeletionReconciler(ctrl *gomock.Controller) *MockHttpRouteGroupDeletionReconciler {
-	mock := &MockHttpRouteGroupDeletionReconciler{ctrl: ctrl}
-	mock.recorder = &MockHttpRouteGroupDeletionReconcilerMockRecorder{mock}
+// NewMockHTTPRouteGroupDeletionReconciler creates a new mock instance
+func NewMockHTTPRouteGroupDeletionReconciler(ctrl *gomock.Controller) *MockHTTPRouteGroupDeletionReconciler {
+	mock := &MockHTTPRouteGroupDeletionReconciler{ctrl: ctrl}
+	mock.recorder = &MockHTTPRouteGroupDeletionReconcilerMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use
-func (m *MockHttpRouteGroupDeletionReconciler) EXPECT() *MockHttpRouteGroupDeletionReconcilerMockRecorder {
+func (m *MockHTTPRouteGroupDeletionReconciler) EXPECT() *MockHTTPRouteGroupDeletionReconcilerMockRecorder {
 	return m.recorder
 }
 
-// ReconcileHttpRouteGroupDeletion mocks base method
-func (m *MockHttpRouteGroupDeletionReconciler) ReconcileHttpRouteGroupDeletion(req reconcile.Request) error {
+// ReconcileHTTPRouteGroupDeletion mocks base method
+func (m *MockHTTPRouteGroupDeletionReconciler) ReconcileHTTPRouteGroupDeletion(req reconcile.Request) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ReconcileHttpRouteGroupDeletion", req)
+	ret := m.ctrl.Call(m, "ReconcileHTTPRouteGroupDeletion", req)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// ReconcileHttpRouteGroupDeletion indicates an expected call of ReconcileHttpRouteGroupDeletion
-func (mr *MockHttpRouteGroupDeletionReconcilerMockRecorder) ReconcileHttpRouteGroupDeletion(req interface{}) *gomock.Call {
+// ReconcileHTTPRouteGroupDeletion indicates an expected call of ReconcileHTTPRouteGroupDeletion
+func (mr *MockHTTPRouteGroupDeletionReconcilerMockRecorder) ReconcileHTTPRouteGroupDeletion(req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileHttpRouteGroupDeletion", reflect.TypeOf((*MockHttpRouteGroupDeletionReconciler)(nil).ReconcileHttpRouteGroupDeletion), req)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileHTTPRouteGroupDeletion", reflect.TypeOf((*MockHTTPRouteGroupDeletionReconciler)(nil).ReconcileHTTPRouteGroupDeletion), req)
 }
 
-// MockHttpRouteGroupFinalizer is a mock of HttpRouteGroupFinalizer interface
-type MockHttpRouteGroupFinalizer struct {
+// MockHTTPRouteGroupFinalizer is a mock of HTTPRouteGroupFinalizer interface
+type MockHTTPRouteGroupFinalizer struct {
 	ctrl     *gomock.Controller
-	recorder *MockHttpRouteGroupFinalizerMockRecorder
+	recorder *MockHTTPRouteGroupFinalizerMockRecorder
 }
 
-// MockHttpRouteGroupFinalizerMockRecorder is the mock recorder for MockHttpRouteGroupFinalizer
-type MockHttpRouteGroupFinalizerMockRecorder struct {
-	mock *MockHttpRouteGroupFinalizer
+// MockHTTPRouteGroupFinalizerMockRecorder is the mock recorder for MockHTTPRouteGroupFinalizer
+type MockHTTPRouteGroupFinalizerMockRecorder struct {
+	mock *MockHTTPRouteGroupFinalizer
 }
 
-// NewMockHttpRouteGroupFinalizer creates a new mock instance
-func NewMockHttpRouteGroupFinalizer(ctrl *gomock.Controller) *MockHttpRouteGroupFinalizer {
-	mock := &MockHttpRouteGroupFinalizer{ctrl: ctrl}
-	mock.recorder = &MockHttpRouteGroupFinalizerMockRecorder{mock}
+// NewMockHTTPRouteGroupFinalizer creates a new mock instance
+func NewMockHTTPRouteGroupFinalizer(ctrl *gomock.Controller) *MockHTTPRouteGroupFinalizer {
+	mock := &MockHTTPRouteGroupFinalizer{ctrl: ctrl}
+	mock.recorder = &MockHTTPRouteGroupFinalizerMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use
-func (m *MockHttpRouteGroupFinalizer) EXPECT() *MockHttpRouteGroupFinalizerMockRecorder {
+func (m *MockHTTPRouteGroupFinalizer) EXPECT() *MockHTTPRouteGroupFinalizerMockRecorder {
 	return m.recorder
 }
 
-// ReconcileHttpRouteGroup mocks base method
-func (m *MockHttpRouteGroupFinalizer) ReconcileHttpRouteGroup(obj *v1alpha3.HttpRouteGroup) (reconcile.Result, error) {
+// ReconcileHTTPRouteGroup mocks base method
+func (m *MockHTTPRouteGroupFinalizer) ReconcileHTTPRouteGroup(obj *v1alpha3.HTTPRouteGroup) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ReconcileHttpRouteGroup", obj)
+	ret := m.ctrl.Call(m, "ReconcileHTTPRouteGroup", obj)
 	ret0, _ := ret[0].(reconcile.Result)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// ReconcileHttpRouteGroup indicates an expected call of ReconcileHttpRouteGroup
-func (mr *MockHttpRouteGroupFinalizerMockRecorder) ReconcileHttpRouteGroup(obj interface{}) *gomock.Call {
+// ReconcileHTTPRouteGroup indicates an expected call of ReconcileHTTPRouteGroup
+func (mr *MockHTTPRouteGroupFinalizerMockRecorder) ReconcileHTTPRouteGroup(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileHttpRouteGroup", reflect.TypeOf((*MockHttpRouteGroupFinalizer)(nil).ReconcileHttpRouteGroup), obj)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileHTTPRouteGroup", reflect.TypeOf((*MockHTTPRouteGroupFinalizer)(nil).ReconcileHTTPRouteGroup), obj)
 }
 
-// HttpRouteGroupFinalizerName mocks base method
-func (m *MockHttpRouteGroupFinalizer) HttpRouteGroupFinalizerName() string {
+// HTTPRouteGroupFinalizerName mocks base method
+func (m *MockHTTPRouteGroupFinalizer) HTTPRouteGroupFinalizerName() string {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "HttpRouteGroupFinalizerName")
+	ret := m.ctrl.Call(m, "HTTPRouteGroupFinalizerName")
 	ret0, _ := ret[0].(string)
 	return ret0
 }
 
-// HttpRouteGroupFinalizerName indicates an expected call of HttpRouteGroupFinalizerName
-func (mr *MockHttpRouteGroupFinalizerMockRecorder) HttpRouteGroupFinalizerName() *gomock.Call {
+// HTTPRouteGroupFinalizerName indicates an expected call of HTTPRouteGroupFinalizerName
+func (mr *MockHTTPRouteGroupFinalizerMockRecorder) HTTPRouteGroupFinalizerName() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HttpRouteGroupFinalizerName", reflect.TypeOf((*MockHttpRouteGroupFinalizer)(nil).HttpRouteGroupFinalizerName))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HTTPRouteGroupFinalizerName", reflect.TypeOf((*MockHTTPRouteGroupFinalizer)(nil).HTTPRouteGroupFinalizerName))
 }
 
-// FinalizeHttpRouteGroup mocks base method
-func (m *MockHttpRouteGroupFinalizer) FinalizeHttpRouteGroup(obj *v1alpha3.HttpRouteGroup) error {
+// FinalizeHTTPRouteGroup mocks base method
+func (m *MockHTTPRouteGroupFinalizer) FinalizeHTTPRouteGroup(obj *v1alpha3.HTTPRouteGroup) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FinalizeHttpRouteGroup", obj)
+	ret := m.ctrl.Call(m, "FinalizeHTTPRouteGroup", obj)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// FinalizeHttpRouteGroup indicates an expected call of FinalizeHttpRouteGroup
-func (mr *MockHttpRouteGroupFinalizerMockRecorder) FinalizeHttpRouteGroup(obj interface{}) *gomock.Call {
+// FinalizeHTTPRouteGroup indicates an expected call of FinalizeHTTPRouteGroup
+func (mr *MockHTTPRouteGroupFinalizerMockRecorder) FinalizeHTTPRouteGroup(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FinalizeHttpRouteGroup", reflect.TypeOf((*MockHttpRouteGroupFinalizer)(nil).FinalizeHttpRouteGroup), obj)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FinalizeHTTPRouteGroup", reflect.TypeOf((*MockHTTPRouteGroupFinalizer)(nil).FinalizeHTTPRouteGroup), obj)
 }
 
-// MockHttpRouteGroupReconcileLoop is a mock of HttpRouteGroupReconcileLoop interface
-type MockHttpRouteGroupReconcileLoop struct {
+// MockHTTPRouteGroupReconcileLoop is a mock of HTTPRouteGroupReconcileLoop interface
+type MockHTTPRouteGroupReconcileLoop struct {
 	ctrl     *gomock.Controller
-	recorder *MockHttpRouteGroupReconcileLoopMockRecorder
+	recorder *MockHTTPRouteGroupReconcileLoopMockRecorder
 }
 
-// MockHttpRouteGroupReconcileLoopMockRecorder is the mock recorder for MockHttpRouteGroupReconcileLoop
-type MockHttpRouteGroupReconcileLoopMockRecorder struct {
-	mock *MockHttpRouteGroupReconcileLoop
+// MockHTTPRouteGroupReconcileLoopMockRecorder is the mock recorder for MockHTTPRouteGroupReconcileLoop
+type MockHTTPRouteGroupReconcileLoopMockRecorder struct {
+	mock *MockHTTPRouteGroupReconcileLoop
 }
 
-// NewMockHttpRouteGroupReconcileLoop creates a new mock instance
-func NewMockHttpRouteGroupReconcileLoop(ctrl *gomock.Controller) *MockHttpRouteGroupReconcileLoop {
-	mock := &MockHttpRouteGroupReconcileLoop{ctrl: ctrl}
-	mock.recorder = &MockHttpRouteGroupReconcileLoopMockRecorder{mock}
+// NewMockHTTPRouteGroupReconcileLoop creates a new mock instance
+func NewMockHTTPRouteGroupReconcileLoop(ctrl *gomock.Controller) *MockHTTPRouteGroupReconcileLoop {
+	mock := &MockHTTPRouteGroupReconcileLoop{ctrl: ctrl}
+	mock.recorder = &MockHTTPRouteGroupReconcileLoopMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use
-func (m *MockHttpRouteGroupReconcileLoop) EXPECT() *MockHttpRouteGroupReconcileLoopMockRecorder {
+func (m *MockHTTPRouteGroupReconcileLoop) EXPECT() *MockHTTPRouteGroupReconcileLoopMockRecorder {
 	return m.recorder
 }
 
-// RunHttpRouteGroupReconciler mocks base method
-func (m *MockHttpRouteGroupReconcileLoop) RunHttpRouteGroupReconciler(ctx context.Context, rec controller.HttpRouteGroupReconciler, predicates ...predicate.Predicate) error {
+// RunHTTPRouteGroupReconciler mocks base method
+func (m *MockHTTPRouteGroupReconcileLoop) RunHTTPRouteGroupReconciler(ctx context.Context, rec controller.HTTPRouteGroupReconciler, predicates ...predicate.Predicate) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, rec}
 	for _, a := range predicates {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "RunHttpRouteGroupReconciler", varargs...)
+	ret := m.ctrl.Call(m, "RunHTTPRouteGroupReconciler", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// RunHttpRouteGroupReconciler indicates an expected call of RunHttpRouteGroupReconciler
-func (mr *MockHttpRouteGroupReconcileLoopMockRecorder) RunHttpRouteGroupReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
+// RunHTTPRouteGroupReconciler indicates an expected call of RunHTTPRouteGroupReconciler
+func (mr *MockHTTPRouteGroupReconcileLoopMockRecorder) RunHTTPRouteGroupReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, rec}, predicates...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunHttpRouteGroupReconciler", reflect.TypeOf((*MockHttpRouteGroupReconcileLoop)(nil).RunHttpRouteGroupReconciler), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunHTTPRouteGroupReconciler", reflect.TypeOf((*MockHTTPRouteGroupReconcileLoop)(nil).RunHTTPRouteGroupReconciler), varargs...)
 }

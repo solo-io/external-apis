@@ -17,109 +17,109 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
-// Handle events for the HttpRouteGroup Resource
+// Handle events for the HTTPRouteGroup Resource
 // DEPRECATED: Prefer reconciler pattern.
-type HttpRouteGroupEventHandler interface {
-	CreateHttpRouteGroup(obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup) error
-	UpdateHttpRouteGroup(old, new *specs_smi_spec_io_v1alpha3.HttpRouteGroup) error
-	DeleteHttpRouteGroup(obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup) error
-	GenericHttpRouteGroup(obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup) error
+type HTTPRouteGroupEventHandler interface {
+	CreateHTTPRouteGroup(obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) error
+	UpdateHTTPRouteGroup(old, new *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) error
+	DeleteHTTPRouteGroup(obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) error
+	GenericHTTPRouteGroup(obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) error
 }
 
-type HttpRouteGroupEventHandlerFuncs struct {
-	OnCreate  func(obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup) error
-	OnUpdate  func(old, new *specs_smi_spec_io_v1alpha3.HttpRouteGroup) error
-	OnDelete  func(obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup) error
-	OnGeneric func(obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup) error
+type HTTPRouteGroupEventHandlerFuncs struct {
+	OnCreate  func(obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) error
+	OnUpdate  func(old, new *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) error
+	OnDelete  func(obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) error
+	OnGeneric func(obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) error
 }
 
-func (f *HttpRouteGroupEventHandlerFuncs) CreateHttpRouteGroup(obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup) error {
+func (f *HTTPRouteGroupEventHandlerFuncs) CreateHTTPRouteGroup(obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) error {
 	if f.OnCreate == nil {
 		return nil
 	}
 	return f.OnCreate(obj)
 }
 
-func (f *HttpRouteGroupEventHandlerFuncs) DeleteHttpRouteGroup(obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup) error {
+func (f *HTTPRouteGroupEventHandlerFuncs) DeleteHTTPRouteGroup(obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) error {
 	if f.OnDelete == nil {
 		return nil
 	}
 	return f.OnDelete(obj)
 }
 
-func (f *HttpRouteGroupEventHandlerFuncs) UpdateHttpRouteGroup(objOld, objNew *specs_smi_spec_io_v1alpha3.HttpRouteGroup) error {
+func (f *HTTPRouteGroupEventHandlerFuncs) UpdateHTTPRouteGroup(objOld, objNew *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) error {
 	if f.OnUpdate == nil {
 		return nil
 	}
 	return f.OnUpdate(objOld, objNew)
 }
 
-func (f *HttpRouteGroupEventHandlerFuncs) GenericHttpRouteGroup(obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup) error {
+func (f *HTTPRouteGroupEventHandlerFuncs) GenericHTTPRouteGroup(obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) error {
 	if f.OnGeneric == nil {
 		return nil
 	}
 	return f.OnGeneric(obj)
 }
 
-type HttpRouteGroupEventWatcher interface {
-	AddEventHandler(ctx context.Context, h HttpRouteGroupEventHandler, predicates ...predicate.Predicate) error
+type HTTPRouteGroupEventWatcher interface {
+	AddEventHandler(ctx context.Context, h HTTPRouteGroupEventHandler, predicates ...predicate.Predicate) error
 }
 
-type httpRouteGroupEventWatcher struct {
+type hTTPRouteGroupEventWatcher struct {
 	watcher events.EventWatcher
 }
 
-func NewHttpRouteGroupEventWatcher(name string, mgr manager.Manager) HttpRouteGroupEventWatcher {
-	return &httpRouteGroupEventWatcher{
-		watcher: events.NewWatcher(name, mgr, &specs_smi_spec_io_v1alpha3.HttpRouteGroup{}),
+func NewHTTPRouteGroupEventWatcher(name string, mgr manager.Manager) HTTPRouteGroupEventWatcher {
+	return &hTTPRouteGroupEventWatcher{
+		watcher: events.NewWatcher(name, mgr, &specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}),
 	}
 }
 
-func (c *httpRouteGroupEventWatcher) AddEventHandler(ctx context.Context, h HttpRouteGroupEventHandler, predicates ...predicate.Predicate) error {
-	handler := genericHttpRouteGroupHandler{handler: h}
+func (c *hTTPRouteGroupEventWatcher) AddEventHandler(ctx context.Context, h HTTPRouteGroupEventHandler, predicates ...predicate.Predicate) error {
+	handler := genericHTTPRouteGroupHandler{handler: h}
 	if err := c.watcher.Watch(ctx, handler, predicates...); err != nil {
 		return err
 	}
 	return nil
 }
 
-// genericHttpRouteGroupHandler implements a generic events.EventHandler
-type genericHttpRouteGroupHandler struct {
-	handler HttpRouteGroupEventHandler
+// genericHTTPRouteGroupHandler implements a generic events.EventHandler
+type genericHTTPRouteGroupHandler struct {
+	handler HTTPRouteGroupEventHandler
 }
 
-func (h genericHttpRouteGroupHandler) Create(object runtime.Object) error {
-	obj, ok := object.(*specs_smi_spec_io_v1alpha3.HttpRouteGroup)
+func (h genericHTTPRouteGroupHandler) Create(object runtime.Object) error {
+	obj, ok := object.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup)
 	if !ok {
-		return errors.Errorf("internal error: HttpRouteGroup handler received event for %T", object)
+		return errors.Errorf("internal error: HTTPRouteGroup handler received event for %T", object)
 	}
-	return h.handler.CreateHttpRouteGroup(obj)
+	return h.handler.CreateHTTPRouteGroup(obj)
 }
 
-func (h genericHttpRouteGroupHandler) Delete(object runtime.Object) error {
-	obj, ok := object.(*specs_smi_spec_io_v1alpha3.HttpRouteGroup)
+func (h genericHTTPRouteGroupHandler) Delete(object runtime.Object) error {
+	obj, ok := object.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup)
 	if !ok {
-		return errors.Errorf("internal error: HttpRouteGroup handler received event for %T", object)
+		return errors.Errorf("internal error: HTTPRouteGroup handler received event for %T", object)
 	}
-	return h.handler.DeleteHttpRouteGroup(obj)
+	return h.handler.DeleteHTTPRouteGroup(obj)
 }
 
-func (h genericHttpRouteGroupHandler) Update(old, new runtime.Object) error {
-	objOld, ok := old.(*specs_smi_spec_io_v1alpha3.HttpRouteGroup)
+func (h genericHTTPRouteGroupHandler) Update(old, new runtime.Object) error {
+	objOld, ok := old.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup)
 	if !ok {
-		return errors.Errorf("internal error: HttpRouteGroup handler received event for %T", old)
+		return errors.Errorf("internal error: HTTPRouteGroup handler received event for %T", old)
 	}
-	objNew, ok := new.(*specs_smi_spec_io_v1alpha3.HttpRouteGroup)
+	objNew, ok := new.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup)
 	if !ok {
-		return errors.Errorf("internal error: HttpRouteGroup handler received event for %T", new)
+		return errors.Errorf("internal error: HTTPRouteGroup handler received event for %T", new)
 	}
-	return h.handler.UpdateHttpRouteGroup(objOld, objNew)
+	return h.handler.UpdateHTTPRouteGroup(objOld, objNew)
 }
 
-func (h genericHttpRouteGroupHandler) Generic(object runtime.Object) error {
-	obj, ok := object.(*specs_smi_spec_io_v1alpha3.HttpRouteGroup)
+func (h genericHTTPRouteGroupHandler) Generic(object runtime.Object) error {
+	obj, ok := object.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup)
 	if !ok {
-		return errors.Errorf("internal error: HttpRouteGroup handler received event for %T", object)
+		return errors.Errorf("internal error: HTTPRouteGroup handler received event for %T", object)
 	}
-	return h.handler.GenericHttpRouteGroup(obj)
+	return h.handler.GenericHTTPRouteGroup(obj)
 }

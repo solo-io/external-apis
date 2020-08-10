@@ -17,76 +17,76 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
-// Reconcile Upsert events for the HttpRouteGroup Resource.
+// Reconcile Upsert events for the HTTPRouteGroup Resource.
 // implemented by the user
-type HttpRouteGroupReconciler interface {
-	ReconcileHttpRouteGroup(obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup) (reconcile.Result, error)
+type HTTPRouteGroupReconciler interface {
+	ReconcileHTTPRouteGroup(obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) (reconcile.Result, error)
 }
 
-// Reconcile deletion events for the HttpRouteGroup Resource.
+// Reconcile deletion events for the HTTPRouteGroup Resource.
 // Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
 // before being deleted.
 // implemented by the user
-type HttpRouteGroupDeletionReconciler interface {
-	ReconcileHttpRouteGroupDeletion(req reconcile.Request) error
+type HTTPRouteGroupDeletionReconciler interface {
+	ReconcileHTTPRouteGroupDeletion(req reconcile.Request) error
 }
 
-type HttpRouteGroupReconcilerFuncs struct {
-	OnReconcileHttpRouteGroup         func(obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup) (reconcile.Result, error)
-	OnReconcileHttpRouteGroupDeletion func(req reconcile.Request) error
+type HTTPRouteGroupReconcilerFuncs struct {
+	OnReconcileHTTPRouteGroup         func(obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) (reconcile.Result, error)
+	OnReconcileHTTPRouteGroupDeletion func(req reconcile.Request) error
 }
 
-func (f *HttpRouteGroupReconcilerFuncs) ReconcileHttpRouteGroup(obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup) (reconcile.Result, error) {
-	if f.OnReconcileHttpRouteGroup == nil {
+func (f *HTTPRouteGroupReconcilerFuncs) ReconcileHTTPRouteGroup(obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) (reconcile.Result, error) {
+	if f.OnReconcileHTTPRouteGroup == nil {
 		return reconcile.Result{}, nil
 	}
-	return f.OnReconcileHttpRouteGroup(obj)
+	return f.OnReconcileHTTPRouteGroup(obj)
 }
 
-func (f *HttpRouteGroupReconcilerFuncs) ReconcileHttpRouteGroupDeletion(req reconcile.Request) error {
-	if f.OnReconcileHttpRouteGroupDeletion == nil {
+func (f *HTTPRouteGroupReconcilerFuncs) ReconcileHTTPRouteGroupDeletion(req reconcile.Request) error {
+	if f.OnReconcileHTTPRouteGroupDeletion == nil {
 		return nil
 	}
-	return f.OnReconcileHttpRouteGroupDeletion(req)
+	return f.OnReconcileHTTPRouteGroupDeletion(req)
 }
 
-// Reconcile and finalize the HttpRouteGroup Resource
+// Reconcile and finalize the HTTPRouteGroup Resource
 // implemented by the user
-type HttpRouteGroupFinalizer interface {
-	HttpRouteGroupReconciler
+type HTTPRouteGroupFinalizer interface {
+	HTTPRouteGroupReconciler
 
 	// name of the finalizer used by this handler.
 	// finalizer names should be unique for a single task
-	HttpRouteGroupFinalizerName() string
+	HTTPRouteGroupFinalizerName() string
 
 	// finalize the object before it is deleted.
 	// Watchers created with a finalizing handler will a
-	FinalizeHttpRouteGroup(obj *specs_smi_spec_io_v1alpha3.HttpRouteGroup) error
+	FinalizeHTTPRouteGroup(obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup) error
 }
 
-type HttpRouteGroupReconcileLoop interface {
-	RunHttpRouteGroupReconciler(ctx context.Context, rec HttpRouteGroupReconciler, predicates ...predicate.Predicate) error
+type HTTPRouteGroupReconcileLoop interface {
+	RunHTTPRouteGroupReconciler(ctx context.Context, rec HTTPRouteGroupReconciler, predicates ...predicate.Predicate) error
 }
 
-type httpRouteGroupReconcileLoop struct {
+type hTTPRouteGroupReconcileLoop struct {
 	loop reconcile.Loop
 }
 
-func NewHttpRouteGroupReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) HttpRouteGroupReconcileLoop {
-	return &httpRouteGroupReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &specs_smi_spec_io_v1alpha3.HttpRouteGroup{}, options),
+func NewHTTPRouteGroupReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) HTTPRouteGroupReconcileLoop {
+	return &hTTPRouteGroupReconcileLoop{
+		loop: reconcile.NewLoop(name, mgr, &specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}, options),
 	}
 }
 
-func (c *httpRouteGroupReconcileLoop) RunHttpRouteGroupReconciler(ctx context.Context, reconciler HttpRouteGroupReconciler, predicates ...predicate.Predicate) error {
-	genericReconciler := genericHttpRouteGroupReconciler{
+func (c *hTTPRouteGroupReconcileLoop) RunHTTPRouteGroupReconciler(ctx context.Context, reconciler HTTPRouteGroupReconciler, predicates ...predicate.Predicate) error {
+	genericReconciler := genericHTTPRouteGroupReconciler{
 		reconciler: reconciler,
 	}
 
 	var reconcilerWrapper reconcile.Reconciler
-	if finalizingReconciler, ok := reconciler.(HttpRouteGroupFinalizer); ok {
-		reconcilerWrapper = genericHttpRouteGroupFinalizer{
-			genericHttpRouteGroupReconciler: genericReconciler,
+	if finalizingReconciler, ok := reconciler.(HTTPRouteGroupFinalizer); ok {
+		reconcilerWrapper = genericHTTPRouteGroupFinalizer{
+			genericHTTPRouteGroupReconciler: genericReconciler,
 			finalizingReconciler:            finalizingReconciler,
 		}
 	} else {
@@ -95,40 +95,40 @@ func (c *httpRouteGroupReconcileLoop) RunHttpRouteGroupReconciler(ctx context.Co
 	return c.loop.RunReconciler(ctx, reconcilerWrapper, predicates...)
 }
 
-// genericHttpRouteGroupHandler implements a generic reconcile.Reconciler
-type genericHttpRouteGroupReconciler struct {
-	reconciler HttpRouteGroupReconciler
+// genericHTTPRouteGroupHandler implements a generic reconcile.Reconciler
+type genericHTTPRouteGroupReconciler struct {
+	reconciler HTTPRouteGroupReconciler
 }
 
-func (r genericHttpRouteGroupReconciler) Reconcile(object ezkube.Object) (reconcile.Result, error) {
-	obj, ok := object.(*specs_smi_spec_io_v1alpha3.HttpRouteGroup)
+func (r genericHTTPRouteGroupReconciler) Reconcile(object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup)
 	if !ok {
-		return reconcile.Result{}, errors.Errorf("internal error: HttpRouteGroup handler received event for %T", object)
+		return reconcile.Result{}, errors.Errorf("internal error: HTTPRouteGroup handler received event for %T", object)
 	}
-	return r.reconciler.ReconcileHttpRouteGroup(obj)
+	return r.reconciler.ReconcileHTTPRouteGroup(obj)
 }
 
-func (r genericHttpRouteGroupReconciler) ReconcileDeletion(request reconcile.Request) error {
-	if deletionReconciler, ok := r.reconciler.(HttpRouteGroupDeletionReconciler); ok {
-		return deletionReconciler.ReconcileHttpRouteGroupDeletion(request)
+func (r genericHTTPRouteGroupReconciler) ReconcileDeletion(request reconcile.Request) error {
+	if deletionReconciler, ok := r.reconciler.(HTTPRouteGroupDeletionReconciler); ok {
+		return deletionReconciler.ReconcileHTTPRouteGroupDeletion(request)
 	}
 	return nil
 }
 
-// genericHttpRouteGroupFinalizer implements a generic reconcile.FinalizingReconciler
-type genericHttpRouteGroupFinalizer struct {
-	genericHttpRouteGroupReconciler
-	finalizingReconciler HttpRouteGroupFinalizer
+// genericHTTPRouteGroupFinalizer implements a generic reconcile.FinalizingReconciler
+type genericHTTPRouteGroupFinalizer struct {
+	genericHTTPRouteGroupReconciler
+	finalizingReconciler HTTPRouteGroupFinalizer
 }
 
-func (r genericHttpRouteGroupFinalizer) FinalizerName() string {
-	return r.finalizingReconciler.HttpRouteGroupFinalizerName()
+func (r genericHTTPRouteGroupFinalizer) FinalizerName() string {
+	return r.finalizingReconciler.HTTPRouteGroupFinalizerName()
 }
 
-func (r genericHttpRouteGroupFinalizer) Finalize(object ezkube.Object) error {
-	obj, ok := object.(*specs_smi_spec_io_v1alpha3.HttpRouteGroup)
+func (r genericHTTPRouteGroupFinalizer) Finalize(object ezkube.Object) error {
+	obj, ok := object.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup)
 	if !ok {
-		return errors.Errorf("internal error: HttpRouteGroup handler received event for %T", object)
+		return errors.Errorf("internal error: HTTPRouteGroup handler received event for %T", object)
 	}
-	return r.finalizingReconciler.FinalizeHttpRouteGroup(obj)
+	return r.finalizingReconciler.FinalizeHTTPRouteGroup(obj)
 }
