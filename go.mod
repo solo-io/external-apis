@@ -10,7 +10,6 @@ replace (
 
 require (
 	github.com/golang/mock v1.4.4
-	github.com/linkerd/linkerd2 v0.5.1-0.20200402173539-fee70c064bc0
 	github.com/pkg/errors v0.9.1
 	github.com/servicemeshinterface/smi-sdk-go v0.4.1
 	github.com/solo-io/skv2 v0.8.1
@@ -21,5 +20,3 @@ require (
 	k8s.io/client-go v0.18.6
 	sigs.k8s.io/controller-runtime v0.6.2
 )
-
-replace github.com/solo-io/skv2 => ../skv2
