@@ -52,17 +52,21 @@ func (mr *MockHTTPRouteGroupSetMockRecorder) Keys() *gomock.Call {
 }
 
 // List mocks base method
-func (m *MockHTTPRouteGroupSet) List() []*v1alpha3.HTTPRouteGroup {
+func (m *MockHTTPRouteGroupSet) List(filterResource ...func(*v1alpha3.HTTPRouteGroup) bool) []*v1alpha3.HTTPRouteGroup {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "List")
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
 	ret0, _ := ret[0].([]*v1alpha3.HTTPRouteGroup)
 	return ret0
 }
 
 // List indicates an expected call of List
-func (mr *MockHTTPRouteGroupSetMockRecorder) List() *gomock.Call {
+func (mr *MockHTTPRouteGroupSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).List))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).List), filterResource...)
 }
 
 // Map mocks base method
@@ -110,7 +114,7 @@ func (mr *MockHTTPRouteGroupSetMockRecorder) Equal(hTTPRouteGroupSet interface{}
 }
 
 // Has mocks base method
-func (m *MockHTTPRouteGroupSet) Has(hTTPRouteGroup *v1alpha3.HTTPRouteGroup) bool {
+func (m *MockHTTPRouteGroupSet) Has(hTTPRouteGroup ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Has", hTTPRouteGroup)
 	ret0, _ := ret[0].(bool)
@@ -124,7 +128,7 @@ func (mr *MockHTTPRouteGroupSetMockRecorder) Has(hTTPRouteGroup interface{}) *go
 }
 
 // Delete mocks base method
-func (m *MockHTTPRouteGroupSet) Delete(hTTPRouteGroup *v1alpha3.HTTPRouteGroup) {
+func (m *MockHTTPRouteGroupSet) Delete(hTTPRouteGroup ezkube.ResourceId) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Delete", hTTPRouteGroup)
 }

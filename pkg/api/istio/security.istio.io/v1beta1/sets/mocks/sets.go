@@ -52,17 +52,21 @@ func (mr *MockAuthorizationPolicySetMockRecorder) Keys() *gomock.Call {
 }
 
 // List mocks base method
-func (m *MockAuthorizationPolicySet) List() []*v1beta1.AuthorizationPolicy {
+func (m *MockAuthorizationPolicySet) List(filterResource ...func(*v1beta1.AuthorizationPolicy) bool) []*v1beta1.AuthorizationPolicy {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "List")
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
 	ret0, _ := ret[0].([]*v1beta1.AuthorizationPolicy)
 	return ret0
 }
 
 // List indicates an expected call of List
-func (mr *MockAuthorizationPolicySetMockRecorder) List() *gomock.Call {
+func (mr *MockAuthorizationPolicySetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockAuthorizationPolicySet)(nil).List))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockAuthorizationPolicySet)(nil).List), filterResource...)
 }
 
 // Map mocks base method
@@ -110,7 +114,7 @@ func (mr *MockAuthorizationPolicySetMockRecorder) Equal(authorizationPolicySet i
 }
 
 // Has mocks base method
-func (m *MockAuthorizationPolicySet) Has(authorizationPolicy *v1beta1.AuthorizationPolicy) bool {
+func (m *MockAuthorizationPolicySet) Has(authorizationPolicy ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Has", authorizationPolicy)
 	ret0, _ := ret[0].(bool)
@@ -124,7 +128,7 @@ func (mr *MockAuthorizationPolicySetMockRecorder) Has(authorizationPolicy interf
 }
 
 // Delete mocks base method
-func (m *MockAuthorizationPolicySet) Delete(authorizationPolicy *v1beta1.AuthorizationPolicy) {
+func (m *MockAuthorizationPolicySet) Delete(authorizationPolicy ezkube.ResourceId) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Delete", authorizationPolicy)
 }

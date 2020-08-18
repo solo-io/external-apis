@@ -52,17 +52,21 @@ func (mr *MockTrafficTargetSetMockRecorder) Keys() *gomock.Call {
 }
 
 // List mocks base method
-func (m *MockTrafficTargetSet) List() []*v1alpha2.TrafficTarget {
+func (m *MockTrafficTargetSet) List(filterResource ...func(*v1alpha2.TrafficTarget) bool) []*v1alpha2.TrafficTarget {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "List")
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
 	ret0, _ := ret[0].([]*v1alpha2.TrafficTarget)
 	return ret0
 }
 
 // List indicates an expected call of List
-func (mr *MockTrafficTargetSetMockRecorder) List() *gomock.Call {
+func (mr *MockTrafficTargetSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockTrafficTargetSet)(nil).List))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockTrafficTargetSet)(nil).List), filterResource...)
 }
 
 // Map mocks base method
@@ -110,7 +114,7 @@ func (mr *MockTrafficTargetSetMockRecorder) Equal(trafficTargetSet interface{}) 
 }
 
 // Has mocks base method
-func (m *MockTrafficTargetSet) Has(trafficTarget *v1alpha2.TrafficTarget) bool {
+func (m *MockTrafficTargetSet) Has(trafficTarget ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Has", trafficTarget)
 	ret0, _ := ret[0].(bool)
@@ -124,7 +128,7 @@ func (mr *MockTrafficTargetSetMockRecorder) Has(trafficTarget interface{}) *gomo
 }
 
 // Delete mocks base method
-func (m *MockTrafficTargetSet) Delete(trafficTarget *v1alpha2.TrafficTarget) {
+func (m *MockTrafficTargetSet) Delete(trafficTarget ezkube.ResourceId) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Delete", trafficTarget)
 }

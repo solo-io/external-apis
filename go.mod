@@ -11,6 +11,7 @@ replace (
 require (
 	github.com/golang/mock v1.4.4
 	github.com/pkg/errors v0.9.1
+	github.com/rotisserie/eris v0.1.1
 	github.com/servicemeshinterface/smi-sdk-go v0.4.1
 	github.com/solo-io/skv2 v0.8.1
 	istio.io/client-go v0.0.0-20200610222318-1cfead1f1938
@@ -20,3 +21,5 @@ require (
 	k8s.io/client-go v0.18.6
 	sigs.k8s.io/controller-runtime v0.6.2
 )
+
+replace github.com/solo-io/skv2 => ../skv2

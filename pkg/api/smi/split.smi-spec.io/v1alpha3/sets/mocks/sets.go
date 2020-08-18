@@ -52,17 +52,21 @@ func (mr *MockTrafficSplitSetMockRecorder) Keys() *gomock.Call {
 }
 
 // List mocks base method
-func (m *MockTrafficSplitSet) List() []*v1alpha3.TrafficSplit {
+func (m *MockTrafficSplitSet) List(filterResource ...func(*v1alpha3.TrafficSplit) bool) []*v1alpha3.TrafficSplit {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "List")
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
 	ret0, _ := ret[0].([]*v1alpha3.TrafficSplit)
 	return ret0
 }
 
 // List indicates an expected call of List
-func (mr *MockTrafficSplitSetMockRecorder) List() *gomock.Call {
+func (mr *MockTrafficSplitSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockTrafficSplitSet)(nil).List))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockTrafficSplitSet)(nil).List), filterResource...)
 }
 
 // Map mocks base method
@@ -110,7 +114,7 @@ func (mr *MockTrafficSplitSetMockRecorder) Equal(trafficSplitSet interface{}) *g
 }
 
 // Has mocks base method
-func (m *MockTrafficSplitSet) Has(trafficSplit *v1alpha3.TrafficSplit) bool {
+func (m *MockTrafficSplitSet) Has(trafficSplit ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Has", trafficSplit)
 	ret0, _ := ret[0].(bool)
@@ -124,7 +128,7 @@ func (mr *MockTrafficSplitSetMockRecorder) Has(trafficSplit interface{}) *gomock
 }
 
 // Delete mocks base method
-func (m *MockTrafficSplitSet) Delete(trafficSplit *v1alpha3.TrafficSplit) {
+func (m *MockTrafficSplitSet) Delete(trafficSplit ezkube.ResourceId) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Delete", trafficSplit)
 }
