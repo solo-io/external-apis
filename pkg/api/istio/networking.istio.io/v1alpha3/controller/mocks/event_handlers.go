@@ -6,11 +6,10 @@ package mock_controller
 
 import (
 	context "context"
-	reflect "reflect"
-
 	gomock "github.com/golang/mock/gomock"
 	controller "github.com/solo-io/external-apis/pkg/api/istio/networking.istio.io/v1alpha3/controller"
 	v1alpha3 "istio.io/client-go/pkg/apis/networking/v1alpha3"
+	reflect "reflect"
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
