@@ -5,12 +5,13 @@
 package mock_v1beta1sets
 
 import (
+	reflect "reflect"
+
 	gomock "github.com/golang/mock/gomock"
 	v1beta1sets "github.com/solo-io/external-apis/pkg/api/istio/security.istio.io/v1beta1/sets"
 	ezkube "github.com/solo-io/skv2/pkg/ezkube"
 	v1beta1 "istio.io/client-go/pkg/apis/security/v1beta1"
 	sets "k8s.io/apimachinery/pkg/util/sets"
-	reflect "reflect"
 )
 
 // MockAuthorizationPolicySet is a mock of AuthorizationPolicySet interface

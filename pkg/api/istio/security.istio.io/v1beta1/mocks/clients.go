@@ -6,10 +6,11 @@ package mock_v1beta1
 
 import (
 	context "context"
+	reflect "reflect"
+
 	gomock "github.com/golang/mock/gomock"
 	v1beta1 "github.com/solo-io/external-apis/pkg/api/istio/security.istio.io/v1beta1"
 	v1beta10 "istio.io/client-go/pkg/apis/security/v1beta1"
-	reflect "reflect"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 

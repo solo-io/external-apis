@@ -5,12 +5,13 @@
 package mock_v1alpha3sets
 
 import (
+	reflect "reflect"
+
 	gomock "github.com/golang/mock/gomock"
 	v1alpha3sets "github.com/solo-io/external-apis/pkg/api/istio/networking.istio.io/v1alpha3/sets"
 	ezkube "github.com/solo-io/skv2/pkg/ezkube"
 	v1alpha3 "istio.io/client-go/pkg/apis/networking/v1alpha3"
 	sets "k8s.io/apimachinery/pkg/util/sets"
-	reflect "reflect"
 )
 
 // MockDestinationRuleSet is a mock of DestinationRuleSet interface
