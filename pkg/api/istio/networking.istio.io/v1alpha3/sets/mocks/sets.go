@@ -52,17 +52,21 @@ func (mr *MockDestinationRuleSetMockRecorder) Keys() *gomock.Call {
 }
 
 // List mocks base method
-func (m *MockDestinationRuleSet) List() []*v1alpha3.DestinationRule {
+func (m *MockDestinationRuleSet) List(filterResource ...func(*v1alpha3.DestinationRule) bool) []*v1alpha3.DestinationRule {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "List")
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
 	ret0, _ := ret[0].([]*v1alpha3.DestinationRule)
 	return ret0
 }
 
 // List indicates an expected call of List
-func (mr *MockDestinationRuleSetMockRecorder) List() *gomock.Call {
+func (mr *MockDestinationRuleSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockDestinationRuleSet)(nil).List))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockDestinationRuleSet)(nil).List), filterResource...)
 }
 
 // Map mocks base method
@@ -110,7 +114,7 @@ func (mr *MockDestinationRuleSetMockRecorder) Equal(destinationRuleSet interface
 }
 
 // Has mocks base method
-func (m *MockDestinationRuleSet) Has(destinationRule *v1alpha3.DestinationRule) bool {
+func (m *MockDestinationRuleSet) Has(destinationRule ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Has", destinationRule)
 	ret0, _ := ret[0].(bool)
@@ -124,7 +128,7 @@ func (mr *MockDestinationRuleSetMockRecorder) Has(destinationRule interface{}) *
 }
 
 // Delete mocks base method
-func (m *MockDestinationRuleSet) Delete(destinationRule *v1alpha3.DestinationRule) {
+func (m *MockDestinationRuleSet) Delete(destinationRule ezkube.ResourceId) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Delete", destinationRule)
 }
@@ -244,17 +248,21 @@ func (mr *MockEnvoyFilterSetMockRecorder) Keys() *gomock.Call {
 }
 
 // List mocks base method
-func (m *MockEnvoyFilterSet) List() []*v1alpha3.EnvoyFilter {
+func (m *MockEnvoyFilterSet) List(filterResource ...func(*v1alpha3.EnvoyFilter) bool) []*v1alpha3.EnvoyFilter {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "List")
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
 	ret0, _ := ret[0].([]*v1alpha3.EnvoyFilter)
 	return ret0
 }
 
 // List indicates an expected call of List
-func (mr *MockEnvoyFilterSetMockRecorder) List() *gomock.Call {
+func (mr *MockEnvoyFilterSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockEnvoyFilterSet)(nil).List))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockEnvoyFilterSet)(nil).List), filterResource...)
 }
 
 // Map mocks base method
@@ -302,7 +310,7 @@ func (mr *MockEnvoyFilterSetMockRecorder) Equal(envoyFilterSet interface{}) *gom
 }
 
 // Has mocks base method
-func (m *MockEnvoyFilterSet) Has(envoyFilter *v1alpha3.EnvoyFilter) bool {
+func (m *MockEnvoyFilterSet) Has(envoyFilter ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Has", envoyFilter)
 	ret0, _ := ret[0].(bool)
@@ -316,7 +324,7 @@ func (mr *MockEnvoyFilterSetMockRecorder) Has(envoyFilter interface{}) *gomock.C
 }
 
 // Delete mocks base method
-func (m *MockEnvoyFilterSet) Delete(envoyFilter *v1alpha3.EnvoyFilter) {
+func (m *MockEnvoyFilterSet) Delete(envoyFilter ezkube.ResourceId) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Delete", envoyFilter)
 }
@@ -436,17 +444,21 @@ func (mr *MockGatewaySetMockRecorder) Keys() *gomock.Call {
 }
 
 // List mocks base method
-func (m *MockGatewaySet) List() []*v1alpha3.Gateway {
+func (m *MockGatewaySet) List(filterResource ...func(*v1alpha3.Gateway) bool) []*v1alpha3.Gateway {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "List")
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
 	ret0, _ := ret[0].([]*v1alpha3.Gateway)
 	return ret0
 }
 
 // List indicates an expected call of List
-func (mr *MockGatewaySetMockRecorder) List() *gomock.Call {
+func (mr *MockGatewaySetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockGatewaySet)(nil).List))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockGatewaySet)(nil).List), filterResource...)
 }
 
 // Map mocks base method
@@ -494,7 +506,7 @@ func (mr *MockGatewaySetMockRecorder) Equal(gatewaySet interface{}) *gomock.Call
 }
 
 // Has mocks base method
-func (m *MockGatewaySet) Has(gateway *v1alpha3.Gateway) bool {
+func (m *MockGatewaySet) Has(gateway ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Has", gateway)
 	ret0, _ := ret[0].(bool)
@@ -508,7 +520,7 @@ func (mr *MockGatewaySetMockRecorder) Has(gateway interface{}) *gomock.Call {
 }
 
 // Delete mocks base method
-func (m *MockGatewaySet) Delete(gateway *v1alpha3.Gateway) {
+func (m *MockGatewaySet) Delete(gateway ezkube.ResourceId) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Delete", gateway)
 }
@@ -628,17 +640,21 @@ func (mr *MockServiceEntrySetMockRecorder) Keys() *gomock.Call {
 }
 
 // List mocks base method
-func (m *MockServiceEntrySet) List() []*v1alpha3.ServiceEntry {
+func (m *MockServiceEntrySet) List(filterResource ...func(*v1alpha3.ServiceEntry) bool) []*v1alpha3.ServiceEntry {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "List")
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
 	ret0, _ := ret[0].([]*v1alpha3.ServiceEntry)
 	return ret0
 }
 
 // List indicates an expected call of List
-func (mr *MockServiceEntrySetMockRecorder) List() *gomock.Call {
+func (mr *MockServiceEntrySetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockServiceEntrySet)(nil).List))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockServiceEntrySet)(nil).List), filterResource...)
 }
 
 // Map mocks base method
@@ -686,7 +702,7 @@ func (mr *MockServiceEntrySetMockRecorder) Equal(serviceEntrySet interface{}) *g
 }
 
 // Has mocks base method
-func (m *MockServiceEntrySet) Has(serviceEntry *v1alpha3.ServiceEntry) bool {
+func (m *MockServiceEntrySet) Has(serviceEntry ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Has", serviceEntry)
 	ret0, _ := ret[0].(bool)
@@ -700,7 +716,7 @@ func (mr *MockServiceEntrySetMockRecorder) Has(serviceEntry interface{}) *gomock
 }
 
 // Delete mocks base method
-func (m *MockServiceEntrySet) Delete(serviceEntry *v1alpha3.ServiceEntry) {
+func (m *MockServiceEntrySet) Delete(serviceEntry ezkube.ResourceId) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Delete", serviceEntry)
 }
@@ -820,17 +836,21 @@ func (mr *MockVirtualServiceSetMockRecorder) Keys() *gomock.Call {
 }
 
 // List mocks base method
-func (m *MockVirtualServiceSet) List() []*v1alpha3.VirtualService {
+func (m *MockVirtualServiceSet) List(filterResource ...func(*v1alpha3.VirtualService) bool) []*v1alpha3.VirtualService {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "List")
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
 	ret0, _ := ret[0].([]*v1alpha3.VirtualService)
 	return ret0
 }
 
 // List indicates an expected call of List
-func (mr *MockVirtualServiceSetMockRecorder) List() *gomock.Call {
+func (mr *MockVirtualServiceSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockVirtualServiceSet)(nil).List))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockVirtualServiceSet)(nil).List), filterResource...)
 }
 
 // Map mocks base method
@@ -878,7 +898,7 @@ func (mr *MockVirtualServiceSetMockRecorder) Equal(virtualServiceSet interface{}
 }
 
 // Has mocks base method
-func (m *MockVirtualServiceSet) Has(virtualService *v1alpha3.VirtualService) bool {
+func (m *MockVirtualServiceSet) Has(virtualService ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Has", virtualService)
 	ret0, _ := ret[0].(bool)
@@ -892,7 +912,7 @@ func (mr *MockVirtualServiceSetMockRecorder) Has(virtualService interface{}) *go
 }
 
 // Delete mocks base method
-func (m *MockVirtualServiceSet) Delete(virtualService *v1alpha3.VirtualService) {
+func (m *MockVirtualServiceSet) Delete(virtualService ezkube.ResourceId) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Delete", virtualService)
 }

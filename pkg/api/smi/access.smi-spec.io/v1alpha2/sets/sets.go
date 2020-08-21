@@ -7,23 +7,36 @@ package v1alpha2sets
 import (
 	access_smi_spec_io_v1alpha2 "github.com/servicemeshinterface/smi-sdk-go/pkg/apis/access/v1alpha2"
 
+	"github.com/rotisserie/eris"
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"
 	"github.com/solo-io/skv2/pkg/ezkube"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
 type TrafficTargetSet interface {
+	// Get the set stored keys
 	Keys() sets.String
-	List() []*access_smi_spec_io_v1alpha2.TrafficTarget
+	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	List(filterResource ...func(*access_smi_spec_io_v1alpha2.TrafficTarget) bool) []*access_smi_spec_io_v1alpha2.TrafficTarget
+	// Return the Set as a map of key to resource.
 	Map() map[string]*access_smi_spec_io_v1alpha2.TrafficTarget
+	// Insert a resource into the set.
 	Insert(trafficTarget ...*access_smi_spec_io_v1alpha2.TrafficTarget)
+	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(trafficTargetSet TrafficTargetSet) bool
-	Has(trafficTarget *access_smi_spec_io_v1alpha2.TrafficTarget) bool
-	Delete(trafficTarget *access_smi_spec_io_v1alpha2.TrafficTarget)
+	// Check if the set contains a key matching the resource (not the resource itself)
+	Has(trafficTarget ezkube.ResourceId) bool
+	// Delete the key matching the resource
+	Delete(trafficTarget ezkube.ResourceId)
+	// Return the union with the provided set
 	Union(set TrafficTargetSet) TrafficTargetSet
+	// Return the difference with the provided set
 	Difference(set TrafficTargetSet) TrafficTargetSet
+	// Return the intersection with the provided set
 	Intersection(set TrafficTargetSet) TrafficTargetSet
+	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*access_smi_spec_io_v1alpha2.TrafficTarget, error)
+	// Get the length of the set
 	Length() int
 }
 
@@ -52,18 +65,35 @@ func NewTrafficTargetSetFromList(trafficTargetList *access_smi_spec_io_v1alpha2.
 }
 
 func (s *trafficTargetSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
 	return s.set.Keys()
 }
 
-func (s *trafficTargetSet) List() []*access_smi_spec_io_v1alpha2.TrafficTarget {
+func (s *trafficTargetSet) List(filterResource ...func(*access_smi_spec_io_v1alpha2.TrafficTarget) bool) []*access_smi_spec_io_v1alpha2.TrafficTarget {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*access_smi_spec_io_v1alpha2.TrafficTarget))
+		})
+	}
+
 	var trafficTargetList []*access_smi_spec_io_v1alpha2.TrafficTarget
-	for _, obj := range s.set.List() {
+	for _, obj := range s.set.List(genericFilters...) {
 		trafficTargetList = append(trafficTargetList, obj.(*access_smi_spec_io_v1alpha2.TrafficTarget))
 	}
 	return trafficTargetList
 }
 
 func (s *trafficTargetSet) Map() map[string]*access_smi_spec_io_v1alpha2.TrafficTarget {
+	if s == nil {
+		return nil
+	}
+
 	newMap := map[string]*access_smi_spec_io_v1alpha2.TrafficTarget{}
 	for k, v := range s.set.Map() {
 		newMap[k] = v.(*access_smi_spec_io_v1alpha2.TrafficTarget)
@@ -74,35 +104,57 @@ func (s *trafficTargetSet) Map() map[string]*access_smi_spec_io_v1alpha2.Traffic
 func (s *trafficTargetSet) Insert(
 	trafficTargetList ...*access_smi_spec_io_v1alpha2.TrafficTarget,
 ) {
+	if s == nil {
+		panic("cannot insert into nil set")
+	}
+
 	for _, obj := range trafficTargetList {
 		s.set.Insert(obj)
 	}
 }
 
-func (s *trafficTargetSet) Has(trafficTarget *access_smi_spec_io_v1alpha2.TrafficTarget) bool {
+func (s *trafficTargetSet) Has(trafficTarget ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
 	return s.set.Has(trafficTarget)
 }
 
 func (s *trafficTargetSet) Equal(
 	trafficTargetSet TrafficTargetSet,
 ) bool {
+	if s == nil {
+		return trafficTargetSet == nil
+	}
 	return s.set.Equal(makeGenericTrafficTargetSet(trafficTargetSet.List()))
 }
 
-func (s *trafficTargetSet) Delete(TrafficTarget *access_smi_spec_io_v1alpha2.TrafficTarget) {
+func (s *trafficTargetSet) Delete(TrafficTarget ezkube.ResourceId) {
+	if s == nil {
+		return
+	}
 	s.set.Delete(TrafficTarget)
 }
 
 func (s *trafficTargetSet) Union(set TrafficTargetSet) TrafficTargetSet {
+	if s == nil {
+		return set
+	}
 	return NewTrafficTargetSet(append(s.List(), set.List()...)...)
 }
 
 func (s *trafficTargetSet) Difference(set TrafficTargetSet) TrafficTargetSet {
+	if s == nil {
+		return set
+	}
 	newSet := s.set.Difference(makeGenericTrafficTargetSet(set.List()))
 	return &trafficTargetSet{set: newSet}
 }
 
 func (s *trafficTargetSet) Intersection(set TrafficTargetSet) TrafficTargetSet {
+	if s == nil {
+		return nil
+	}
 	newSet := s.set.Intersection(makeGenericTrafficTargetSet(set.List()))
 	var trafficTargetList []*access_smi_spec_io_v1alpha2.TrafficTarget
 	for _, obj := range newSet.List() {
@@ -112,6 +164,9 @@ func (s *trafficTargetSet) Intersection(set TrafficTargetSet) TrafficTargetSet {
 }
 
 func (s *trafficTargetSet) Find(id ezkube.ResourceId) (*access_smi_spec_io_v1alpha2.TrafficTarget, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find TrafficTarget %v", sksets.Key(id))
+	}
 	obj, err := s.set.Find(&access_smi_spec_io_v1alpha2.TrafficTarget{}, id)
 	if err != nil {
 		return nil, err
@@ -121,5 +176,8 @@ func (s *trafficTargetSet) Find(id ezkube.ResourceId) (*access_smi_spec_io_v1alp
 }
 
 func (s *trafficTargetSet) Length() int {
+	if s == nil {
+		return 0
+	}
 	return s.set.Length()
 }

@@ -7,23 +7,36 @@ package v1beta1sets
 import (
 	security_istio_io_v1beta1 "istio.io/client-go/pkg/apis/security/v1beta1"
 
+	"github.com/rotisserie/eris"
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"
 	"github.com/solo-io/skv2/pkg/ezkube"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
 type AuthorizationPolicySet interface {
+	// Get the set stored keys
 	Keys() sets.String
-	List() []*security_istio_io_v1beta1.AuthorizationPolicy
+	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	List(filterResource ...func(*security_istio_io_v1beta1.AuthorizationPolicy) bool) []*security_istio_io_v1beta1.AuthorizationPolicy
+	// Return the Set as a map of key to resource.
 	Map() map[string]*security_istio_io_v1beta1.AuthorizationPolicy
+	// Insert a resource into the set.
 	Insert(authorizationPolicy ...*security_istio_io_v1beta1.AuthorizationPolicy)
+	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(authorizationPolicySet AuthorizationPolicySet) bool
-	Has(authorizationPolicy *security_istio_io_v1beta1.AuthorizationPolicy) bool
-	Delete(authorizationPolicy *security_istio_io_v1beta1.AuthorizationPolicy)
+	// Check if the set contains a key matching the resource (not the resource itself)
+	Has(authorizationPolicy ezkube.ResourceId) bool
+	// Delete the key matching the resource
+	Delete(authorizationPolicy ezkube.ResourceId)
+	// Return the union with the provided set
 	Union(set AuthorizationPolicySet) AuthorizationPolicySet
+	// Return the difference with the provided set
 	Difference(set AuthorizationPolicySet) AuthorizationPolicySet
+	// Return the intersection with the provided set
 	Intersection(set AuthorizationPolicySet) AuthorizationPolicySet
+	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*security_istio_io_v1beta1.AuthorizationPolicy, error)
+	// Get the length of the set
 	Length() int
 }
 
@@ -52,18 +65,35 @@ func NewAuthorizationPolicySetFromList(authorizationPolicyList *security_istio_i
 }
 
 func (s *authorizationPolicySet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
 	return s.set.Keys()
 }
 
-func (s *authorizationPolicySet) List() []*security_istio_io_v1beta1.AuthorizationPolicy {
+func (s *authorizationPolicySet) List(filterResource ...func(*security_istio_io_v1beta1.AuthorizationPolicy) bool) []*security_istio_io_v1beta1.AuthorizationPolicy {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*security_istio_io_v1beta1.AuthorizationPolicy))
+		})
+	}
+
 	var authorizationPolicyList []*security_istio_io_v1beta1.AuthorizationPolicy
-	for _, obj := range s.set.List() {
+	for _, obj := range s.set.List(genericFilters...) {
 		authorizationPolicyList = append(authorizationPolicyList, obj.(*security_istio_io_v1beta1.AuthorizationPolicy))
 	}
 	return authorizationPolicyList
 }
 
 func (s *authorizationPolicySet) Map() map[string]*security_istio_io_v1beta1.AuthorizationPolicy {
+	if s == nil {
+		return nil
+	}
+
 	newMap := map[string]*security_istio_io_v1beta1.AuthorizationPolicy{}
 	for k, v := range s.set.Map() {
 		newMap[k] = v.(*security_istio_io_v1beta1.AuthorizationPolicy)
@@ -74,35 +104,57 @@ func (s *authorizationPolicySet) Map() map[string]*security_istio_io_v1beta1.Aut
 func (s *authorizationPolicySet) Insert(
 	authorizationPolicyList ...*security_istio_io_v1beta1.AuthorizationPolicy,
 ) {
+	if s == nil {
+		panic("cannot insert into nil set")
+	}
+
 	for _, obj := range authorizationPolicyList {
 		s.set.Insert(obj)
 	}
 }
 
-func (s *authorizationPolicySet) Has(authorizationPolicy *security_istio_io_v1beta1.AuthorizationPolicy) bool {
+func (s *authorizationPolicySet) Has(authorizationPolicy ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
 	return s.set.Has(authorizationPolicy)
 }
 
 func (s *authorizationPolicySet) Equal(
 	authorizationPolicySet AuthorizationPolicySet,
 ) bool {
+	if s == nil {
+		return authorizationPolicySet == nil
+	}
 	return s.set.Equal(makeGenericAuthorizationPolicySet(authorizationPolicySet.List()))
 }
 
-func (s *authorizationPolicySet) Delete(AuthorizationPolicy *security_istio_io_v1beta1.AuthorizationPolicy) {
+func (s *authorizationPolicySet) Delete(AuthorizationPolicy ezkube.ResourceId) {
+	if s == nil {
+		return
+	}
 	s.set.Delete(AuthorizationPolicy)
 }
 
 func (s *authorizationPolicySet) Union(set AuthorizationPolicySet) AuthorizationPolicySet {
+	if s == nil {
+		return set
+	}
 	return NewAuthorizationPolicySet(append(s.List(), set.List()...)...)
 }
 
 func (s *authorizationPolicySet) Difference(set AuthorizationPolicySet) AuthorizationPolicySet {
+	if s == nil {
+		return set
+	}
 	newSet := s.set.Difference(makeGenericAuthorizationPolicySet(set.List()))
 	return &authorizationPolicySet{set: newSet}
 }
 
 func (s *authorizationPolicySet) Intersection(set AuthorizationPolicySet) AuthorizationPolicySet {
+	if s == nil {
+		return nil
+	}
 	newSet := s.set.Intersection(makeGenericAuthorizationPolicySet(set.List()))
 	var authorizationPolicyList []*security_istio_io_v1beta1.AuthorizationPolicy
 	for _, obj := range newSet.List() {
@@ -112,6 +164,9 @@ func (s *authorizationPolicySet) Intersection(set AuthorizationPolicySet) Author
 }
 
 func (s *authorizationPolicySet) Find(id ezkube.ResourceId) (*security_istio_io_v1beta1.AuthorizationPolicy, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find AuthorizationPolicy %v", sksets.Key(id))
+	}
 	obj, err := s.set.Find(&security_istio_io_v1beta1.AuthorizationPolicy{}, id)
 	if err != nil {
 		return nil, err
@@ -121,5 +176,8 @@ func (s *authorizationPolicySet) Find(id ezkube.ResourceId) (*security_istio_io_
 }
 
 func (s *authorizationPolicySet) Length() int {
+	if s == nil {
+		return 0
+	}
 	return s.set.Length()
 }

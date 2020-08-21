@@ -52,17 +52,21 @@ func (mr *MockJobSetMockRecorder) Keys() *gomock.Call {
 }
 
 // List mocks base method
-func (m *MockJobSet) List() []*v1.Job {
+func (m *MockJobSet) List(filterResource ...func(*v1.Job) bool) []*v1.Job {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "List")
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
 	ret0, _ := ret[0].([]*v1.Job)
 	return ret0
 }
 
 // List indicates an expected call of List
-func (mr *MockJobSetMockRecorder) List() *gomock.Call {
+func (mr *MockJobSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockJobSet)(nil).List))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockJobSet)(nil).List), filterResource...)
 }
 
 // Map mocks base method
@@ -110,7 +114,7 @@ func (mr *MockJobSetMockRecorder) Equal(jobSet interface{}) *gomock.Call {
 }
 
 // Has mocks base method
-func (m *MockJobSet) Has(job *v1.Job) bool {
+func (m *MockJobSet) Has(job ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Has", job)
 	ret0, _ := ret[0].(bool)
@@ -124,7 +128,7 @@ func (mr *MockJobSetMockRecorder) Has(job interface{}) *gomock.Call {
 }
 
 // Delete mocks base method
-func (m *MockJobSet) Delete(job *v1.Job) {
+func (m *MockJobSet) Delete(job ezkube.ResourceId) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Delete", job)
 }

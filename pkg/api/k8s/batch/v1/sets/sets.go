@@ -7,23 +7,36 @@ package v1sets
 import (
 	batch_v1 "k8s.io/api/batch/v1"
 
+	"github.com/rotisserie/eris"
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"
 	"github.com/solo-io/skv2/pkg/ezkube"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
 type JobSet interface {
+	// Get the set stored keys
 	Keys() sets.String
-	List() []*batch_v1.Job
+	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	List(filterResource ...func(*batch_v1.Job) bool) []*batch_v1.Job
+	// Return the Set as a map of key to resource.
 	Map() map[string]*batch_v1.Job
+	// Insert a resource into the set.
 	Insert(job ...*batch_v1.Job)
+	// Compare the equality of the keys in two sets (not the resources themselves)
 	Equal(jobSet JobSet) bool
-	Has(job *batch_v1.Job) bool
-	Delete(job *batch_v1.Job)
+	// Check if the set contains a key matching the resource (not the resource itself)
+	Has(job ezkube.ResourceId) bool
+	// Delete the key matching the resource
+	Delete(job ezkube.ResourceId)
+	// Return the union with the provided set
 	Union(set JobSet) JobSet
+	// Return the difference with the provided set
 	Difference(set JobSet) JobSet
+	// Return the intersection with the provided set
 	Intersection(set JobSet) JobSet
+	// Find the resource with the given ID
 	Find(id ezkube.ResourceId) (*batch_v1.Job, error)
+	// Get the length of the set
 	Length() int
 }
 
@@ -52,18 +65,35 @@ func NewJobSetFromList(jobList *batch_v1.JobList) JobSet {
 }
 
 func (s *jobSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
 	return s.set.Keys()
 }
 
-func (s *jobSet) List() []*batch_v1.Job {
+func (s *jobSet) List(filterResource ...func(*batch_v1.Job) bool) []*batch_v1.Job {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*batch_v1.Job))
+		})
+	}
+
 	var jobList []*batch_v1.Job
-	for _, obj := range s.set.List() {
+	for _, obj := range s.set.List(genericFilters...) {
 		jobList = append(jobList, obj.(*batch_v1.Job))
 	}
 	return jobList
 }
 
 func (s *jobSet) Map() map[string]*batch_v1.Job {
+	if s == nil {
+		return nil
+	}
+
 	newMap := map[string]*batch_v1.Job{}
 	for k, v := range s.set.Map() {
 		newMap[k] = v.(*batch_v1.Job)
@@ -74,35 +104,57 @@ func (s *jobSet) Map() map[string]*batch_v1.Job {
 func (s *jobSet) Insert(
 	jobList ...*batch_v1.Job,
 ) {
+	if s == nil {
+		panic("cannot insert into nil set")
+	}
+
 	for _, obj := range jobList {
 		s.set.Insert(obj)
 	}
 }
 
-func (s *jobSet) Has(job *batch_v1.Job) bool {
+func (s *jobSet) Has(job ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
 	return s.set.Has(job)
 }
 
 func (s *jobSet) Equal(
 	jobSet JobSet,
 ) bool {
+	if s == nil {
+		return jobSet == nil
+	}
 	return s.set.Equal(makeGenericJobSet(jobSet.List()))
 }
 
-func (s *jobSet) Delete(Job *batch_v1.Job) {
+func (s *jobSet) Delete(Job ezkube.ResourceId) {
+	if s == nil {
+		return
+	}
 	s.set.Delete(Job)
 }
 
 func (s *jobSet) Union(set JobSet) JobSet {
+	if s == nil {
+		return set
+	}
 	return NewJobSet(append(s.List(), set.List()...)...)
 }
 
 func (s *jobSet) Difference(set JobSet) JobSet {
+	if s == nil {
+		return set
+	}
 	newSet := s.set.Difference(makeGenericJobSet(set.List()))
 	return &jobSet{set: newSet}
 }
 
 func (s *jobSet) Intersection(set JobSet) JobSet {
+	if s == nil {
+		return nil
+	}
 	newSet := s.set.Intersection(makeGenericJobSet(set.List()))
 	var jobList []*batch_v1.Job
 	for _, obj := range newSet.List() {
@@ -112,6 +164,9 @@ func (s *jobSet) Intersection(set JobSet) JobSet {
 }
 
 func (s *jobSet) Find(id ezkube.ResourceId) (*batch_v1.Job, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find Job %v", sksets.Key(id))
+	}
 	obj, err := s.set.Find(&batch_v1.Job{}, id)
 	if err != nil {
 		return nil, err
@@ -121,5 +176,8 @@ func (s *jobSet) Find(id ezkube.ResourceId) (*batch_v1.Job, error) {
 }
 
 func (s *jobSet) Length() int {
+	if s == nil {
+		return 0
+	}
 	return s.set.Length()
 }

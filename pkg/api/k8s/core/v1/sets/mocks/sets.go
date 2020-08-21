@@ -52,17 +52,21 @@ func (mr *MockSecretSetMockRecorder) Keys() *gomock.Call {
 }
 
 // List mocks base method
-func (m *MockSecretSet) List() []*v1.Secret {
+func (m *MockSecretSet) List(filterResource ...func(*v1.Secret) bool) []*v1.Secret {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "List")
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
 	ret0, _ := ret[0].([]*v1.Secret)
 	return ret0
 }
 
 // List indicates an expected call of List
-func (mr *MockSecretSetMockRecorder) List() *gomock.Call {
+func (mr *MockSecretSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockSecretSet)(nil).List))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockSecretSet)(nil).List), filterResource...)
 }
 
 // Map mocks base method
@@ -110,7 +114,7 @@ func (mr *MockSecretSetMockRecorder) Equal(secretSet interface{}) *gomock.Call {
 }
 
 // Has mocks base method
-func (m *MockSecretSet) Has(secret *v1.Secret) bool {
+func (m *MockSecretSet) Has(secret ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Has", secret)
 	ret0, _ := ret[0].(bool)
@@ -124,7 +128,7 @@ func (mr *MockSecretSetMockRecorder) Has(secret interface{}) *gomock.Call {
 }
 
 // Delete mocks base method
-func (m *MockSecretSet) Delete(secret *v1.Secret) {
+func (m *MockSecretSet) Delete(secret ezkube.ResourceId) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Delete", secret)
 }
@@ -244,17 +248,21 @@ func (mr *MockServiceAccountSetMockRecorder) Keys() *gomock.Call {
 }
 
 // List mocks base method
-func (m *MockServiceAccountSet) List() []*v1.ServiceAccount {
+func (m *MockServiceAccountSet) List(filterResource ...func(*v1.ServiceAccount) bool) []*v1.ServiceAccount {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "List")
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
 	ret0, _ := ret[0].([]*v1.ServiceAccount)
 	return ret0
 }
 
 // List indicates an expected call of List
-func (mr *MockServiceAccountSetMockRecorder) List() *gomock.Call {
+func (mr *MockServiceAccountSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockServiceAccountSet)(nil).List))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockServiceAccountSet)(nil).List), filterResource...)
 }
 
 // Map mocks base method
@@ -302,7 +310,7 @@ func (mr *MockServiceAccountSetMockRecorder) Equal(serviceAccountSet interface{}
 }
 
 // Has mocks base method
-func (m *MockServiceAccountSet) Has(serviceAccount *v1.ServiceAccount) bool {
+func (m *MockServiceAccountSet) Has(serviceAccount ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Has", serviceAccount)
 	ret0, _ := ret[0].(bool)
@@ -316,7 +324,7 @@ func (mr *MockServiceAccountSetMockRecorder) Has(serviceAccount interface{}) *go
 }
 
 // Delete mocks base method
-func (m *MockServiceAccountSet) Delete(serviceAccount *v1.ServiceAccount) {
+func (m *MockServiceAccountSet) Delete(serviceAccount ezkube.ResourceId) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Delete", serviceAccount)
 }
@@ -436,17 +444,21 @@ func (mr *MockConfigMapSetMockRecorder) Keys() *gomock.Call {
 }
 
 // List mocks base method
-func (m *MockConfigMapSet) List() []*v1.ConfigMap {
+func (m *MockConfigMapSet) List(filterResource ...func(*v1.ConfigMap) bool) []*v1.ConfigMap {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "List")
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
 	ret0, _ := ret[0].([]*v1.ConfigMap)
 	return ret0
 }
 
 // List indicates an expected call of List
-func (mr *MockConfigMapSetMockRecorder) List() *gomock.Call {
+func (mr *MockConfigMapSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockConfigMapSet)(nil).List))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockConfigMapSet)(nil).List), filterResource...)
 }
 
 // Map mocks base method
@@ -494,7 +506,7 @@ func (mr *MockConfigMapSetMockRecorder) Equal(configMapSet interface{}) *gomock.
 }
 
 // Has mocks base method
-func (m *MockConfigMapSet) Has(configMap *v1.ConfigMap) bool {
+func (m *MockConfigMapSet) Has(configMap ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Has", configMap)
 	ret0, _ := ret[0].(bool)
@@ -508,7 +520,7 @@ func (mr *MockConfigMapSetMockRecorder) Has(configMap interface{}) *gomock.Call 
 }
 
 // Delete mocks base method
-func (m *MockConfigMapSet) Delete(configMap *v1.ConfigMap) {
+func (m *MockConfigMapSet) Delete(configMap ezkube.ResourceId) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Delete", configMap)
 }
@@ -628,17 +640,21 @@ func (mr *MockServiceSetMockRecorder) Keys() *gomock.Call {
 }
 
 // List mocks base method
-func (m *MockServiceSet) List() []*v1.Service {
+func (m *MockServiceSet) List(filterResource ...func(*v1.Service) bool) []*v1.Service {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "List")
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
 	ret0, _ := ret[0].([]*v1.Service)
 	return ret0
 }
 
 // List indicates an expected call of List
-func (mr *MockServiceSetMockRecorder) List() *gomock.Call {
+func (mr *MockServiceSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockServiceSet)(nil).List))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockServiceSet)(nil).List), filterResource...)
 }
 
 // Map mocks base method
@@ -686,7 +702,7 @@ func (mr *MockServiceSetMockRecorder) Equal(serviceSet interface{}) *gomock.Call
 }
 
 // Has mocks base method
-func (m *MockServiceSet) Has(service *v1.Service) bool {
+func (m *MockServiceSet) Has(service ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Has", service)
 	ret0, _ := ret[0].(bool)
@@ -700,7 +716,7 @@ func (mr *MockServiceSetMockRecorder) Has(service interface{}) *gomock.Call {
 }
 
 // Delete mocks base method
-func (m *MockServiceSet) Delete(service *v1.Service) {
+func (m *MockServiceSet) Delete(service ezkube.ResourceId) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Delete", service)
 }
@@ -820,17 +836,21 @@ func (mr *MockPodSetMockRecorder) Keys() *gomock.Call {
 }
 
 // List mocks base method
-func (m *MockPodSet) List() []*v1.Pod {
+func (m *MockPodSet) List(filterResource ...func(*v1.Pod) bool) []*v1.Pod {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "List")
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
 	ret0, _ := ret[0].([]*v1.Pod)
 	return ret0
 }
 
 // List indicates an expected call of List
-func (mr *MockPodSetMockRecorder) List() *gomock.Call {
+func (mr *MockPodSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockPodSet)(nil).List))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockPodSet)(nil).List), filterResource...)
 }
 
 // Map mocks base method
@@ -878,7 +898,7 @@ func (mr *MockPodSetMockRecorder) Equal(podSet interface{}) *gomock.Call {
 }
 
 // Has mocks base method
-func (m *MockPodSet) Has(pod *v1.Pod) bool {
+func (m *MockPodSet) Has(pod ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Has", pod)
 	ret0, _ := ret[0].(bool)
@@ -892,7 +912,7 @@ func (mr *MockPodSetMockRecorder) Has(pod interface{}) *gomock.Call {
 }
 
 // Delete mocks base method
-func (m *MockPodSet) Delete(pod *v1.Pod) {
+func (m *MockPodSet) Delete(pod ezkube.ResourceId) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Delete", pod)
 }
@@ -1012,17 +1032,21 @@ func (mr *MockNamespaceSetMockRecorder) Keys() *gomock.Call {
 }
 
 // List mocks base method
-func (m *MockNamespaceSet) List() []*v1.Namespace {
+func (m *MockNamespaceSet) List(filterResource ...func(*v1.Namespace) bool) []*v1.Namespace {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "List")
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
 	ret0, _ := ret[0].([]*v1.Namespace)
 	return ret0
 }
 
 // List indicates an expected call of List
-func (mr *MockNamespaceSetMockRecorder) List() *gomock.Call {
+func (mr *MockNamespaceSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockNamespaceSet)(nil).List))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockNamespaceSet)(nil).List), filterResource...)
 }
 
 // Map mocks base method
@@ -1070,7 +1094,7 @@ func (mr *MockNamespaceSetMockRecorder) Equal(namespaceSet interface{}) *gomock.
 }
 
 // Has mocks base method
-func (m *MockNamespaceSet) Has(namespace *v1.Namespace) bool {
+func (m *MockNamespaceSet) Has(namespace ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Has", namespace)
 	ret0, _ := ret[0].(bool)
@@ -1084,7 +1108,7 @@ func (mr *MockNamespaceSetMockRecorder) Has(namespace interface{}) *gomock.Call 
 }
 
 // Delete mocks base method
-func (m *MockNamespaceSet) Delete(namespace *v1.Namespace) {
+func (m *MockNamespaceSet) Delete(namespace ezkube.ResourceId) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Delete", namespace)
 }
@@ -1204,17 +1228,21 @@ func (mr *MockNodeSetMockRecorder) Keys() *gomock.Call {
 }
 
 // List mocks base method
-func (m *MockNodeSet) List() []*v1.Node {
+func (m *MockNodeSet) List(filterResource ...func(*v1.Node) bool) []*v1.Node {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "List")
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
 	ret0, _ := ret[0].([]*v1.Node)
 	return ret0
 }
 
 // List indicates an expected call of List
-func (mr *MockNodeSetMockRecorder) List() *gomock.Call {
+func (mr *MockNodeSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockNodeSet)(nil).List))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockNodeSet)(nil).List), filterResource...)
 }
 
 // Map mocks base method
@@ -1262,7 +1290,7 @@ func (mr *MockNodeSetMockRecorder) Equal(nodeSet interface{}) *gomock.Call {
 }
 
 // Has mocks base method
-func (m *MockNodeSet) Has(node *v1.Node) bool {
+func (m *MockNodeSet) Has(node ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Has", node)
 	ret0, _ := ret[0].(bool)
@@ -1276,7 +1304,7 @@ func (mr *MockNodeSetMockRecorder) Has(node interface{}) *gomock.Call {
 }
 
 // Delete mocks base method
-func (m *MockNodeSet) Delete(node *v1.Node) {
+func (m *MockNodeSet) Delete(node ezkube.ResourceId) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Delete", node)
 }
