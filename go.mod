@@ -9,6 +9,7 @@ replace (
 )
 
 require (
+	github.com/aws/aws-app-mesh-controller-for-k8s v1.1.1
 	github.com/golang/mock v1.4.4
 	github.com/pkg/errors v0.9.1
 	github.com/rotisserie/eris v0.1.1
