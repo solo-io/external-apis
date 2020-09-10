@@ -66,8 +66,8 @@ func (m *multiclusterJobReconcileLoop) AddMulticlusterJobReconciler(ctx context.
 	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
 }
 
-func NewMulticlusterJobReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterJobReconcileLoop {
-	return &multiclusterJobReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &batch_v1.Job{})}
+func NewMulticlusterJobReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterJobReconcileLoop {
+	return &multiclusterJobReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &batch_v1.Job{}, options)}
 }
 
 type genericJobMulticlusterReconciler struct {

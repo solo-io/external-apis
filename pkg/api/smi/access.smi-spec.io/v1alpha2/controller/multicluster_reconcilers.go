@@ -66,8 +66,8 @@ func (m *multiclusterTrafficTargetReconcileLoop) AddMulticlusterTrafficTargetRec
 	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
 }
 
-func NewMulticlusterTrafficTargetReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterTrafficTargetReconcileLoop {
-	return &multiclusterTrafficTargetReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &access_smi_spec_io_v1alpha2.TrafficTarget{})}
+func NewMulticlusterTrafficTargetReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterTrafficTargetReconcileLoop {
+	return &multiclusterTrafficTargetReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &access_smi_spec_io_v1alpha2.TrafficTarget{}, options)}
 }
 
 type genericTrafficTargetMulticlusterReconciler struct {

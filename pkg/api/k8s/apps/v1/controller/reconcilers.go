@@ -74,7 +74,8 @@ type deploymentReconcileLoop struct {
 
 func NewDeploymentReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) DeploymentReconcileLoop {
 	return &deploymentReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &apps_v1.Deployment{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &apps_v1.Deployment{}, options),
 	}
 }
 
@@ -190,7 +191,8 @@ type replicaSetReconcileLoop struct {
 
 func NewReplicaSetReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) ReplicaSetReconcileLoop {
 	return &replicaSetReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &apps_v1.ReplicaSet{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &apps_v1.ReplicaSet{}, options),
 	}
 }
 
@@ -306,7 +308,8 @@ type daemonSetReconcileLoop struct {
 
 func NewDaemonSetReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) DaemonSetReconcileLoop {
 	return &daemonSetReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &apps_v1.DaemonSet{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &apps_v1.DaemonSet{}, options),
 	}
 }
 
@@ -422,7 +425,8 @@ type statefulSetReconcileLoop struct {
 
 func NewStatefulSetReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) StatefulSetReconcileLoop {
 	return &statefulSetReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &apps_v1.StatefulSet{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &apps_v1.StatefulSet{}, options),
 	}
 }
 

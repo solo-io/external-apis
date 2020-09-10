@@ -66,8 +66,8 @@ func (m *multiclusterDestinationRuleReconcileLoop) AddMulticlusterDestinationRul
 	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
 }
 
-func NewMulticlusterDestinationRuleReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterDestinationRuleReconcileLoop {
-	return &multiclusterDestinationRuleReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &networking_istio_io_v1alpha3.DestinationRule{})}
+func NewMulticlusterDestinationRuleReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterDestinationRuleReconcileLoop {
+	return &multiclusterDestinationRuleReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &networking_istio_io_v1alpha3.DestinationRule{}, options)}
 }
 
 type genericDestinationRuleMulticlusterReconciler struct {
@@ -137,8 +137,8 @@ func (m *multiclusterEnvoyFilterReconcileLoop) AddMulticlusterEnvoyFilterReconci
 	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
 }
 
-func NewMulticlusterEnvoyFilterReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterEnvoyFilterReconcileLoop {
-	return &multiclusterEnvoyFilterReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &networking_istio_io_v1alpha3.EnvoyFilter{})}
+func NewMulticlusterEnvoyFilterReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterEnvoyFilterReconcileLoop {
+	return &multiclusterEnvoyFilterReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &networking_istio_io_v1alpha3.EnvoyFilter{}, options)}
 }
 
 type genericEnvoyFilterMulticlusterReconciler struct {
@@ -208,8 +208,8 @@ func (m *multiclusterGatewayReconcileLoop) AddMulticlusterGatewayReconciler(ctx 
 	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
 }
 
-func NewMulticlusterGatewayReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterGatewayReconcileLoop {
-	return &multiclusterGatewayReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &networking_istio_io_v1alpha3.Gateway{})}
+func NewMulticlusterGatewayReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterGatewayReconcileLoop {
+	return &multiclusterGatewayReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &networking_istio_io_v1alpha3.Gateway{}, options)}
 }
 
 type genericGatewayMulticlusterReconciler struct {
@@ -279,8 +279,8 @@ func (m *multiclusterServiceEntryReconcileLoop) AddMulticlusterServiceEntryRecon
 	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
 }
 
-func NewMulticlusterServiceEntryReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterServiceEntryReconcileLoop {
-	return &multiclusterServiceEntryReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &networking_istio_io_v1alpha3.ServiceEntry{})}
+func NewMulticlusterServiceEntryReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterServiceEntryReconcileLoop {
+	return &multiclusterServiceEntryReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &networking_istio_io_v1alpha3.ServiceEntry{}, options)}
 }
 
 type genericServiceEntryMulticlusterReconciler struct {
@@ -350,8 +350,8 @@ func (m *multiclusterVirtualServiceReconcileLoop) AddMulticlusterVirtualServiceR
 	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
 }
 
-func NewMulticlusterVirtualServiceReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterVirtualServiceReconcileLoop {
-	return &multiclusterVirtualServiceReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &networking_istio_io_v1alpha3.VirtualService{})}
+func NewMulticlusterVirtualServiceReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterVirtualServiceReconcileLoop {
+	return &multiclusterVirtualServiceReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &networking_istio_io_v1alpha3.VirtualService{}, options)}
 }
 
 type genericVirtualServiceMulticlusterReconciler struct {

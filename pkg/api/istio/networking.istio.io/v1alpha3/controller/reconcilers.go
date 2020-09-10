@@ -74,7 +74,8 @@ type destinationRuleReconcileLoop struct {
 
 func NewDestinationRuleReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) DestinationRuleReconcileLoop {
 	return &destinationRuleReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &networking_istio_io_v1alpha3.DestinationRule{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &networking_istio_io_v1alpha3.DestinationRule{}, options),
 	}
 }
 
@@ -190,7 +191,8 @@ type envoyFilterReconcileLoop struct {
 
 func NewEnvoyFilterReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) EnvoyFilterReconcileLoop {
 	return &envoyFilterReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &networking_istio_io_v1alpha3.EnvoyFilter{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &networking_istio_io_v1alpha3.EnvoyFilter{}, options),
 	}
 }
 
@@ -306,7 +308,8 @@ type gatewayReconcileLoop struct {
 
 func NewGatewayReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) GatewayReconcileLoop {
 	return &gatewayReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &networking_istio_io_v1alpha3.Gateway{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &networking_istio_io_v1alpha3.Gateway{}, options),
 	}
 }
 
@@ -422,7 +425,8 @@ type serviceEntryReconcileLoop struct {
 
 func NewServiceEntryReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) ServiceEntryReconcileLoop {
 	return &serviceEntryReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &networking_istio_io_v1alpha3.ServiceEntry{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &networking_istio_io_v1alpha3.ServiceEntry{}, options),
 	}
 }
 
@@ -538,7 +542,8 @@ type virtualServiceReconcileLoop struct {
 
 func NewVirtualServiceReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) VirtualServiceReconcileLoop {
 	return &virtualServiceReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &networking_istio_io_v1alpha3.VirtualService{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &networking_istio_io_v1alpha3.VirtualService{}, options),
 	}
 }
 

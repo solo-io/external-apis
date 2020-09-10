@@ -66,8 +66,8 @@ func (m *multiclusterTrafficSplitReconcileLoop) AddMulticlusterTrafficSplitRecon
 	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
 }
 
-func NewMulticlusterTrafficSplitReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterTrafficSplitReconcileLoop {
-	return &multiclusterTrafficSplitReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &split_smi_spec_io_v1alpha1.TrafficSplit{})}
+func NewMulticlusterTrafficSplitReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterTrafficSplitReconcileLoop {
+	return &multiclusterTrafficSplitReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &split_smi_spec_io_v1alpha1.TrafficSplit{}, options)}
 }
 
 type genericTrafficSplitMulticlusterReconciler struct {

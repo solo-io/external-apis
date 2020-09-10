@@ -74,7 +74,8 @@ type authorizationPolicyReconcileLoop struct {
 
 func NewAuthorizationPolicyReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) AuthorizationPolicyReconcileLoop {
 	return &authorizationPolicyReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &security_istio_io_v1beta1.AuthorizationPolicy{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &security_istio_io_v1beta1.AuthorizationPolicy{}, options),
 	}
 }
 

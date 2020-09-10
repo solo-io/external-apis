@@ -74,7 +74,8 @@ type jobReconcileLoop struct {
 
 func NewJobReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) JobReconcileLoop {
 	return &jobReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &batch_v1.Job{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &batch_v1.Job{}, options),
 	}
 }
 

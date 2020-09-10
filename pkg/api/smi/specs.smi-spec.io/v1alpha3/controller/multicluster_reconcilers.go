@@ -66,8 +66,8 @@ func (m *multiclusterHTTPRouteGroupReconcileLoop) AddMulticlusterHTTPRouteGroupR
 	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
 }
 
-func NewMulticlusterHTTPRouteGroupReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterHTTPRouteGroupReconcileLoop {
-	return &multiclusterHTTPRouteGroupReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &specs_smi_spec_io_v1alpha3.HTTPRouteGroup{})}
+func NewMulticlusterHTTPRouteGroupReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterHTTPRouteGroupReconcileLoop {
+	return &multiclusterHTTPRouteGroupReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}, options)}
 }
 
 type genericHTTPRouteGroupMulticlusterReconciler struct {

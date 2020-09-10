@@ -74,7 +74,8 @@ type meshReconcileLoop struct {
 
 func NewMeshReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) MeshReconcileLoop {
 	return &meshReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &appmesh_k8s_aws_v1beta2.Mesh{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &appmesh_k8s_aws_v1beta2.Mesh{}, options),
 	}
 }
 
@@ -190,7 +191,8 @@ type virtualServiceReconcileLoop struct {
 
 func NewVirtualServiceReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) VirtualServiceReconcileLoop {
 	return &virtualServiceReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &appmesh_k8s_aws_v1beta2.VirtualService{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &appmesh_k8s_aws_v1beta2.VirtualService{}, options),
 	}
 }
 
@@ -306,7 +308,8 @@ type virtualNodeReconcileLoop struct {
 
 func NewVirtualNodeReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) VirtualNodeReconcileLoop {
 	return &virtualNodeReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &appmesh_k8s_aws_v1beta2.VirtualNode{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &appmesh_k8s_aws_v1beta2.VirtualNode{}, options),
 	}
 }
 
@@ -422,7 +425,8 @@ type virtualRouterReconcileLoop struct {
 
 func NewVirtualRouterReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) VirtualRouterReconcileLoop {
 	return &virtualRouterReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &appmesh_k8s_aws_v1beta2.VirtualRouter{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &appmesh_k8s_aws_v1beta2.VirtualRouter{}, options),
 	}
 }
 
@@ -538,7 +542,8 @@ type virtualGatewayReconcileLoop struct {
 
 func NewVirtualGatewayReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) VirtualGatewayReconcileLoop {
 	return &virtualGatewayReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &appmesh_k8s_aws_v1beta2.VirtualGateway{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &appmesh_k8s_aws_v1beta2.VirtualGateway{}, options),
 	}
 }
 
@@ -654,7 +659,8 @@ type gatewayRouteReconcileLoop struct {
 
 func NewGatewayRouteReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) GatewayRouteReconcileLoop {
 	return &gatewayRouteReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &appmesh_k8s_aws_v1beta2.GatewayRoute{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &appmesh_k8s_aws_v1beta2.GatewayRoute{}, options),
 	}
 }
 

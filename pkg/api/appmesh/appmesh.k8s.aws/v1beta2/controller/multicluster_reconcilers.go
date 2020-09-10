@@ -66,8 +66,8 @@ func (m *multiclusterMeshReconcileLoop) AddMulticlusterMeshReconciler(ctx contex
 	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
 }
 
-func NewMulticlusterMeshReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterMeshReconcileLoop {
-	return &multiclusterMeshReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &appmesh_k8s_aws_v1beta2.Mesh{})}
+func NewMulticlusterMeshReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterMeshReconcileLoop {
+	return &multiclusterMeshReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &appmesh_k8s_aws_v1beta2.Mesh{}, options)}
 }
 
 type genericMeshMulticlusterReconciler struct {
@@ -137,8 +137,8 @@ func (m *multiclusterVirtualServiceReconcileLoop) AddMulticlusterVirtualServiceR
 	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
 }
 
-func NewMulticlusterVirtualServiceReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterVirtualServiceReconcileLoop {
-	return &multiclusterVirtualServiceReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &appmesh_k8s_aws_v1beta2.VirtualService{})}
+func NewMulticlusterVirtualServiceReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterVirtualServiceReconcileLoop {
+	return &multiclusterVirtualServiceReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &appmesh_k8s_aws_v1beta2.VirtualService{}, options)}
 }
 
 type genericVirtualServiceMulticlusterReconciler struct {
@@ -208,8 +208,8 @@ func (m *multiclusterVirtualNodeReconcileLoop) AddMulticlusterVirtualNodeReconci
 	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
 }
 
-func NewMulticlusterVirtualNodeReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterVirtualNodeReconcileLoop {
-	return &multiclusterVirtualNodeReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &appmesh_k8s_aws_v1beta2.VirtualNode{})}
+func NewMulticlusterVirtualNodeReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterVirtualNodeReconcileLoop {
+	return &multiclusterVirtualNodeReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &appmesh_k8s_aws_v1beta2.VirtualNode{}, options)}
 }
 
 type genericVirtualNodeMulticlusterReconciler struct {
@@ -279,8 +279,8 @@ func (m *multiclusterVirtualRouterReconcileLoop) AddMulticlusterVirtualRouterRec
 	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
 }
 
-func NewMulticlusterVirtualRouterReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterVirtualRouterReconcileLoop {
-	return &multiclusterVirtualRouterReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &appmesh_k8s_aws_v1beta2.VirtualRouter{})}
+func NewMulticlusterVirtualRouterReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterVirtualRouterReconcileLoop {
+	return &multiclusterVirtualRouterReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &appmesh_k8s_aws_v1beta2.VirtualRouter{}, options)}
 }
 
 type genericVirtualRouterMulticlusterReconciler struct {
@@ -350,8 +350,8 @@ func (m *multiclusterVirtualGatewayReconcileLoop) AddMulticlusterVirtualGatewayR
 	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
 }
 
-func NewMulticlusterVirtualGatewayReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterVirtualGatewayReconcileLoop {
-	return &multiclusterVirtualGatewayReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &appmesh_k8s_aws_v1beta2.VirtualGateway{})}
+func NewMulticlusterVirtualGatewayReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterVirtualGatewayReconcileLoop {
+	return &multiclusterVirtualGatewayReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &appmesh_k8s_aws_v1beta2.VirtualGateway{}, options)}
 }
 
 type genericVirtualGatewayMulticlusterReconciler struct {
@@ -421,8 +421,8 @@ func (m *multiclusterGatewayRouteReconcileLoop) AddMulticlusterGatewayRouteRecon
 	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
 }
 
-func NewMulticlusterGatewayRouteReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterGatewayRouteReconcileLoop {
-	return &multiclusterGatewayRouteReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &appmesh_k8s_aws_v1beta2.GatewayRoute{})}
+func NewMulticlusterGatewayRouteReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterGatewayRouteReconcileLoop {
+	return &multiclusterGatewayRouteReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &appmesh_k8s_aws_v1beta2.GatewayRoute{}, options)}
 }
 
 type genericGatewayRouteMulticlusterReconciler struct {
