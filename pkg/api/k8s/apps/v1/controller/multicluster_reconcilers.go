@@ -66,8 +66,8 @@ func (m *multiclusterDeploymentReconcileLoop) AddMulticlusterDeploymentReconcile
 	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
 }
 
-func NewMulticlusterDeploymentReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterDeploymentReconcileLoop {
-	return &multiclusterDeploymentReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &apps_v1.Deployment{})}
+func NewMulticlusterDeploymentReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterDeploymentReconcileLoop {
+	return &multiclusterDeploymentReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &apps_v1.Deployment{}, options)}
 }
 
 type genericDeploymentMulticlusterReconciler struct {
@@ -137,8 +137,8 @@ func (m *multiclusterReplicaSetReconcileLoop) AddMulticlusterReplicaSetReconcile
 	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
 }
 
-func NewMulticlusterReplicaSetReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterReplicaSetReconcileLoop {
-	return &multiclusterReplicaSetReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &apps_v1.ReplicaSet{})}
+func NewMulticlusterReplicaSetReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterReplicaSetReconcileLoop {
+	return &multiclusterReplicaSetReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &apps_v1.ReplicaSet{}, options)}
 }
 
 type genericReplicaSetMulticlusterReconciler struct {
@@ -208,8 +208,8 @@ func (m *multiclusterDaemonSetReconcileLoop) AddMulticlusterDaemonSetReconciler(
 	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
 }
 
-func NewMulticlusterDaemonSetReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterDaemonSetReconcileLoop {
-	return &multiclusterDaemonSetReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &apps_v1.DaemonSet{})}
+func NewMulticlusterDaemonSetReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterDaemonSetReconcileLoop {
+	return &multiclusterDaemonSetReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &apps_v1.DaemonSet{}, options)}
 }
 
 type genericDaemonSetMulticlusterReconciler struct {
@@ -279,8 +279,8 @@ func (m *multiclusterStatefulSetReconcileLoop) AddMulticlusterStatefulSetReconci
 	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
 }
 
-func NewMulticlusterStatefulSetReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterStatefulSetReconcileLoop {
-	return &multiclusterStatefulSetReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &apps_v1.StatefulSet{})}
+func NewMulticlusterStatefulSetReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterStatefulSetReconcileLoop {
+	return &multiclusterStatefulSetReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &apps_v1.StatefulSet{}, options)}
 }
 
 type genericStatefulSetMulticlusterReconciler struct {

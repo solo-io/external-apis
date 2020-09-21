@@ -74,7 +74,8 @@ type secretReconcileLoop struct {
 
 func NewSecretReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) SecretReconcileLoop {
 	return &secretReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &v1.Secret{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &v1.Secret{}, options),
 	}
 }
 
@@ -190,7 +191,8 @@ type serviceAccountReconcileLoop struct {
 
 func NewServiceAccountReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) ServiceAccountReconcileLoop {
 	return &serviceAccountReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &v1.ServiceAccount{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &v1.ServiceAccount{}, options),
 	}
 }
 
@@ -306,7 +308,8 @@ type configMapReconcileLoop struct {
 
 func NewConfigMapReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) ConfigMapReconcileLoop {
 	return &configMapReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &v1.ConfigMap{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &v1.ConfigMap{}, options),
 	}
 }
 
@@ -422,7 +425,8 @@ type serviceReconcileLoop struct {
 
 func NewServiceReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) ServiceReconcileLoop {
 	return &serviceReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &v1.Service{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &v1.Service{}, options),
 	}
 }
 
@@ -538,7 +542,8 @@ type podReconcileLoop struct {
 
 func NewPodReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) PodReconcileLoop {
 	return &podReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &v1.Pod{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &v1.Pod{}, options),
 	}
 }
 
@@ -654,7 +659,8 @@ type namespaceReconcileLoop struct {
 
 func NewNamespaceReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) NamespaceReconcileLoop {
 	return &namespaceReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &v1.Namespace{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &v1.Namespace{}, options),
 	}
 }
 
@@ -770,7 +776,8 @@ type nodeReconcileLoop struct {
 
 func NewNodeReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) NodeReconcileLoop {
 	return &nodeReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &v1.Node{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &v1.Node{}, options),
 	}
 }
 

@@ -74,7 +74,8 @@ type hTTPRouteGroupReconcileLoop struct {
 
 func NewHTTPRouteGroupReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) HTTPRouteGroupReconcileLoop {
 	return &hTTPRouteGroupReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}, options),
 	}
 }
 

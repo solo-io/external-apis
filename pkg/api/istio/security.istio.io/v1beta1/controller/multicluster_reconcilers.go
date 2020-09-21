@@ -66,8 +66,8 @@ func (m *multiclusterAuthorizationPolicyReconcileLoop) AddMulticlusterAuthorizat
 	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
 }
 
-func NewMulticlusterAuthorizationPolicyReconcileLoop(name string, cw multicluster.ClusterWatcher) MulticlusterAuthorizationPolicyReconcileLoop {
-	return &multiclusterAuthorizationPolicyReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &security_istio_io_v1beta1.AuthorizationPolicy{})}
+func NewMulticlusterAuthorizationPolicyReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterAuthorizationPolicyReconcileLoop {
+	return &multiclusterAuthorizationPolicyReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &security_istio_io_v1beta1.AuthorizationPolicy{}, options)}
 }
 
 type genericAuthorizationPolicyMulticlusterReconciler struct {

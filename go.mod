@@ -9,11 +9,12 @@ replace (
 )
 
 require (
+	github.com/aws/aws-app-mesh-controller-for-k8s v1.1.1
 	github.com/golang/mock v1.4.4
 	github.com/pkg/errors v0.9.1
 	github.com/rotisserie/eris v0.1.1
 	github.com/servicemeshinterface/smi-sdk-go v0.4.1
-	github.com/solo-io/skv2 v0.10.0
+	github.com/solo-io/skv2 v0.12.0
 	istio.io/client-go v0.0.0-20200610222318-1cfead1f1938
 	k8s.io/api v0.18.6
 	k8s.io/apiextensions-apiserver v0.18.6

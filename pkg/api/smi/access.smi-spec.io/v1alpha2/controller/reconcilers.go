@@ -74,7 +74,8 @@ type trafficTargetReconcileLoop struct {
 
 func NewTrafficTargetReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) TrafficTargetReconcileLoop {
 	return &trafficTargetReconcileLoop{
-		loop: reconcile.NewLoop(name, mgr, &access_smi_spec_io_v1alpha2.TrafficTarget{}, options),
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &access_smi_spec_io_v1alpha2.TrafficTarget{}, options),
 	}
 }
 
