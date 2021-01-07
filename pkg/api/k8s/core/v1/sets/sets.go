@@ -858,6 +858,175 @@ func (s *podSet) Length() int {
 	return s.set.Length()
 }
 
+type EndpointsSet interface {
+	// Get the set stored keys
+	Keys() sets.String
+	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	List(filterResource ...func(*v1.Endpoints) bool) []*v1.Endpoints
+	// Return the Set as a map of key to resource.
+	Map() map[string]*v1.Endpoints
+	// Insert a resource into the set.
+	Insert(endpoints ...*v1.Endpoints)
+	// Compare the equality of the keys in two sets (not the resources themselves)
+	Equal(endpointsSet EndpointsSet) bool
+	// Check if the set contains a key matching the resource (not the resource itself)
+	Has(endpoints ezkube.ResourceId) bool
+	// Delete the key matching the resource
+	Delete(endpoints ezkube.ResourceId)
+	// Return the union with the provided set
+	Union(set EndpointsSet) EndpointsSet
+	// Return the difference with the provided set
+	Difference(set EndpointsSet) EndpointsSet
+	// Return the intersection with the provided set
+	Intersection(set EndpointsSet) EndpointsSet
+	// Find the resource with the given ID
+	Find(id ezkube.ResourceId) (*v1.Endpoints, error)
+	// Get the length of the set
+	Length() int
+}
+
+func makeGenericEndpointsSet(endpointsList []*v1.Endpoints) sksets.ResourceSet {
+	var genericResources []ezkube.ResourceId
+	for _, obj := range endpointsList {
+		genericResources = append(genericResources, obj)
+	}
+	return sksets.NewResourceSet(genericResources...)
+}
+
+type endpointsSet struct {
+	set sksets.ResourceSet
+}
+
+func NewEndpointsSet(endpointsList ...*v1.Endpoints) EndpointsSet {
+	return &endpointsSet{set: makeGenericEndpointsSet(endpointsList)}
+}
+
+func NewEndpointsSetFromList(endpointsList *v1.EndpointsList) EndpointsSet {
+	list := make([]*v1.Endpoints, 0, len(endpointsList.Items))
+	for idx := range endpointsList.Items {
+		list = append(list, &endpointsList.Items[idx])
+	}
+	return &endpointsSet{set: makeGenericEndpointsSet(list)}
+}
+
+func (s *endpointsSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	return s.set.Keys()
+}
+
+func (s *endpointsSet) List(filterResource ...func(*v1.Endpoints) bool) []*v1.Endpoints {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*v1.Endpoints))
+		})
+	}
+
+	var endpointsList []*v1.Endpoints
+	for _, obj := range s.set.List(genericFilters...) {
+		endpointsList = append(endpointsList, obj.(*v1.Endpoints))
+	}
+	return endpointsList
+}
+
+func (s *endpointsSet) Map() map[string]*v1.Endpoints {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*v1.Endpoints{}
+	for k, v := range s.set.Map() {
+		newMap[k] = v.(*v1.Endpoints)
+	}
+	return newMap
+}
+
+func (s *endpointsSet) Insert(
+	endpointsList ...*v1.Endpoints,
+) {
+	if s == nil {
+		panic("cannot insert into nil set")
+	}
+
+	for _, obj := range endpointsList {
+		s.set.Insert(obj)
+	}
+}
+
+func (s *endpointsSet) Has(endpoints ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	return s.set.Has(endpoints)
+}
+
+func (s *endpointsSet) Equal(
+	endpointsSet EndpointsSet,
+) bool {
+	if s == nil {
+		return endpointsSet == nil
+	}
+	return s.set.Equal(makeGenericEndpointsSet(endpointsSet.List()))
+}
+
+func (s *endpointsSet) Delete(Endpoints ezkube.ResourceId) {
+	if s == nil {
+		return
+	}
+	s.set.Delete(Endpoints)
+}
+
+func (s *endpointsSet) Union(set EndpointsSet) EndpointsSet {
+	if s == nil {
+		return set
+	}
+	return NewEndpointsSet(append(s.List(), set.List()...)...)
+}
+
+func (s *endpointsSet) Difference(set EndpointsSet) EndpointsSet {
+	if s == nil {
+		return set
+	}
+	newSet := s.set.Difference(makeGenericEndpointsSet(set.List()))
+	return &endpointsSet{set: newSet}
+}
+
+func (s *endpointsSet) Intersection(set EndpointsSet) EndpointsSet {
+	if s == nil {
+		return nil
+	}
+	newSet := s.set.Intersection(makeGenericEndpointsSet(set.List()))
+	var endpointsList []*v1.Endpoints
+	for _, obj := range newSet.List() {
+		endpointsList = append(endpointsList, obj.(*v1.Endpoints))
+	}
+	return NewEndpointsSet(endpointsList...)
+}
+
+func (s *endpointsSet) Find(id ezkube.ResourceId) (*v1.Endpoints, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find Endpoints %v", sksets.Key(id))
+	}
+	obj, err := s.set.Find(&v1.Endpoints{}, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return obj.(*v1.Endpoints), nil
+}
+
+func (s *endpointsSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	return s.set.Length()
+}
+
 type NamespaceSet interface {
 	// Get the set stored keys
 	Keys() sets.String

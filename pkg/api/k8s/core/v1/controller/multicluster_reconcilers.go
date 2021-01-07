@@ -373,6 +373,77 @@ func (g genericPodMulticlusterReconciler) Reconcile(cluster string, object ezkub
 	return g.reconciler.ReconcilePod(cluster, obj)
 }
 
+// Reconcile Upsert events for the Endpoints Resource across clusters.
+// implemented by the user
+type MulticlusterEndpointsReconciler interface {
+	ReconcileEndpoints(clusterName string, obj *v1.Endpoints) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the Endpoints Resource across clusters.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type MulticlusterEndpointsDeletionReconciler interface {
+	ReconcileEndpointsDeletion(clusterName string, req reconcile.Request) error
+}
+
+type MulticlusterEndpointsReconcilerFuncs struct {
+	OnReconcileEndpoints         func(clusterName string, obj *v1.Endpoints) (reconcile.Result, error)
+	OnReconcileEndpointsDeletion func(clusterName string, req reconcile.Request) error
+}
+
+func (f *MulticlusterEndpointsReconcilerFuncs) ReconcileEndpoints(clusterName string, obj *v1.Endpoints) (reconcile.Result, error) {
+	if f.OnReconcileEndpoints == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcileEndpoints(clusterName, obj)
+}
+
+func (f *MulticlusterEndpointsReconcilerFuncs) ReconcileEndpointsDeletion(clusterName string, req reconcile.Request) error {
+	if f.OnReconcileEndpointsDeletion == nil {
+		return nil
+	}
+	return f.OnReconcileEndpointsDeletion(clusterName, req)
+}
+
+type MulticlusterEndpointsReconcileLoop interface {
+	// AddMulticlusterEndpointsReconciler adds a MulticlusterEndpointsReconciler to the MulticlusterEndpointsReconcileLoop.
+	AddMulticlusterEndpointsReconciler(ctx context.Context, rec MulticlusterEndpointsReconciler, predicates ...predicate.Predicate)
+}
+
+type multiclusterEndpointsReconcileLoop struct {
+	loop multicluster.Loop
+}
+
+func (m *multiclusterEndpointsReconcileLoop) AddMulticlusterEndpointsReconciler(ctx context.Context, rec MulticlusterEndpointsReconciler, predicates ...predicate.Predicate) {
+	genericReconciler := genericEndpointsMulticlusterReconciler{reconciler: rec}
+
+	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
+}
+
+func NewMulticlusterEndpointsReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterEndpointsReconcileLoop {
+	return &multiclusterEndpointsReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &v1.Endpoints{}, options)}
+}
+
+type genericEndpointsMulticlusterReconciler struct {
+	reconciler MulticlusterEndpointsReconciler
+}
+
+func (g genericEndpointsMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) error {
+	if deletionReconciler, ok := g.reconciler.(MulticlusterEndpointsDeletionReconciler); ok {
+		return deletionReconciler.ReconcileEndpointsDeletion(cluster, req)
+	}
+	return nil
+}
+
+func (g genericEndpointsMulticlusterReconciler) Reconcile(cluster string, object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*v1.Endpoints)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: Endpoints handler received event for %T", object)
+	}
+	return g.reconciler.ReconcileEndpoints(cluster, obj)
+}
+
 // Reconcile Upsert events for the Namespace Resource across clusters.
 // implemented by the user
 type MulticlusterNamespaceReconciler interface {

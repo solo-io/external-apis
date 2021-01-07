@@ -619,6 +619,127 @@ func (mr *MockPodEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, p
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockPodEventWatcher)(nil).AddEventHandler), varargs...)
 }
 
+// MockEndpointsEventHandler is a mock of EndpointsEventHandler interface
+type MockEndpointsEventHandler struct {
+	ctrl     *gomock.Controller
+	recorder *MockEndpointsEventHandlerMockRecorder
+}
+
+// MockEndpointsEventHandlerMockRecorder is the mock recorder for MockEndpointsEventHandler
+type MockEndpointsEventHandlerMockRecorder struct {
+	mock *MockEndpointsEventHandler
+}
+
+// NewMockEndpointsEventHandler creates a new mock instance
+func NewMockEndpointsEventHandler(ctrl *gomock.Controller) *MockEndpointsEventHandler {
+	mock := &MockEndpointsEventHandler{ctrl: ctrl}
+	mock.recorder = &MockEndpointsEventHandlerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockEndpointsEventHandler) EXPECT() *MockEndpointsEventHandlerMockRecorder {
+	return m.recorder
+}
+
+// CreateEndpoints mocks base method
+func (m *MockEndpointsEventHandler) CreateEndpoints(obj *v1.Endpoints) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateEndpoints", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateEndpoints indicates an expected call of CreateEndpoints
+func (mr *MockEndpointsEventHandlerMockRecorder) CreateEndpoints(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateEndpoints", reflect.TypeOf((*MockEndpointsEventHandler)(nil).CreateEndpoints), obj)
+}
+
+// UpdateEndpoints mocks base method
+func (m *MockEndpointsEventHandler) UpdateEndpoints(old, new *v1.Endpoints) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateEndpoints", old, new)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateEndpoints indicates an expected call of UpdateEndpoints
+func (mr *MockEndpointsEventHandlerMockRecorder) UpdateEndpoints(old, new interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateEndpoints", reflect.TypeOf((*MockEndpointsEventHandler)(nil).UpdateEndpoints), old, new)
+}
+
+// DeleteEndpoints mocks base method
+func (m *MockEndpointsEventHandler) DeleteEndpoints(obj *v1.Endpoints) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteEndpoints", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteEndpoints indicates an expected call of DeleteEndpoints
+func (mr *MockEndpointsEventHandlerMockRecorder) DeleteEndpoints(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteEndpoints", reflect.TypeOf((*MockEndpointsEventHandler)(nil).DeleteEndpoints), obj)
+}
+
+// GenericEndpoints mocks base method
+func (m *MockEndpointsEventHandler) GenericEndpoints(obj *v1.Endpoints) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GenericEndpoints", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// GenericEndpoints indicates an expected call of GenericEndpoints
+func (mr *MockEndpointsEventHandlerMockRecorder) GenericEndpoints(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericEndpoints", reflect.TypeOf((*MockEndpointsEventHandler)(nil).GenericEndpoints), obj)
+}
+
+// MockEndpointsEventWatcher is a mock of EndpointsEventWatcher interface
+type MockEndpointsEventWatcher struct {
+	ctrl     *gomock.Controller
+	recorder *MockEndpointsEventWatcherMockRecorder
+}
+
+// MockEndpointsEventWatcherMockRecorder is the mock recorder for MockEndpointsEventWatcher
+type MockEndpointsEventWatcherMockRecorder struct {
+	mock *MockEndpointsEventWatcher
+}
+
+// NewMockEndpointsEventWatcher creates a new mock instance
+func NewMockEndpointsEventWatcher(ctrl *gomock.Controller) *MockEndpointsEventWatcher {
+	mock := &MockEndpointsEventWatcher{ctrl: ctrl}
+	mock.recorder = &MockEndpointsEventWatcherMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockEndpointsEventWatcher) EXPECT() *MockEndpointsEventWatcherMockRecorder {
+	return m.recorder
+}
+
+// AddEventHandler mocks base method
+func (m *MockEndpointsEventWatcher) AddEventHandler(ctx context.Context, h controller.EndpointsEventHandler, predicates ...predicate.Predicate) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, h}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "AddEventHandler", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AddEventHandler indicates an expected call of AddEventHandler
+func (mr *MockEndpointsEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, h}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockEndpointsEventWatcher)(nil).AddEventHandler), varargs...)
+}
+
 // MockNamespaceEventHandler is a mock of NamespaceEventHandler interface
 type MockNamespaceEventHandler struct {
 	ctrl     *gomock.Controller

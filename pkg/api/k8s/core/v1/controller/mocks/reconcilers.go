@@ -930,6 +930,189 @@ func (mr *MockPodReconcileLoopMockRecorder) RunPodReconciler(ctx, rec interface{
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunPodReconciler", reflect.TypeOf((*MockPodReconcileLoop)(nil).RunPodReconciler), varargs...)
 }
 
+// MockEndpointsReconciler is a mock of EndpointsReconciler interface
+type MockEndpointsReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockEndpointsReconcilerMockRecorder
+}
+
+// MockEndpointsReconcilerMockRecorder is the mock recorder for MockEndpointsReconciler
+type MockEndpointsReconcilerMockRecorder struct {
+	mock *MockEndpointsReconciler
+}
+
+// NewMockEndpointsReconciler creates a new mock instance
+func NewMockEndpointsReconciler(ctrl *gomock.Controller) *MockEndpointsReconciler {
+	mock := &MockEndpointsReconciler{ctrl: ctrl}
+	mock.recorder = &MockEndpointsReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockEndpointsReconciler) EXPECT() *MockEndpointsReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileEndpoints mocks base method
+func (m *MockEndpointsReconciler) ReconcileEndpoints(obj *v1.Endpoints) (reconcile.Result, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileEndpoints", obj)
+	ret0, _ := ret[0].(reconcile.Result)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReconcileEndpoints indicates an expected call of ReconcileEndpoints
+func (mr *MockEndpointsReconcilerMockRecorder) ReconcileEndpoints(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileEndpoints", reflect.TypeOf((*MockEndpointsReconciler)(nil).ReconcileEndpoints), obj)
+}
+
+// MockEndpointsDeletionReconciler is a mock of EndpointsDeletionReconciler interface
+type MockEndpointsDeletionReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockEndpointsDeletionReconcilerMockRecorder
+}
+
+// MockEndpointsDeletionReconcilerMockRecorder is the mock recorder for MockEndpointsDeletionReconciler
+type MockEndpointsDeletionReconcilerMockRecorder struct {
+	mock *MockEndpointsDeletionReconciler
+}
+
+// NewMockEndpointsDeletionReconciler creates a new mock instance
+func NewMockEndpointsDeletionReconciler(ctrl *gomock.Controller) *MockEndpointsDeletionReconciler {
+	mock := &MockEndpointsDeletionReconciler{ctrl: ctrl}
+	mock.recorder = &MockEndpointsDeletionReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockEndpointsDeletionReconciler) EXPECT() *MockEndpointsDeletionReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileEndpointsDeletion mocks base method
+func (m *MockEndpointsDeletionReconciler) ReconcileEndpointsDeletion(req reconcile.Request) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileEndpointsDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ReconcileEndpointsDeletion indicates an expected call of ReconcileEndpointsDeletion
+func (mr *MockEndpointsDeletionReconcilerMockRecorder) ReconcileEndpointsDeletion(req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileEndpointsDeletion", reflect.TypeOf((*MockEndpointsDeletionReconciler)(nil).ReconcileEndpointsDeletion), req)
+}
+
+// MockEndpointsFinalizer is a mock of EndpointsFinalizer interface
+type MockEndpointsFinalizer struct {
+	ctrl     *gomock.Controller
+	recorder *MockEndpointsFinalizerMockRecorder
+}
+
+// MockEndpointsFinalizerMockRecorder is the mock recorder for MockEndpointsFinalizer
+type MockEndpointsFinalizerMockRecorder struct {
+	mock *MockEndpointsFinalizer
+}
+
+// NewMockEndpointsFinalizer creates a new mock instance
+func NewMockEndpointsFinalizer(ctrl *gomock.Controller) *MockEndpointsFinalizer {
+	mock := &MockEndpointsFinalizer{ctrl: ctrl}
+	mock.recorder = &MockEndpointsFinalizerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockEndpointsFinalizer) EXPECT() *MockEndpointsFinalizerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileEndpoints mocks base method
+func (m *MockEndpointsFinalizer) ReconcileEndpoints(obj *v1.Endpoints) (reconcile.Result, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileEndpoints", obj)
+	ret0, _ := ret[0].(reconcile.Result)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReconcileEndpoints indicates an expected call of ReconcileEndpoints
+func (mr *MockEndpointsFinalizerMockRecorder) ReconcileEndpoints(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileEndpoints", reflect.TypeOf((*MockEndpointsFinalizer)(nil).ReconcileEndpoints), obj)
+}
+
+// EndpointsFinalizerName mocks base method
+func (m *MockEndpointsFinalizer) EndpointsFinalizerName() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "EndpointsFinalizerName")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// EndpointsFinalizerName indicates an expected call of EndpointsFinalizerName
+func (mr *MockEndpointsFinalizerMockRecorder) EndpointsFinalizerName() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "EndpointsFinalizerName", reflect.TypeOf((*MockEndpointsFinalizer)(nil).EndpointsFinalizerName))
+}
+
+// FinalizeEndpoints mocks base method
+func (m *MockEndpointsFinalizer) FinalizeEndpoints(obj *v1.Endpoints) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FinalizeEndpoints", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// FinalizeEndpoints indicates an expected call of FinalizeEndpoints
+func (mr *MockEndpointsFinalizerMockRecorder) FinalizeEndpoints(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FinalizeEndpoints", reflect.TypeOf((*MockEndpointsFinalizer)(nil).FinalizeEndpoints), obj)
+}
+
+// MockEndpointsReconcileLoop is a mock of EndpointsReconcileLoop interface
+type MockEndpointsReconcileLoop struct {
+	ctrl     *gomock.Controller
+	recorder *MockEndpointsReconcileLoopMockRecorder
+}
+
+// MockEndpointsReconcileLoopMockRecorder is the mock recorder for MockEndpointsReconcileLoop
+type MockEndpointsReconcileLoopMockRecorder struct {
+	mock *MockEndpointsReconcileLoop
+}
+
+// NewMockEndpointsReconcileLoop creates a new mock instance
+func NewMockEndpointsReconcileLoop(ctrl *gomock.Controller) *MockEndpointsReconcileLoop {
+	mock := &MockEndpointsReconcileLoop{ctrl: ctrl}
+	mock.recorder = &MockEndpointsReconcileLoopMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockEndpointsReconcileLoop) EXPECT() *MockEndpointsReconcileLoopMockRecorder {
+	return m.recorder
+}
+
+// RunEndpointsReconciler mocks base method
+func (m *MockEndpointsReconcileLoop) RunEndpointsReconciler(ctx context.Context, rec controller.EndpointsReconciler, predicates ...predicate.Predicate) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, rec}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "RunEndpointsReconciler", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// RunEndpointsReconciler indicates an expected call of RunEndpointsReconciler
+func (mr *MockEndpointsReconcileLoopMockRecorder) RunEndpointsReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, rec}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunEndpointsReconciler", reflect.TypeOf((*MockEndpointsReconcileLoop)(nil).RunEndpointsReconciler), varargs...)
+}
+
 // MockNamespaceReconciler is a mock of NamespaceReconciler interface
 type MockNamespaceReconciler struct {
 	ctrl     *gomock.Controller

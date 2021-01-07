@@ -42,6 +42,9 @@ func k8sGroups() []model.Group {
 					Kind: "Pod",
 				},
 				{
+					Kind: "Endpoints",
+				},
+				{
 					Kind:          "Namespace",
 					ClusterScoped: true,
 				},
