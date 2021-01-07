@@ -157,6 +157,34 @@ func PodClientFromConfigFactoryProvider() PodClientFromConfigFactory {
 	}
 }
 
+// Provider for EndpointsClient from Clientset
+func EndpointsClientFromClientsetProvider(clients v1.Clientset) v1.EndpointsClient {
+	return clients.Endpoints()
+}
+
+// Provider for Endpoints Client from Client
+func EndpointsClientProvider(client client.Client) v1.EndpointsClient {
+	return v1.NewEndpointsClient(client)
+}
+
+type EndpointsClientFactory func(client client.Client) v1.EndpointsClient
+
+func EndpointsClientFactoryProvider() EndpointsClientFactory {
+	return EndpointsClientProvider
+}
+
+type EndpointsClientFromConfigFactory func(cfg *rest.Config) (v1.EndpointsClient, error)
+
+func EndpointsClientFromConfigFactoryProvider() EndpointsClientFromConfigFactory {
+	return func(cfg *rest.Config) (v1.EndpointsClient, error) {
+		clients, err := v1.NewClientsetFromConfig(cfg)
+		if err != nil {
+			return nil, err
+		}
+		return clients.Endpoints(), nil
+	}
+}
+
 // Provider for NamespaceClient from Clientset
 func NamespaceClientFromClientsetProvider(clients v1.Clientset) v1.NamespaceClient {
 	return clients.Namespaces()

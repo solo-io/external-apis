@@ -602,6 +602,123 @@ func (r genericPodFinalizer) Finalize(object ezkube.Object) error {
 	return r.finalizingReconciler.FinalizePod(obj)
 }
 
+// Reconcile Upsert events for the Endpoints Resource.
+// implemented by the user
+type EndpointsReconciler interface {
+	ReconcileEndpoints(obj *v1.Endpoints) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the Endpoints Resource.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type EndpointsDeletionReconciler interface {
+	ReconcileEndpointsDeletion(req reconcile.Request) error
+}
+
+type EndpointsReconcilerFuncs struct {
+	OnReconcileEndpoints         func(obj *v1.Endpoints) (reconcile.Result, error)
+	OnReconcileEndpointsDeletion func(req reconcile.Request) error
+}
+
+func (f *EndpointsReconcilerFuncs) ReconcileEndpoints(obj *v1.Endpoints) (reconcile.Result, error) {
+	if f.OnReconcileEndpoints == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcileEndpoints(obj)
+}
+
+func (f *EndpointsReconcilerFuncs) ReconcileEndpointsDeletion(req reconcile.Request) error {
+	if f.OnReconcileEndpointsDeletion == nil {
+		return nil
+	}
+	return f.OnReconcileEndpointsDeletion(req)
+}
+
+// Reconcile and finalize the Endpoints Resource
+// implemented by the user
+type EndpointsFinalizer interface {
+	EndpointsReconciler
+
+	// name of the finalizer used by this handler.
+	// finalizer names should be unique for a single task
+	EndpointsFinalizerName() string
+
+	// finalize the object before it is deleted.
+	// Watchers created with a finalizing handler will a
+	FinalizeEndpoints(obj *v1.Endpoints) error
+}
+
+type EndpointsReconcileLoop interface {
+	RunEndpointsReconciler(ctx context.Context, rec EndpointsReconciler, predicates ...predicate.Predicate) error
+}
+
+type endpointsReconcileLoop struct {
+	loop reconcile.Loop
+}
+
+func NewEndpointsReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) EndpointsReconcileLoop {
+	return &endpointsReconcileLoop{
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &v1.Endpoints{}, options),
+	}
+}
+
+func (c *endpointsReconcileLoop) RunEndpointsReconciler(ctx context.Context, reconciler EndpointsReconciler, predicates ...predicate.Predicate) error {
+	genericReconciler := genericEndpointsReconciler{
+		reconciler: reconciler,
+	}
+
+	var reconcilerWrapper reconcile.Reconciler
+	if finalizingReconciler, ok := reconciler.(EndpointsFinalizer); ok {
+		reconcilerWrapper = genericEndpointsFinalizer{
+			genericEndpointsReconciler: genericReconciler,
+			finalizingReconciler:       finalizingReconciler,
+		}
+	} else {
+		reconcilerWrapper = genericReconciler
+	}
+	return c.loop.RunReconciler(ctx, reconcilerWrapper, predicates...)
+}
+
+// genericEndpointsHandler implements a generic reconcile.Reconciler
+type genericEndpointsReconciler struct {
+	reconciler EndpointsReconciler
+}
+
+func (r genericEndpointsReconciler) Reconcile(object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*v1.Endpoints)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: Endpoints handler received event for %T", object)
+	}
+	return r.reconciler.ReconcileEndpoints(obj)
+}
+
+func (r genericEndpointsReconciler) ReconcileDeletion(request reconcile.Request) error {
+	if deletionReconciler, ok := r.reconciler.(EndpointsDeletionReconciler); ok {
+		return deletionReconciler.ReconcileEndpointsDeletion(request)
+	}
+	return nil
+}
+
+// genericEndpointsFinalizer implements a generic reconcile.FinalizingReconciler
+type genericEndpointsFinalizer struct {
+	genericEndpointsReconciler
+	finalizingReconciler EndpointsFinalizer
+}
+
+func (r genericEndpointsFinalizer) FinalizerName() string {
+	return r.finalizingReconciler.EndpointsFinalizerName()
+}
+
+func (r genericEndpointsFinalizer) Finalize(object ezkube.Object) error {
+	obj, ok := object.(*v1.Endpoints)
+	if !ok {
+		return errors.Errorf("internal error: Endpoints handler received event for %T", object)
+	}
+	return r.finalizingReconciler.FinalizeEndpoints(obj)
+}
+
 // Reconcile Upsert events for the Namespace Resource.
 // implemented by the user
 type NamespaceReconciler interface {

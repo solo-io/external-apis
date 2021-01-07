@@ -22,6 +22,9 @@ type ServiceSlice []*Service
 // PodSlice represents a slice of *Pod
 type PodSlice []*Pod
 
+// EndpointsSlice represents a slice of *Endpoints
+type EndpointsSlice []*Endpoints
+
 // NamespaceSlice represents a slice of *Namespace
 type NamespaceSlice []*Namespace
 

@@ -51,6 +51,8 @@ type Clientset interface {
 	// clienset for the v1/v1 APIs
 	Pods() PodClient
 	// clienset for the v1/v1 APIs
+	Endpoints() EndpointsClient
+	// clienset for the v1/v1 APIs
 	Namespaces() NamespaceClient
 	// clienset for the v1/v1 APIs
 	Nodes() NodeClient
@@ -101,6 +103,11 @@ func (c *clientSet) Services() ServiceClient {
 // clienset for the v1/v1 APIs
 func (c *clientSet) Pods() PodClient {
 	return NewPodClient(c.client)
+}
+
+// clienset for the v1/v1 APIs
+func (c *clientSet) Endpoints() EndpointsClient {
+	return NewEndpointsClient(c.client)
 }
 
 // clienset for the v1/v1 APIs
@@ -821,6 +828,148 @@ func (m *multiclusterPodClient) Cluster(cluster string) (PodClient, error) {
 		return nil, err
 	}
 	return NewPodClient(client), nil
+}
+
+// Reader knows how to read and list Endpointss.
+type EndpointsReader interface {
+	// Get retrieves a Endpoints for the given object key
+	GetEndpoints(ctx context.Context, key client.ObjectKey) (*v1.Endpoints, error)
+
+	// List retrieves list of Endpointss for a given namespace and list options.
+	ListEndpoints(ctx context.Context, opts ...client.ListOption) (*v1.EndpointsList, error)
+}
+
+// EndpointsTransitionFunction instructs the EndpointsWriter how to transition between an existing
+// Endpoints object and a desired on an Upsert
+type EndpointsTransitionFunction func(existing, desired *v1.Endpoints) error
+
+// Writer knows how to create, delete, and update Endpointss.
+type EndpointsWriter interface {
+	// Create saves the Endpoints object.
+	CreateEndpoints(ctx context.Context, obj *v1.Endpoints, opts ...client.CreateOption) error
+
+	// Delete deletes the Endpoints object.
+	DeleteEndpoints(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error
+
+	// Update updates the given Endpoints object.
+	UpdateEndpoints(ctx context.Context, obj *v1.Endpoints, opts ...client.UpdateOption) error
+
+	// Patch patches the given Endpoints object.
+	PatchEndpoints(ctx context.Context, obj *v1.Endpoints, patch client.Patch, opts ...client.PatchOption) error
+
+	// DeleteAllOf deletes all Endpoints objects matching the given options.
+	DeleteAllOfEndpoints(ctx context.Context, opts ...client.DeleteAllOfOption) error
+
+	// Create or Update the Endpoints object.
+	UpsertEndpoints(ctx context.Context, obj *v1.Endpoints, transitionFuncs ...EndpointsTransitionFunction) error
+}
+
+// StatusWriter knows how to update status subresource of a Endpoints object.
+type EndpointsStatusWriter interface {
+	// Update updates the fields corresponding to the status subresource for the
+	// given Endpoints object.
+	UpdateEndpointsStatus(ctx context.Context, obj *v1.Endpoints, opts ...client.UpdateOption) error
+
+	// Patch patches the given Endpoints object's subresource.
+	PatchEndpointsStatus(ctx context.Context, obj *v1.Endpoints, patch client.Patch, opts ...client.PatchOption) error
+}
+
+// Client knows how to perform CRUD operations on Endpointss.
+type EndpointsClient interface {
+	EndpointsReader
+	EndpointsWriter
+	EndpointsStatusWriter
+}
+
+type endpointsClient struct {
+	client client.Client
+}
+
+func NewEndpointsClient(client client.Client) *endpointsClient {
+	return &endpointsClient{client: client}
+}
+
+func (c *endpointsClient) GetEndpoints(ctx context.Context, key client.ObjectKey) (*v1.Endpoints, error) {
+	obj := &v1.Endpoints{}
+	if err := c.client.Get(ctx, key, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+func (c *endpointsClient) ListEndpoints(ctx context.Context, opts ...client.ListOption) (*v1.EndpointsList, error) {
+	list := &v1.EndpointsList{}
+	if err := c.client.List(ctx, list, opts...); err != nil {
+		return nil, err
+	}
+	return list, nil
+}
+
+func (c *endpointsClient) CreateEndpoints(ctx context.Context, obj *v1.Endpoints, opts ...client.CreateOption) error {
+	return c.client.Create(ctx, obj, opts...)
+}
+
+func (c *endpointsClient) DeleteEndpoints(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	obj := &v1.Endpoints{}
+	obj.SetName(key.Name)
+	obj.SetNamespace(key.Namespace)
+	return c.client.Delete(ctx, obj, opts...)
+}
+
+func (c *endpointsClient) UpdateEndpoints(ctx context.Context, obj *v1.Endpoints, opts ...client.UpdateOption) error {
+	return c.client.Update(ctx, obj, opts...)
+}
+
+func (c *endpointsClient) PatchEndpoints(ctx context.Context, obj *v1.Endpoints, patch client.Patch, opts ...client.PatchOption) error {
+	return c.client.Patch(ctx, obj, patch, opts...)
+}
+
+func (c *endpointsClient) DeleteAllOfEndpoints(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	obj := &v1.Endpoints{}
+	return c.client.DeleteAllOf(ctx, obj, opts...)
+}
+
+func (c *endpointsClient) UpsertEndpoints(ctx context.Context, obj *v1.Endpoints, transitionFuncs ...EndpointsTransitionFunction) error {
+	genericTxFunc := func(existing, desired runtime.Object) error {
+		for _, txFunc := range transitionFuncs {
+			if err := txFunc(existing.(*v1.Endpoints), desired.(*v1.Endpoints)); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+	_, err := controllerutils.Upsert(ctx, c.client, obj, genericTxFunc)
+	return err
+}
+
+func (c *endpointsClient) UpdateEndpointsStatus(ctx context.Context, obj *v1.Endpoints, opts ...client.UpdateOption) error {
+	return c.client.Status().Update(ctx, obj, opts...)
+}
+
+func (c *endpointsClient) PatchEndpointsStatus(ctx context.Context, obj *v1.Endpoints, patch client.Patch, opts ...client.PatchOption) error {
+	return c.client.Status().Patch(ctx, obj, patch, opts...)
+}
+
+// Provides EndpointsClients for multiple clusters.
+type MulticlusterEndpointsClient interface {
+	// Cluster returns a EndpointsClient for the given cluster
+	Cluster(cluster string) (EndpointsClient, error)
+}
+
+type multiclusterEndpointsClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterEndpointsClient(client multicluster.Client) MulticlusterEndpointsClient {
+	return &multiclusterEndpointsClient{client: client}
+}
+
+func (m *multiclusterEndpointsClient) Cluster(cluster string) (EndpointsClient, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewEndpointsClient(client), nil
 }
 
 // Reader knows how to read and list Namespaces.

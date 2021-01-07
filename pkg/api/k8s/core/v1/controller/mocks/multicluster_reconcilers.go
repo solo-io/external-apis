@@ -590,6 +590,121 @@ func (mr *MockMulticlusterPodReconcileLoopMockRecorder) AddMulticlusterPodReconc
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddMulticlusterPodReconciler", reflect.TypeOf((*MockMulticlusterPodReconcileLoop)(nil).AddMulticlusterPodReconciler), varargs...)
 }
 
+// MockMulticlusterEndpointsReconciler is a mock of MulticlusterEndpointsReconciler interface
+type MockMulticlusterEndpointsReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterEndpointsReconcilerMockRecorder
+}
+
+// MockMulticlusterEndpointsReconcilerMockRecorder is the mock recorder for MockMulticlusterEndpointsReconciler
+type MockMulticlusterEndpointsReconcilerMockRecorder struct {
+	mock *MockMulticlusterEndpointsReconciler
+}
+
+// NewMockMulticlusterEndpointsReconciler creates a new mock instance
+func NewMockMulticlusterEndpointsReconciler(ctrl *gomock.Controller) *MockMulticlusterEndpointsReconciler {
+	mock := &MockMulticlusterEndpointsReconciler{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterEndpointsReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockMulticlusterEndpointsReconciler) EXPECT() *MockMulticlusterEndpointsReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileEndpoints mocks base method
+func (m *MockMulticlusterEndpointsReconciler) ReconcileEndpoints(clusterName string, obj *v1.Endpoints) (reconcile.Result, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileEndpoints", clusterName, obj)
+	ret0, _ := ret[0].(reconcile.Result)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReconcileEndpoints indicates an expected call of ReconcileEndpoints
+func (mr *MockMulticlusterEndpointsReconcilerMockRecorder) ReconcileEndpoints(clusterName, obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileEndpoints", reflect.TypeOf((*MockMulticlusterEndpointsReconciler)(nil).ReconcileEndpoints), clusterName, obj)
+}
+
+// MockMulticlusterEndpointsDeletionReconciler is a mock of MulticlusterEndpointsDeletionReconciler interface
+type MockMulticlusterEndpointsDeletionReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterEndpointsDeletionReconcilerMockRecorder
+}
+
+// MockMulticlusterEndpointsDeletionReconcilerMockRecorder is the mock recorder for MockMulticlusterEndpointsDeletionReconciler
+type MockMulticlusterEndpointsDeletionReconcilerMockRecorder struct {
+	mock *MockMulticlusterEndpointsDeletionReconciler
+}
+
+// NewMockMulticlusterEndpointsDeletionReconciler creates a new mock instance
+func NewMockMulticlusterEndpointsDeletionReconciler(ctrl *gomock.Controller) *MockMulticlusterEndpointsDeletionReconciler {
+	mock := &MockMulticlusterEndpointsDeletionReconciler{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterEndpointsDeletionReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockMulticlusterEndpointsDeletionReconciler) EXPECT() *MockMulticlusterEndpointsDeletionReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileEndpointsDeletion mocks base method
+func (m *MockMulticlusterEndpointsDeletionReconciler) ReconcileEndpointsDeletion(clusterName string, req reconcile.Request) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileEndpointsDeletion", clusterName, req)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ReconcileEndpointsDeletion indicates an expected call of ReconcileEndpointsDeletion
+func (mr *MockMulticlusterEndpointsDeletionReconcilerMockRecorder) ReconcileEndpointsDeletion(clusterName, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileEndpointsDeletion", reflect.TypeOf((*MockMulticlusterEndpointsDeletionReconciler)(nil).ReconcileEndpointsDeletion), clusterName, req)
+}
+
+// MockMulticlusterEndpointsReconcileLoop is a mock of MulticlusterEndpointsReconcileLoop interface
+type MockMulticlusterEndpointsReconcileLoop struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterEndpointsReconcileLoopMockRecorder
+}
+
+// MockMulticlusterEndpointsReconcileLoopMockRecorder is the mock recorder for MockMulticlusterEndpointsReconcileLoop
+type MockMulticlusterEndpointsReconcileLoopMockRecorder struct {
+	mock *MockMulticlusterEndpointsReconcileLoop
+}
+
+// NewMockMulticlusterEndpointsReconcileLoop creates a new mock instance
+func NewMockMulticlusterEndpointsReconcileLoop(ctrl *gomock.Controller) *MockMulticlusterEndpointsReconcileLoop {
+	mock := &MockMulticlusterEndpointsReconcileLoop{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterEndpointsReconcileLoopMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockMulticlusterEndpointsReconcileLoop) EXPECT() *MockMulticlusterEndpointsReconcileLoopMockRecorder {
+	return m.recorder
+}
+
+// AddMulticlusterEndpointsReconciler mocks base method
+func (m *MockMulticlusterEndpointsReconcileLoop) AddMulticlusterEndpointsReconciler(ctx context.Context, rec controller.MulticlusterEndpointsReconciler, predicates ...predicate.Predicate) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, rec}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "AddMulticlusterEndpointsReconciler", varargs...)
+}
+
+// AddMulticlusterEndpointsReconciler indicates an expected call of AddMulticlusterEndpointsReconciler
+func (mr *MockMulticlusterEndpointsReconcileLoopMockRecorder) AddMulticlusterEndpointsReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, rec}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddMulticlusterEndpointsReconciler", reflect.TypeOf((*MockMulticlusterEndpointsReconcileLoop)(nil).AddMulticlusterEndpointsReconciler), varargs...)
+}
+
 // MockMulticlusterNamespaceReconciler is a mock of MulticlusterNamespaceReconciler interface
 type MockMulticlusterNamespaceReconciler struct {
 	ctrl     *gomock.Controller

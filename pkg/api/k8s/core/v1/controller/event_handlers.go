@@ -552,6 +552,113 @@ func (h genericPodHandler) Generic(object runtime.Object) error {
 	return h.handler.GenericPod(obj)
 }
 
+// Handle events for the Endpoints Resource
+// DEPRECATED: Prefer reconciler pattern.
+type EndpointsEventHandler interface {
+	CreateEndpoints(obj *v1.Endpoints) error
+	UpdateEndpoints(old, new *v1.Endpoints) error
+	DeleteEndpoints(obj *v1.Endpoints) error
+	GenericEndpoints(obj *v1.Endpoints) error
+}
+
+type EndpointsEventHandlerFuncs struct {
+	OnCreate  func(obj *v1.Endpoints) error
+	OnUpdate  func(old, new *v1.Endpoints) error
+	OnDelete  func(obj *v1.Endpoints) error
+	OnGeneric func(obj *v1.Endpoints) error
+}
+
+func (f *EndpointsEventHandlerFuncs) CreateEndpoints(obj *v1.Endpoints) error {
+	if f.OnCreate == nil {
+		return nil
+	}
+	return f.OnCreate(obj)
+}
+
+func (f *EndpointsEventHandlerFuncs) DeleteEndpoints(obj *v1.Endpoints) error {
+	if f.OnDelete == nil {
+		return nil
+	}
+	return f.OnDelete(obj)
+}
+
+func (f *EndpointsEventHandlerFuncs) UpdateEndpoints(objOld, objNew *v1.Endpoints) error {
+	if f.OnUpdate == nil {
+		return nil
+	}
+	return f.OnUpdate(objOld, objNew)
+}
+
+func (f *EndpointsEventHandlerFuncs) GenericEndpoints(obj *v1.Endpoints) error {
+	if f.OnGeneric == nil {
+		return nil
+	}
+	return f.OnGeneric(obj)
+}
+
+type EndpointsEventWatcher interface {
+	AddEventHandler(ctx context.Context, h EndpointsEventHandler, predicates ...predicate.Predicate) error
+}
+
+type endpointsEventWatcher struct {
+	watcher events.EventWatcher
+}
+
+func NewEndpointsEventWatcher(name string, mgr manager.Manager) EndpointsEventWatcher {
+	return &endpointsEventWatcher{
+		watcher: events.NewWatcher(name, mgr, &v1.Endpoints{}),
+	}
+}
+
+func (c *endpointsEventWatcher) AddEventHandler(ctx context.Context, h EndpointsEventHandler, predicates ...predicate.Predicate) error {
+	handler := genericEndpointsHandler{handler: h}
+	if err := c.watcher.Watch(ctx, handler, predicates...); err != nil {
+		return err
+	}
+	return nil
+}
+
+// genericEndpointsHandler implements a generic events.EventHandler
+type genericEndpointsHandler struct {
+	handler EndpointsEventHandler
+}
+
+func (h genericEndpointsHandler) Create(object runtime.Object) error {
+	obj, ok := object.(*v1.Endpoints)
+	if !ok {
+		return errors.Errorf("internal error: Endpoints handler received event for %T", object)
+	}
+	return h.handler.CreateEndpoints(obj)
+}
+
+func (h genericEndpointsHandler) Delete(object runtime.Object) error {
+	obj, ok := object.(*v1.Endpoints)
+	if !ok {
+		return errors.Errorf("internal error: Endpoints handler received event for %T", object)
+	}
+	return h.handler.DeleteEndpoints(obj)
+}
+
+func (h genericEndpointsHandler) Update(old, new runtime.Object) error {
+	objOld, ok := old.(*v1.Endpoints)
+	if !ok {
+		return errors.Errorf("internal error: Endpoints handler received event for %T", old)
+	}
+	objNew, ok := new.(*v1.Endpoints)
+	if !ok {
+		return errors.Errorf("internal error: Endpoints handler received event for %T", new)
+	}
+	return h.handler.UpdateEndpoints(objOld, objNew)
+}
+
+func (h genericEndpointsHandler) Generic(object runtime.Object) error {
+	obj, ok := object.(*v1.Endpoints)
+	if !ok {
+		return errors.Errorf("internal error: Endpoints handler received event for %T", object)
+	}
+	return h.handler.GenericEndpoints(obj)
+}
+
 // Handle events for the Namespace Resource
 // DEPRECATED: Prefer reconciler pattern.
 type NamespaceEventHandler interface {
