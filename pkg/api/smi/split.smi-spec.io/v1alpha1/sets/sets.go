@@ -38,6 +38,10 @@ type TrafficSplitSet interface {
 	Find(id ezkube.ResourceId) (*split_smi_spec_io_v1alpha1.TrafficSplit, error)
 	// Get the length of the set
 	Length() int
+	// returns the generic implementation of the set
+	Generic() sksets.ResourceSet
+	// returns the delta between this and and another TrafficSplitSet
+	Delta(newSet TrafficSplitSet) sksets.ResourceDelta
 }
 
 func makeGenericTrafficSplitSet(trafficSplitList []*split_smi_spec_io_v1alpha1.TrafficSplit) sksets.ResourceSet {
@@ -68,7 +72,7 @@ func (s *trafficSplitSet) Keys() sets.String {
 	if s == nil {
 		return sets.String{}
 	}
-	return s.set.Keys()
+	return s.Generic().Keys()
 }
 
 func (s *trafficSplitSet) List(filterResource ...func(*split_smi_spec_io_v1alpha1.TrafficSplit) bool) []*split_smi_spec_io_v1alpha1.TrafficSplit {
@@ -83,7 +87,7 @@ func (s *trafficSplitSet) List(filterResource ...func(*split_smi_spec_io_v1alpha
 	}
 
 	var trafficSplitList []*split_smi_spec_io_v1alpha1.TrafficSplit
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.Generic().List(genericFilters...) {
 		trafficSplitList = append(trafficSplitList, obj.(*split_smi_spec_io_v1alpha1.TrafficSplit))
 	}
 	return trafficSplitList
@@ -95,7 +99,7 @@ func (s *trafficSplitSet) Map() map[string]*split_smi_spec_io_v1alpha1.TrafficSp
 	}
 
 	newMap := map[string]*split_smi_spec_io_v1alpha1.TrafficSplit{}
-	for k, v := range s.set.Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*split_smi_spec_io_v1alpha1.TrafficSplit)
 	}
 	return newMap
@@ -109,7 +113,7 @@ func (s *trafficSplitSet) Insert(
 	}
 
 	for _, obj := range trafficSplitList {
-		s.set.Insert(obj)
+		s.Generic().Insert(obj)
 	}
 }
 
@@ -117,7 +121,7 @@ func (s *trafficSplitSet) Has(trafficSplit ezkube.ResourceId) bool {
 	if s == nil {
 		return false
 	}
-	return s.set.Has(trafficSplit)
+	return s.Generic().Has(trafficSplit)
 }
 
 func (s *trafficSplitSet) Equal(
@@ -126,14 +130,14 @@ func (s *trafficSplitSet) Equal(
 	if s == nil {
 		return trafficSplitSet == nil
 	}
-	return s.set.Equal(makeGenericTrafficSplitSet(trafficSplitSet.List()))
+	return s.Generic().Equal(trafficSplitSet.Generic())
 }
 
 func (s *trafficSplitSet) Delete(TrafficSplit ezkube.ResourceId) {
 	if s == nil {
 		return
 	}
-	s.set.Delete(TrafficSplit)
+	s.Generic().Delete(TrafficSplit)
 }
 
 func (s *trafficSplitSet) Union(set TrafficSplitSet) TrafficSplitSet {
@@ -147,7 +151,7 @@ func (s *trafficSplitSet) Difference(set TrafficSplitSet) TrafficSplitSet {
 	if s == nil {
 		return set
 	}
-	newSet := s.set.Difference(makeGenericTrafficSplitSet(set.List()))
+	newSet := s.Generic().Difference(set.Generic())
 	return &trafficSplitSet{set: newSet}
 }
 
@@ -155,7 +159,7 @@ func (s *trafficSplitSet) Intersection(set TrafficSplitSet) TrafficSplitSet {
 	if s == nil {
 		return nil
 	}
-	newSet := s.set.Intersection(makeGenericTrafficSplitSet(set.List()))
+	newSet := s.Generic().Intersection(set.Generic())
 	var trafficSplitList []*split_smi_spec_io_v1alpha1.TrafficSplit
 	for _, obj := range newSet.List() {
 		trafficSplitList = append(trafficSplitList, obj.(*split_smi_spec_io_v1alpha1.TrafficSplit))
@@ -167,7 +171,7 @@ func (s *trafficSplitSet) Find(id ezkube.ResourceId) (*split_smi_spec_io_v1alpha
 	if s == nil {
 		return nil, eris.Errorf("empty set, cannot find TrafficSplit %v", sksets.Key(id))
 	}
-	obj, err := s.set.Find(&split_smi_spec_io_v1alpha1.TrafficSplit{}, id)
+	obj, err := s.Generic().Find(&split_smi_spec_io_v1alpha1.TrafficSplit{}, id)
 	if err != nil {
 		return nil, err
 	}
@@ -179,5 +183,21 @@ func (s *trafficSplitSet) Length() int {
 	if s == nil {
 		return 0
 	}
-	return s.set.Length()
+	return s.Generic().Length()
+}
+
+func (s *trafficSplitSet) Generic() sksets.ResourceSet {
+	if s == nil {
+		return nil
+	}
+	return s.set
+}
+
+func (s *trafficSplitSet) Delta(newSet TrafficSplitSet) sksets.ResourceDelta {
+	if s == nil {
+		return sksets.ResourceDelta{
+			Inserted: newSet.Generic(),
+		}
+	}
+	return s.Generic().Delta(newSet.Generic())
 }

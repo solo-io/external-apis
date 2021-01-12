@@ -38,6 +38,10 @@ type HTTPRouteGroupSet interface {
 	Find(id ezkube.ResourceId) (*specs_smi_spec_io_v1alpha3.HTTPRouteGroup, error)
 	// Get the length of the set
 	Length() int
+	// returns the generic implementation of the set
+	Generic() sksets.ResourceSet
+	// returns the delta between this and and another HTTPRouteGroupSet
+	Delta(newSet HTTPRouteGroupSet) sksets.ResourceDelta
 }
 
 func makeGenericHTTPRouteGroupSet(hTTPRouteGroupList []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup) sksets.ResourceSet {
@@ -68,7 +72,7 @@ func (s *hTTPRouteGroupSet) Keys() sets.String {
 	if s == nil {
 		return sets.String{}
 	}
-	return s.set.Keys()
+	return s.Generic().Keys()
 }
 
 func (s *hTTPRouteGroupSet) List(filterResource ...func(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup) bool) []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup {
@@ -83,7 +87,7 @@ func (s *hTTPRouteGroupSet) List(filterResource ...func(*specs_smi_spec_io_v1alp
 	}
 
 	var hTTPRouteGroupList []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.Generic().List(genericFilters...) {
 		hTTPRouteGroupList = append(hTTPRouteGroupList, obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
 	}
 	return hTTPRouteGroupList
@@ -95,7 +99,7 @@ func (s *hTTPRouteGroupSet) Map() map[string]*specs_smi_spec_io_v1alpha3.HTTPRou
 	}
 
 	newMap := map[string]*specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}
-	for k, v := range s.set.Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup)
 	}
 	return newMap
@@ -109,7 +113,7 @@ func (s *hTTPRouteGroupSet) Insert(
 	}
 
 	for _, obj := range hTTPRouteGroupList {
-		s.set.Insert(obj)
+		s.Generic().Insert(obj)
 	}
 }
 
@@ -117,7 +121,7 @@ func (s *hTTPRouteGroupSet) Has(hTTPRouteGroup ezkube.ResourceId) bool {
 	if s == nil {
 		return false
 	}
-	return s.set.Has(hTTPRouteGroup)
+	return s.Generic().Has(hTTPRouteGroup)
 }
 
 func (s *hTTPRouteGroupSet) Equal(
@@ -126,14 +130,14 @@ func (s *hTTPRouteGroupSet) Equal(
 	if s == nil {
 		return hTTPRouteGroupSet == nil
 	}
-	return s.set.Equal(makeGenericHTTPRouteGroupSet(hTTPRouteGroupSet.List()))
+	return s.Generic().Equal(hTTPRouteGroupSet.Generic())
 }
 
 func (s *hTTPRouteGroupSet) Delete(HTTPRouteGroup ezkube.ResourceId) {
 	if s == nil {
 		return
 	}
-	s.set.Delete(HTTPRouteGroup)
+	s.Generic().Delete(HTTPRouteGroup)
 }
 
 func (s *hTTPRouteGroupSet) Union(set HTTPRouteGroupSet) HTTPRouteGroupSet {
@@ -147,7 +151,7 @@ func (s *hTTPRouteGroupSet) Difference(set HTTPRouteGroupSet) HTTPRouteGroupSet 
 	if s == nil {
 		return set
 	}
-	newSet := s.set.Difference(makeGenericHTTPRouteGroupSet(set.List()))
+	newSet := s.Generic().Difference(set.Generic())
 	return &hTTPRouteGroupSet{set: newSet}
 }
 
@@ -155,7 +159,7 @@ func (s *hTTPRouteGroupSet) Intersection(set HTTPRouteGroupSet) HTTPRouteGroupSe
 	if s == nil {
 		return nil
 	}
-	newSet := s.set.Intersection(makeGenericHTTPRouteGroupSet(set.List()))
+	newSet := s.Generic().Intersection(set.Generic())
 	var hTTPRouteGroupList []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup
 	for _, obj := range newSet.List() {
 		hTTPRouteGroupList = append(hTTPRouteGroupList, obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
@@ -167,7 +171,7 @@ func (s *hTTPRouteGroupSet) Find(id ezkube.ResourceId) (*specs_smi_spec_io_v1alp
 	if s == nil {
 		return nil, eris.Errorf("empty set, cannot find HTTPRouteGroup %v", sksets.Key(id))
 	}
-	obj, err := s.set.Find(&specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}, id)
+	obj, err := s.Generic().Find(&specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}, id)
 	if err != nil {
 		return nil, err
 	}
@@ -179,5 +183,21 @@ func (s *hTTPRouteGroupSet) Length() int {
 	if s == nil {
 		return 0
 	}
-	return s.set.Length()
+	return s.Generic().Length()
+}
+
+func (s *hTTPRouteGroupSet) Generic() sksets.ResourceSet {
+	if s == nil {
+		return nil
+	}
+	return s.set
+}
+
+func (s *hTTPRouteGroupSet) Delta(newSet HTTPRouteGroupSet) sksets.ResourceDelta {
+	if s == nil {
+		return sksets.ResourceDelta{
+			Inserted: newSet.Generic(),
+		}
+	}
+	return s.Generic().Delta(newSet.Generic())
 }

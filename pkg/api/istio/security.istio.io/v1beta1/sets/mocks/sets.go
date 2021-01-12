@@ -9,9 +9,10 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	v1beta1sets "github.com/solo-io/external-apis/pkg/api/istio/security.istio.io/v1beta1/sets"
+	sets "github.com/solo-io/skv2/contrib/pkg/sets"
 	ezkube "github.com/solo-io/skv2/pkg/ezkube"
 	v1beta1 "istio.io/client-go/pkg/apis/security/v1beta1"
-	sets "k8s.io/apimachinery/pkg/util/sets"
+	sets0 "k8s.io/apimachinery/pkg/util/sets"
 )
 
 // MockAuthorizationPolicySet is a mock of AuthorizationPolicySet interface
@@ -38,10 +39,10 @@ func (m *MockAuthorizationPolicySet) EXPECT() *MockAuthorizationPolicySetMockRec
 }
 
 // Keys mocks base method
-func (m *MockAuthorizationPolicySet) Keys() sets.String {
+func (m *MockAuthorizationPolicySet) Keys() sets0.String {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Keys")
-	ret0, _ := ret[0].(sets.String)
+	ret0, _ := ret[0].(sets0.String)
 	return ret0
 }
 
@@ -208,4 +209,32 @@ func (m *MockAuthorizationPolicySet) Length() int {
 func (mr *MockAuthorizationPolicySetMockRecorder) Length() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Length", reflect.TypeOf((*MockAuthorizationPolicySet)(nil).Length))
+}
+
+// Generic mocks base method
+func (m *MockAuthorizationPolicySet) Generic() sets.ResourceSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Generic")
+	ret0, _ := ret[0].(sets.ResourceSet)
+	return ret0
+}
+
+// Generic indicates an expected call of Generic
+func (mr *MockAuthorizationPolicySetMockRecorder) Generic() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockAuthorizationPolicySet)(nil).Generic))
+}
+
+// Delta mocks base method
+func (m *MockAuthorizationPolicySet) Delta(newSet v1beta1sets.AuthorizationPolicySet) sets.ResourceDelta {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Delta", newSet)
+	ret0, _ := ret[0].(sets.ResourceDelta)
+	return ret0
+}
+
+// Delta indicates an expected call of Delta
+func (mr *MockAuthorizationPolicySetMockRecorder) Delta(newSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockAuthorizationPolicySet)(nil).Delta), newSet)
 }
