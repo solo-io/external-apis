@@ -18,7 +18,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/rotisserie/eris v0.1.1
 	github.com/servicemeshinterface/smi-sdk-go v0.4.1
-	github.com/solo-io/skv2 v0.15.2
+	github.com/solo-io/skv2 v0.16.0
 	github.com/spf13/afero v1.3.4 // indirect
 	go.uber.org/multierr v1.4.0 // indirect
 	golang.org/x/net v0.0.0-20200707034311-ab3426394381 // indirect

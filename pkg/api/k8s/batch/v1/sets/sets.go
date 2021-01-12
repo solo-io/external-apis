@@ -38,6 +38,10 @@ type JobSet interface {
 	Find(id ezkube.ResourceId) (*batch_v1.Job, error)
 	// Get the length of the set
 	Length() int
+	// returns the generic implementation of the set
+	Generic() sksets.ResourceSet
+	// returns the delta between this and and another JobSet
+	Delta(newSet JobSet) sksets.ResourceDelta
 }
 
 func makeGenericJobSet(jobList []*batch_v1.Job) sksets.ResourceSet {
@@ -68,7 +72,7 @@ func (s *jobSet) Keys() sets.String {
 	if s == nil {
 		return sets.String{}
 	}
-	return s.set.Keys()
+	return s.Generic().Keys()
 }
 
 func (s *jobSet) List(filterResource ...func(*batch_v1.Job) bool) []*batch_v1.Job {
@@ -83,7 +87,7 @@ func (s *jobSet) List(filterResource ...func(*batch_v1.Job) bool) []*batch_v1.Jo
 	}
 
 	var jobList []*batch_v1.Job
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.Generic().List(genericFilters...) {
 		jobList = append(jobList, obj.(*batch_v1.Job))
 	}
 	return jobList
@@ -95,7 +99,7 @@ func (s *jobSet) Map() map[string]*batch_v1.Job {
 	}
 
 	newMap := map[string]*batch_v1.Job{}
-	for k, v := range s.set.Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*batch_v1.Job)
 	}
 	return newMap
@@ -109,7 +113,7 @@ func (s *jobSet) Insert(
 	}
 
 	for _, obj := range jobList {
-		s.set.Insert(obj)
+		s.Generic().Insert(obj)
 	}
 }
 
@@ -117,7 +121,7 @@ func (s *jobSet) Has(job ezkube.ResourceId) bool {
 	if s == nil {
 		return false
 	}
-	return s.set.Has(job)
+	return s.Generic().Has(job)
 }
 
 func (s *jobSet) Equal(
@@ -126,14 +130,14 @@ func (s *jobSet) Equal(
 	if s == nil {
 		return jobSet == nil
 	}
-	return s.set.Equal(makeGenericJobSet(jobSet.List()))
+	return s.Generic().Equal(jobSet.Generic())
 }
 
 func (s *jobSet) Delete(Job ezkube.ResourceId) {
 	if s == nil {
 		return
 	}
-	s.set.Delete(Job)
+	s.Generic().Delete(Job)
 }
 
 func (s *jobSet) Union(set JobSet) JobSet {
@@ -147,7 +151,7 @@ func (s *jobSet) Difference(set JobSet) JobSet {
 	if s == nil {
 		return set
 	}
-	newSet := s.set.Difference(makeGenericJobSet(set.List()))
+	newSet := s.Generic().Difference(set.Generic())
 	return &jobSet{set: newSet}
 }
 
@@ -155,7 +159,7 @@ func (s *jobSet) Intersection(set JobSet) JobSet {
 	if s == nil {
 		return nil
 	}
-	newSet := s.set.Intersection(makeGenericJobSet(set.List()))
+	newSet := s.Generic().Intersection(set.Generic())
 	var jobList []*batch_v1.Job
 	for _, obj := range newSet.List() {
 		jobList = append(jobList, obj.(*batch_v1.Job))
@@ -167,7 +171,7 @@ func (s *jobSet) Find(id ezkube.ResourceId) (*batch_v1.Job, error) {
 	if s == nil {
 		return nil, eris.Errorf("empty set, cannot find Job %v", sksets.Key(id))
 	}
-	obj, err := s.set.Find(&batch_v1.Job{}, id)
+	obj, err := s.Generic().Find(&batch_v1.Job{}, id)
 	if err != nil {
 		return nil, err
 	}
@@ -179,5 +183,21 @@ func (s *jobSet) Length() int {
 	if s == nil {
 		return 0
 	}
-	return s.set.Length()
+	return s.Generic().Length()
+}
+
+func (s *jobSet) Generic() sksets.ResourceSet {
+	if s == nil {
+		return nil
+	}
+	return s.set
+}
+
+func (s *jobSet) Delta(newSet JobSet) sksets.ResourceDelta {
+	if s == nil {
+		return sksets.ResourceDelta{
+			Inserted: newSet.Generic(),
+		}
+	}
+	return s.Generic().Delta(newSet.Generic())
 }

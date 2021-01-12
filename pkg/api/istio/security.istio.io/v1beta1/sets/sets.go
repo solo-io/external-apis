@@ -38,6 +38,10 @@ type AuthorizationPolicySet interface {
 	Find(id ezkube.ResourceId) (*security_istio_io_v1beta1.AuthorizationPolicy, error)
 	// Get the length of the set
 	Length() int
+	// returns the generic implementation of the set
+	Generic() sksets.ResourceSet
+	// returns the delta between this and and another AuthorizationPolicySet
+	Delta(newSet AuthorizationPolicySet) sksets.ResourceDelta
 }
 
 func makeGenericAuthorizationPolicySet(authorizationPolicyList []*security_istio_io_v1beta1.AuthorizationPolicy) sksets.ResourceSet {
@@ -68,7 +72,7 @@ func (s *authorizationPolicySet) Keys() sets.String {
 	if s == nil {
 		return sets.String{}
 	}
-	return s.set.Keys()
+	return s.Generic().Keys()
 }
 
 func (s *authorizationPolicySet) List(filterResource ...func(*security_istio_io_v1beta1.AuthorizationPolicy) bool) []*security_istio_io_v1beta1.AuthorizationPolicy {
@@ -83,7 +87,7 @@ func (s *authorizationPolicySet) List(filterResource ...func(*security_istio_io_
 	}
 
 	var authorizationPolicyList []*security_istio_io_v1beta1.AuthorizationPolicy
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.Generic().List(genericFilters...) {
 		authorizationPolicyList = append(authorizationPolicyList, obj.(*security_istio_io_v1beta1.AuthorizationPolicy))
 	}
 	return authorizationPolicyList
@@ -95,7 +99,7 @@ func (s *authorizationPolicySet) Map() map[string]*security_istio_io_v1beta1.Aut
 	}
 
 	newMap := map[string]*security_istio_io_v1beta1.AuthorizationPolicy{}
-	for k, v := range s.set.Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*security_istio_io_v1beta1.AuthorizationPolicy)
 	}
 	return newMap
@@ -109,7 +113,7 @@ func (s *authorizationPolicySet) Insert(
 	}
 
 	for _, obj := range authorizationPolicyList {
-		s.set.Insert(obj)
+		s.Generic().Insert(obj)
 	}
 }
 
@@ -117,7 +121,7 @@ func (s *authorizationPolicySet) Has(authorizationPolicy ezkube.ResourceId) bool
 	if s == nil {
 		return false
 	}
-	return s.set.Has(authorizationPolicy)
+	return s.Generic().Has(authorizationPolicy)
 }
 
 func (s *authorizationPolicySet) Equal(
@@ -126,14 +130,14 @@ func (s *authorizationPolicySet) Equal(
 	if s == nil {
 		return authorizationPolicySet == nil
 	}
-	return s.set.Equal(makeGenericAuthorizationPolicySet(authorizationPolicySet.List()))
+	return s.Generic().Equal(authorizationPolicySet.Generic())
 }
 
 func (s *authorizationPolicySet) Delete(AuthorizationPolicy ezkube.ResourceId) {
 	if s == nil {
 		return
 	}
-	s.set.Delete(AuthorizationPolicy)
+	s.Generic().Delete(AuthorizationPolicy)
 }
 
 func (s *authorizationPolicySet) Union(set AuthorizationPolicySet) AuthorizationPolicySet {
@@ -147,7 +151,7 @@ func (s *authorizationPolicySet) Difference(set AuthorizationPolicySet) Authoriz
 	if s == nil {
 		return set
 	}
-	newSet := s.set.Difference(makeGenericAuthorizationPolicySet(set.List()))
+	newSet := s.Generic().Difference(set.Generic())
 	return &authorizationPolicySet{set: newSet}
 }
 
@@ -155,7 +159,7 @@ func (s *authorizationPolicySet) Intersection(set AuthorizationPolicySet) Author
 	if s == nil {
 		return nil
 	}
-	newSet := s.set.Intersection(makeGenericAuthorizationPolicySet(set.List()))
+	newSet := s.Generic().Intersection(set.Generic())
 	var authorizationPolicyList []*security_istio_io_v1beta1.AuthorizationPolicy
 	for _, obj := range newSet.List() {
 		authorizationPolicyList = append(authorizationPolicyList, obj.(*security_istio_io_v1beta1.AuthorizationPolicy))
@@ -167,7 +171,7 @@ func (s *authorizationPolicySet) Find(id ezkube.ResourceId) (*security_istio_io_
 	if s == nil {
 		return nil, eris.Errorf("empty set, cannot find AuthorizationPolicy %v", sksets.Key(id))
 	}
-	obj, err := s.set.Find(&security_istio_io_v1beta1.AuthorizationPolicy{}, id)
+	obj, err := s.Generic().Find(&security_istio_io_v1beta1.AuthorizationPolicy{}, id)
 	if err != nil {
 		return nil, err
 	}
@@ -179,5 +183,21 @@ func (s *authorizationPolicySet) Length() int {
 	if s == nil {
 		return 0
 	}
-	return s.set.Length()
+	return s.Generic().Length()
+}
+
+func (s *authorizationPolicySet) Generic() sksets.ResourceSet {
+	if s == nil {
+		return nil
+	}
+	return s.set
+}
+
+func (s *authorizationPolicySet) Delta(newSet AuthorizationPolicySet) sksets.ResourceDelta {
+	if s == nil {
+		return sksets.ResourceDelta{
+			Inserted: newSet.Generic(),
+		}
+	}
+	return s.Generic().Delta(newSet.Generic())
 }

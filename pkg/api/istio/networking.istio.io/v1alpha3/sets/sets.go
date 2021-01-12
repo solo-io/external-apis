@@ -38,6 +38,10 @@ type DestinationRuleSet interface {
 	Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.DestinationRule, error)
 	// Get the length of the set
 	Length() int
+	// returns the generic implementation of the set
+	Generic() sksets.ResourceSet
+	// returns the delta between this and and another DestinationRuleSet
+	Delta(newSet DestinationRuleSet) sksets.ResourceDelta
 }
 
 func makeGenericDestinationRuleSet(destinationRuleList []*networking_istio_io_v1alpha3.DestinationRule) sksets.ResourceSet {
@@ -68,7 +72,7 @@ func (s *destinationRuleSet) Keys() sets.String {
 	if s == nil {
 		return sets.String{}
 	}
-	return s.set.Keys()
+	return s.Generic().Keys()
 }
 
 func (s *destinationRuleSet) List(filterResource ...func(*networking_istio_io_v1alpha3.DestinationRule) bool) []*networking_istio_io_v1alpha3.DestinationRule {
@@ -83,7 +87,7 @@ func (s *destinationRuleSet) List(filterResource ...func(*networking_istio_io_v1
 	}
 
 	var destinationRuleList []*networking_istio_io_v1alpha3.DestinationRule
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.Generic().List(genericFilters...) {
 		destinationRuleList = append(destinationRuleList, obj.(*networking_istio_io_v1alpha3.DestinationRule))
 	}
 	return destinationRuleList
@@ -95,7 +99,7 @@ func (s *destinationRuleSet) Map() map[string]*networking_istio_io_v1alpha3.Dest
 	}
 
 	newMap := map[string]*networking_istio_io_v1alpha3.DestinationRule{}
-	for k, v := range s.set.Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*networking_istio_io_v1alpha3.DestinationRule)
 	}
 	return newMap
@@ -109,7 +113,7 @@ func (s *destinationRuleSet) Insert(
 	}
 
 	for _, obj := range destinationRuleList {
-		s.set.Insert(obj)
+		s.Generic().Insert(obj)
 	}
 }
 
@@ -117,7 +121,7 @@ func (s *destinationRuleSet) Has(destinationRule ezkube.ResourceId) bool {
 	if s == nil {
 		return false
 	}
-	return s.set.Has(destinationRule)
+	return s.Generic().Has(destinationRule)
 }
 
 func (s *destinationRuleSet) Equal(
@@ -126,14 +130,14 @@ func (s *destinationRuleSet) Equal(
 	if s == nil {
 		return destinationRuleSet == nil
 	}
-	return s.set.Equal(makeGenericDestinationRuleSet(destinationRuleSet.List()))
+	return s.Generic().Equal(destinationRuleSet.Generic())
 }
 
 func (s *destinationRuleSet) Delete(DestinationRule ezkube.ResourceId) {
 	if s == nil {
 		return
 	}
-	s.set.Delete(DestinationRule)
+	s.Generic().Delete(DestinationRule)
 }
 
 func (s *destinationRuleSet) Union(set DestinationRuleSet) DestinationRuleSet {
@@ -147,7 +151,7 @@ func (s *destinationRuleSet) Difference(set DestinationRuleSet) DestinationRuleS
 	if s == nil {
 		return set
 	}
-	newSet := s.set.Difference(makeGenericDestinationRuleSet(set.List()))
+	newSet := s.Generic().Difference(set.Generic())
 	return &destinationRuleSet{set: newSet}
 }
 
@@ -155,7 +159,7 @@ func (s *destinationRuleSet) Intersection(set DestinationRuleSet) DestinationRul
 	if s == nil {
 		return nil
 	}
-	newSet := s.set.Intersection(makeGenericDestinationRuleSet(set.List()))
+	newSet := s.Generic().Intersection(set.Generic())
 	var destinationRuleList []*networking_istio_io_v1alpha3.DestinationRule
 	for _, obj := range newSet.List() {
 		destinationRuleList = append(destinationRuleList, obj.(*networking_istio_io_v1alpha3.DestinationRule))
@@ -167,7 +171,7 @@ func (s *destinationRuleSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1
 	if s == nil {
 		return nil, eris.Errorf("empty set, cannot find DestinationRule %v", sksets.Key(id))
 	}
-	obj, err := s.set.Find(&networking_istio_io_v1alpha3.DestinationRule{}, id)
+	obj, err := s.Generic().Find(&networking_istio_io_v1alpha3.DestinationRule{}, id)
 	if err != nil {
 		return nil, err
 	}
@@ -179,7 +183,23 @@ func (s *destinationRuleSet) Length() int {
 	if s == nil {
 		return 0
 	}
-	return s.set.Length()
+	return s.Generic().Length()
+}
+
+func (s *destinationRuleSet) Generic() sksets.ResourceSet {
+	if s == nil {
+		return nil
+	}
+	return s.set
+}
+
+func (s *destinationRuleSet) Delta(newSet DestinationRuleSet) sksets.ResourceDelta {
+	if s == nil {
+		return sksets.ResourceDelta{
+			Inserted: newSet.Generic(),
+		}
+	}
+	return s.Generic().Delta(newSet.Generic())
 }
 
 type EnvoyFilterSet interface {
@@ -207,6 +227,10 @@ type EnvoyFilterSet interface {
 	Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.EnvoyFilter, error)
 	// Get the length of the set
 	Length() int
+	// returns the generic implementation of the set
+	Generic() sksets.ResourceSet
+	// returns the delta between this and and another EnvoyFilterSet
+	Delta(newSet EnvoyFilterSet) sksets.ResourceDelta
 }
 
 func makeGenericEnvoyFilterSet(envoyFilterList []*networking_istio_io_v1alpha3.EnvoyFilter) sksets.ResourceSet {
@@ -237,7 +261,7 @@ func (s *envoyFilterSet) Keys() sets.String {
 	if s == nil {
 		return sets.String{}
 	}
-	return s.set.Keys()
+	return s.Generic().Keys()
 }
 
 func (s *envoyFilterSet) List(filterResource ...func(*networking_istio_io_v1alpha3.EnvoyFilter) bool) []*networking_istio_io_v1alpha3.EnvoyFilter {
@@ -252,7 +276,7 @@ func (s *envoyFilterSet) List(filterResource ...func(*networking_istio_io_v1alph
 	}
 
 	var envoyFilterList []*networking_istio_io_v1alpha3.EnvoyFilter
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.Generic().List(genericFilters...) {
 		envoyFilterList = append(envoyFilterList, obj.(*networking_istio_io_v1alpha3.EnvoyFilter))
 	}
 	return envoyFilterList
@@ -264,7 +288,7 @@ func (s *envoyFilterSet) Map() map[string]*networking_istio_io_v1alpha3.EnvoyFil
 	}
 
 	newMap := map[string]*networking_istio_io_v1alpha3.EnvoyFilter{}
-	for k, v := range s.set.Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*networking_istio_io_v1alpha3.EnvoyFilter)
 	}
 	return newMap
@@ -278,7 +302,7 @@ func (s *envoyFilterSet) Insert(
 	}
 
 	for _, obj := range envoyFilterList {
-		s.set.Insert(obj)
+		s.Generic().Insert(obj)
 	}
 }
 
@@ -286,7 +310,7 @@ func (s *envoyFilterSet) Has(envoyFilter ezkube.ResourceId) bool {
 	if s == nil {
 		return false
 	}
-	return s.set.Has(envoyFilter)
+	return s.Generic().Has(envoyFilter)
 }
 
 func (s *envoyFilterSet) Equal(
@@ -295,14 +319,14 @@ func (s *envoyFilterSet) Equal(
 	if s == nil {
 		return envoyFilterSet == nil
 	}
-	return s.set.Equal(makeGenericEnvoyFilterSet(envoyFilterSet.List()))
+	return s.Generic().Equal(envoyFilterSet.Generic())
 }
 
 func (s *envoyFilterSet) Delete(EnvoyFilter ezkube.ResourceId) {
 	if s == nil {
 		return
 	}
-	s.set.Delete(EnvoyFilter)
+	s.Generic().Delete(EnvoyFilter)
 }
 
 func (s *envoyFilterSet) Union(set EnvoyFilterSet) EnvoyFilterSet {
@@ -316,7 +340,7 @@ func (s *envoyFilterSet) Difference(set EnvoyFilterSet) EnvoyFilterSet {
 	if s == nil {
 		return set
 	}
-	newSet := s.set.Difference(makeGenericEnvoyFilterSet(set.List()))
+	newSet := s.Generic().Difference(set.Generic())
 	return &envoyFilterSet{set: newSet}
 }
 
@@ -324,7 +348,7 @@ func (s *envoyFilterSet) Intersection(set EnvoyFilterSet) EnvoyFilterSet {
 	if s == nil {
 		return nil
 	}
-	newSet := s.set.Intersection(makeGenericEnvoyFilterSet(set.List()))
+	newSet := s.Generic().Intersection(set.Generic())
 	var envoyFilterList []*networking_istio_io_v1alpha3.EnvoyFilter
 	for _, obj := range newSet.List() {
 		envoyFilterList = append(envoyFilterList, obj.(*networking_istio_io_v1alpha3.EnvoyFilter))
@@ -336,7 +360,7 @@ func (s *envoyFilterSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1alph
 	if s == nil {
 		return nil, eris.Errorf("empty set, cannot find EnvoyFilter %v", sksets.Key(id))
 	}
-	obj, err := s.set.Find(&networking_istio_io_v1alpha3.EnvoyFilter{}, id)
+	obj, err := s.Generic().Find(&networking_istio_io_v1alpha3.EnvoyFilter{}, id)
 	if err != nil {
 		return nil, err
 	}
@@ -348,7 +372,23 @@ func (s *envoyFilterSet) Length() int {
 	if s == nil {
 		return 0
 	}
-	return s.set.Length()
+	return s.Generic().Length()
+}
+
+func (s *envoyFilterSet) Generic() sksets.ResourceSet {
+	if s == nil {
+		return nil
+	}
+	return s.set
+}
+
+func (s *envoyFilterSet) Delta(newSet EnvoyFilterSet) sksets.ResourceDelta {
+	if s == nil {
+		return sksets.ResourceDelta{
+			Inserted: newSet.Generic(),
+		}
+	}
+	return s.Generic().Delta(newSet.Generic())
 }
 
 type GatewaySet interface {
@@ -376,6 +416,10 @@ type GatewaySet interface {
 	Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.Gateway, error)
 	// Get the length of the set
 	Length() int
+	// returns the generic implementation of the set
+	Generic() sksets.ResourceSet
+	// returns the delta between this and and another GatewaySet
+	Delta(newSet GatewaySet) sksets.ResourceDelta
 }
 
 func makeGenericGatewaySet(gatewayList []*networking_istio_io_v1alpha3.Gateway) sksets.ResourceSet {
@@ -406,7 +450,7 @@ func (s *gatewaySet) Keys() sets.String {
 	if s == nil {
 		return sets.String{}
 	}
-	return s.set.Keys()
+	return s.Generic().Keys()
 }
 
 func (s *gatewaySet) List(filterResource ...func(*networking_istio_io_v1alpha3.Gateway) bool) []*networking_istio_io_v1alpha3.Gateway {
@@ -421,7 +465,7 @@ func (s *gatewaySet) List(filterResource ...func(*networking_istio_io_v1alpha3.G
 	}
 
 	var gatewayList []*networking_istio_io_v1alpha3.Gateway
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.Generic().List(genericFilters...) {
 		gatewayList = append(gatewayList, obj.(*networking_istio_io_v1alpha3.Gateway))
 	}
 	return gatewayList
@@ -433,7 +477,7 @@ func (s *gatewaySet) Map() map[string]*networking_istio_io_v1alpha3.Gateway {
 	}
 
 	newMap := map[string]*networking_istio_io_v1alpha3.Gateway{}
-	for k, v := range s.set.Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*networking_istio_io_v1alpha3.Gateway)
 	}
 	return newMap
@@ -447,7 +491,7 @@ func (s *gatewaySet) Insert(
 	}
 
 	for _, obj := range gatewayList {
-		s.set.Insert(obj)
+		s.Generic().Insert(obj)
 	}
 }
 
@@ -455,7 +499,7 @@ func (s *gatewaySet) Has(gateway ezkube.ResourceId) bool {
 	if s == nil {
 		return false
 	}
-	return s.set.Has(gateway)
+	return s.Generic().Has(gateway)
 }
 
 func (s *gatewaySet) Equal(
@@ -464,14 +508,14 @@ func (s *gatewaySet) Equal(
 	if s == nil {
 		return gatewaySet == nil
 	}
-	return s.set.Equal(makeGenericGatewaySet(gatewaySet.List()))
+	return s.Generic().Equal(gatewaySet.Generic())
 }
 
 func (s *gatewaySet) Delete(Gateway ezkube.ResourceId) {
 	if s == nil {
 		return
 	}
-	s.set.Delete(Gateway)
+	s.Generic().Delete(Gateway)
 }
 
 func (s *gatewaySet) Union(set GatewaySet) GatewaySet {
@@ -485,7 +529,7 @@ func (s *gatewaySet) Difference(set GatewaySet) GatewaySet {
 	if s == nil {
 		return set
 	}
-	newSet := s.set.Difference(makeGenericGatewaySet(set.List()))
+	newSet := s.Generic().Difference(set.Generic())
 	return &gatewaySet{set: newSet}
 }
 
@@ -493,7 +537,7 @@ func (s *gatewaySet) Intersection(set GatewaySet) GatewaySet {
 	if s == nil {
 		return nil
 	}
-	newSet := s.set.Intersection(makeGenericGatewaySet(set.List()))
+	newSet := s.Generic().Intersection(set.Generic())
 	var gatewayList []*networking_istio_io_v1alpha3.Gateway
 	for _, obj := range newSet.List() {
 		gatewayList = append(gatewayList, obj.(*networking_istio_io_v1alpha3.Gateway))
@@ -505,7 +549,7 @@ func (s *gatewaySet) Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.G
 	if s == nil {
 		return nil, eris.Errorf("empty set, cannot find Gateway %v", sksets.Key(id))
 	}
-	obj, err := s.set.Find(&networking_istio_io_v1alpha3.Gateway{}, id)
+	obj, err := s.Generic().Find(&networking_istio_io_v1alpha3.Gateway{}, id)
 	if err != nil {
 		return nil, err
 	}
@@ -517,7 +561,23 @@ func (s *gatewaySet) Length() int {
 	if s == nil {
 		return 0
 	}
-	return s.set.Length()
+	return s.Generic().Length()
+}
+
+func (s *gatewaySet) Generic() sksets.ResourceSet {
+	if s == nil {
+		return nil
+	}
+	return s.set
+}
+
+func (s *gatewaySet) Delta(newSet GatewaySet) sksets.ResourceDelta {
+	if s == nil {
+		return sksets.ResourceDelta{
+			Inserted: newSet.Generic(),
+		}
+	}
+	return s.Generic().Delta(newSet.Generic())
 }
 
 type ServiceEntrySet interface {
@@ -545,6 +605,10 @@ type ServiceEntrySet interface {
 	Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.ServiceEntry, error)
 	// Get the length of the set
 	Length() int
+	// returns the generic implementation of the set
+	Generic() sksets.ResourceSet
+	// returns the delta between this and and another ServiceEntrySet
+	Delta(newSet ServiceEntrySet) sksets.ResourceDelta
 }
 
 func makeGenericServiceEntrySet(serviceEntryList []*networking_istio_io_v1alpha3.ServiceEntry) sksets.ResourceSet {
@@ -575,7 +639,7 @@ func (s *serviceEntrySet) Keys() sets.String {
 	if s == nil {
 		return sets.String{}
 	}
-	return s.set.Keys()
+	return s.Generic().Keys()
 }
 
 func (s *serviceEntrySet) List(filterResource ...func(*networking_istio_io_v1alpha3.ServiceEntry) bool) []*networking_istio_io_v1alpha3.ServiceEntry {
@@ -590,7 +654,7 @@ func (s *serviceEntrySet) List(filterResource ...func(*networking_istio_io_v1alp
 	}
 
 	var serviceEntryList []*networking_istio_io_v1alpha3.ServiceEntry
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.Generic().List(genericFilters...) {
 		serviceEntryList = append(serviceEntryList, obj.(*networking_istio_io_v1alpha3.ServiceEntry))
 	}
 	return serviceEntryList
@@ -602,7 +666,7 @@ func (s *serviceEntrySet) Map() map[string]*networking_istio_io_v1alpha3.Service
 	}
 
 	newMap := map[string]*networking_istio_io_v1alpha3.ServiceEntry{}
-	for k, v := range s.set.Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*networking_istio_io_v1alpha3.ServiceEntry)
 	}
 	return newMap
@@ -616,7 +680,7 @@ func (s *serviceEntrySet) Insert(
 	}
 
 	for _, obj := range serviceEntryList {
-		s.set.Insert(obj)
+		s.Generic().Insert(obj)
 	}
 }
 
@@ -624,7 +688,7 @@ func (s *serviceEntrySet) Has(serviceEntry ezkube.ResourceId) bool {
 	if s == nil {
 		return false
 	}
-	return s.set.Has(serviceEntry)
+	return s.Generic().Has(serviceEntry)
 }
 
 func (s *serviceEntrySet) Equal(
@@ -633,14 +697,14 @@ func (s *serviceEntrySet) Equal(
 	if s == nil {
 		return serviceEntrySet == nil
 	}
-	return s.set.Equal(makeGenericServiceEntrySet(serviceEntrySet.List()))
+	return s.Generic().Equal(serviceEntrySet.Generic())
 }
 
 func (s *serviceEntrySet) Delete(ServiceEntry ezkube.ResourceId) {
 	if s == nil {
 		return
 	}
-	s.set.Delete(ServiceEntry)
+	s.Generic().Delete(ServiceEntry)
 }
 
 func (s *serviceEntrySet) Union(set ServiceEntrySet) ServiceEntrySet {
@@ -654,7 +718,7 @@ func (s *serviceEntrySet) Difference(set ServiceEntrySet) ServiceEntrySet {
 	if s == nil {
 		return set
 	}
-	newSet := s.set.Difference(makeGenericServiceEntrySet(set.List()))
+	newSet := s.Generic().Difference(set.Generic())
 	return &serviceEntrySet{set: newSet}
 }
 
@@ -662,7 +726,7 @@ func (s *serviceEntrySet) Intersection(set ServiceEntrySet) ServiceEntrySet {
 	if s == nil {
 		return nil
 	}
-	newSet := s.set.Intersection(makeGenericServiceEntrySet(set.List()))
+	newSet := s.Generic().Intersection(set.Generic())
 	var serviceEntryList []*networking_istio_io_v1alpha3.ServiceEntry
 	for _, obj := range newSet.List() {
 		serviceEntryList = append(serviceEntryList, obj.(*networking_istio_io_v1alpha3.ServiceEntry))
@@ -674,7 +738,7 @@ func (s *serviceEntrySet) Find(id ezkube.ResourceId) (*networking_istio_io_v1alp
 	if s == nil {
 		return nil, eris.Errorf("empty set, cannot find ServiceEntry %v", sksets.Key(id))
 	}
-	obj, err := s.set.Find(&networking_istio_io_v1alpha3.ServiceEntry{}, id)
+	obj, err := s.Generic().Find(&networking_istio_io_v1alpha3.ServiceEntry{}, id)
 	if err != nil {
 		return nil, err
 	}
@@ -686,7 +750,23 @@ func (s *serviceEntrySet) Length() int {
 	if s == nil {
 		return 0
 	}
-	return s.set.Length()
+	return s.Generic().Length()
+}
+
+func (s *serviceEntrySet) Generic() sksets.ResourceSet {
+	if s == nil {
+		return nil
+	}
+	return s.set
+}
+
+func (s *serviceEntrySet) Delta(newSet ServiceEntrySet) sksets.ResourceDelta {
+	if s == nil {
+		return sksets.ResourceDelta{
+			Inserted: newSet.Generic(),
+		}
+	}
+	return s.Generic().Delta(newSet.Generic())
 }
 
 type VirtualServiceSet interface {
@@ -714,6 +794,10 @@ type VirtualServiceSet interface {
 	Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.VirtualService, error)
 	// Get the length of the set
 	Length() int
+	// returns the generic implementation of the set
+	Generic() sksets.ResourceSet
+	// returns the delta between this and and another VirtualServiceSet
+	Delta(newSet VirtualServiceSet) sksets.ResourceDelta
 }
 
 func makeGenericVirtualServiceSet(virtualServiceList []*networking_istio_io_v1alpha3.VirtualService) sksets.ResourceSet {
@@ -744,7 +828,7 @@ func (s *virtualServiceSet) Keys() sets.String {
 	if s == nil {
 		return sets.String{}
 	}
-	return s.set.Keys()
+	return s.Generic().Keys()
 }
 
 func (s *virtualServiceSet) List(filterResource ...func(*networking_istio_io_v1alpha3.VirtualService) bool) []*networking_istio_io_v1alpha3.VirtualService {
@@ -759,7 +843,7 @@ func (s *virtualServiceSet) List(filterResource ...func(*networking_istio_io_v1a
 	}
 
 	var virtualServiceList []*networking_istio_io_v1alpha3.VirtualService
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.Generic().List(genericFilters...) {
 		virtualServiceList = append(virtualServiceList, obj.(*networking_istio_io_v1alpha3.VirtualService))
 	}
 	return virtualServiceList
@@ -771,7 +855,7 @@ func (s *virtualServiceSet) Map() map[string]*networking_istio_io_v1alpha3.Virtu
 	}
 
 	newMap := map[string]*networking_istio_io_v1alpha3.VirtualService{}
-	for k, v := range s.set.Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*networking_istio_io_v1alpha3.VirtualService)
 	}
 	return newMap
@@ -785,7 +869,7 @@ func (s *virtualServiceSet) Insert(
 	}
 
 	for _, obj := range virtualServiceList {
-		s.set.Insert(obj)
+		s.Generic().Insert(obj)
 	}
 }
 
@@ -793,7 +877,7 @@ func (s *virtualServiceSet) Has(virtualService ezkube.ResourceId) bool {
 	if s == nil {
 		return false
 	}
-	return s.set.Has(virtualService)
+	return s.Generic().Has(virtualService)
 }
 
 func (s *virtualServiceSet) Equal(
@@ -802,14 +886,14 @@ func (s *virtualServiceSet) Equal(
 	if s == nil {
 		return virtualServiceSet == nil
 	}
-	return s.set.Equal(makeGenericVirtualServiceSet(virtualServiceSet.List()))
+	return s.Generic().Equal(virtualServiceSet.Generic())
 }
 
 func (s *virtualServiceSet) Delete(VirtualService ezkube.ResourceId) {
 	if s == nil {
 		return
 	}
-	s.set.Delete(VirtualService)
+	s.Generic().Delete(VirtualService)
 }
 
 func (s *virtualServiceSet) Union(set VirtualServiceSet) VirtualServiceSet {
@@ -823,7 +907,7 @@ func (s *virtualServiceSet) Difference(set VirtualServiceSet) VirtualServiceSet 
 	if s == nil {
 		return set
 	}
-	newSet := s.set.Difference(makeGenericVirtualServiceSet(set.List()))
+	newSet := s.Generic().Difference(set.Generic())
 	return &virtualServiceSet{set: newSet}
 }
 
@@ -831,7 +915,7 @@ func (s *virtualServiceSet) Intersection(set VirtualServiceSet) VirtualServiceSe
 	if s == nil {
 		return nil
 	}
-	newSet := s.set.Intersection(makeGenericVirtualServiceSet(set.List()))
+	newSet := s.Generic().Intersection(set.Generic())
 	var virtualServiceList []*networking_istio_io_v1alpha3.VirtualService
 	for _, obj := range newSet.List() {
 		virtualServiceList = append(virtualServiceList, obj.(*networking_istio_io_v1alpha3.VirtualService))
@@ -843,7 +927,7 @@ func (s *virtualServiceSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1a
 	if s == nil {
 		return nil, eris.Errorf("empty set, cannot find VirtualService %v", sksets.Key(id))
 	}
-	obj, err := s.set.Find(&networking_istio_io_v1alpha3.VirtualService{}, id)
+	obj, err := s.Generic().Find(&networking_istio_io_v1alpha3.VirtualService{}, id)
 	if err != nil {
 		return nil, err
 	}
@@ -855,5 +939,21 @@ func (s *virtualServiceSet) Length() int {
 	if s == nil {
 		return 0
 	}
-	return s.set.Length()
+	return s.Generic().Length()
+}
+
+func (s *virtualServiceSet) Generic() sksets.ResourceSet {
+	if s == nil {
+		return nil
+	}
+	return s.set
+}
+
+func (s *virtualServiceSet) Delta(newSet VirtualServiceSet) sksets.ResourceDelta {
+	if s == nil {
+		return sksets.ResourceDelta{
+			Inserted: newSet.Generic(),
+		}
+	}
+	return s.Generic().Delta(newSet.Generic())
 }

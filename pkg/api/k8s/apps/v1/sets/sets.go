@@ -38,6 +38,10 @@ type DeploymentSet interface {
 	Find(id ezkube.ResourceId) (*apps_v1.Deployment, error)
 	// Get the length of the set
 	Length() int
+	// returns the generic implementation of the set
+	Generic() sksets.ResourceSet
+	// returns the delta between this and and another DeploymentSet
+	Delta(newSet DeploymentSet) sksets.ResourceDelta
 }
 
 func makeGenericDeploymentSet(deploymentList []*apps_v1.Deployment) sksets.ResourceSet {
@@ -68,7 +72,7 @@ func (s *deploymentSet) Keys() sets.String {
 	if s == nil {
 		return sets.String{}
 	}
-	return s.set.Keys()
+	return s.Generic().Keys()
 }
 
 func (s *deploymentSet) List(filterResource ...func(*apps_v1.Deployment) bool) []*apps_v1.Deployment {
@@ -83,7 +87,7 @@ func (s *deploymentSet) List(filterResource ...func(*apps_v1.Deployment) bool) [
 	}
 
 	var deploymentList []*apps_v1.Deployment
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.Generic().List(genericFilters...) {
 		deploymentList = append(deploymentList, obj.(*apps_v1.Deployment))
 	}
 	return deploymentList
@@ -95,7 +99,7 @@ func (s *deploymentSet) Map() map[string]*apps_v1.Deployment {
 	}
 
 	newMap := map[string]*apps_v1.Deployment{}
-	for k, v := range s.set.Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*apps_v1.Deployment)
 	}
 	return newMap
@@ -109,7 +113,7 @@ func (s *deploymentSet) Insert(
 	}
 
 	for _, obj := range deploymentList {
-		s.set.Insert(obj)
+		s.Generic().Insert(obj)
 	}
 }
 
@@ -117,7 +121,7 @@ func (s *deploymentSet) Has(deployment ezkube.ResourceId) bool {
 	if s == nil {
 		return false
 	}
-	return s.set.Has(deployment)
+	return s.Generic().Has(deployment)
 }
 
 func (s *deploymentSet) Equal(
@@ -126,14 +130,14 @@ func (s *deploymentSet) Equal(
 	if s == nil {
 		return deploymentSet == nil
 	}
-	return s.set.Equal(makeGenericDeploymentSet(deploymentSet.List()))
+	return s.Generic().Equal(deploymentSet.Generic())
 }
 
 func (s *deploymentSet) Delete(Deployment ezkube.ResourceId) {
 	if s == nil {
 		return
 	}
-	s.set.Delete(Deployment)
+	s.Generic().Delete(Deployment)
 }
 
 func (s *deploymentSet) Union(set DeploymentSet) DeploymentSet {
@@ -147,7 +151,7 @@ func (s *deploymentSet) Difference(set DeploymentSet) DeploymentSet {
 	if s == nil {
 		return set
 	}
-	newSet := s.set.Difference(makeGenericDeploymentSet(set.List()))
+	newSet := s.Generic().Difference(set.Generic())
 	return &deploymentSet{set: newSet}
 }
 
@@ -155,7 +159,7 @@ func (s *deploymentSet) Intersection(set DeploymentSet) DeploymentSet {
 	if s == nil {
 		return nil
 	}
-	newSet := s.set.Intersection(makeGenericDeploymentSet(set.List()))
+	newSet := s.Generic().Intersection(set.Generic())
 	var deploymentList []*apps_v1.Deployment
 	for _, obj := range newSet.List() {
 		deploymentList = append(deploymentList, obj.(*apps_v1.Deployment))
@@ -167,7 +171,7 @@ func (s *deploymentSet) Find(id ezkube.ResourceId) (*apps_v1.Deployment, error) 
 	if s == nil {
 		return nil, eris.Errorf("empty set, cannot find Deployment %v", sksets.Key(id))
 	}
-	obj, err := s.set.Find(&apps_v1.Deployment{}, id)
+	obj, err := s.Generic().Find(&apps_v1.Deployment{}, id)
 	if err != nil {
 		return nil, err
 	}
@@ -179,7 +183,23 @@ func (s *deploymentSet) Length() int {
 	if s == nil {
 		return 0
 	}
-	return s.set.Length()
+	return s.Generic().Length()
+}
+
+func (s *deploymentSet) Generic() sksets.ResourceSet {
+	if s == nil {
+		return nil
+	}
+	return s.set
+}
+
+func (s *deploymentSet) Delta(newSet DeploymentSet) sksets.ResourceDelta {
+	if s == nil {
+		return sksets.ResourceDelta{
+			Inserted: newSet.Generic(),
+		}
+	}
+	return s.Generic().Delta(newSet.Generic())
 }
 
 type ReplicaSetSet interface {
@@ -207,6 +227,10 @@ type ReplicaSetSet interface {
 	Find(id ezkube.ResourceId) (*apps_v1.ReplicaSet, error)
 	// Get the length of the set
 	Length() int
+	// returns the generic implementation of the set
+	Generic() sksets.ResourceSet
+	// returns the delta between this and and another ReplicaSetSet
+	Delta(newSet ReplicaSetSet) sksets.ResourceDelta
 }
 
 func makeGenericReplicaSetSet(replicaSetList []*apps_v1.ReplicaSet) sksets.ResourceSet {
@@ -237,7 +261,7 @@ func (s *replicaSetSet) Keys() sets.String {
 	if s == nil {
 		return sets.String{}
 	}
-	return s.set.Keys()
+	return s.Generic().Keys()
 }
 
 func (s *replicaSetSet) List(filterResource ...func(*apps_v1.ReplicaSet) bool) []*apps_v1.ReplicaSet {
@@ -252,7 +276,7 @@ func (s *replicaSetSet) List(filterResource ...func(*apps_v1.ReplicaSet) bool) [
 	}
 
 	var replicaSetList []*apps_v1.ReplicaSet
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.Generic().List(genericFilters...) {
 		replicaSetList = append(replicaSetList, obj.(*apps_v1.ReplicaSet))
 	}
 	return replicaSetList
@@ -264,7 +288,7 @@ func (s *replicaSetSet) Map() map[string]*apps_v1.ReplicaSet {
 	}
 
 	newMap := map[string]*apps_v1.ReplicaSet{}
-	for k, v := range s.set.Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*apps_v1.ReplicaSet)
 	}
 	return newMap
@@ -278,7 +302,7 @@ func (s *replicaSetSet) Insert(
 	}
 
 	for _, obj := range replicaSetList {
-		s.set.Insert(obj)
+		s.Generic().Insert(obj)
 	}
 }
 
@@ -286,7 +310,7 @@ func (s *replicaSetSet) Has(replicaSet ezkube.ResourceId) bool {
 	if s == nil {
 		return false
 	}
-	return s.set.Has(replicaSet)
+	return s.Generic().Has(replicaSet)
 }
 
 func (s *replicaSetSet) Equal(
@@ -295,14 +319,14 @@ func (s *replicaSetSet) Equal(
 	if s == nil {
 		return replicaSetSet == nil
 	}
-	return s.set.Equal(makeGenericReplicaSetSet(replicaSetSet.List()))
+	return s.Generic().Equal(replicaSetSet.Generic())
 }
 
 func (s *replicaSetSet) Delete(ReplicaSet ezkube.ResourceId) {
 	if s == nil {
 		return
 	}
-	s.set.Delete(ReplicaSet)
+	s.Generic().Delete(ReplicaSet)
 }
 
 func (s *replicaSetSet) Union(set ReplicaSetSet) ReplicaSetSet {
@@ -316,7 +340,7 @@ func (s *replicaSetSet) Difference(set ReplicaSetSet) ReplicaSetSet {
 	if s == nil {
 		return set
 	}
-	newSet := s.set.Difference(makeGenericReplicaSetSet(set.List()))
+	newSet := s.Generic().Difference(set.Generic())
 	return &replicaSetSet{set: newSet}
 }
 
@@ -324,7 +348,7 @@ func (s *replicaSetSet) Intersection(set ReplicaSetSet) ReplicaSetSet {
 	if s == nil {
 		return nil
 	}
-	newSet := s.set.Intersection(makeGenericReplicaSetSet(set.List()))
+	newSet := s.Generic().Intersection(set.Generic())
 	var replicaSetList []*apps_v1.ReplicaSet
 	for _, obj := range newSet.List() {
 		replicaSetList = append(replicaSetList, obj.(*apps_v1.ReplicaSet))
@@ -336,7 +360,7 @@ func (s *replicaSetSet) Find(id ezkube.ResourceId) (*apps_v1.ReplicaSet, error) 
 	if s == nil {
 		return nil, eris.Errorf("empty set, cannot find ReplicaSet %v", sksets.Key(id))
 	}
-	obj, err := s.set.Find(&apps_v1.ReplicaSet{}, id)
+	obj, err := s.Generic().Find(&apps_v1.ReplicaSet{}, id)
 	if err != nil {
 		return nil, err
 	}
@@ -348,7 +372,23 @@ func (s *replicaSetSet) Length() int {
 	if s == nil {
 		return 0
 	}
-	return s.set.Length()
+	return s.Generic().Length()
+}
+
+func (s *replicaSetSet) Generic() sksets.ResourceSet {
+	if s == nil {
+		return nil
+	}
+	return s.set
+}
+
+func (s *replicaSetSet) Delta(newSet ReplicaSetSet) sksets.ResourceDelta {
+	if s == nil {
+		return sksets.ResourceDelta{
+			Inserted: newSet.Generic(),
+		}
+	}
+	return s.Generic().Delta(newSet.Generic())
 }
 
 type DaemonSetSet interface {
@@ -376,6 +416,10 @@ type DaemonSetSet interface {
 	Find(id ezkube.ResourceId) (*apps_v1.DaemonSet, error)
 	// Get the length of the set
 	Length() int
+	// returns the generic implementation of the set
+	Generic() sksets.ResourceSet
+	// returns the delta between this and and another DaemonSetSet
+	Delta(newSet DaemonSetSet) sksets.ResourceDelta
 }
 
 func makeGenericDaemonSetSet(daemonSetList []*apps_v1.DaemonSet) sksets.ResourceSet {
@@ -406,7 +450,7 @@ func (s *daemonSetSet) Keys() sets.String {
 	if s == nil {
 		return sets.String{}
 	}
-	return s.set.Keys()
+	return s.Generic().Keys()
 }
 
 func (s *daemonSetSet) List(filterResource ...func(*apps_v1.DaemonSet) bool) []*apps_v1.DaemonSet {
@@ -421,7 +465,7 @@ func (s *daemonSetSet) List(filterResource ...func(*apps_v1.DaemonSet) bool) []*
 	}
 
 	var daemonSetList []*apps_v1.DaemonSet
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.Generic().List(genericFilters...) {
 		daemonSetList = append(daemonSetList, obj.(*apps_v1.DaemonSet))
 	}
 	return daemonSetList
@@ -433,7 +477,7 @@ func (s *daemonSetSet) Map() map[string]*apps_v1.DaemonSet {
 	}
 
 	newMap := map[string]*apps_v1.DaemonSet{}
-	for k, v := range s.set.Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*apps_v1.DaemonSet)
 	}
 	return newMap
@@ -447,7 +491,7 @@ func (s *daemonSetSet) Insert(
 	}
 
 	for _, obj := range daemonSetList {
-		s.set.Insert(obj)
+		s.Generic().Insert(obj)
 	}
 }
 
@@ -455,7 +499,7 @@ func (s *daemonSetSet) Has(daemonSet ezkube.ResourceId) bool {
 	if s == nil {
 		return false
 	}
-	return s.set.Has(daemonSet)
+	return s.Generic().Has(daemonSet)
 }
 
 func (s *daemonSetSet) Equal(
@@ -464,14 +508,14 @@ func (s *daemonSetSet) Equal(
 	if s == nil {
 		return daemonSetSet == nil
 	}
-	return s.set.Equal(makeGenericDaemonSetSet(daemonSetSet.List()))
+	return s.Generic().Equal(daemonSetSet.Generic())
 }
 
 func (s *daemonSetSet) Delete(DaemonSet ezkube.ResourceId) {
 	if s == nil {
 		return
 	}
-	s.set.Delete(DaemonSet)
+	s.Generic().Delete(DaemonSet)
 }
 
 func (s *daemonSetSet) Union(set DaemonSetSet) DaemonSetSet {
@@ -485,7 +529,7 @@ func (s *daemonSetSet) Difference(set DaemonSetSet) DaemonSetSet {
 	if s == nil {
 		return set
 	}
-	newSet := s.set.Difference(makeGenericDaemonSetSet(set.List()))
+	newSet := s.Generic().Difference(set.Generic())
 	return &daemonSetSet{set: newSet}
 }
 
@@ -493,7 +537,7 @@ func (s *daemonSetSet) Intersection(set DaemonSetSet) DaemonSetSet {
 	if s == nil {
 		return nil
 	}
-	newSet := s.set.Intersection(makeGenericDaemonSetSet(set.List()))
+	newSet := s.Generic().Intersection(set.Generic())
 	var daemonSetList []*apps_v1.DaemonSet
 	for _, obj := range newSet.List() {
 		daemonSetList = append(daemonSetList, obj.(*apps_v1.DaemonSet))
@@ -505,7 +549,7 @@ func (s *daemonSetSet) Find(id ezkube.ResourceId) (*apps_v1.DaemonSet, error) {
 	if s == nil {
 		return nil, eris.Errorf("empty set, cannot find DaemonSet %v", sksets.Key(id))
 	}
-	obj, err := s.set.Find(&apps_v1.DaemonSet{}, id)
+	obj, err := s.Generic().Find(&apps_v1.DaemonSet{}, id)
 	if err != nil {
 		return nil, err
 	}
@@ -517,7 +561,23 @@ func (s *daemonSetSet) Length() int {
 	if s == nil {
 		return 0
 	}
-	return s.set.Length()
+	return s.Generic().Length()
+}
+
+func (s *daemonSetSet) Generic() sksets.ResourceSet {
+	if s == nil {
+		return nil
+	}
+	return s.set
+}
+
+func (s *daemonSetSet) Delta(newSet DaemonSetSet) sksets.ResourceDelta {
+	if s == nil {
+		return sksets.ResourceDelta{
+			Inserted: newSet.Generic(),
+		}
+	}
+	return s.Generic().Delta(newSet.Generic())
 }
 
 type StatefulSetSet interface {
@@ -545,6 +605,10 @@ type StatefulSetSet interface {
 	Find(id ezkube.ResourceId) (*apps_v1.StatefulSet, error)
 	// Get the length of the set
 	Length() int
+	// returns the generic implementation of the set
+	Generic() sksets.ResourceSet
+	// returns the delta between this and and another StatefulSetSet
+	Delta(newSet StatefulSetSet) sksets.ResourceDelta
 }
 
 func makeGenericStatefulSetSet(statefulSetList []*apps_v1.StatefulSet) sksets.ResourceSet {
@@ -575,7 +639,7 @@ func (s *statefulSetSet) Keys() sets.String {
 	if s == nil {
 		return sets.String{}
 	}
-	return s.set.Keys()
+	return s.Generic().Keys()
 }
 
 func (s *statefulSetSet) List(filterResource ...func(*apps_v1.StatefulSet) bool) []*apps_v1.StatefulSet {
@@ -590,7 +654,7 @@ func (s *statefulSetSet) List(filterResource ...func(*apps_v1.StatefulSet) bool)
 	}
 
 	var statefulSetList []*apps_v1.StatefulSet
-	for _, obj := range s.set.List(genericFilters...) {
+	for _, obj := range s.Generic().List(genericFilters...) {
 		statefulSetList = append(statefulSetList, obj.(*apps_v1.StatefulSet))
 	}
 	return statefulSetList
@@ -602,7 +666,7 @@ func (s *statefulSetSet) Map() map[string]*apps_v1.StatefulSet {
 	}
 
 	newMap := map[string]*apps_v1.StatefulSet{}
-	for k, v := range s.set.Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*apps_v1.StatefulSet)
 	}
 	return newMap
@@ -616,7 +680,7 @@ func (s *statefulSetSet) Insert(
 	}
 
 	for _, obj := range statefulSetList {
-		s.set.Insert(obj)
+		s.Generic().Insert(obj)
 	}
 }
 
@@ -624,7 +688,7 @@ func (s *statefulSetSet) Has(statefulSet ezkube.ResourceId) bool {
 	if s == nil {
 		return false
 	}
-	return s.set.Has(statefulSet)
+	return s.Generic().Has(statefulSet)
 }
 
 func (s *statefulSetSet) Equal(
@@ -633,14 +697,14 @@ func (s *statefulSetSet) Equal(
 	if s == nil {
 		return statefulSetSet == nil
 	}
-	return s.set.Equal(makeGenericStatefulSetSet(statefulSetSet.List()))
+	return s.Generic().Equal(statefulSetSet.Generic())
 }
 
 func (s *statefulSetSet) Delete(StatefulSet ezkube.ResourceId) {
 	if s == nil {
 		return
 	}
-	s.set.Delete(StatefulSet)
+	s.Generic().Delete(StatefulSet)
 }
 
 func (s *statefulSetSet) Union(set StatefulSetSet) StatefulSetSet {
@@ -654,7 +718,7 @@ func (s *statefulSetSet) Difference(set StatefulSetSet) StatefulSetSet {
 	if s == nil {
 		return set
 	}
-	newSet := s.set.Difference(makeGenericStatefulSetSet(set.List()))
+	newSet := s.Generic().Difference(set.Generic())
 	return &statefulSetSet{set: newSet}
 }
 
@@ -662,7 +726,7 @@ func (s *statefulSetSet) Intersection(set StatefulSetSet) StatefulSetSet {
 	if s == nil {
 		return nil
 	}
-	newSet := s.set.Intersection(makeGenericStatefulSetSet(set.List()))
+	newSet := s.Generic().Intersection(set.Generic())
 	var statefulSetList []*apps_v1.StatefulSet
 	for _, obj := range newSet.List() {
 		statefulSetList = append(statefulSetList, obj.(*apps_v1.StatefulSet))
@@ -674,7 +738,7 @@ func (s *statefulSetSet) Find(id ezkube.ResourceId) (*apps_v1.StatefulSet, error
 	if s == nil {
 		return nil, eris.Errorf("empty set, cannot find StatefulSet %v", sksets.Key(id))
 	}
-	obj, err := s.set.Find(&apps_v1.StatefulSet{}, id)
+	obj, err := s.Generic().Find(&apps_v1.StatefulSet{}, id)
 	if err != nil {
 		return nil, err
 	}
@@ -686,5 +750,21 @@ func (s *statefulSetSet) Length() int {
 	if s == nil {
 		return 0
 	}
-	return s.set.Length()
+	return s.Generic().Length()
+}
+
+func (s *statefulSetSet) Generic() sksets.ResourceSet {
+	if s == nil {
+		return nil
+	}
+	return s.set
+}
+
+func (s *statefulSetSet) Delta(newSet StatefulSetSet) sksets.ResourceDelta {
+	if s == nil {
+		return sksets.ResourceDelta{
+			Inserted: newSet.Generic(),
+		}
+	}
+	return s.Generic().Delta(newSet.Generic())
 }
