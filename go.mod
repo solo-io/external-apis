@@ -16,7 +16,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/rotisserie/eris v0.1.1
 	github.com/servicemeshinterface/smi-sdk-go v0.4.1
-	github.com/solo-io/skv2 v0.16.3-0.20210119202105-612a98f4f1b1
+	github.com/solo-io/skv2 v0.17.0
 	github.com/spf13/afero v1.3.4 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	istio.io/client-go v0.0.0-20200610222318-1cfead1f1938
