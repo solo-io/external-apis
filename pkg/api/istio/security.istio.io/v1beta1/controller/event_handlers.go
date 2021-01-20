@@ -12,7 +12,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/solo-io/skv2/pkg/events"
-	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 )
@@ -88,7 +88,7 @@ type genericAuthorizationPolicyHandler struct {
 	handler AuthorizationPolicyEventHandler
 }
 
-func (h genericAuthorizationPolicyHandler) Create(object runtime.Object) error {
+func (h genericAuthorizationPolicyHandler) Create(object client.Object) error {
 	obj, ok := object.(*security_istio_io_v1beta1.AuthorizationPolicy)
 	if !ok {
 		return errors.Errorf("internal error: AuthorizationPolicy handler received event for %T", object)
@@ -96,7 +96,7 @@ func (h genericAuthorizationPolicyHandler) Create(object runtime.Object) error {
 	return h.handler.CreateAuthorizationPolicy(obj)
 }
 
-func (h genericAuthorizationPolicyHandler) Delete(object runtime.Object) error {
+func (h genericAuthorizationPolicyHandler) Delete(object client.Object) error {
 	obj, ok := object.(*security_istio_io_v1beta1.AuthorizationPolicy)
 	if !ok {
 		return errors.Errorf("internal error: AuthorizationPolicy handler received event for %T", object)
@@ -104,7 +104,7 @@ func (h genericAuthorizationPolicyHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteAuthorizationPolicy(obj)
 }
 
-func (h genericAuthorizationPolicyHandler) Update(old, new runtime.Object) error {
+func (h genericAuthorizationPolicyHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*security_istio_io_v1beta1.AuthorizationPolicy)
 	if !ok {
 		return errors.Errorf("internal error: AuthorizationPolicy handler received event for %T", old)
@@ -116,7 +116,7 @@ func (h genericAuthorizationPolicyHandler) Update(old, new runtime.Object) error
 	return h.handler.UpdateAuthorizationPolicy(objOld, objNew)
 }
 
-func (h genericAuthorizationPolicyHandler) Generic(object runtime.Object) error {
+func (h genericAuthorizationPolicyHandler) Generic(object client.Object) error {
 	obj, ok := object.(*security_istio_io_v1beta1.AuthorizationPolicy)
 	if !ok {
 		return errors.Errorf("internal error: AuthorizationPolicy handler received event for %T", object)

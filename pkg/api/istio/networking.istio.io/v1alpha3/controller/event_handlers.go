@@ -12,7 +12,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/solo-io/skv2/pkg/events"
-	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 )
@@ -88,7 +88,7 @@ type genericDestinationRuleHandler struct {
 	handler DestinationRuleEventHandler
 }
 
-func (h genericDestinationRuleHandler) Create(object runtime.Object) error {
+func (h genericDestinationRuleHandler) Create(object client.Object) error {
 	obj, ok := object.(*networking_istio_io_v1alpha3.DestinationRule)
 	if !ok {
 		return errors.Errorf("internal error: DestinationRule handler received event for %T", object)
@@ -96,7 +96,7 @@ func (h genericDestinationRuleHandler) Create(object runtime.Object) error {
 	return h.handler.CreateDestinationRule(obj)
 }
 
-func (h genericDestinationRuleHandler) Delete(object runtime.Object) error {
+func (h genericDestinationRuleHandler) Delete(object client.Object) error {
 	obj, ok := object.(*networking_istio_io_v1alpha3.DestinationRule)
 	if !ok {
 		return errors.Errorf("internal error: DestinationRule handler received event for %T", object)
@@ -104,7 +104,7 @@ func (h genericDestinationRuleHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteDestinationRule(obj)
 }
 
-func (h genericDestinationRuleHandler) Update(old, new runtime.Object) error {
+func (h genericDestinationRuleHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*networking_istio_io_v1alpha3.DestinationRule)
 	if !ok {
 		return errors.Errorf("internal error: DestinationRule handler received event for %T", old)
@@ -116,7 +116,7 @@ func (h genericDestinationRuleHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateDestinationRule(objOld, objNew)
 }
 
-func (h genericDestinationRuleHandler) Generic(object runtime.Object) error {
+func (h genericDestinationRuleHandler) Generic(object client.Object) error {
 	obj, ok := object.(*networking_istio_io_v1alpha3.DestinationRule)
 	if !ok {
 		return errors.Errorf("internal error: DestinationRule handler received event for %T", object)
@@ -195,7 +195,7 @@ type genericEnvoyFilterHandler struct {
 	handler EnvoyFilterEventHandler
 }
 
-func (h genericEnvoyFilterHandler) Create(object runtime.Object) error {
+func (h genericEnvoyFilterHandler) Create(object client.Object) error {
 	obj, ok := object.(*networking_istio_io_v1alpha3.EnvoyFilter)
 	if !ok {
 		return errors.Errorf("internal error: EnvoyFilter handler received event for %T", object)
@@ -203,7 +203,7 @@ func (h genericEnvoyFilterHandler) Create(object runtime.Object) error {
 	return h.handler.CreateEnvoyFilter(obj)
 }
 
-func (h genericEnvoyFilterHandler) Delete(object runtime.Object) error {
+func (h genericEnvoyFilterHandler) Delete(object client.Object) error {
 	obj, ok := object.(*networking_istio_io_v1alpha3.EnvoyFilter)
 	if !ok {
 		return errors.Errorf("internal error: EnvoyFilter handler received event for %T", object)
@@ -211,7 +211,7 @@ func (h genericEnvoyFilterHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteEnvoyFilter(obj)
 }
 
-func (h genericEnvoyFilterHandler) Update(old, new runtime.Object) error {
+func (h genericEnvoyFilterHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*networking_istio_io_v1alpha3.EnvoyFilter)
 	if !ok {
 		return errors.Errorf("internal error: EnvoyFilter handler received event for %T", old)
@@ -223,7 +223,7 @@ func (h genericEnvoyFilterHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateEnvoyFilter(objOld, objNew)
 }
 
-func (h genericEnvoyFilterHandler) Generic(object runtime.Object) error {
+func (h genericEnvoyFilterHandler) Generic(object client.Object) error {
 	obj, ok := object.(*networking_istio_io_v1alpha3.EnvoyFilter)
 	if !ok {
 		return errors.Errorf("internal error: EnvoyFilter handler received event for %T", object)
@@ -302,7 +302,7 @@ type genericGatewayHandler struct {
 	handler GatewayEventHandler
 }
 
-func (h genericGatewayHandler) Create(object runtime.Object) error {
+func (h genericGatewayHandler) Create(object client.Object) error {
 	obj, ok := object.(*networking_istio_io_v1alpha3.Gateway)
 	if !ok {
 		return errors.Errorf("internal error: Gateway handler received event for %T", object)
@@ -310,7 +310,7 @@ func (h genericGatewayHandler) Create(object runtime.Object) error {
 	return h.handler.CreateGateway(obj)
 }
 
-func (h genericGatewayHandler) Delete(object runtime.Object) error {
+func (h genericGatewayHandler) Delete(object client.Object) error {
 	obj, ok := object.(*networking_istio_io_v1alpha3.Gateway)
 	if !ok {
 		return errors.Errorf("internal error: Gateway handler received event for %T", object)
@@ -318,7 +318,7 @@ func (h genericGatewayHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteGateway(obj)
 }
 
-func (h genericGatewayHandler) Update(old, new runtime.Object) error {
+func (h genericGatewayHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*networking_istio_io_v1alpha3.Gateway)
 	if !ok {
 		return errors.Errorf("internal error: Gateway handler received event for %T", old)
@@ -330,7 +330,7 @@ func (h genericGatewayHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateGateway(objOld, objNew)
 }
 
-func (h genericGatewayHandler) Generic(object runtime.Object) error {
+func (h genericGatewayHandler) Generic(object client.Object) error {
 	obj, ok := object.(*networking_istio_io_v1alpha3.Gateway)
 	if !ok {
 		return errors.Errorf("internal error: Gateway handler received event for %T", object)
@@ -409,7 +409,7 @@ type genericServiceEntryHandler struct {
 	handler ServiceEntryEventHandler
 }
 
-func (h genericServiceEntryHandler) Create(object runtime.Object) error {
+func (h genericServiceEntryHandler) Create(object client.Object) error {
 	obj, ok := object.(*networking_istio_io_v1alpha3.ServiceEntry)
 	if !ok {
 		return errors.Errorf("internal error: ServiceEntry handler received event for %T", object)
@@ -417,7 +417,7 @@ func (h genericServiceEntryHandler) Create(object runtime.Object) error {
 	return h.handler.CreateServiceEntry(obj)
 }
 
-func (h genericServiceEntryHandler) Delete(object runtime.Object) error {
+func (h genericServiceEntryHandler) Delete(object client.Object) error {
 	obj, ok := object.(*networking_istio_io_v1alpha3.ServiceEntry)
 	if !ok {
 		return errors.Errorf("internal error: ServiceEntry handler received event for %T", object)
@@ -425,7 +425,7 @@ func (h genericServiceEntryHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteServiceEntry(obj)
 }
 
-func (h genericServiceEntryHandler) Update(old, new runtime.Object) error {
+func (h genericServiceEntryHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*networking_istio_io_v1alpha3.ServiceEntry)
 	if !ok {
 		return errors.Errorf("internal error: ServiceEntry handler received event for %T", old)
@@ -437,7 +437,7 @@ func (h genericServiceEntryHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateServiceEntry(objOld, objNew)
 }
 
-func (h genericServiceEntryHandler) Generic(object runtime.Object) error {
+func (h genericServiceEntryHandler) Generic(object client.Object) error {
 	obj, ok := object.(*networking_istio_io_v1alpha3.ServiceEntry)
 	if !ok {
 		return errors.Errorf("internal error: ServiceEntry handler received event for %T", object)
@@ -516,7 +516,7 @@ type genericVirtualServiceHandler struct {
 	handler VirtualServiceEventHandler
 }
 
-func (h genericVirtualServiceHandler) Create(object runtime.Object) error {
+func (h genericVirtualServiceHandler) Create(object client.Object) error {
 	obj, ok := object.(*networking_istio_io_v1alpha3.VirtualService)
 	if !ok {
 		return errors.Errorf("internal error: VirtualService handler received event for %T", object)
@@ -524,7 +524,7 @@ func (h genericVirtualServiceHandler) Create(object runtime.Object) error {
 	return h.handler.CreateVirtualService(obj)
 }
 
-func (h genericVirtualServiceHandler) Delete(object runtime.Object) error {
+func (h genericVirtualServiceHandler) Delete(object client.Object) error {
 	obj, ok := object.(*networking_istio_io_v1alpha3.VirtualService)
 	if !ok {
 		return errors.Errorf("internal error: VirtualService handler received event for %T", object)
@@ -532,7 +532,7 @@ func (h genericVirtualServiceHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteVirtualService(obj)
 }
 
-func (h genericVirtualServiceHandler) Update(old, new runtime.Object) error {
+func (h genericVirtualServiceHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*networking_istio_io_v1alpha3.VirtualService)
 	if !ok {
 		return errors.Errorf("internal error: VirtualService handler received event for %T", old)
@@ -544,7 +544,7 @@ func (h genericVirtualServiceHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateVirtualService(objOld, objNew)
 }
 
-func (h genericVirtualServiceHandler) Generic(object runtime.Object) error {
+func (h genericVirtualServiceHandler) Generic(object client.Object) error {
 	obj, ok := object.(*networking_istio_io_v1alpha3.VirtualService)
 	if !ok {
 		return errors.Errorf("internal error: VirtualService handler received event for %T", object)

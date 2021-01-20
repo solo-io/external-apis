@@ -12,7 +12,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/solo-io/skv2/pkg/events"
-	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 )
@@ -88,7 +88,7 @@ type genericSecretHandler struct {
 	handler SecretEventHandler
 }
 
-func (h genericSecretHandler) Create(object runtime.Object) error {
+func (h genericSecretHandler) Create(object client.Object) error {
 	obj, ok := object.(*v1.Secret)
 	if !ok {
 		return errors.Errorf("internal error: Secret handler received event for %T", object)
@@ -96,7 +96,7 @@ func (h genericSecretHandler) Create(object runtime.Object) error {
 	return h.handler.CreateSecret(obj)
 }
 
-func (h genericSecretHandler) Delete(object runtime.Object) error {
+func (h genericSecretHandler) Delete(object client.Object) error {
 	obj, ok := object.(*v1.Secret)
 	if !ok {
 		return errors.Errorf("internal error: Secret handler received event for %T", object)
@@ -104,7 +104,7 @@ func (h genericSecretHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteSecret(obj)
 }
 
-func (h genericSecretHandler) Update(old, new runtime.Object) error {
+func (h genericSecretHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*v1.Secret)
 	if !ok {
 		return errors.Errorf("internal error: Secret handler received event for %T", old)
@@ -116,7 +116,7 @@ func (h genericSecretHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateSecret(objOld, objNew)
 }
 
-func (h genericSecretHandler) Generic(object runtime.Object) error {
+func (h genericSecretHandler) Generic(object client.Object) error {
 	obj, ok := object.(*v1.Secret)
 	if !ok {
 		return errors.Errorf("internal error: Secret handler received event for %T", object)
@@ -195,7 +195,7 @@ type genericServiceAccountHandler struct {
 	handler ServiceAccountEventHandler
 }
 
-func (h genericServiceAccountHandler) Create(object runtime.Object) error {
+func (h genericServiceAccountHandler) Create(object client.Object) error {
 	obj, ok := object.(*v1.ServiceAccount)
 	if !ok {
 		return errors.Errorf("internal error: ServiceAccount handler received event for %T", object)
@@ -203,7 +203,7 @@ func (h genericServiceAccountHandler) Create(object runtime.Object) error {
 	return h.handler.CreateServiceAccount(obj)
 }
 
-func (h genericServiceAccountHandler) Delete(object runtime.Object) error {
+func (h genericServiceAccountHandler) Delete(object client.Object) error {
 	obj, ok := object.(*v1.ServiceAccount)
 	if !ok {
 		return errors.Errorf("internal error: ServiceAccount handler received event for %T", object)
@@ -211,7 +211,7 @@ func (h genericServiceAccountHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteServiceAccount(obj)
 }
 
-func (h genericServiceAccountHandler) Update(old, new runtime.Object) error {
+func (h genericServiceAccountHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*v1.ServiceAccount)
 	if !ok {
 		return errors.Errorf("internal error: ServiceAccount handler received event for %T", old)
@@ -223,7 +223,7 @@ func (h genericServiceAccountHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateServiceAccount(objOld, objNew)
 }
 
-func (h genericServiceAccountHandler) Generic(object runtime.Object) error {
+func (h genericServiceAccountHandler) Generic(object client.Object) error {
 	obj, ok := object.(*v1.ServiceAccount)
 	if !ok {
 		return errors.Errorf("internal error: ServiceAccount handler received event for %T", object)
@@ -302,7 +302,7 @@ type genericConfigMapHandler struct {
 	handler ConfigMapEventHandler
 }
 
-func (h genericConfigMapHandler) Create(object runtime.Object) error {
+func (h genericConfigMapHandler) Create(object client.Object) error {
 	obj, ok := object.(*v1.ConfigMap)
 	if !ok {
 		return errors.Errorf("internal error: ConfigMap handler received event for %T", object)
@@ -310,7 +310,7 @@ func (h genericConfigMapHandler) Create(object runtime.Object) error {
 	return h.handler.CreateConfigMap(obj)
 }
 
-func (h genericConfigMapHandler) Delete(object runtime.Object) error {
+func (h genericConfigMapHandler) Delete(object client.Object) error {
 	obj, ok := object.(*v1.ConfigMap)
 	if !ok {
 		return errors.Errorf("internal error: ConfigMap handler received event for %T", object)
@@ -318,7 +318,7 @@ func (h genericConfigMapHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteConfigMap(obj)
 }
 
-func (h genericConfigMapHandler) Update(old, new runtime.Object) error {
+func (h genericConfigMapHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*v1.ConfigMap)
 	if !ok {
 		return errors.Errorf("internal error: ConfigMap handler received event for %T", old)
@@ -330,7 +330,7 @@ func (h genericConfigMapHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateConfigMap(objOld, objNew)
 }
 
-func (h genericConfigMapHandler) Generic(object runtime.Object) error {
+func (h genericConfigMapHandler) Generic(object client.Object) error {
 	obj, ok := object.(*v1.ConfigMap)
 	if !ok {
 		return errors.Errorf("internal error: ConfigMap handler received event for %T", object)
@@ -409,7 +409,7 @@ type genericServiceHandler struct {
 	handler ServiceEventHandler
 }
 
-func (h genericServiceHandler) Create(object runtime.Object) error {
+func (h genericServiceHandler) Create(object client.Object) error {
 	obj, ok := object.(*v1.Service)
 	if !ok {
 		return errors.Errorf("internal error: Service handler received event for %T", object)
@@ -417,7 +417,7 @@ func (h genericServiceHandler) Create(object runtime.Object) error {
 	return h.handler.CreateService(obj)
 }
 
-func (h genericServiceHandler) Delete(object runtime.Object) error {
+func (h genericServiceHandler) Delete(object client.Object) error {
 	obj, ok := object.(*v1.Service)
 	if !ok {
 		return errors.Errorf("internal error: Service handler received event for %T", object)
@@ -425,7 +425,7 @@ func (h genericServiceHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteService(obj)
 }
 
-func (h genericServiceHandler) Update(old, new runtime.Object) error {
+func (h genericServiceHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*v1.Service)
 	if !ok {
 		return errors.Errorf("internal error: Service handler received event for %T", old)
@@ -437,7 +437,7 @@ func (h genericServiceHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateService(objOld, objNew)
 }
 
-func (h genericServiceHandler) Generic(object runtime.Object) error {
+func (h genericServiceHandler) Generic(object client.Object) error {
 	obj, ok := object.(*v1.Service)
 	if !ok {
 		return errors.Errorf("internal error: Service handler received event for %T", object)
@@ -516,7 +516,7 @@ type genericPodHandler struct {
 	handler PodEventHandler
 }
 
-func (h genericPodHandler) Create(object runtime.Object) error {
+func (h genericPodHandler) Create(object client.Object) error {
 	obj, ok := object.(*v1.Pod)
 	if !ok {
 		return errors.Errorf("internal error: Pod handler received event for %T", object)
@@ -524,7 +524,7 @@ func (h genericPodHandler) Create(object runtime.Object) error {
 	return h.handler.CreatePod(obj)
 }
 
-func (h genericPodHandler) Delete(object runtime.Object) error {
+func (h genericPodHandler) Delete(object client.Object) error {
 	obj, ok := object.(*v1.Pod)
 	if !ok {
 		return errors.Errorf("internal error: Pod handler received event for %T", object)
@@ -532,7 +532,7 @@ func (h genericPodHandler) Delete(object runtime.Object) error {
 	return h.handler.DeletePod(obj)
 }
 
-func (h genericPodHandler) Update(old, new runtime.Object) error {
+func (h genericPodHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*v1.Pod)
 	if !ok {
 		return errors.Errorf("internal error: Pod handler received event for %T", old)
@@ -544,7 +544,7 @@ func (h genericPodHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdatePod(objOld, objNew)
 }
 
-func (h genericPodHandler) Generic(object runtime.Object) error {
+func (h genericPodHandler) Generic(object client.Object) error {
 	obj, ok := object.(*v1.Pod)
 	if !ok {
 		return errors.Errorf("internal error: Pod handler received event for %T", object)
@@ -623,7 +623,7 @@ type genericEndpointsHandler struct {
 	handler EndpointsEventHandler
 }
 
-func (h genericEndpointsHandler) Create(object runtime.Object) error {
+func (h genericEndpointsHandler) Create(object client.Object) error {
 	obj, ok := object.(*v1.Endpoints)
 	if !ok {
 		return errors.Errorf("internal error: Endpoints handler received event for %T", object)
@@ -631,7 +631,7 @@ func (h genericEndpointsHandler) Create(object runtime.Object) error {
 	return h.handler.CreateEndpoints(obj)
 }
 
-func (h genericEndpointsHandler) Delete(object runtime.Object) error {
+func (h genericEndpointsHandler) Delete(object client.Object) error {
 	obj, ok := object.(*v1.Endpoints)
 	if !ok {
 		return errors.Errorf("internal error: Endpoints handler received event for %T", object)
@@ -639,7 +639,7 @@ func (h genericEndpointsHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteEndpoints(obj)
 }
 
-func (h genericEndpointsHandler) Update(old, new runtime.Object) error {
+func (h genericEndpointsHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*v1.Endpoints)
 	if !ok {
 		return errors.Errorf("internal error: Endpoints handler received event for %T", old)
@@ -651,7 +651,7 @@ func (h genericEndpointsHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateEndpoints(objOld, objNew)
 }
 
-func (h genericEndpointsHandler) Generic(object runtime.Object) error {
+func (h genericEndpointsHandler) Generic(object client.Object) error {
 	obj, ok := object.(*v1.Endpoints)
 	if !ok {
 		return errors.Errorf("internal error: Endpoints handler received event for %T", object)
@@ -730,7 +730,7 @@ type genericNamespaceHandler struct {
 	handler NamespaceEventHandler
 }
 
-func (h genericNamespaceHandler) Create(object runtime.Object) error {
+func (h genericNamespaceHandler) Create(object client.Object) error {
 	obj, ok := object.(*v1.Namespace)
 	if !ok {
 		return errors.Errorf("internal error: Namespace handler received event for %T", object)
@@ -738,7 +738,7 @@ func (h genericNamespaceHandler) Create(object runtime.Object) error {
 	return h.handler.CreateNamespace(obj)
 }
 
-func (h genericNamespaceHandler) Delete(object runtime.Object) error {
+func (h genericNamespaceHandler) Delete(object client.Object) error {
 	obj, ok := object.(*v1.Namespace)
 	if !ok {
 		return errors.Errorf("internal error: Namespace handler received event for %T", object)
@@ -746,7 +746,7 @@ func (h genericNamespaceHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteNamespace(obj)
 }
 
-func (h genericNamespaceHandler) Update(old, new runtime.Object) error {
+func (h genericNamespaceHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*v1.Namespace)
 	if !ok {
 		return errors.Errorf("internal error: Namespace handler received event for %T", old)
@@ -758,7 +758,7 @@ func (h genericNamespaceHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateNamespace(objOld, objNew)
 }
 
-func (h genericNamespaceHandler) Generic(object runtime.Object) error {
+func (h genericNamespaceHandler) Generic(object client.Object) error {
 	obj, ok := object.(*v1.Namespace)
 	if !ok {
 		return errors.Errorf("internal error: Namespace handler received event for %T", object)
@@ -837,7 +837,7 @@ type genericNodeHandler struct {
 	handler NodeEventHandler
 }
 
-func (h genericNodeHandler) Create(object runtime.Object) error {
+func (h genericNodeHandler) Create(object client.Object) error {
 	obj, ok := object.(*v1.Node)
 	if !ok {
 		return errors.Errorf("internal error: Node handler received event for %T", object)
@@ -845,7 +845,7 @@ func (h genericNodeHandler) Create(object runtime.Object) error {
 	return h.handler.CreateNode(obj)
 }
 
-func (h genericNodeHandler) Delete(object runtime.Object) error {
+func (h genericNodeHandler) Delete(object client.Object) error {
 	obj, ok := object.(*v1.Node)
 	if !ok {
 		return errors.Errorf("internal error: Node handler received event for %T", object)
@@ -853,7 +853,7 @@ func (h genericNodeHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteNode(obj)
 }
 
-func (h genericNodeHandler) Update(old, new runtime.Object) error {
+func (h genericNodeHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*v1.Node)
 	if !ok {
 		return errors.Errorf("internal error: Node handler received event for %T", old)
@@ -865,7 +865,7 @@ func (h genericNodeHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateNode(objOld, objNew)
 }
 
-func (h genericNodeHandler) Generic(object runtime.Object) error {
+func (h genericNodeHandler) Generic(object client.Object) error {
 	obj, ok := object.(*v1.Node)
 	if !ok {
 		return errors.Errorf("internal error: Node handler received event for %T", object)

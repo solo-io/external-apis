@@ -12,7 +12,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/solo-io/skv2/pkg/events"
-	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 )
@@ -88,7 +88,7 @@ type genericTrafficTargetHandler struct {
 	handler TrafficTargetEventHandler
 }
 
-func (h genericTrafficTargetHandler) Create(object runtime.Object) error {
+func (h genericTrafficTargetHandler) Create(object client.Object) error {
 	obj, ok := object.(*access_smi_spec_io_v1alpha2.TrafficTarget)
 	if !ok {
 		return errors.Errorf("internal error: TrafficTarget handler received event for %T", object)
@@ -96,7 +96,7 @@ func (h genericTrafficTargetHandler) Create(object runtime.Object) error {
 	return h.handler.CreateTrafficTarget(obj)
 }
 
-func (h genericTrafficTargetHandler) Delete(object runtime.Object) error {
+func (h genericTrafficTargetHandler) Delete(object client.Object) error {
 	obj, ok := object.(*access_smi_spec_io_v1alpha2.TrafficTarget)
 	if !ok {
 		return errors.Errorf("internal error: TrafficTarget handler received event for %T", object)
@@ -104,7 +104,7 @@ func (h genericTrafficTargetHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteTrafficTarget(obj)
 }
 
-func (h genericTrafficTargetHandler) Update(old, new runtime.Object) error {
+func (h genericTrafficTargetHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*access_smi_spec_io_v1alpha2.TrafficTarget)
 	if !ok {
 		return errors.Errorf("internal error: TrafficTarget handler received event for %T", old)
@@ -116,7 +116,7 @@ func (h genericTrafficTargetHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateTrafficTarget(objOld, objNew)
 }
 
-func (h genericTrafficTargetHandler) Generic(object runtime.Object) error {
+func (h genericTrafficTargetHandler) Generic(object client.Object) error {
 	obj, ok := object.(*access_smi_spec_io_v1alpha2.TrafficTarget)
 	if !ok {
 		return errors.Errorf("internal error: TrafficTarget handler received event for %T", object)

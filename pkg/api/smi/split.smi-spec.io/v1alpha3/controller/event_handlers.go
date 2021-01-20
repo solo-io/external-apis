@@ -12,7 +12,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/solo-io/skv2/pkg/events"
-	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 )
@@ -88,7 +88,7 @@ type genericTrafficSplitHandler struct {
 	handler TrafficSplitEventHandler
 }
 
-func (h genericTrafficSplitHandler) Create(object runtime.Object) error {
+func (h genericTrafficSplitHandler) Create(object client.Object) error {
 	obj, ok := object.(*split_smi_spec_io_v1alpha3.TrafficSplit)
 	if !ok {
 		return errors.Errorf("internal error: TrafficSplit handler received event for %T", object)
@@ -96,7 +96,7 @@ func (h genericTrafficSplitHandler) Create(object runtime.Object) error {
 	return h.handler.CreateTrafficSplit(obj)
 }
 
-func (h genericTrafficSplitHandler) Delete(object runtime.Object) error {
+func (h genericTrafficSplitHandler) Delete(object client.Object) error {
 	obj, ok := object.(*split_smi_spec_io_v1alpha3.TrafficSplit)
 	if !ok {
 		return errors.Errorf("internal error: TrafficSplit handler received event for %T", object)
@@ -104,7 +104,7 @@ func (h genericTrafficSplitHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteTrafficSplit(obj)
 }
 
-func (h genericTrafficSplitHandler) Update(old, new runtime.Object) error {
+func (h genericTrafficSplitHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*split_smi_spec_io_v1alpha3.TrafficSplit)
 	if !ok {
 		return errors.Errorf("internal error: TrafficSplit handler received event for %T", old)
@@ -116,7 +116,7 @@ func (h genericTrafficSplitHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateTrafficSplit(objOld, objNew)
 }
 
-func (h genericTrafficSplitHandler) Generic(object runtime.Object) error {
+func (h genericTrafficSplitHandler) Generic(object client.Object) error {
 	obj, ok := object.(*split_smi_spec_io_v1alpha3.TrafficSplit)
 	if !ok {
 		return errors.Errorf("internal error: TrafficSplit handler received event for %T", object)
