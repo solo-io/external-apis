@@ -12,7 +12,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/solo-io/skv2/pkg/events"
-	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 )
@@ -88,7 +88,7 @@ type genericDeploymentHandler struct {
 	handler DeploymentEventHandler
 }
 
-func (h genericDeploymentHandler) Create(object runtime.Object) error {
+func (h genericDeploymentHandler) Create(object client.Object) error {
 	obj, ok := object.(*apps_v1.Deployment)
 	if !ok {
 		return errors.Errorf("internal error: Deployment handler received event for %T", object)
@@ -96,7 +96,7 @@ func (h genericDeploymentHandler) Create(object runtime.Object) error {
 	return h.handler.CreateDeployment(obj)
 }
 
-func (h genericDeploymentHandler) Delete(object runtime.Object) error {
+func (h genericDeploymentHandler) Delete(object client.Object) error {
 	obj, ok := object.(*apps_v1.Deployment)
 	if !ok {
 		return errors.Errorf("internal error: Deployment handler received event for %T", object)
@@ -104,7 +104,7 @@ func (h genericDeploymentHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteDeployment(obj)
 }
 
-func (h genericDeploymentHandler) Update(old, new runtime.Object) error {
+func (h genericDeploymentHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*apps_v1.Deployment)
 	if !ok {
 		return errors.Errorf("internal error: Deployment handler received event for %T", old)
@@ -116,7 +116,7 @@ func (h genericDeploymentHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateDeployment(objOld, objNew)
 }
 
-func (h genericDeploymentHandler) Generic(object runtime.Object) error {
+func (h genericDeploymentHandler) Generic(object client.Object) error {
 	obj, ok := object.(*apps_v1.Deployment)
 	if !ok {
 		return errors.Errorf("internal error: Deployment handler received event for %T", object)
@@ -195,7 +195,7 @@ type genericReplicaSetHandler struct {
 	handler ReplicaSetEventHandler
 }
 
-func (h genericReplicaSetHandler) Create(object runtime.Object) error {
+func (h genericReplicaSetHandler) Create(object client.Object) error {
 	obj, ok := object.(*apps_v1.ReplicaSet)
 	if !ok {
 		return errors.Errorf("internal error: ReplicaSet handler received event for %T", object)
@@ -203,7 +203,7 @@ func (h genericReplicaSetHandler) Create(object runtime.Object) error {
 	return h.handler.CreateReplicaSet(obj)
 }
 
-func (h genericReplicaSetHandler) Delete(object runtime.Object) error {
+func (h genericReplicaSetHandler) Delete(object client.Object) error {
 	obj, ok := object.(*apps_v1.ReplicaSet)
 	if !ok {
 		return errors.Errorf("internal error: ReplicaSet handler received event for %T", object)
@@ -211,7 +211,7 @@ func (h genericReplicaSetHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteReplicaSet(obj)
 }
 
-func (h genericReplicaSetHandler) Update(old, new runtime.Object) error {
+func (h genericReplicaSetHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*apps_v1.ReplicaSet)
 	if !ok {
 		return errors.Errorf("internal error: ReplicaSet handler received event for %T", old)
@@ -223,7 +223,7 @@ func (h genericReplicaSetHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateReplicaSet(objOld, objNew)
 }
 
-func (h genericReplicaSetHandler) Generic(object runtime.Object) error {
+func (h genericReplicaSetHandler) Generic(object client.Object) error {
 	obj, ok := object.(*apps_v1.ReplicaSet)
 	if !ok {
 		return errors.Errorf("internal error: ReplicaSet handler received event for %T", object)
@@ -302,7 +302,7 @@ type genericDaemonSetHandler struct {
 	handler DaemonSetEventHandler
 }
 
-func (h genericDaemonSetHandler) Create(object runtime.Object) error {
+func (h genericDaemonSetHandler) Create(object client.Object) error {
 	obj, ok := object.(*apps_v1.DaemonSet)
 	if !ok {
 		return errors.Errorf("internal error: DaemonSet handler received event for %T", object)
@@ -310,7 +310,7 @@ func (h genericDaemonSetHandler) Create(object runtime.Object) error {
 	return h.handler.CreateDaemonSet(obj)
 }
 
-func (h genericDaemonSetHandler) Delete(object runtime.Object) error {
+func (h genericDaemonSetHandler) Delete(object client.Object) error {
 	obj, ok := object.(*apps_v1.DaemonSet)
 	if !ok {
 		return errors.Errorf("internal error: DaemonSet handler received event for %T", object)
@@ -318,7 +318,7 @@ func (h genericDaemonSetHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteDaemonSet(obj)
 }
 
-func (h genericDaemonSetHandler) Update(old, new runtime.Object) error {
+func (h genericDaemonSetHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*apps_v1.DaemonSet)
 	if !ok {
 		return errors.Errorf("internal error: DaemonSet handler received event for %T", old)
@@ -330,7 +330,7 @@ func (h genericDaemonSetHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateDaemonSet(objOld, objNew)
 }
 
-func (h genericDaemonSetHandler) Generic(object runtime.Object) error {
+func (h genericDaemonSetHandler) Generic(object client.Object) error {
 	obj, ok := object.(*apps_v1.DaemonSet)
 	if !ok {
 		return errors.Errorf("internal error: DaemonSet handler received event for %T", object)
@@ -409,7 +409,7 @@ type genericStatefulSetHandler struct {
 	handler StatefulSetEventHandler
 }
 
-func (h genericStatefulSetHandler) Create(object runtime.Object) error {
+func (h genericStatefulSetHandler) Create(object client.Object) error {
 	obj, ok := object.(*apps_v1.StatefulSet)
 	if !ok {
 		return errors.Errorf("internal error: StatefulSet handler received event for %T", object)
@@ -417,7 +417,7 @@ func (h genericStatefulSetHandler) Create(object runtime.Object) error {
 	return h.handler.CreateStatefulSet(obj)
 }
 
-func (h genericStatefulSetHandler) Delete(object runtime.Object) error {
+func (h genericStatefulSetHandler) Delete(object client.Object) error {
 	obj, ok := object.(*apps_v1.StatefulSet)
 	if !ok {
 		return errors.Errorf("internal error: StatefulSet handler received event for %T", object)
@@ -425,7 +425,7 @@ func (h genericStatefulSetHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteStatefulSet(obj)
 }
 
-func (h genericStatefulSetHandler) Update(old, new runtime.Object) error {
+func (h genericStatefulSetHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*apps_v1.StatefulSet)
 	if !ok {
 		return errors.Errorf("internal error: StatefulSet handler received event for %T", old)
@@ -437,7 +437,7 @@ func (h genericStatefulSetHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateStatefulSet(objOld, objNew)
 }
 
-func (h genericStatefulSetHandler) Generic(object runtime.Object) error {
+func (h genericStatefulSetHandler) Generic(object client.Object) error {
 	obj, ok := object.(*apps_v1.StatefulSet)
 	if !ok {
 		return errors.Errorf("internal error: StatefulSet handler received event for %T", object)

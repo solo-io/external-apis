@@ -12,7 +12,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/solo-io/skv2/pkg/events"
-	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 )
@@ -88,7 +88,7 @@ type genericJobHandler struct {
 	handler JobEventHandler
 }
 
-func (h genericJobHandler) Create(object runtime.Object) error {
+func (h genericJobHandler) Create(object client.Object) error {
 	obj, ok := object.(*batch_v1.Job)
 	if !ok {
 		return errors.Errorf("internal error: Job handler received event for %T", object)
@@ -96,7 +96,7 @@ func (h genericJobHandler) Create(object runtime.Object) error {
 	return h.handler.CreateJob(obj)
 }
 
-func (h genericJobHandler) Delete(object runtime.Object) error {
+func (h genericJobHandler) Delete(object client.Object) error {
 	obj, ok := object.(*batch_v1.Job)
 	if !ok {
 		return errors.Errorf("internal error: Job handler received event for %T", object)
@@ -104,7 +104,7 @@ func (h genericJobHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteJob(obj)
 }
 
-func (h genericJobHandler) Update(old, new runtime.Object) error {
+func (h genericJobHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*batch_v1.Job)
 	if !ok {
 		return errors.Errorf("internal error: Job handler received event for %T", old)
@@ -116,7 +116,7 @@ func (h genericJobHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateJob(objOld, objNew)
 }
 
-func (h genericJobHandler) Generic(object runtime.Object) error {
+func (h genericJobHandler) Generic(object client.Object) error {
 	obj, ok := object.(*batch_v1.Job)
 	if !ok {
 		return errors.Errorf("internal error: Job handler received event for %T", object)

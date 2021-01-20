@@ -12,7 +12,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/solo-io/skv2/pkg/events"
-	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 )
@@ -88,7 +88,7 @@ type genericMeshHandler struct {
 	handler MeshEventHandler
 }
 
-func (h genericMeshHandler) Create(object runtime.Object) error {
+func (h genericMeshHandler) Create(object client.Object) error {
 	obj, ok := object.(*appmesh_k8s_aws_v1beta2.Mesh)
 	if !ok {
 		return errors.Errorf("internal error: Mesh handler received event for %T", object)
@@ -96,7 +96,7 @@ func (h genericMeshHandler) Create(object runtime.Object) error {
 	return h.handler.CreateMesh(obj)
 }
 
-func (h genericMeshHandler) Delete(object runtime.Object) error {
+func (h genericMeshHandler) Delete(object client.Object) error {
 	obj, ok := object.(*appmesh_k8s_aws_v1beta2.Mesh)
 	if !ok {
 		return errors.Errorf("internal error: Mesh handler received event for %T", object)
@@ -104,7 +104,7 @@ func (h genericMeshHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteMesh(obj)
 }
 
-func (h genericMeshHandler) Update(old, new runtime.Object) error {
+func (h genericMeshHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*appmesh_k8s_aws_v1beta2.Mesh)
 	if !ok {
 		return errors.Errorf("internal error: Mesh handler received event for %T", old)
@@ -116,7 +116,7 @@ func (h genericMeshHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateMesh(objOld, objNew)
 }
 
-func (h genericMeshHandler) Generic(object runtime.Object) error {
+func (h genericMeshHandler) Generic(object client.Object) error {
 	obj, ok := object.(*appmesh_k8s_aws_v1beta2.Mesh)
 	if !ok {
 		return errors.Errorf("internal error: Mesh handler received event for %T", object)
@@ -195,7 +195,7 @@ type genericVirtualServiceHandler struct {
 	handler VirtualServiceEventHandler
 }
 
-func (h genericVirtualServiceHandler) Create(object runtime.Object) error {
+func (h genericVirtualServiceHandler) Create(object client.Object) error {
 	obj, ok := object.(*appmesh_k8s_aws_v1beta2.VirtualService)
 	if !ok {
 		return errors.Errorf("internal error: VirtualService handler received event for %T", object)
@@ -203,7 +203,7 @@ func (h genericVirtualServiceHandler) Create(object runtime.Object) error {
 	return h.handler.CreateVirtualService(obj)
 }
 
-func (h genericVirtualServiceHandler) Delete(object runtime.Object) error {
+func (h genericVirtualServiceHandler) Delete(object client.Object) error {
 	obj, ok := object.(*appmesh_k8s_aws_v1beta2.VirtualService)
 	if !ok {
 		return errors.Errorf("internal error: VirtualService handler received event for %T", object)
@@ -211,7 +211,7 @@ func (h genericVirtualServiceHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteVirtualService(obj)
 }
 
-func (h genericVirtualServiceHandler) Update(old, new runtime.Object) error {
+func (h genericVirtualServiceHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*appmesh_k8s_aws_v1beta2.VirtualService)
 	if !ok {
 		return errors.Errorf("internal error: VirtualService handler received event for %T", old)
@@ -223,7 +223,7 @@ func (h genericVirtualServiceHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateVirtualService(objOld, objNew)
 }
 
-func (h genericVirtualServiceHandler) Generic(object runtime.Object) error {
+func (h genericVirtualServiceHandler) Generic(object client.Object) error {
 	obj, ok := object.(*appmesh_k8s_aws_v1beta2.VirtualService)
 	if !ok {
 		return errors.Errorf("internal error: VirtualService handler received event for %T", object)
@@ -302,7 +302,7 @@ type genericVirtualNodeHandler struct {
 	handler VirtualNodeEventHandler
 }
 
-func (h genericVirtualNodeHandler) Create(object runtime.Object) error {
+func (h genericVirtualNodeHandler) Create(object client.Object) error {
 	obj, ok := object.(*appmesh_k8s_aws_v1beta2.VirtualNode)
 	if !ok {
 		return errors.Errorf("internal error: VirtualNode handler received event for %T", object)
@@ -310,7 +310,7 @@ func (h genericVirtualNodeHandler) Create(object runtime.Object) error {
 	return h.handler.CreateVirtualNode(obj)
 }
 
-func (h genericVirtualNodeHandler) Delete(object runtime.Object) error {
+func (h genericVirtualNodeHandler) Delete(object client.Object) error {
 	obj, ok := object.(*appmesh_k8s_aws_v1beta2.VirtualNode)
 	if !ok {
 		return errors.Errorf("internal error: VirtualNode handler received event for %T", object)
@@ -318,7 +318,7 @@ func (h genericVirtualNodeHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteVirtualNode(obj)
 }
 
-func (h genericVirtualNodeHandler) Update(old, new runtime.Object) error {
+func (h genericVirtualNodeHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*appmesh_k8s_aws_v1beta2.VirtualNode)
 	if !ok {
 		return errors.Errorf("internal error: VirtualNode handler received event for %T", old)
@@ -330,7 +330,7 @@ func (h genericVirtualNodeHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateVirtualNode(objOld, objNew)
 }
 
-func (h genericVirtualNodeHandler) Generic(object runtime.Object) error {
+func (h genericVirtualNodeHandler) Generic(object client.Object) error {
 	obj, ok := object.(*appmesh_k8s_aws_v1beta2.VirtualNode)
 	if !ok {
 		return errors.Errorf("internal error: VirtualNode handler received event for %T", object)
@@ -409,7 +409,7 @@ type genericVirtualRouterHandler struct {
 	handler VirtualRouterEventHandler
 }
 
-func (h genericVirtualRouterHandler) Create(object runtime.Object) error {
+func (h genericVirtualRouterHandler) Create(object client.Object) error {
 	obj, ok := object.(*appmesh_k8s_aws_v1beta2.VirtualRouter)
 	if !ok {
 		return errors.Errorf("internal error: VirtualRouter handler received event for %T", object)
@@ -417,7 +417,7 @@ func (h genericVirtualRouterHandler) Create(object runtime.Object) error {
 	return h.handler.CreateVirtualRouter(obj)
 }
 
-func (h genericVirtualRouterHandler) Delete(object runtime.Object) error {
+func (h genericVirtualRouterHandler) Delete(object client.Object) error {
 	obj, ok := object.(*appmesh_k8s_aws_v1beta2.VirtualRouter)
 	if !ok {
 		return errors.Errorf("internal error: VirtualRouter handler received event for %T", object)
@@ -425,7 +425,7 @@ func (h genericVirtualRouterHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteVirtualRouter(obj)
 }
 
-func (h genericVirtualRouterHandler) Update(old, new runtime.Object) error {
+func (h genericVirtualRouterHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*appmesh_k8s_aws_v1beta2.VirtualRouter)
 	if !ok {
 		return errors.Errorf("internal error: VirtualRouter handler received event for %T", old)
@@ -437,7 +437,7 @@ func (h genericVirtualRouterHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateVirtualRouter(objOld, objNew)
 }
 
-func (h genericVirtualRouterHandler) Generic(object runtime.Object) error {
+func (h genericVirtualRouterHandler) Generic(object client.Object) error {
 	obj, ok := object.(*appmesh_k8s_aws_v1beta2.VirtualRouter)
 	if !ok {
 		return errors.Errorf("internal error: VirtualRouter handler received event for %T", object)
@@ -516,7 +516,7 @@ type genericVirtualGatewayHandler struct {
 	handler VirtualGatewayEventHandler
 }
 
-func (h genericVirtualGatewayHandler) Create(object runtime.Object) error {
+func (h genericVirtualGatewayHandler) Create(object client.Object) error {
 	obj, ok := object.(*appmesh_k8s_aws_v1beta2.VirtualGateway)
 	if !ok {
 		return errors.Errorf("internal error: VirtualGateway handler received event for %T", object)
@@ -524,7 +524,7 @@ func (h genericVirtualGatewayHandler) Create(object runtime.Object) error {
 	return h.handler.CreateVirtualGateway(obj)
 }
 
-func (h genericVirtualGatewayHandler) Delete(object runtime.Object) error {
+func (h genericVirtualGatewayHandler) Delete(object client.Object) error {
 	obj, ok := object.(*appmesh_k8s_aws_v1beta2.VirtualGateway)
 	if !ok {
 		return errors.Errorf("internal error: VirtualGateway handler received event for %T", object)
@@ -532,7 +532,7 @@ func (h genericVirtualGatewayHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteVirtualGateway(obj)
 }
 
-func (h genericVirtualGatewayHandler) Update(old, new runtime.Object) error {
+func (h genericVirtualGatewayHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*appmesh_k8s_aws_v1beta2.VirtualGateway)
 	if !ok {
 		return errors.Errorf("internal error: VirtualGateway handler received event for %T", old)
@@ -544,7 +544,7 @@ func (h genericVirtualGatewayHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateVirtualGateway(objOld, objNew)
 }
 
-func (h genericVirtualGatewayHandler) Generic(object runtime.Object) error {
+func (h genericVirtualGatewayHandler) Generic(object client.Object) error {
 	obj, ok := object.(*appmesh_k8s_aws_v1beta2.VirtualGateway)
 	if !ok {
 		return errors.Errorf("internal error: VirtualGateway handler received event for %T", object)
@@ -623,7 +623,7 @@ type genericGatewayRouteHandler struct {
 	handler GatewayRouteEventHandler
 }
 
-func (h genericGatewayRouteHandler) Create(object runtime.Object) error {
+func (h genericGatewayRouteHandler) Create(object client.Object) error {
 	obj, ok := object.(*appmesh_k8s_aws_v1beta2.GatewayRoute)
 	if !ok {
 		return errors.Errorf("internal error: GatewayRoute handler received event for %T", object)
@@ -631,7 +631,7 @@ func (h genericGatewayRouteHandler) Create(object runtime.Object) error {
 	return h.handler.CreateGatewayRoute(obj)
 }
 
-func (h genericGatewayRouteHandler) Delete(object runtime.Object) error {
+func (h genericGatewayRouteHandler) Delete(object client.Object) error {
 	obj, ok := object.(*appmesh_k8s_aws_v1beta2.GatewayRoute)
 	if !ok {
 		return errors.Errorf("internal error: GatewayRoute handler received event for %T", object)
@@ -639,7 +639,7 @@ func (h genericGatewayRouteHandler) Delete(object runtime.Object) error {
 	return h.handler.DeleteGatewayRoute(obj)
 }
 
-func (h genericGatewayRouteHandler) Update(old, new runtime.Object) error {
+func (h genericGatewayRouteHandler) Update(old, new client.Object) error {
 	objOld, ok := old.(*appmesh_k8s_aws_v1beta2.GatewayRoute)
 	if !ok {
 		return errors.Errorf("internal error: GatewayRoute handler received event for %T", old)
@@ -651,7 +651,7 @@ func (h genericGatewayRouteHandler) Update(old, new runtime.Object) error {
 	return h.handler.UpdateGatewayRoute(objOld, objNew)
 }
 
-func (h genericGatewayRouteHandler) Generic(object runtime.Object) error {
+func (h genericGatewayRouteHandler) Generic(object client.Object) error {
 	obj, ok := object.(*appmesh_k8s_aws_v1beta2.GatewayRoute)
 	if !ok {
 		return errors.Errorf("internal error: GatewayRoute handler received event for %T", object)
