@@ -36,6 +36,9 @@ func istioGroups() []model.Group {
 				{
 					Kind: "VirtualService",
 				},
+				{
+					Kind: "Sidecar",
+				},
 			},
 			CustomTypesImportPath: "istio.io/client-go/pkg/apis/networking/v1alpha3",
 			ApiRoot:               istioApiRoot,

@@ -372,3 +372,74 @@ func (g genericVirtualServiceMulticlusterReconciler) Reconcile(cluster string, o
 	}
 	return g.reconciler.ReconcileVirtualService(cluster, obj)
 }
+
+// Reconcile Upsert events for the Sidecar Resource across clusters.
+// implemented by the user
+type MulticlusterSidecarReconciler interface {
+	ReconcileSidecar(clusterName string, obj *networking_istio_io_v1alpha3.Sidecar) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the Sidecar Resource across clusters.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type MulticlusterSidecarDeletionReconciler interface {
+	ReconcileSidecarDeletion(clusterName string, req reconcile.Request) error
+}
+
+type MulticlusterSidecarReconcilerFuncs struct {
+	OnReconcileSidecar         func(clusterName string, obj *networking_istio_io_v1alpha3.Sidecar) (reconcile.Result, error)
+	OnReconcileSidecarDeletion func(clusterName string, req reconcile.Request) error
+}
+
+func (f *MulticlusterSidecarReconcilerFuncs) ReconcileSidecar(clusterName string, obj *networking_istio_io_v1alpha3.Sidecar) (reconcile.Result, error) {
+	if f.OnReconcileSidecar == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcileSidecar(clusterName, obj)
+}
+
+func (f *MulticlusterSidecarReconcilerFuncs) ReconcileSidecarDeletion(clusterName string, req reconcile.Request) error {
+	if f.OnReconcileSidecarDeletion == nil {
+		return nil
+	}
+	return f.OnReconcileSidecarDeletion(clusterName, req)
+}
+
+type MulticlusterSidecarReconcileLoop interface {
+	// AddMulticlusterSidecarReconciler adds a MulticlusterSidecarReconciler to the MulticlusterSidecarReconcileLoop.
+	AddMulticlusterSidecarReconciler(ctx context.Context, rec MulticlusterSidecarReconciler, predicates ...predicate.Predicate)
+}
+
+type multiclusterSidecarReconcileLoop struct {
+	loop multicluster.Loop
+}
+
+func (m *multiclusterSidecarReconcileLoop) AddMulticlusterSidecarReconciler(ctx context.Context, rec MulticlusterSidecarReconciler, predicates ...predicate.Predicate) {
+	genericReconciler := genericSidecarMulticlusterReconciler{reconciler: rec}
+
+	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
+}
+
+func NewMulticlusterSidecarReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterSidecarReconcileLoop {
+	return &multiclusterSidecarReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &networking_istio_io_v1alpha3.Sidecar{}, options)}
+}
+
+type genericSidecarMulticlusterReconciler struct {
+	reconciler MulticlusterSidecarReconciler
+}
+
+func (g genericSidecarMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) error {
+	if deletionReconciler, ok := g.reconciler.(MulticlusterSidecarDeletionReconciler); ok {
+		return deletionReconciler.ReconcileSidecarDeletion(cluster, req)
+	}
+	return nil
+}
+
+func (g genericSidecarMulticlusterReconciler) Reconcile(cluster string, object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*networking_istio_io_v1alpha3.Sidecar)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: Sidecar handler received event for %T", object)
+	}
+	return g.reconciler.ReconcileSidecar(cluster, obj)
+}

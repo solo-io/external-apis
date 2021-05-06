@@ -50,6 +50,8 @@ type Clientset interface {
 	ServiceEntries() ServiceEntryClient
 	// clienset for the networking.istio.io/v1alpha3/v1alpha3 APIs
 	VirtualServices() VirtualServiceClient
+	// clienset for the networking.istio.io/v1alpha3/v1alpha3 APIs
+	Sidecars() SidecarClient
 }
 
 type clientSet struct {
@@ -97,6 +99,11 @@ func (c *clientSet) ServiceEntries() ServiceEntryClient {
 // clienset for the networking.istio.io/v1alpha3/v1alpha3 APIs
 func (c *clientSet) VirtualServices() VirtualServiceClient {
 	return NewVirtualServiceClient(c.client)
+}
+
+// clienset for the networking.istio.io/v1alpha3/v1alpha3 APIs
+func (c *clientSet) Sidecars() SidecarClient {
+	return NewSidecarClient(c.client)
 }
 
 // Reader knows how to read and list DestinationRules.
@@ -807,4 +814,146 @@ func (m *multiclusterVirtualServiceClient) Cluster(cluster string) (VirtualServi
 		return nil, err
 	}
 	return NewVirtualServiceClient(client), nil
+}
+
+// Reader knows how to read and list Sidecars.
+type SidecarReader interface {
+	// Get retrieves a Sidecar for the given object key
+	GetSidecar(ctx context.Context, key client.ObjectKey) (*networking_istio_io_v1alpha3.Sidecar, error)
+
+	// List retrieves list of Sidecars for a given namespace and list options.
+	ListSidecar(ctx context.Context, opts ...client.ListOption) (*networking_istio_io_v1alpha3.SidecarList, error)
+}
+
+// SidecarTransitionFunction instructs the SidecarWriter how to transition between an existing
+// Sidecar object and a desired on an Upsert
+type SidecarTransitionFunction func(existing, desired *networking_istio_io_v1alpha3.Sidecar) error
+
+// Writer knows how to create, delete, and update Sidecars.
+type SidecarWriter interface {
+	// Create saves the Sidecar object.
+	CreateSidecar(ctx context.Context, obj *networking_istio_io_v1alpha3.Sidecar, opts ...client.CreateOption) error
+
+	// Delete deletes the Sidecar object.
+	DeleteSidecar(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error
+
+	// Update updates the given Sidecar object.
+	UpdateSidecar(ctx context.Context, obj *networking_istio_io_v1alpha3.Sidecar, opts ...client.UpdateOption) error
+
+	// Patch patches the given Sidecar object.
+	PatchSidecar(ctx context.Context, obj *networking_istio_io_v1alpha3.Sidecar, patch client.Patch, opts ...client.PatchOption) error
+
+	// DeleteAllOf deletes all Sidecar objects matching the given options.
+	DeleteAllOfSidecar(ctx context.Context, opts ...client.DeleteAllOfOption) error
+
+	// Create or Update the Sidecar object.
+	UpsertSidecar(ctx context.Context, obj *networking_istio_io_v1alpha3.Sidecar, transitionFuncs ...SidecarTransitionFunction) error
+}
+
+// StatusWriter knows how to update status subresource of a Sidecar object.
+type SidecarStatusWriter interface {
+	// Update updates the fields corresponding to the status subresource for the
+	// given Sidecar object.
+	UpdateSidecarStatus(ctx context.Context, obj *networking_istio_io_v1alpha3.Sidecar, opts ...client.UpdateOption) error
+
+	// Patch patches the given Sidecar object's subresource.
+	PatchSidecarStatus(ctx context.Context, obj *networking_istio_io_v1alpha3.Sidecar, patch client.Patch, opts ...client.PatchOption) error
+}
+
+// Client knows how to perform CRUD operations on Sidecars.
+type SidecarClient interface {
+	SidecarReader
+	SidecarWriter
+	SidecarStatusWriter
+}
+
+type sidecarClient struct {
+	client client.Client
+}
+
+func NewSidecarClient(client client.Client) *sidecarClient {
+	return &sidecarClient{client: client}
+}
+
+func (c *sidecarClient) GetSidecar(ctx context.Context, key client.ObjectKey) (*networking_istio_io_v1alpha3.Sidecar, error) {
+	obj := &networking_istio_io_v1alpha3.Sidecar{}
+	if err := c.client.Get(ctx, key, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+func (c *sidecarClient) ListSidecar(ctx context.Context, opts ...client.ListOption) (*networking_istio_io_v1alpha3.SidecarList, error) {
+	list := &networking_istio_io_v1alpha3.SidecarList{}
+	if err := c.client.List(ctx, list, opts...); err != nil {
+		return nil, err
+	}
+	return list, nil
+}
+
+func (c *sidecarClient) CreateSidecar(ctx context.Context, obj *networking_istio_io_v1alpha3.Sidecar, opts ...client.CreateOption) error {
+	return c.client.Create(ctx, obj, opts...)
+}
+
+func (c *sidecarClient) DeleteSidecar(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	obj := &networking_istio_io_v1alpha3.Sidecar{}
+	obj.SetName(key.Name)
+	obj.SetNamespace(key.Namespace)
+	return c.client.Delete(ctx, obj, opts...)
+}
+
+func (c *sidecarClient) UpdateSidecar(ctx context.Context, obj *networking_istio_io_v1alpha3.Sidecar, opts ...client.UpdateOption) error {
+	return c.client.Update(ctx, obj, opts...)
+}
+
+func (c *sidecarClient) PatchSidecar(ctx context.Context, obj *networking_istio_io_v1alpha3.Sidecar, patch client.Patch, opts ...client.PatchOption) error {
+	return c.client.Patch(ctx, obj, patch, opts...)
+}
+
+func (c *sidecarClient) DeleteAllOfSidecar(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	obj := &networking_istio_io_v1alpha3.Sidecar{}
+	return c.client.DeleteAllOf(ctx, obj, opts...)
+}
+
+func (c *sidecarClient) UpsertSidecar(ctx context.Context, obj *networking_istio_io_v1alpha3.Sidecar, transitionFuncs ...SidecarTransitionFunction) error {
+	genericTxFunc := func(existing, desired runtime.Object) error {
+		for _, txFunc := range transitionFuncs {
+			if err := txFunc(existing.(*networking_istio_io_v1alpha3.Sidecar), desired.(*networking_istio_io_v1alpha3.Sidecar)); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+	_, err := controllerutils.Upsert(ctx, c.client, obj, genericTxFunc)
+	return err
+}
+
+func (c *sidecarClient) UpdateSidecarStatus(ctx context.Context, obj *networking_istio_io_v1alpha3.Sidecar, opts ...client.UpdateOption) error {
+	return c.client.Status().Update(ctx, obj, opts...)
+}
+
+func (c *sidecarClient) PatchSidecarStatus(ctx context.Context, obj *networking_istio_io_v1alpha3.Sidecar, patch client.Patch, opts ...client.PatchOption) error {
+	return c.client.Status().Patch(ctx, obj, patch, opts...)
+}
+
+// Provides SidecarClients for multiple clusters.
+type MulticlusterSidecarClient interface {
+	// Cluster returns a SidecarClient for the given cluster
+	Cluster(cluster string) (SidecarClient, error)
+}
+
+type multiclusterSidecarClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterSidecarClient(client multicluster.Client) MulticlusterSidecarClient {
+	return &multiclusterSidecarClient{client: client}
+}
+
+func (m *multiclusterSidecarClient) Cluster(cluster string) (SidecarClient, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewSidecarClient(client), nil
 }
