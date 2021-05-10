@@ -145,6 +145,20 @@ func (mr *MockClientsetMockRecorder) VirtualServices() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "VirtualServices", reflect.TypeOf((*MockClientset)(nil).VirtualServices))
 }
 
+// Sidecars mocks base method
+func (m *MockClientset) Sidecars() v1alpha3.SidecarClient {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Sidecars")
+	ret0, _ := ret[0].(v1alpha3.SidecarClient)
+	return ret0
+}
+
+// Sidecars indicates an expected call of Sidecars
+func (mr *MockClientsetMockRecorder) Sidecars() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Sidecars", reflect.TypeOf((*MockClientset)(nil).Sidecars))
+}
+
 // MockDestinationRuleReader is a mock of DestinationRuleReader interface
 type MockDestinationRuleReader struct {
 	ctrl     *gomock.Controller
@@ -2663,4 +2677,508 @@ func (m *MockMulticlusterVirtualServiceClient) Cluster(cluster string) (v1alpha3
 func (mr *MockMulticlusterVirtualServiceClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterVirtualServiceClient)(nil).Cluster), cluster)
+}
+
+// MockSidecarReader is a mock of SidecarReader interface
+type MockSidecarReader struct {
+	ctrl     *gomock.Controller
+	recorder *MockSidecarReaderMockRecorder
+}
+
+// MockSidecarReaderMockRecorder is the mock recorder for MockSidecarReader
+type MockSidecarReaderMockRecorder struct {
+	mock *MockSidecarReader
+}
+
+// NewMockSidecarReader creates a new mock instance
+func NewMockSidecarReader(ctrl *gomock.Controller) *MockSidecarReader {
+	mock := &MockSidecarReader{ctrl: ctrl}
+	mock.recorder = &MockSidecarReaderMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockSidecarReader) EXPECT() *MockSidecarReaderMockRecorder {
+	return m.recorder
+}
+
+// GetSidecar mocks base method
+func (m *MockSidecarReader) GetSidecar(ctx context.Context, key client.ObjectKey) (*v1alpha30.Sidecar, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSidecar", ctx, key)
+	ret0, _ := ret[0].(*v1alpha30.Sidecar)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetSidecar indicates an expected call of GetSidecar
+func (mr *MockSidecarReaderMockRecorder) GetSidecar(ctx, key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSidecar", reflect.TypeOf((*MockSidecarReader)(nil).GetSidecar), ctx, key)
+}
+
+// ListSidecar mocks base method
+func (m *MockSidecarReader) ListSidecar(ctx context.Context, opts ...client.ListOption) (*v1alpha30.SidecarList, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListSidecar", varargs...)
+	ret0, _ := ret[0].(*v1alpha30.SidecarList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListSidecar indicates an expected call of ListSidecar
+func (mr *MockSidecarReaderMockRecorder) ListSidecar(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListSidecar", reflect.TypeOf((*MockSidecarReader)(nil).ListSidecar), varargs...)
+}
+
+// MockSidecarWriter is a mock of SidecarWriter interface
+type MockSidecarWriter struct {
+	ctrl     *gomock.Controller
+	recorder *MockSidecarWriterMockRecorder
+}
+
+// MockSidecarWriterMockRecorder is the mock recorder for MockSidecarWriter
+type MockSidecarWriterMockRecorder struct {
+	mock *MockSidecarWriter
+}
+
+// NewMockSidecarWriter creates a new mock instance
+func NewMockSidecarWriter(ctrl *gomock.Controller) *MockSidecarWriter {
+	mock := &MockSidecarWriter{ctrl: ctrl}
+	mock.recorder = &MockSidecarWriterMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockSidecarWriter) EXPECT() *MockSidecarWriterMockRecorder {
+	return m.recorder
+}
+
+// CreateSidecar mocks base method
+func (m *MockSidecarWriter) CreateSidecar(ctx context.Context, obj *v1alpha30.Sidecar, opts ...client.CreateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateSidecar", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateSidecar indicates an expected call of CreateSidecar
+func (mr *MockSidecarWriterMockRecorder) CreateSidecar(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSidecar", reflect.TypeOf((*MockSidecarWriter)(nil).CreateSidecar), varargs...)
+}
+
+// DeleteSidecar mocks base method
+func (m *MockSidecarWriter) DeleteSidecar(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, key}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteSidecar", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteSidecar indicates an expected call of DeleteSidecar
+func (mr *MockSidecarWriterMockRecorder) DeleteSidecar(ctx, key interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, key}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteSidecar", reflect.TypeOf((*MockSidecarWriter)(nil).DeleteSidecar), varargs...)
+}
+
+// UpdateSidecar mocks base method
+func (m *MockSidecarWriter) UpdateSidecar(ctx context.Context, obj *v1alpha30.Sidecar, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateSidecar", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateSidecar indicates an expected call of UpdateSidecar
+func (mr *MockSidecarWriterMockRecorder) UpdateSidecar(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateSidecar", reflect.TypeOf((*MockSidecarWriter)(nil).UpdateSidecar), varargs...)
+}
+
+// PatchSidecar mocks base method
+func (m *MockSidecarWriter) PatchSidecar(ctx context.Context, obj *v1alpha30.Sidecar, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchSidecar", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchSidecar indicates an expected call of PatchSidecar
+func (mr *MockSidecarWriterMockRecorder) PatchSidecar(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchSidecar", reflect.TypeOf((*MockSidecarWriter)(nil).PatchSidecar), varargs...)
+}
+
+// DeleteAllOfSidecar mocks base method
+func (m *MockSidecarWriter) DeleteAllOfSidecar(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteAllOfSidecar", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllOfSidecar indicates an expected call of DeleteAllOfSidecar
+func (mr *MockSidecarWriterMockRecorder) DeleteAllOfSidecar(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfSidecar", reflect.TypeOf((*MockSidecarWriter)(nil).DeleteAllOfSidecar), varargs...)
+}
+
+// UpsertSidecar mocks base method
+func (m *MockSidecarWriter) UpsertSidecar(ctx context.Context, obj *v1alpha30.Sidecar, transitionFuncs ...v1alpha3.SidecarTransitionFunction) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range transitionFuncs {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpsertSidecar", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertSidecar indicates an expected call of UpsertSidecar
+func (mr *MockSidecarWriterMockRecorder) UpsertSidecar(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertSidecar", reflect.TypeOf((*MockSidecarWriter)(nil).UpsertSidecar), varargs...)
+}
+
+// MockSidecarStatusWriter is a mock of SidecarStatusWriter interface
+type MockSidecarStatusWriter struct {
+	ctrl     *gomock.Controller
+	recorder *MockSidecarStatusWriterMockRecorder
+}
+
+// MockSidecarStatusWriterMockRecorder is the mock recorder for MockSidecarStatusWriter
+type MockSidecarStatusWriterMockRecorder struct {
+	mock *MockSidecarStatusWriter
+}
+
+// NewMockSidecarStatusWriter creates a new mock instance
+func NewMockSidecarStatusWriter(ctrl *gomock.Controller) *MockSidecarStatusWriter {
+	mock := &MockSidecarStatusWriter{ctrl: ctrl}
+	mock.recorder = &MockSidecarStatusWriterMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockSidecarStatusWriter) EXPECT() *MockSidecarStatusWriterMockRecorder {
+	return m.recorder
+}
+
+// UpdateSidecarStatus mocks base method
+func (m *MockSidecarStatusWriter) UpdateSidecarStatus(ctx context.Context, obj *v1alpha30.Sidecar, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateSidecarStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateSidecarStatus indicates an expected call of UpdateSidecarStatus
+func (mr *MockSidecarStatusWriterMockRecorder) UpdateSidecarStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateSidecarStatus", reflect.TypeOf((*MockSidecarStatusWriter)(nil).UpdateSidecarStatus), varargs...)
+}
+
+// PatchSidecarStatus mocks base method
+func (m *MockSidecarStatusWriter) PatchSidecarStatus(ctx context.Context, obj *v1alpha30.Sidecar, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchSidecarStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchSidecarStatus indicates an expected call of PatchSidecarStatus
+func (mr *MockSidecarStatusWriterMockRecorder) PatchSidecarStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchSidecarStatus", reflect.TypeOf((*MockSidecarStatusWriter)(nil).PatchSidecarStatus), varargs...)
+}
+
+// MockSidecarClient is a mock of SidecarClient interface
+type MockSidecarClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockSidecarClientMockRecorder
+}
+
+// MockSidecarClientMockRecorder is the mock recorder for MockSidecarClient
+type MockSidecarClientMockRecorder struct {
+	mock *MockSidecarClient
+}
+
+// NewMockSidecarClient creates a new mock instance
+func NewMockSidecarClient(ctrl *gomock.Controller) *MockSidecarClient {
+	mock := &MockSidecarClient{ctrl: ctrl}
+	mock.recorder = &MockSidecarClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockSidecarClient) EXPECT() *MockSidecarClientMockRecorder {
+	return m.recorder
+}
+
+// GetSidecar mocks base method
+func (m *MockSidecarClient) GetSidecar(ctx context.Context, key client.ObjectKey) (*v1alpha30.Sidecar, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSidecar", ctx, key)
+	ret0, _ := ret[0].(*v1alpha30.Sidecar)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetSidecar indicates an expected call of GetSidecar
+func (mr *MockSidecarClientMockRecorder) GetSidecar(ctx, key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSidecar", reflect.TypeOf((*MockSidecarClient)(nil).GetSidecar), ctx, key)
+}
+
+// ListSidecar mocks base method
+func (m *MockSidecarClient) ListSidecar(ctx context.Context, opts ...client.ListOption) (*v1alpha30.SidecarList, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListSidecar", varargs...)
+	ret0, _ := ret[0].(*v1alpha30.SidecarList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListSidecar indicates an expected call of ListSidecar
+func (mr *MockSidecarClientMockRecorder) ListSidecar(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListSidecar", reflect.TypeOf((*MockSidecarClient)(nil).ListSidecar), varargs...)
+}
+
+// CreateSidecar mocks base method
+func (m *MockSidecarClient) CreateSidecar(ctx context.Context, obj *v1alpha30.Sidecar, opts ...client.CreateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateSidecar", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateSidecar indicates an expected call of CreateSidecar
+func (mr *MockSidecarClientMockRecorder) CreateSidecar(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSidecar", reflect.TypeOf((*MockSidecarClient)(nil).CreateSidecar), varargs...)
+}
+
+// DeleteSidecar mocks base method
+func (m *MockSidecarClient) DeleteSidecar(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, key}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteSidecar", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteSidecar indicates an expected call of DeleteSidecar
+func (mr *MockSidecarClientMockRecorder) DeleteSidecar(ctx, key interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, key}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteSidecar", reflect.TypeOf((*MockSidecarClient)(nil).DeleteSidecar), varargs...)
+}
+
+// UpdateSidecar mocks base method
+func (m *MockSidecarClient) UpdateSidecar(ctx context.Context, obj *v1alpha30.Sidecar, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateSidecar", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateSidecar indicates an expected call of UpdateSidecar
+func (mr *MockSidecarClientMockRecorder) UpdateSidecar(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateSidecar", reflect.TypeOf((*MockSidecarClient)(nil).UpdateSidecar), varargs...)
+}
+
+// PatchSidecar mocks base method
+func (m *MockSidecarClient) PatchSidecar(ctx context.Context, obj *v1alpha30.Sidecar, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchSidecar", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchSidecar indicates an expected call of PatchSidecar
+func (mr *MockSidecarClientMockRecorder) PatchSidecar(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchSidecar", reflect.TypeOf((*MockSidecarClient)(nil).PatchSidecar), varargs...)
+}
+
+// DeleteAllOfSidecar mocks base method
+func (m *MockSidecarClient) DeleteAllOfSidecar(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteAllOfSidecar", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllOfSidecar indicates an expected call of DeleteAllOfSidecar
+func (mr *MockSidecarClientMockRecorder) DeleteAllOfSidecar(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfSidecar", reflect.TypeOf((*MockSidecarClient)(nil).DeleteAllOfSidecar), varargs...)
+}
+
+// UpsertSidecar mocks base method
+func (m *MockSidecarClient) UpsertSidecar(ctx context.Context, obj *v1alpha30.Sidecar, transitionFuncs ...v1alpha3.SidecarTransitionFunction) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range transitionFuncs {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpsertSidecar", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertSidecar indicates an expected call of UpsertSidecar
+func (mr *MockSidecarClientMockRecorder) UpsertSidecar(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertSidecar", reflect.TypeOf((*MockSidecarClient)(nil).UpsertSidecar), varargs...)
+}
+
+// UpdateSidecarStatus mocks base method
+func (m *MockSidecarClient) UpdateSidecarStatus(ctx context.Context, obj *v1alpha30.Sidecar, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateSidecarStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateSidecarStatus indicates an expected call of UpdateSidecarStatus
+func (mr *MockSidecarClientMockRecorder) UpdateSidecarStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateSidecarStatus", reflect.TypeOf((*MockSidecarClient)(nil).UpdateSidecarStatus), varargs...)
+}
+
+// PatchSidecarStatus mocks base method
+func (m *MockSidecarClient) PatchSidecarStatus(ctx context.Context, obj *v1alpha30.Sidecar, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchSidecarStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchSidecarStatus indicates an expected call of PatchSidecarStatus
+func (mr *MockSidecarClientMockRecorder) PatchSidecarStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchSidecarStatus", reflect.TypeOf((*MockSidecarClient)(nil).PatchSidecarStatus), varargs...)
+}
+
+// MockMulticlusterSidecarClient is a mock of MulticlusterSidecarClient interface
+type MockMulticlusterSidecarClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterSidecarClientMockRecorder
+}
+
+// MockMulticlusterSidecarClientMockRecorder is the mock recorder for MockMulticlusterSidecarClient
+type MockMulticlusterSidecarClientMockRecorder struct {
+	mock *MockMulticlusterSidecarClient
+}
+
+// NewMockMulticlusterSidecarClient creates a new mock instance
+func NewMockMulticlusterSidecarClient(ctrl *gomock.Controller) *MockMulticlusterSidecarClient {
+	mock := &MockMulticlusterSidecarClient{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterSidecarClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockMulticlusterSidecarClient) EXPECT() *MockMulticlusterSidecarClientMockRecorder {
+	return m.recorder
+}
+
+// Cluster mocks base method
+func (m *MockMulticlusterSidecarClient) Cluster(cluster string) (v1alpha3.SidecarClient, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Cluster", cluster)
+	ret0, _ := ret[0].(v1alpha3.SidecarClient)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Cluster indicates an expected call of Cluster
+func (mr *MockMulticlusterSidecarClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterSidecarClient)(nil).Cluster), cluster)
 }

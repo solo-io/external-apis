@@ -551,3 +551,110 @@ func (h genericVirtualServiceHandler) Generic(object client.Object) error {
 	}
 	return h.handler.GenericVirtualService(obj)
 }
+
+// Handle events for the Sidecar Resource
+// DEPRECATED: Prefer reconciler pattern.
+type SidecarEventHandler interface {
+	CreateSidecar(obj *networking_istio_io_v1alpha3.Sidecar) error
+	UpdateSidecar(old, new *networking_istio_io_v1alpha3.Sidecar) error
+	DeleteSidecar(obj *networking_istio_io_v1alpha3.Sidecar) error
+	GenericSidecar(obj *networking_istio_io_v1alpha3.Sidecar) error
+}
+
+type SidecarEventHandlerFuncs struct {
+	OnCreate  func(obj *networking_istio_io_v1alpha3.Sidecar) error
+	OnUpdate  func(old, new *networking_istio_io_v1alpha3.Sidecar) error
+	OnDelete  func(obj *networking_istio_io_v1alpha3.Sidecar) error
+	OnGeneric func(obj *networking_istio_io_v1alpha3.Sidecar) error
+}
+
+func (f *SidecarEventHandlerFuncs) CreateSidecar(obj *networking_istio_io_v1alpha3.Sidecar) error {
+	if f.OnCreate == nil {
+		return nil
+	}
+	return f.OnCreate(obj)
+}
+
+func (f *SidecarEventHandlerFuncs) DeleteSidecar(obj *networking_istio_io_v1alpha3.Sidecar) error {
+	if f.OnDelete == nil {
+		return nil
+	}
+	return f.OnDelete(obj)
+}
+
+func (f *SidecarEventHandlerFuncs) UpdateSidecar(objOld, objNew *networking_istio_io_v1alpha3.Sidecar) error {
+	if f.OnUpdate == nil {
+		return nil
+	}
+	return f.OnUpdate(objOld, objNew)
+}
+
+func (f *SidecarEventHandlerFuncs) GenericSidecar(obj *networking_istio_io_v1alpha3.Sidecar) error {
+	if f.OnGeneric == nil {
+		return nil
+	}
+	return f.OnGeneric(obj)
+}
+
+type SidecarEventWatcher interface {
+	AddEventHandler(ctx context.Context, h SidecarEventHandler, predicates ...predicate.Predicate) error
+}
+
+type sidecarEventWatcher struct {
+	watcher events.EventWatcher
+}
+
+func NewSidecarEventWatcher(name string, mgr manager.Manager) SidecarEventWatcher {
+	return &sidecarEventWatcher{
+		watcher: events.NewWatcher(name, mgr, &networking_istio_io_v1alpha3.Sidecar{}),
+	}
+}
+
+func (c *sidecarEventWatcher) AddEventHandler(ctx context.Context, h SidecarEventHandler, predicates ...predicate.Predicate) error {
+	handler := genericSidecarHandler{handler: h}
+	if err := c.watcher.Watch(ctx, handler, predicates...); err != nil {
+		return err
+	}
+	return nil
+}
+
+// genericSidecarHandler implements a generic events.EventHandler
+type genericSidecarHandler struct {
+	handler SidecarEventHandler
+}
+
+func (h genericSidecarHandler) Create(object client.Object) error {
+	obj, ok := object.(*networking_istio_io_v1alpha3.Sidecar)
+	if !ok {
+		return errors.Errorf("internal error: Sidecar handler received event for %T", object)
+	}
+	return h.handler.CreateSidecar(obj)
+}
+
+func (h genericSidecarHandler) Delete(object client.Object) error {
+	obj, ok := object.(*networking_istio_io_v1alpha3.Sidecar)
+	if !ok {
+		return errors.Errorf("internal error: Sidecar handler received event for %T", object)
+	}
+	return h.handler.DeleteSidecar(obj)
+}
+
+func (h genericSidecarHandler) Update(old, new client.Object) error {
+	objOld, ok := old.(*networking_istio_io_v1alpha3.Sidecar)
+	if !ok {
+		return errors.Errorf("internal error: Sidecar handler received event for %T", old)
+	}
+	objNew, ok := new.(*networking_istio_io_v1alpha3.Sidecar)
+	if !ok {
+		return errors.Errorf("internal error: Sidecar handler received event for %T", new)
+	}
+	return h.handler.UpdateSidecar(objOld, objNew)
+}
+
+func (h genericSidecarHandler) Generic(object client.Object) error {
+	obj, ok := object.(*networking_istio_io_v1alpha3.Sidecar)
+	if !ok {
+		return errors.Errorf("internal error: Sidecar handler received event for %T", object)
+	}
+	return h.handler.GenericSidecar(obj)
+}

@@ -618,3 +618,124 @@ func (mr *MockVirtualServiceEventWatcherMockRecorder) AddEventHandler(ctx, h int
 	varargs := append([]interface{}{ctx, h}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockVirtualServiceEventWatcher)(nil).AddEventHandler), varargs...)
 }
+
+// MockSidecarEventHandler is a mock of SidecarEventHandler interface
+type MockSidecarEventHandler struct {
+	ctrl     *gomock.Controller
+	recorder *MockSidecarEventHandlerMockRecorder
+}
+
+// MockSidecarEventHandlerMockRecorder is the mock recorder for MockSidecarEventHandler
+type MockSidecarEventHandlerMockRecorder struct {
+	mock *MockSidecarEventHandler
+}
+
+// NewMockSidecarEventHandler creates a new mock instance
+func NewMockSidecarEventHandler(ctrl *gomock.Controller) *MockSidecarEventHandler {
+	mock := &MockSidecarEventHandler{ctrl: ctrl}
+	mock.recorder = &MockSidecarEventHandlerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockSidecarEventHandler) EXPECT() *MockSidecarEventHandlerMockRecorder {
+	return m.recorder
+}
+
+// CreateSidecar mocks base method
+func (m *MockSidecarEventHandler) CreateSidecar(obj *v1alpha3.Sidecar) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateSidecar", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateSidecar indicates an expected call of CreateSidecar
+func (mr *MockSidecarEventHandlerMockRecorder) CreateSidecar(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSidecar", reflect.TypeOf((*MockSidecarEventHandler)(nil).CreateSidecar), obj)
+}
+
+// UpdateSidecar mocks base method
+func (m *MockSidecarEventHandler) UpdateSidecar(old, new *v1alpha3.Sidecar) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateSidecar", old, new)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateSidecar indicates an expected call of UpdateSidecar
+func (mr *MockSidecarEventHandlerMockRecorder) UpdateSidecar(old, new interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateSidecar", reflect.TypeOf((*MockSidecarEventHandler)(nil).UpdateSidecar), old, new)
+}
+
+// DeleteSidecar mocks base method
+func (m *MockSidecarEventHandler) DeleteSidecar(obj *v1alpha3.Sidecar) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteSidecar", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteSidecar indicates an expected call of DeleteSidecar
+func (mr *MockSidecarEventHandlerMockRecorder) DeleteSidecar(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteSidecar", reflect.TypeOf((*MockSidecarEventHandler)(nil).DeleteSidecar), obj)
+}
+
+// GenericSidecar mocks base method
+func (m *MockSidecarEventHandler) GenericSidecar(obj *v1alpha3.Sidecar) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GenericSidecar", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// GenericSidecar indicates an expected call of GenericSidecar
+func (mr *MockSidecarEventHandlerMockRecorder) GenericSidecar(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericSidecar", reflect.TypeOf((*MockSidecarEventHandler)(nil).GenericSidecar), obj)
+}
+
+// MockSidecarEventWatcher is a mock of SidecarEventWatcher interface
+type MockSidecarEventWatcher struct {
+	ctrl     *gomock.Controller
+	recorder *MockSidecarEventWatcherMockRecorder
+}
+
+// MockSidecarEventWatcherMockRecorder is the mock recorder for MockSidecarEventWatcher
+type MockSidecarEventWatcherMockRecorder struct {
+	mock *MockSidecarEventWatcher
+}
+
+// NewMockSidecarEventWatcher creates a new mock instance
+func NewMockSidecarEventWatcher(ctrl *gomock.Controller) *MockSidecarEventWatcher {
+	mock := &MockSidecarEventWatcher{ctrl: ctrl}
+	mock.recorder = &MockSidecarEventWatcherMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockSidecarEventWatcher) EXPECT() *MockSidecarEventWatcherMockRecorder {
+	return m.recorder
+}
+
+// AddEventHandler mocks base method
+func (m *MockSidecarEventWatcher) AddEventHandler(ctx context.Context, h controller.SidecarEventHandler, predicates ...predicate.Predicate) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, h}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "AddEventHandler", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AddEventHandler indicates an expected call of AddEventHandler
+func (mr *MockSidecarEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, h}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockSidecarEventWatcher)(nil).AddEventHandler), varargs...)
+}

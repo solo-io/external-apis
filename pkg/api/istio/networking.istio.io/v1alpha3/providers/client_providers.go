@@ -156,3 +156,31 @@ func VirtualServiceClientFromConfigFactoryProvider() VirtualServiceClientFromCon
 		return clients.VirtualServices(), nil
 	}
 }
+
+// Provider for SidecarClient from Clientset
+func SidecarClientFromClientsetProvider(clients networking_istio_io_v1alpha3.Clientset) networking_istio_io_v1alpha3.SidecarClient {
+	return clients.Sidecars()
+}
+
+// Provider for Sidecar Client from Client
+func SidecarClientProvider(client client.Client) networking_istio_io_v1alpha3.SidecarClient {
+	return networking_istio_io_v1alpha3.NewSidecarClient(client)
+}
+
+type SidecarClientFactory func(client client.Client) networking_istio_io_v1alpha3.SidecarClient
+
+func SidecarClientFactoryProvider() SidecarClientFactory {
+	return SidecarClientProvider
+}
+
+type SidecarClientFromConfigFactory func(cfg *rest.Config) (networking_istio_io_v1alpha3.SidecarClient, error)
+
+func SidecarClientFromConfigFactoryProvider() SidecarClientFromConfigFactory {
+	return func(cfg *rest.Config) (networking_istio_io_v1alpha3.SidecarClient, error) {
+		clients, err := networking_istio_io_v1alpha3.NewClientsetFromConfig(cfg)
+		if err != nil {
+			return nil, err
+		}
+		return clients.Sidecars(), nil
+	}
+}

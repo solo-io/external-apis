@@ -589,3 +589,118 @@ func (mr *MockMulticlusterVirtualServiceReconcileLoopMockRecorder) AddMulticlust
 	varargs := append([]interface{}{ctx, rec}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddMulticlusterVirtualServiceReconciler", reflect.TypeOf((*MockMulticlusterVirtualServiceReconcileLoop)(nil).AddMulticlusterVirtualServiceReconciler), varargs...)
 }
+
+// MockMulticlusterSidecarReconciler is a mock of MulticlusterSidecarReconciler interface
+type MockMulticlusterSidecarReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterSidecarReconcilerMockRecorder
+}
+
+// MockMulticlusterSidecarReconcilerMockRecorder is the mock recorder for MockMulticlusterSidecarReconciler
+type MockMulticlusterSidecarReconcilerMockRecorder struct {
+	mock *MockMulticlusterSidecarReconciler
+}
+
+// NewMockMulticlusterSidecarReconciler creates a new mock instance
+func NewMockMulticlusterSidecarReconciler(ctrl *gomock.Controller) *MockMulticlusterSidecarReconciler {
+	mock := &MockMulticlusterSidecarReconciler{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterSidecarReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockMulticlusterSidecarReconciler) EXPECT() *MockMulticlusterSidecarReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileSidecar mocks base method
+func (m *MockMulticlusterSidecarReconciler) ReconcileSidecar(clusterName string, obj *v1alpha3.Sidecar) (reconcile.Result, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileSidecar", clusterName, obj)
+	ret0, _ := ret[0].(reconcile.Result)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReconcileSidecar indicates an expected call of ReconcileSidecar
+func (mr *MockMulticlusterSidecarReconcilerMockRecorder) ReconcileSidecar(clusterName, obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileSidecar", reflect.TypeOf((*MockMulticlusterSidecarReconciler)(nil).ReconcileSidecar), clusterName, obj)
+}
+
+// MockMulticlusterSidecarDeletionReconciler is a mock of MulticlusterSidecarDeletionReconciler interface
+type MockMulticlusterSidecarDeletionReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterSidecarDeletionReconcilerMockRecorder
+}
+
+// MockMulticlusterSidecarDeletionReconcilerMockRecorder is the mock recorder for MockMulticlusterSidecarDeletionReconciler
+type MockMulticlusterSidecarDeletionReconcilerMockRecorder struct {
+	mock *MockMulticlusterSidecarDeletionReconciler
+}
+
+// NewMockMulticlusterSidecarDeletionReconciler creates a new mock instance
+func NewMockMulticlusterSidecarDeletionReconciler(ctrl *gomock.Controller) *MockMulticlusterSidecarDeletionReconciler {
+	mock := &MockMulticlusterSidecarDeletionReconciler{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterSidecarDeletionReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockMulticlusterSidecarDeletionReconciler) EXPECT() *MockMulticlusterSidecarDeletionReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileSidecarDeletion mocks base method
+func (m *MockMulticlusterSidecarDeletionReconciler) ReconcileSidecarDeletion(clusterName string, req reconcile.Request) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileSidecarDeletion", clusterName, req)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ReconcileSidecarDeletion indicates an expected call of ReconcileSidecarDeletion
+func (mr *MockMulticlusterSidecarDeletionReconcilerMockRecorder) ReconcileSidecarDeletion(clusterName, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileSidecarDeletion", reflect.TypeOf((*MockMulticlusterSidecarDeletionReconciler)(nil).ReconcileSidecarDeletion), clusterName, req)
+}
+
+// MockMulticlusterSidecarReconcileLoop is a mock of MulticlusterSidecarReconcileLoop interface
+type MockMulticlusterSidecarReconcileLoop struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterSidecarReconcileLoopMockRecorder
+}
+
+// MockMulticlusterSidecarReconcileLoopMockRecorder is the mock recorder for MockMulticlusterSidecarReconcileLoop
+type MockMulticlusterSidecarReconcileLoopMockRecorder struct {
+	mock *MockMulticlusterSidecarReconcileLoop
+}
+
+// NewMockMulticlusterSidecarReconcileLoop creates a new mock instance
+func NewMockMulticlusterSidecarReconcileLoop(ctrl *gomock.Controller) *MockMulticlusterSidecarReconcileLoop {
+	mock := &MockMulticlusterSidecarReconcileLoop{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterSidecarReconcileLoopMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockMulticlusterSidecarReconcileLoop) EXPECT() *MockMulticlusterSidecarReconcileLoopMockRecorder {
+	return m.recorder
+}
+
+// AddMulticlusterSidecarReconciler mocks base method
+func (m *MockMulticlusterSidecarReconcileLoop) AddMulticlusterSidecarReconciler(ctx context.Context, rec controller.MulticlusterSidecarReconciler, predicates ...predicate.Predicate) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, rec}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "AddMulticlusterSidecarReconciler", varargs...)
+}
+
+// AddMulticlusterSidecarReconciler indicates an expected call of AddMulticlusterSidecarReconciler
+func (mr *MockMulticlusterSidecarReconcileLoopMockRecorder) AddMulticlusterSidecarReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, rec}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddMulticlusterSidecarReconciler", reflect.TypeOf((*MockMulticlusterSidecarReconcileLoop)(nil).AddMulticlusterSidecarReconciler), varargs...)
+}

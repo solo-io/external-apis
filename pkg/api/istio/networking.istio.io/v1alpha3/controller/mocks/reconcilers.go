@@ -929,3 +929,186 @@ func (mr *MockVirtualServiceReconcileLoopMockRecorder) RunVirtualServiceReconcil
 	varargs := append([]interface{}{ctx, rec}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunVirtualServiceReconciler", reflect.TypeOf((*MockVirtualServiceReconcileLoop)(nil).RunVirtualServiceReconciler), varargs...)
 }
+
+// MockSidecarReconciler is a mock of SidecarReconciler interface
+type MockSidecarReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockSidecarReconcilerMockRecorder
+}
+
+// MockSidecarReconcilerMockRecorder is the mock recorder for MockSidecarReconciler
+type MockSidecarReconcilerMockRecorder struct {
+	mock *MockSidecarReconciler
+}
+
+// NewMockSidecarReconciler creates a new mock instance
+func NewMockSidecarReconciler(ctrl *gomock.Controller) *MockSidecarReconciler {
+	mock := &MockSidecarReconciler{ctrl: ctrl}
+	mock.recorder = &MockSidecarReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockSidecarReconciler) EXPECT() *MockSidecarReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileSidecar mocks base method
+func (m *MockSidecarReconciler) ReconcileSidecar(obj *v1alpha3.Sidecar) (reconcile.Result, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileSidecar", obj)
+	ret0, _ := ret[0].(reconcile.Result)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReconcileSidecar indicates an expected call of ReconcileSidecar
+func (mr *MockSidecarReconcilerMockRecorder) ReconcileSidecar(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileSidecar", reflect.TypeOf((*MockSidecarReconciler)(nil).ReconcileSidecar), obj)
+}
+
+// MockSidecarDeletionReconciler is a mock of SidecarDeletionReconciler interface
+type MockSidecarDeletionReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockSidecarDeletionReconcilerMockRecorder
+}
+
+// MockSidecarDeletionReconcilerMockRecorder is the mock recorder for MockSidecarDeletionReconciler
+type MockSidecarDeletionReconcilerMockRecorder struct {
+	mock *MockSidecarDeletionReconciler
+}
+
+// NewMockSidecarDeletionReconciler creates a new mock instance
+func NewMockSidecarDeletionReconciler(ctrl *gomock.Controller) *MockSidecarDeletionReconciler {
+	mock := &MockSidecarDeletionReconciler{ctrl: ctrl}
+	mock.recorder = &MockSidecarDeletionReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockSidecarDeletionReconciler) EXPECT() *MockSidecarDeletionReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileSidecarDeletion mocks base method
+func (m *MockSidecarDeletionReconciler) ReconcileSidecarDeletion(req reconcile.Request) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileSidecarDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ReconcileSidecarDeletion indicates an expected call of ReconcileSidecarDeletion
+func (mr *MockSidecarDeletionReconcilerMockRecorder) ReconcileSidecarDeletion(req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileSidecarDeletion", reflect.TypeOf((*MockSidecarDeletionReconciler)(nil).ReconcileSidecarDeletion), req)
+}
+
+// MockSidecarFinalizer is a mock of SidecarFinalizer interface
+type MockSidecarFinalizer struct {
+	ctrl     *gomock.Controller
+	recorder *MockSidecarFinalizerMockRecorder
+}
+
+// MockSidecarFinalizerMockRecorder is the mock recorder for MockSidecarFinalizer
+type MockSidecarFinalizerMockRecorder struct {
+	mock *MockSidecarFinalizer
+}
+
+// NewMockSidecarFinalizer creates a new mock instance
+func NewMockSidecarFinalizer(ctrl *gomock.Controller) *MockSidecarFinalizer {
+	mock := &MockSidecarFinalizer{ctrl: ctrl}
+	mock.recorder = &MockSidecarFinalizerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockSidecarFinalizer) EXPECT() *MockSidecarFinalizerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileSidecar mocks base method
+func (m *MockSidecarFinalizer) ReconcileSidecar(obj *v1alpha3.Sidecar) (reconcile.Result, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileSidecar", obj)
+	ret0, _ := ret[0].(reconcile.Result)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReconcileSidecar indicates an expected call of ReconcileSidecar
+func (mr *MockSidecarFinalizerMockRecorder) ReconcileSidecar(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileSidecar", reflect.TypeOf((*MockSidecarFinalizer)(nil).ReconcileSidecar), obj)
+}
+
+// SidecarFinalizerName mocks base method
+func (m *MockSidecarFinalizer) SidecarFinalizerName() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SidecarFinalizerName")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// SidecarFinalizerName indicates an expected call of SidecarFinalizerName
+func (mr *MockSidecarFinalizerMockRecorder) SidecarFinalizerName() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SidecarFinalizerName", reflect.TypeOf((*MockSidecarFinalizer)(nil).SidecarFinalizerName))
+}
+
+// FinalizeSidecar mocks base method
+func (m *MockSidecarFinalizer) FinalizeSidecar(obj *v1alpha3.Sidecar) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FinalizeSidecar", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// FinalizeSidecar indicates an expected call of FinalizeSidecar
+func (mr *MockSidecarFinalizerMockRecorder) FinalizeSidecar(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FinalizeSidecar", reflect.TypeOf((*MockSidecarFinalizer)(nil).FinalizeSidecar), obj)
+}
+
+// MockSidecarReconcileLoop is a mock of SidecarReconcileLoop interface
+type MockSidecarReconcileLoop struct {
+	ctrl     *gomock.Controller
+	recorder *MockSidecarReconcileLoopMockRecorder
+}
+
+// MockSidecarReconcileLoopMockRecorder is the mock recorder for MockSidecarReconcileLoop
+type MockSidecarReconcileLoopMockRecorder struct {
+	mock *MockSidecarReconcileLoop
+}
+
+// NewMockSidecarReconcileLoop creates a new mock instance
+func NewMockSidecarReconcileLoop(ctrl *gomock.Controller) *MockSidecarReconcileLoop {
+	mock := &MockSidecarReconcileLoop{ctrl: ctrl}
+	mock.recorder = &MockSidecarReconcileLoopMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockSidecarReconcileLoop) EXPECT() *MockSidecarReconcileLoopMockRecorder {
+	return m.recorder
+}
+
+// RunSidecarReconciler mocks base method
+func (m *MockSidecarReconcileLoop) RunSidecarReconciler(ctx context.Context, rec controller.SidecarReconciler, predicates ...predicate.Predicate) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, rec}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "RunSidecarReconciler", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// RunSidecarReconciler indicates an expected call of RunSidecarReconciler
+func (mr *MockSidecarReconcileLoopMockRecorder) RunSidecarReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, rec}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunSidecarReconciler", reflect.TypeOf((*MockSidecarReconcileLoop)(nil).RunSidecarReconciler), varargs...)
+}

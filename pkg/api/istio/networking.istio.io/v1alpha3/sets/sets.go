@@ -957,3 +957,192 @@ func (s *virtualServiceSet) Delta(newSet VirtualServiceSet) sksets.ResourceDelta
 	}
 	return s.Generic().Delta(newSet.Generic())
 }
+
+type SidecarSet interface {
+	// Get the set stored keys
+	Keys() sets.String
+	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	List(filterResource ...func(*networking_istio_io_v1alpha3.Sidecar) bool) []*networking_istio_io_v1alpha3.Sidecar
+	// Return the Set as a map of key to resource.
+	Map() map[string]*networking_istio_io_v1alpha3.Sidecar
+	// Insert a resource into the set.
+	Insert(sidecar ...*networking_istio_io_v1alpha3.Sidecar)
+	// Compare the equality of the keys in two sets (not the resources themselves)
+	Equal(sidecarSet SidecarSet) bool
+	// Check if the set contains a key matching the resource (not the resource itself)
+	Has(sidecar ezkube.ResourceId) bool
+	// Delete the key matching the resource
+	Delete(sidecar ezkube.ResourceId)
+	// Return the union with the provided set
+	Union(set SidecarSet) SidecarSet
+	// Return the difference with the provided set
+	Difference(set SidecarSet) SidecarSet
+	// Return the intersection with the provided set
+	Intersection(set SidecarSet) SidecarSet
+	// Find the resource with the given ID
+	Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.Sidecar, error)
+	// Get the length of the set
+	Length() int
+	// returns the generic implementation of the set
+	Generic() sksets.ResourceSet
+	// returns the delta between this and and another SidecarSet
+	Delta(newSet SidecarSet) sksets.ResourceDelta
+}
+
+func makeGenericSidecarSet(sidecarList []*networking_istio_io_v1alpha3.Sidecar) sksets.ResourceSet {
+	var genericResources []ezkube.ResourceId
+	for _, obj := range sidecarList {
+		genericResources = append(genericResources, obj)
+	}
+	return sksets.NewResourceSet(genericResources...)
+}
+
+type sidecarSet struct {
+	set sksets.ResourceSet
+}
+
+func NewSidecarSet(sidecarList ...*networking_istio_io_v1alpha3.Sidecar) SidecarSet {
+	return &sidecarSet{set: makeGenericSidecarSet(sidecarList)}
+}
+
+func NewSidecarSetFromList(sidecarList *networking_istio_io_v1alpha3.SidecarList) SidecarSet {
+	list := make([]*networking_istio_io_v1alpha3.Sidecar, 0, len(sidecarList.Items))
+	for idx := range sidecarList.Items {
+		list = append(list, &sidecarList.Items[idx])
+	}
+	return &sidecarSet{set: makeGenericSidecarSet(list)}
+}
+
+func (s *sidecarSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	return s.Generic().Keys()
+}
+
+func (s *sidecarSet) List(filterResource ...func(*networking_istio_io_v1alpha3.Sidecar) bool) []*networking_istio_io_v1alpha3.Sidecar {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1alpha3.Sidecar))
+		})
+	}
+
+	var sidecarList []*networking_istio_io_v1alpha3.Sidecar
+	for _, obj := range s.Generic().List(genericFilters...) {
+		sidecarList = append(sidecarList, obj.(*networking_istio_io_v1alpha3.Sidecar))
+	}
+	return sidecarList
+}
+
+func (s *sidecarSet) Map() map[string]*networking_istio_io_v1alpha3.Sidecar {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*networking_istio_io_v1alpha3.Sidecar{}
+	for k, v := range s.Generic().Map() {
+		newMap[k] = v.(*networking_istio_io_v1alpha3.Sidecar)
+	}
+	return newMap
+}
+
+func (s *sidecarSet) Insert(
+	sidecarList ...*networking_istio_io_v1alpha3.Sidecar,
+) {
+	if s == nil {
+		panic("cannot insert into nil set")
+	}
+
+	for _, obj := range sidecarList {
+		s.Generic().Insert(obj)
+	}
+}
+
+func (s *sidecarSet) Has(sidecar ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	return s.Generic().Has(sidecar)
+}
+
+func (s *sidecarSet) Equal(
+	sidecarSet SidecarSet,
+) bool {
+	if s == nil {
+		return sidecarSet == nil
+	}
+	return s.Generic().Equal(sidecarSet.Generic())
+}
+
+func (s *sidecarSet) Delete(Sidecar ezkube.ResourceId) {
+	if s == nil {
+		return
+	}
+	s.Generic().Delete(Sidecar)
+}
+
+func (s *sidecarSet) Union(set SidecarSet) SidecarSet {
+	if s == nil {
+		return set
+	}
+	return NewSidecarSet(append(s.List(), set.List()...)...)
+}
+
+func (s *sidecarSet) Difference(set SidecarSet) SidecarSet {
+	if s == nil {
+		return set
+	}
+	newSet := s.Generic().Difference(set.Generic())
+	return &sidecarSet{set: newSet}
+}
+
+func (s *sidecarSet) Intersection(set SidecarSet) SidecarSet {
+	if s == nil {
+		return nil
+	}
+	newSet := s.Generic().Intersection(set.Generic())
+	var sidecarList []*networking_istio_io_v1alpha3.Sidecar
+	for _, obj := range newSet.List() {
+		sidecarList = append(sidecarList, obj.(*networking_istio_io_v1alpha3.Sidecar))
+	}
+	return NewSidecarSet(sidecarList...)
+}
+
+func (s *sidecarSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.Sidecar, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find Sidecar %v", sksets.Key(id))
+	}
+	obj, err := s.Generic().Find(&networking_istio_io_v1alpha3.Sidecar{}, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return obj.(*networking_istio_io_v1alpha3.Sidecar), nil
+}
+
+func (s *sidecarSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	return s.Generic().Length()
+}
+
+func (s *sidecarSet) Generic() sksets.ResourceSet {
+	if s == nil {
+		return nil
+	}
+	return s.set
+}
+
+func (s *sidecarSet) Delta(newSet SidecarSet) sksets.ResourceDelta {
+	if s == nil {
+		return sksets.ResourceDelta{
+			Inserted: newSet.Generic(),
+		}
+	}
+	return s.Generic().Delta(newSet.Generic())
+}

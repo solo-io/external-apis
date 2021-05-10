@@ -601,3 +601,120 @@ func (r genericVirtualServiceFinalizer) Finalize(object ezkube.Object) error {
 	}
 	return r.finalizingReconciler.FinalizeVirtualService(obj)
 }
+
+// Reconcile Upsert events for the Sidecar Resource.
+// implemented by the user
+type SidecarReconciler interface {
+	ReconcileSidecar(obj *networking_istio_io_v1alpha3.Sidecar) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the Sidecar Resource.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type SidecarDeletionReconciler interface {
+	ReconcileSidecarDeletion(req reconcile.Request) error
+}
+
+type SidecarReconcilerFuncs struct {
+	OnReconcileSidecar         func(obj *networking_istio_io_v1alpha3.Sidecar) (reconcile.Result, error)
+	OnReconcileSidecarDeletion func(req reconcile.Request) error
+}
+
+func (f *SidecarReconcilerFuncs) ReconcileSidecar(obj *networking_istio_io_v1alpha3.Sidecar) (reconcile.Result, error) {
+	if f.OnReconcileSidecar == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcileSidecar(obj)
+}
+
+func (f *SidecarReconcilerFuncs) ReconcileSidecarDeletion(req reconcile.Request) error {
+	if f.OnReconcileSidecarDeletion == nil {
+		return nil
+	}
+	return f.OnReconcileSidecarDeletion(req)
+}
+
+// Reconcile and finalize the Sidecar Resource
+// implemented by the user
+type SidecarFinalizer interface {
+	SidecarReconciler
+
+	// name of the finalizer used by this handler.
+	// finalizer names should be unique for a single task
+	SidecarFinalizerName() string
+
+	// finalize the object before it is deleted.
+	// Watchers created with a finalizing handler will a
+	FinalizeSidecar(obj *networking_istio_io_v1alpha3.Sidecar) error
+}
+
+type SidecarReconcileLoop interface {
+	RunSidecarReconciler(ctx context.Context, rec SidecarReconciler, predicates ...predicate.Predicate) error
+}
+
+type sidecarReconcileLoop struct {
+	loop reconcile.Loop
+}
+
+func NewSidecarReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) SidecarReconcileLoop {
+	return &sidecarReconcileLoop{
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &networking_istio_io_v1alpha3.Sidecar{}, options),
+	}
+}
+
+func (c *sidecarReconcileLoop) RunSidecarReconciler(ctx context.Context, reconciler SidecarReconciler, predicates ...predicate.Predicate) error {
+	genericReconciler := genericSidecarReconciler{
+		reconciler: reconciler,
+	}
+
+	var reconcilerWrapper reconcile.Reconciler
+	if finalizingReconciler, ok := reconciler.(SidecarFinalizer); ok {
+		reconcilerWrapper = genericSidecarFinalizer{
+			genericSidecarReconciler: genericReconciler,
+			finalizingReconciler:     finalizingReconciler,
+		}
+	} else {
+		reconcilerWrapper = genericReconciler
+	}
+	return c.loop.RunReconciler(ctx, reconcilerWrapper, predicates...)
+}
+
+// genericSidecarHandler implements a generic reconcile.Reconciler
+type genericSidecarReconciler struct {
+	reconciler SidecarReconciler
+}
+
+func (r genericSidecarReconciler) Reconcile(object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*networking_istio_io_v1alpha3.Sidecar)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: Sidecar handler received event for %T", object)
+	}
+	return r.reconciler.ReconcileSidecar(obj)
+}
+
+func (r genericSidecarReconciler) ReconcileDeletion(request reconcile.Request) error {
+	if deletionReconciler, ok := r.reconciler.(SidecarDeletionReconciler); ok {
+		return deletionReconciler.ReconcileSidecarDeletion(request)
+	}
+	return nil
+}
+
+// genericSidecarFinalizer implements a generic reconcile.FinalizingReconciler
+type genericSidecarFinalizer struct {
+	genericSidecarReconciler
+	finalizingReconciler SidecarFinalizer
+}
+
+func (r genericSidecarFinalizer) FinalizerName() string {
+	return r.finalizingReconciler.SidecarFinalizerName()
+}
+
+func (r genericSidecarFinalizer) Finalize(object ezkube.Object) error {
+	obj, ok := object.(*networking_istio_io_v1alpha3.Sidecar)
+	if !ok {
+		return errors.Errorf("internal error: Sidecar handler received event for %T", object)
+	}
+	return r.finalizingReconciler.FinalizeSidecar(obj)
+}

@@ -21,3 +21,6 @@ type ServiceEntrySlice []*ServiceEntry
 
 // VirtualServiceSlice represents a slice of *VirtualService
 type VirtualServiceSlice []*VirtualService
+
+// SidecarSlice represents a slice of *Sidecar
+type SidecarSlice []*Sidecar
