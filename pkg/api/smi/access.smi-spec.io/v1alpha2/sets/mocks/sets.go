@@ -70,6 +70,24 @@ func (mr *MockTrafficTargetSetMockRecorder) List(filterResource ...interface{}) 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockTrafficTargetSet)(nil).List), filterResource...)
 }
 
+// UnsortedList mocks base method
+func (m *MockTrafficTargetSet) UnsortedList(filterResource ...func(*v1alpha2.TrafficTarget) bool) []*v1alpha2.TrafficTarget {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1alpha2.TrafficTarget)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList
+func (mr *MockTrafficTargetSetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockTrafficTargetSet)(nil).UnsortedList), filterResource...)
+}
+
 // Map mocks base method
 func (m *MockTrafficTargetSet) Map() map[string]*v1alpha2.TrafficTarget {
 	m.ctrl.T.Helper()
@@ -237,4 +255,18 @@ func (m *MockTrafficTargetSet) Delta(newSet v1alpha2sets.TrafficTargetSet) sets.
 func (mr *MockTrafficTargetSetMockRecorder) Delta(newSet interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockTrafficTargetSet)(nil).Delta), newSet)
+}
+
+// Clone mocks base method
+func (m *MockTrafficTargetSet) Clone() v1alpha2sets.TrafficTargetSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1alpha2sets.TrafficTargetSet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone
+func (mr *MockTrafficTargetSetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockTrafficTargetSet)(nil).Clone))
 }

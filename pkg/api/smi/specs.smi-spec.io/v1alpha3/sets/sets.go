@@ -18,6 +18,8 @@ type HTTPRouteGroupSet interface {
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup) bool) []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup) bool) []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup
 	// Return the Set as a map of key to resource.
 	Map() map[string]*specs_smi_spec_io_v1alpha3.HTTPRouteGroup
 	// Insert a resource into the set.
@@ -42,6 +44,8 @@ type HTTPRouteGroupSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another HTTPRouteGroupSet
 	Delta(newSet HTTPRouteGroupSet) sksets.ResourceDelta
+	// Create a deep copy of the current HTTPRouteGroupSet
+	Clone() HTTPRouteGroupSet
 }
 
 func makeGenericHTTPRouteGroupSet(hTTPRouteGroupList []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup) sksets.ResourceSet {
@@ -86,8 +90,27 @@ func (s *hTTPRouteGroupSet) List(filterResource ...func(*specs_smi_spec_io_v1alp
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	hTTPRouteGroupList := make([]*specs_smi_spec_io_v1alpha3.HTTPRouteGroup, 0, len(objs))
+	for _, obj := range objs {
+		hTTPRouteGroupList = append(hTTPRouteGroupList, obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
+	}
+	return hTTPRouteGroupList
+}
+
+func (s *hTTPRouteGroupSet) UnsortedList(filterResource ...func(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup) bool) []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
+		})
+	}
+
 	var hTTPRouteGroupList []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		hTTPRouteGroupList = append(hTTPRouteGroupList, obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
 	}
 	return hTTPRouteGroupList
@@ -200,4 +223,11 @@ func (s *hTTPRouteGroupSet) Delta(newSet HTTPRouteGroupSet) sksets.ResourceDelta
 		}
 	}
 	return s.Generic().Delta(newSet.Generic())
+}
+
+func (s *hTTPRouteGroupSet) Clone() HTTPRouteGroupSet {
+	if s == nil {
+		return nil
+	}
+	return &hTTPRouteGroupSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
 }

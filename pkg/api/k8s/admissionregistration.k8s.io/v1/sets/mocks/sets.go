@@ -70,6 +70,24 @@ func (mr *MockValidatingWebhookConfigurationSetMockRecorder) List(filterResource
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockValidatingWebhookConfigurationSet)(nil).List), filterResource...)
 }
 
+// UnsortedList mocks base method
+func (m *MockValidatingWebhookConfigurationSet) UnsortedList(filterResource ...func(*v1.ValidatingWebhookConfiguration) bool) []*v1.ValidatingWebhookConfiguration {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1.ValidatingWebhookConfiguration)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList
+func (mr *MockValidatingWebhookConfigurationSetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockValidatingWebhookConfigurationSet)(nil).UnsortedList), filterResource...)
+}
+
 // Map mocks base method
 func (m *MockValidatingWebhookConfigurationSet) Map() map[string]*v1.ValidatingWebhookConfiguration {
 	m.ctrl.T.Helper()
@@ -237,4 +255,18 @@ func (m *MockValidatingWebhookConfigurationSet) Delta(newSet v1sets.ValidatingWe
 func (mr *MockValidatingWebhookConfigurationSetMockRecorder) Delta(newSet interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockValidatingWebhookConfigurationSet)(nil).Delta), newSet)
+}
+
+// Clone mocks base method
+func (m *MockValidatingWebhookConfigurationSet) Clone() v1sets.ValidatingWebhookConfigurationSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1sets.ValidatingWebhookConfigurationSet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone
+func (mr *MockValidatingWebhookConfigurationSetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockValidatingWebhookConfigurationSet)(nil).Clone))
 }

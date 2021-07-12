@@ -70,6 +70,24 @@ func (mr *MockAuthorizationPolicySetMockRecorder) List(filterResource ...interfa
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockAuthorizationPolicySet)(nil).List), filterResource...)
 }
 
+// UnsortedList mocks base method
+func (m *MockAuthorizationPolicySet) UnsortedList(filterResource ...func(*v1beta1.AuthorizationPolicy) bool) []*v1beta1.AuthorizationPolicy {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1beta1.AuthorizationPolicy)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList
+func (mr *MockAuthorizationPolicySetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockAuthorizationPolicySet)(nil).UnsortedList), filterResource...)
+}
+
 // Map mocks base method
 func (m *MockAuthorizationPolicySet) Map() map[string]*v1beta1.AuthorizationPolicy {
 	m.ctrl.T.Helper()
@@ -237,4 +255,18 @@ func (m *MockAuthorizationPolicySet) Delta(newSet v1beta1sets.AuthorizationPolic
 func (mr *MockAuthorizationPolicySetMockRecorder) Delta(newSet interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockAuthorizationPolicySet)(nil).Delta), newSet)
+}
+
+// Clone mocks base method
+func (m *MockAuthorizationPolicySet) Clone() v1beta1sets.AuthorizationPolicySet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1beta1sets.AuthorizationPolicySet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone
+func (mr *MockAuthorizationPolicySetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockAuthorizationPolicySet)(nil).Clone))
 }

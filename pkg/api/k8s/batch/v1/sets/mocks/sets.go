@@ -70,6 +70,24 @@ func (mr *MockJobSetMockRecorder) List(filterResource ...interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockJobSet)(nil).List), filterResource...)
 }
 
+// UnsortedList mocks base method
+func (m *MockJobSet) UnsortedList(filterResource ...func(*v1.Job) bool) []*v1.Job {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1.Job)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList
+func (mr *MockJobSetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockJobSet)(nil).UnsortedList), filterResource...)
+}
+
 // Map mocks base method
 func (m *MockJobSet) Map() map[string]*v1.Job {
 	m.ctrl.T.Helper()
@@ -237,4 +255,18 @@ func (m *MockJobSet) Delta(newSet v1sets.JobSet) sets.ResourceDelta {
 func (mr *MockJobSetMockRecorder) Delta(newSet interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockJobSet)(nil).Delta), newSet)
+}
+
+// Clone mocks base method
+func (m *MockJobSet) Clone() v1sets.JobSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1sets.JobSet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone
+func (mr *MockJobSetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockJobSet)(nil).Clone))
 }

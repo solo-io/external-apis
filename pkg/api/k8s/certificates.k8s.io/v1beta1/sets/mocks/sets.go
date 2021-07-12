@@ -70,6 +70,24 @@ func (mr *MockCertificateSigningRequestSetMockRecorder) List(filterResource ...i
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockCertificateSigningRequestSet)(nil).List), filterResource...)
 }
 
+// UnsortedList mocks base method
+func (m *MockCertificateSigningRequestSet) UnsortedList(filterResource ...func(*v1beta1.CertificateSigningRequest) bool) []*v1beta1.CertificateSigningRequest {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1beta1.CertificateSigningRequest)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList
+func (mr *MockCertificateSigningRequestSetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockCertificateSigningRequestSet)(nil).UnsortedList), filterResource...)
+}
+
 // Map mocks base method
 func (m *MockCertificateSigningRequestSet) Map() map[string]*v1beta1.CertificateSigningRequest {
 	m.ctrl.T.Helper()
@@ -237,4 +255,18 @@ func (m *MockCertificateSigningRequestSet) Delta(newSet v1beta1sets.CertificateS
 func (mr *MockCertificateSigningRequestSetMockRecorder) Delta(newSet interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockCertificateSigningRequestSet)(nil).Delta), newSet)
+}
+
+// Clone mocks base method
+func (m *MockCertificateSigningRequestSet) Clone() v1beta1sets.CertificateSigningRequestSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1beta1sets.CertificateSigningRequestSet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone
+func (mr *MockCertificateSigningRequestSetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockCertificateSigningRequestSet)(nil).Clone))
 }

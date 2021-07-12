@@ -18,6 +18,8 @@ type SecretSet interface {
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*v1.Secret) bool) []*v1.Secret
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*v1.Secret) bool) []*v1.Secret
 	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.Secret
 	// Insert a resource into the set.
@@ -42,6 +44,8 @@ type SecretSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another SecretSet
 	Delta(newSet SecretSet) sksets.ResourceDelta
+	// Create a deep copy of the current SecretSet
+	Clone() SecretSet
 }
 
 func makeGenericSecretSet(secretList []*v1.Secret) sksets.ResourceSet {
@@ -86,8 +90,27 @@ func (s *secretSet) List(filterResource ...func(*v1.Secret) bool) []*v1.Secret {
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	secretList := make([]*v1.Secret, 0, len(objs))
+	for _, obj := range objs {
+		secretList = append(secretList, obj.(*v1.Secret))
+	}
+	return secretList
+}
+
+func (s *secretSet) UnsortedList(filterResource ...func(*v1.Secret) bool) []*v1.Secret {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*v1.Secret))
+		})
+	}
+
 	var secretList []*v1.Secret
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		secretList = append(secretList, obj.(*v1.Secret))
 	}
 	return secretList
@@ -202,11 +225,20 @@ func (s *secretSet) Delta(newSet SecretSet) sksets.ResourceDelta {
 	return s.Generic().Delta(newSet.Generic())
 }
 
+func (s *secretSet) Clone() SecretSet {
+	if s == nil {
+		return nil
+	}
+	return &secretSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}
+
 type ServiceAccountSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*v1.ServiceAccount) bool) []*v1.ServiceAccount
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*v1.ServiceAccount) bool) []*v1.ServiceAccount
 	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.ServiceAccount
 	// Insert a resource into the set.
@@ -231,6 +263,8 @@ type ServiceAccountSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another ServiceAccountSet
 	Delta(newSet ServiceAccountSet) sksets.ResourceDelta
+	// Create a deep copy of the current ServiceAccountSet
+	Clone() ServiceAccountSet
 }
 
 func makeGenericServiceAccountSet(serviceAccountList []*v1.ServiceAccount) sksets.ResourceSet {
@@ -275,8 +309,27 @@ func (s *serviceAccountSet) List(filterResource ...func(*v1.ServiceAccount) bool
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	serviceAccountList := make([]*v1.ServiceAccount, 0, len(objs))
+	for _, obj := range objs {
+		serviceAccountList = append(serviceAccountList, obj.(*v1.ServiceAccount))
+	}
+	return serviceAccountList
+}
+
+func (s *serviceAccountSet) UnsortedList(filterResource ...func(*v1.ServiceAccount) bool) []*v1.ServiceAccount {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*v1.ServiceAccount))
+		})
+	}
+
 	var serviceAccountList []*v1.ServiceAccount
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		serviceAccountList = append(serviceAccountList, obj.(*v1.ServiceAccount))
 	}
 	return serviceAccountList
@@ -391,11 +444,20 @@ func (s *serviceAccountSet) Delta(newSet ServiceAccountSet) sksets.ResourceDelta
 	return s.Generic().Delta(newSet.Generic())
 }
 
+func (s *serviceAccountSet) Clone() ServiceAccountSet {
+	if s == nil {
+		return nil
+	}
+	return &serviceAccountSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}
+
 type ConfigMapSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*v1.ConfigMap) bool) []*v1.ConfigMap
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*v1.ConfigMap) bool) []*v1.ConfigMap
 	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.ConfigMap
 	// Insert a resource into the set.
@@ -420,6 +482,8 @@ type ConfigMapSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another ConfigMapSet
 	Delta(newSet ConfigMapSet) sksets.ResourceDelta
+	// Create a deep copy of the current ConfigMapSet
+	Clone() ConfigMapSet
 }
 
 func makeGenericConfigMapSet(configMapList []*v1.ConfigMap) sksets.ResourceSet {
@@ -464,8 +528,27 @@ func (s *configMapSet) List(filterResource ...func(*v1.ConfigMap) bool) []*v1.Co
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	configMapList := make([]*v1.ConfigMap, 0, len(objs))
+	for _, obj := range objs {
+		configMapList = append(configMapList, obj.(*v1.ConfigMap))
+	}
+	return configMapList
+}
+
+func (s *configMapSet) UnsortedList(filterResource ...func(*v1.ConfigMap) bool) []*v1.ConfigMap {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*v1.ConfigMap))
+		})
+	}
+
 	var configMapList []*v1.ConfigMap
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		configMapList = append(configMapList, obj.(*v1.ConfigMap))
 	}
 	return configMapList
@@ -580,11 +663,20 @@ func (s *configMapSet) Delta(newSet ConfigMapSet) sksets.ResourceDelta {
 	return s.Generic().Delta(newSet.Generic())
 }
 
+func (s *configMapSet) Clone() ConfigMapSet {
+	if s == nil {
+		return nil
+	}
+	return &configMapSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}
+
 type ServiceSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*v1.Service) bool) []*v1.Service
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*v1.Service) bool) []*v1.Service
 	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.Service
 	// Insert a resource into the set.
@@ -609,6 +701,8 @@ type ServiceSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another ServiceSet
 	Delta(newSet ServiceSet) sksets.ResourceDelta
+	// Create a deep copy of the current ServiceSet
+	Clone() ServiceSet
 }
 
 func makeGenericServiceSet(serviceList []*v1.Service) sksets.ResourceSet {
@@ -653,8 +747,27 @@ func (s *serviceSet) List(filterResource ...func(*v1.Service) bool) []*v1.Servic
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	serviceList := make([]*v1.Service, 0, len(objs))
+	for _, obj := range objs {
+		serviceList = append(serviceList, obj.(*v1.Service))
+	}
+	return serviceList
+}
+
+func (s *serviceSet) UnsortedList(filterResource ...func(*v1.Service) bool) []*v1.Service {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*v1.Service))
+		})
+	}
+
 	var serviceList []*v1.Service
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		serviceList = append(serviceList, obj.(*v1.Service))
 	}
 	return serviceList
@@ -769,11 +882,20 @@ func (s *serviceSet) Delta(newSet ServiceSet) sksets.ResourceDelta {
 	return s.Generic().Delta(newSet.Generic())
 }
 
+func (s *serviceSet) Clone() ServiceSet {
+	if s == nil {
+		return nil
+	}
+	return &serviceSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}
+
 type PodSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*v1.Pod) bool) []*v1.Pod
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*v1.Pod) bool) []*v1.Pod
 	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.Pod
 	// Insert a resource into the set.
@@ -798,6 +920,8 @@ type PodSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another PodSet
 	Delta(newSet PodSet) sksets.ResourceDelta
+	// Create a deep copy of the current PodSet
+	Clone() PodSet
 }
 
 func makeGenericPodSet(podList []*v1.Pod) sksets.ResourceSet {
@@ -842,8 +966,27 @@ func (s *podSet) List(filterResource ...func(*v1.Pod) bool) []*v1.Pod {
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	podList := make([]*v1.Pod, 0, len(objs))
+	for _, obj := range objs {
+		podList = append(podList, obj.(*v1.Pod))
+	}
+	return podList
+}
+
+func (s *podSet) UnsortedList(filterResource ...func(*v1.Pod) bool) []*v1.Pod {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*v1.Pod))
+		})
+	}
+
 	var podList []*v1.Pod
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		podList = append(podList, obj.(*v1.Pod))
 	}
 	return podList
@@ -958,11 +1101,20 @@ func (s *podSet) Delta(newSet PodSet) sksets.ResourceDelta {
 	return s.Generic().Delta(newSet.Generic())
 }
 
+func (s *podSet) Clone() PodSet {
+	if s == nil {
+		return nil
+	}
+	return &podSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}
+
 type EndpointsSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*v1.Endpoints) bool) []*v1.Endpoints
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*v1.Endpoints) bool) []*v1.Endpoints
 	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.Endpoints
 	// Insert a resource into the set.
@@ -987,6 +1139,8 @@ type EndpointsSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another EndpointsSet
 	Delta(newSet EndpointsSet) sksets.ResourceDelta
+	// Create a deep copy of the current EndpointsSet
+	Clone() EndpointsSet
 }
 
 func makeGenericEndpointsSet(endpointsList []*v1.Endpoints) sksets.ResourceSet {
@@ -1031,8 +1185,27 @@ func (s *endpointsSet) List(filterResource ...func(*v1.Endpoints) bool) []*v1.En
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	endpointsList := make([]*v1.Endpoints, 0, len(objs))
+	for _, obj := range objs {
+		endpointsList = append(endpointsList, obj.(*v1.Endpoints))
+	}
+	return endpointsList
+}
+
+func (s *endpointsSet) UnsortedList(filterResource ...func(*v1.Endpoints) bool) []*v1.Endpoints {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*v1.Endpoints))
+		})
+	}
+
 	var endpointsList []*v1.Endpoints
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		endpointsList = append(endpointsList, obj.(*v1.Endpoints))
 	}
 	return endpointsList
@@ -1147,11 +1320,20 @@ func (s *endpointsSet) Delta(newSet EndpointsSet) sksets.ResourceDelta {
 	return s.Generic().Delta(newSet.Generic())
 }
 
+func (s *endpointsSet) Clone() EndpointsSet {
+	if s == nil {
+		return nil
+	}
+	return &endpointsSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}
+
 type NamespaceSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*v1.Namespace) bool) []*v1.Namespace
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*v1.Namespace) bool) []*v1.Namespace
 	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.Namespace
 	// Insert a resource into the set.
@@ -1176,6 +1358,8 @@ type NamespaceSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another NamespaceSet
 	Delta(newSet NamespaceSet) sksets.ResourceDelta
+	// Create a deep copy of the current NamespaceSet
+	Clone() NamespaceSet
 }
 
 func makeGenericNamespaceSet(namespaceList []*v1.Namespace) sksets.ResourceSet {
@@ -1220,8 +1404,27 @@ func (s *namespaceSet) List(filterResource ...func(*v1.Namespace) bool) []*v1.Na
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	namespaceList := make([]*v1.Namespace, 0, len(objs))
+	for _, obj := range objs {
+		namespaceList = append(namespaceList, obj.(*v1.Namespace))
+	}
+	return namespaceList
+}
+
+func (s *namespaceSet) UnsortedList(filterResource ...func(*v1.Namespace) bool) []*v1.Namespace {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*v1.Namespace))
+		})
+	}
+
 	var namespaceList []*v1.Namespace
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		namespaceList = append(namespaceList, obj.(*v1.Namespace))
 	}
 	return namespaceList
@@ -1336,11 +1539,20 @@ func (s *namespaceSet) Delta(newSet NamespaceSet) sksets.ResourceDelta {
 	return s.Generic().Delta(newSet.Generic())
 }
 
+func (s *namespaceSet) Clone() NamespaceSet {
+	if s == nil {
+		return nil
+	}
+	return &namespaceSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}
+
 type NodeSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*v1.Node) bool) []*v1.Node
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*v1.Node) bool) []*v1.Node
 	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.Node
 	// Insert a resource into the set.
@@ -1365,6 +1577,8 @@ type NodeSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another NodeSet
 	Delta(newSet NodeSet) sksets.ResourceDelta
+	// Create a deep copy of the current NodeSet
+	Clone() NodeSet
 }
 
 func makeGenericNodeSet(nodeList []*v1.Node) sksets.ResourceSet {
@@ -1409,8 +1623,27 @@ func (s *nodeSet) List(filterResource ...func(*v1.Node) bool) []*v1.Node {
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	nodeList := make([]*v1.Node, 0, len(objs))
+	for _, obj := range objs {
+		nodeList = append(nodeList, obj.(*v1.Node))
+	}
+	return nodeList
+}
+
+func (s *nodeSet) UnsortedList(filterResource ...func(*v1.Node) bool) []*v1.Node {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*v1.Node))
+		})
+	}
+
 	var nodeList []*v1.Node
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		nodeList = append(nodeList, obj.(*v1.Node))
 	}
 	return nodeList
@@ -1523,4 +1756,11 @@ func (s *nodeSet) Delta(newSet NodeSet) sksets.ResourceDelta {
 		}
 	}
 	return s.Generic().Delta(newSet.Generic())
+}
+
+func (s *nodeSet) Clone() NodeSet {
+	if s == nil {
+		return nil
+	}
+	return &nodeSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
 }
