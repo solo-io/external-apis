@@ -17,7 +17,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/rotisserie/eris v0.1.1
 	github.com/servicemeshinterface/smi-sdk-go v0.4.1
-	github.com/solo-io/skv2 v0.17.0
+	github.com/solo-io/skv2 v0.18.3
 	istio.io/client-go v0.0.0-20200610222318-1cfead1f1938
 	k8s.io/api v0.19.7
 	k8s.io/apiextensions-apiserver v0.19.7
@@ -25,5 +25,3 @@ require (
 	k8s.io/client-go v0.19.7
 	sigs.k8s.io/controller-runtime v0.7.0
 )
-
-replace github.com/solo-io/skv2 => ../skv2
