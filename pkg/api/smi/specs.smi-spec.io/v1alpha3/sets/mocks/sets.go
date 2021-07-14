@@ -70,6 +70,24 @@ func (mr *MockHTTPRouteGroupSetMockRecorder) List(filterResource ...interface{})
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).List), filterResource...)
 }
 
+// UnsortedList mocks base method
+func (m *MockHTTPRouteGroupSet) UnsortedList(filterResource ...func(*v1alpha3.HTTPRouteGroup) bool) []*v1alpha3.HTTPRouteGroup {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1alpha3.HTTPRouteGroup)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList
+func (mr *MockHTTPRouteGroupSetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).UnsortedList), filterResource...)
+}
+
 // Map mocks base method
 func (m *MockHTTPRouteGroupSet) Map() map[string]*v1alpha3.HTTPRouteGroup {
 	m.ctrl.T.Helper()
@@ -237,4 +255,18 @@ func (m *MockHTTPRouteGroupSet) Delta(newSet v1alpha3sets.HTTPRouteGroupSet) set
 func (mr *MockHTTPRouteGroupSetMockRecorder) Delta(newSet interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Delta), newSet)
+}
+
+// Clone mocks base method
+func (m *MockHTTPRouteGroupSet) Clone() v1alpha3sets.HTTPRouteGroupSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1alpha3sets.HTTPRouteGroupSet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone
+func (mr *MockHTTPRouteGroupSetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Clone))
 }

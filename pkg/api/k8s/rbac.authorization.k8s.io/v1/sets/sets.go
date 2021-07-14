@@ -18,6 +18,8 @@ type RoleSet interface {
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*rbac_authorization_k8s_io_v1.Role) bool) []*rbac_authorization_k8s_io_v1.Role
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*rbac_authorization_k8s_io_v1.Role) bool) []*rbac_authorization_k8s_io_v1.Role
 	// Return the Set as a map of key to resource.
 	Map() map[string]*rbac_authorization_k8s_io_v1.Role
 	// Insert a resource into the set.
@@ -42,6 +44,8 @@ type RoleSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another RoleSet
 	Delta(newSet RoleSet) sksets.ResourceDelta
+	// Create a deep copy of the current RoleSet
+	Clone() RoleSet
 }
 
 func makeGenericRoleSet(roleList []*rbac_authorization_k8s_io_v1.Role) sksets.ResourceSet {
@@ -86,8 +90,27 @@ func (s *roleSet) List(filterResource ...func(*rbac_authorization_k8s_io_v1.Role
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	roleList := make([]*rbac_authorization_k8s_io_v1.Role, 0, len(objs))
+	for _, obj := range objs {
+		roleList = append(roleList, obj.(*rbac_authorization_k8s_io_v1.Role))
+	}
+	return roleList
+}
+
+func (s *roleSet) UnsortedList(filterResource ...func(*rbac_authorization_k8s_io_v1.Role) bool) []*rbac_authorization_k8s_io_v1.Role {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*rbac_authorization_k8s_io_v1.Role))
+		})
+	}
+
 	var roleList []*rbac_authorization_k8s_io_v1.Role
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		roleList = append(roleList, obj.(*rbac_authorization_k8s_io_v1.Role))
 	}
 	return roleList
@@ -202,11 +225,20 @@ func (s *roleSet) Delta(newSet RoleSet) sksets.ResourceDelta {
 	return s.Generic().Delta(newSet.Generic())
 }
 
+func (s *roleSet) Clone() RoleSet {
+	if s == nil {
+		return nil
+	}
+	return &roleSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}
+
 type RoleBindingSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*rbac_authorization_k8s_io_v1.RoleBinding) bool) []*rbac_authorization_k8s_io_v1.RoleBinding
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*rbac_authorization_k8s_io_v1.RoleBinding) bool) []*rbac_authorization_k8s_io_v1.RoleBinding
 	// Return the Set as a map of key to resource.
 	Map() map[string]*rbac_authorization_k8s_io_v1.RoleBinding
 	// Insert a resource into the set.
@@ -231,6 +263,8 @@ type RoleBindingSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another RoleBindingSet
 	Delta(newSet RoleBindingSet) sksets.ResourceDelta
+	// Create a deep copy of the current RoleBindingSet
+	Clone() RoleBindingSet
 }
 
 func makeGenericRoleBindingSet(roleBindingList []*rbac_authorization_k8s_io_v1.RoleBinding) sksets.ResourceSet {
@@ -275,8 +309,27 @@ func (s *roleBindingSet) List(filterResource ...func(*rbac_authorization_k8s_io_
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	roleBindingList := make([]*rbac_authorization_k8s_io_v1.RoleBinding, 0, len(objs))
+	for _, obj := range objs {
+		roleBindingList = append(roleBindingList, obj.(*rbac_authorization_k8s_io_v1.RoleBinding))
+	}
+	return roleBindingList
+}
+
+func (s *roleBindingSet) UnsortedList(filterResource ...func(*rbac_authorization_k8s_io_v1.RoleBinding) bool) []*rbac_authorization_k8s_io_v1.RoleBinding {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*rbac_authorization_k8s_io_v1.RoleBinding))
+		})
+	}
+
 	var roleBindingList []*rbac_authorization_k8s_io_v1.RoleBinding
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		roleBindingList = append(roleBindingList, obj.(*rbac_authorization_k8s_io_v1.RoleBinding))
 	}
 	return roleBindingList
@@ -391,11 +444,20 @@ func (s *roleBindingSet) Delta(newSet RoleBindingSet) sksets.ResourceDelta {
 	return s.Generic().Delta(newSet.Generic())
 }
 
+func (s *roleBindingSet) Clone() RoleBindingSet {
+	if s == nil {
+		return nil
+	}
+	return &roleBindingSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}
+
 type ClusterRoleSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*rbac_authorization_k8s_io_v1.ClusterRole) bool) []*rbac_authorization_k8s_io_v1.ClusterRole
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*rbac_authorization_k8s_io_v1.ClusterRole) bool) []*rbac_authorization_k8s_io_v1.ClusterRole
 	// Return the Set as a map of key to resource.
 	Map() map[string]*rbac_authorization_k8s_io_v1.ClusterRole
 	// Insert a resource into the set.
@@ -420,6 +482,8 @@ type ClusterRoleSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another ClusterRoleSet
 	Delta(newSet ClusterRoleSet) sksets.ResourceDelta
+	// Create a deep copy of the current ClusterRoleSet
+	Clone() ClusterRoleSet
 }
 
 func makeGenericClusterRoleSet(clusterRoleList []*rbac_authorization_k8s_io_v1.ClusterRole) sksets.ResourceSet {
@@ -464,8 +528,27 @@ func (s *clusterRoleSet) List(filterResource ...func(*rbac_authorization_k8s_io_
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	clusterRoleList := make([]*rbac_authorization_k8s_io_v1.ClusterRole, 0, len(objs))
+	for _, obj := range objs {
+		clusterRoleList = append(clusterRoleList, obj.(*rbac_authorization_k8s_io_v1.ClusterRole))
+	}
+	return clusterRoleList
+}
+
+func (s *clusterRoleSet) UnsortedList(filterResource ...func(*rbac_authorization_k8s_io_v1.ClusterRole) bool) []*rbac_authorization_k8s_io_v1.ClusterRole {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*rbac_authorization_k8s_io_v1.ClusterRole))
+		})
+	}
+
 	var clusterRoleList []*rbac_authorization_k8s_io_v1.ClusterRole
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		clusterRoleList = append(clusterRoleList, obj.(*rbac_authorization_k8s_io_v1.ClusterRole))
 	}
 	return clusterRoleList
@@ -580,11 +663,20 @@ func (s *clusterRoleSet) Delta(newSet ClusterRoleSet) sksets.ResourceDelta {
 	return s.Generic().Delta(newSet.Generic())
 }
 
+func (s *clusterRoleSet) Clone() ClusterRoleSet {
+	if s == nil {
+		return nil
+	}
+	return &clusterRoleSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}
+
 type ClusterRoleBindingSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*rbac_authorization_k8s_io_v1.ClusterRoleBinding) bool) []*rbac_authorization_k8s_io_v1.ClusterRoleBinding
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*rbac_authorization_k8s_io_v1.ClusterRoleBinding) bool) []*rbac_authorization_k8s_io_v1.ClusterRoleBinding
 	// Return the Set as a map of key to resource.
 	Map() map[string]*rbac_authorization_k8s_io_v1.ClusterRoleBinding
 	// Insert a resource into the set.
@@ -609,6 +701,8 @@ type ClusterRoleBindingSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another ClusterRoleBindingSet
 	Delta(newSet ClusterRoleBindingSet) sksets.ResourceDelta
+	// Create a deep copy of the current ClusterRoleBindingSet
+	Clone() ClusterRoleBindingSet
 }
 
 func makeGenericClusterRoleBindingSet(clusterRoleBindingList []*rbac_authorization_k8s_io_v1.ClusterRoleBinding) sksets.ResourceSet {
@@ -653,8 +747,27 @@ func (s *clusterRoleBindingSet) List(filterResource ...func(*rbac_authorization_
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	clusterRoleBindingList := make([]*rbac_authorization_k8s_io_v1.ClusterRoleBinding, 0, len(objs))
+	for _, obj := range objs {
+		clusterRoleBindingList = append(clusterRoleBindingList, obj.(*rbac_authorization_k8s_io_v1.ClusterRoleBinding))
+	}
+	return clusterRoleBindingList
+}
+
+func (s *clusterRoleBindingSet) UnsortedList(filterResource ...func(*rbac_authorization_k8s_io_v1.ClusterRoleBinding) bool) []*rbac_authorization_k8s_io_v1.ClusterRoleBinding {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*rbac_authorization_k8s_io_v1.ClusterRoleBinding))
+		})
+	}
+
 	var clusterRoleBindingList []*rbac_authorization_k8s_io_v1.ClusterRoleBinding
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		clusterRoleBindingList = append(clusterRoleBindingList, obj.(*rbac_authorization_k8s_io_v1.ClusterRoleBinding))
 	}
 	return clusterRoleBindingList
@@ -767,4 +880,11 @@ func (s *clusterRoleBindingSet) Delta(newSet ClusterRoleBindingSet) sksets.Resou
 		}
 	}
 	return s.Generic().Delta(newSet.Generic())
+}
+
+func (s *clusterRoleBindingSet) Clone() ClusterRoleBindingSet {
+	if s == nil {
+		return nil
+	}
+	return &clusterRoleBindingSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
 }

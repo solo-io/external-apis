@@ -70,6 +70,24 @@ func (mr *MockMeshSetMockRecorder) List(filterResource ...interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockMeshSet)(nil).List), filterResource...)
 }
 
+// UnsortedList mocks base method
+func (m *MockMeshSet) UnsortedList(filterResource ...func(*v1beta2.Mesh) bool) []*v1beta2.Mesh {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1beta2.Mesh)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList
+func (mr *MockMeshSetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockMeshSet)(nil).UnsortedList), filterResource...)
+}
+
 // Map mocks base method
 func (m *MockMeshSet) Map() map[string]*v1beta2.Mesh {
 	m.ctrl.T.Helper()
@@ -239,6 +257,20 @@ func (mr *MockMeshSetMockRecorder) Delta(newSet interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockMeshSet)(nil).Delta), newSet)
 }
 
+// Clone mocks base method
+func (m *MockMeshSet) Clone() v1beta2sets.MeshSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1beta2sets.MeshSet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone
+func (mr *MockMeshSetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockMeshSet)(nil).Clone))
+}
+
 // MockVirtualServiceSet is a mock of VirtualServiceSet interface
 type MockVirtualServiceSet struct {
 	ctrl     *gomock.Controller
@@ -292,6 +324,24 @@ func (m *MockVirtualServiceSet) List(filterResource ...func(*v1beta2.VirtualServ
 func (mr *MockVirtualServiceSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockVirtualServiceSet)(nil).List), filterResource...)
+}
+
+// UnsortedList mocks base method
+func (m *MockVirtualServiceSet) UnsortedList(filterResource ...func(*v1beta2.VirtualService) bool) []*v1beta2.VirtualService {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1beta2.VirtualService)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList
+func (mr *MockVirtualServiceSetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockVirtualServiceSet)(nil).UnsortedList), filterResource...)
 }
 
 // Map mocks base method
@@ -463,6 +513,20 @@ func (mr *MockVirtualServiceSetMockRecorder) Delta(newSet interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockVirtualServiceSet)(nil).Delta), newSet)
 }
 
+// Clone mocks base method
+func (m *MockVirtualServiceSet) Clone() v1beta2sets.VirtualServiceSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1beta2sets.VirtualServiceSet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone
+func (mr *MockVirtualServiceSetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockVirtualServiceSet)(nil).Clone))
+}
+
 // MockVirtualNodeSet is a mock of VirtualNodeSet interface
 type MockVirtualNodeSet struct {
 	ctrl     *gomock.Controller
@@ -516,6 +580,24 @@ func (m *MockVirtualNodeSet) List(filterResource ...func(*v1beta2.VirtualNode) b
 func (mr *MockVirtualNodeSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockVirtualNodeSet)(nil).List), filterResource...)
+}
+
+// UnsortedList mocks base method
+func (m *MockVirtualNodeSet) UnsortedList(filterResource ...func(*v1beta2.VirtualNode) bool) []*v1beta2.VirtualNode {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1beta2.VirtualNode)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList
+func (mr *MockVirtualNodeSetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockVirtualNodeSet)(nil).UnsortedList), filterResource...)
 }
 
 // Map mocks base method
@@ -687,6 +769,20 @@ func (mr *MockVirtualNodeSetMockRecorder) Delta(newSet interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockVirtualNodeSet)(nil).Delta), newSet)
 }
 
+// Clone mocks base method
+func (m *MockVirtualNodeSet) Clone() v1beta2sets.VirtualNodeSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1beta2sets.VirtualNodeSet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone
+func (mr *MockVirtualNodeSetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockVirtualNodeSet)(nil).Clone))
+}
+
 // MockVirtualRouterSet is a mock of VirtualRouterSet interface
 type MockVirtualRouterSet struct {
 	ctrl     *gomock.Controller
@@ -740,6 +836,24 @@ func (m *MockVirtualRouterSet) List(filterResource ...func(*v1beta2.VirtualRoute
 func (mr *MockVirtualRouterSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockVirtualRouterSet)(nil).List), filterResource...)
+}
+
+// UnsortedList mocks base method
+func (m *MockVirtualRouterSet) UnsortedList(filterResource ...func(*v1beta2.VirtualRouter) bool) []*v1beta2.VirtualRouter {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1beta2.VirtualRouter)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList
+func (mr *MockVirtualRouterSetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockVirtualRouterSet)(nil).UnsortedList), filterResource...)
 }
 
 // Map mocks base method
@@ -911,6 +1025,20 @@ func (mr *MockVirtualRouterSetMockRecorder) Delta(newSet interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockVirtualRouterSet)(nil).Delta), newSet)
 }
 
+// Clone mocks base method
+func (m *MockVirtualRouterSet) Clone() v1beta2sets.VirtualRouterSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1beta2sets.VirtualRouterSet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone
+func (mr *MockVirtualRouterSetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockVirtualRouterSet)(nil).Clone))
+}
+
 // MockVirtualGatewaySet is a mock of VirtualGatewaySet interface
 type MockVirtualGatewaySet struct {
 	ctrl     *gomock.Controller
@@ -964,6 +1092,24 @@ func (m *MockVirtualGatewaySet) List(filterResource ...func(*v1beta2.VirtualGate
 func (mr *MockVirtualGatewaySetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockVirtualGatewaySet)(nil).List), filterResource...)
+}
+
+// UnsortedList mocks base method
+func (m *MockVirtualGatewaySet) UnsortedList(filterResource ...func(*v1beta2.VirtualGateway) bool) []*v1beta2.VirtualGateway {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1beta2.VirtualGateway)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList
+func (mr *MockVirtualGatewaySetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockVirtualGatewaySet)(nil).UnsortedList), filterResource...)
 }
 
 // Map mocks base method
@@ -1135,6 +1281,20 @@ func (mr *MockVirtualGatewaySetMockRecorder) Delta(newSet interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockVirtualGatewaySet)(nil).Delta), newSet)
 }
 
+// Clone mocks base method
+func (m *MockVirtualGatewaySet) Clone() v1beta2sets.VirtualGatewaySet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1beta2sets.VirtualGatewaySet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone
+func (mr *MockVirtualGatewaySetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockVirtualGatewaySet)(nil).Clone))
+}
+
 // MockGatewayRouteSet is a mock of GatewayRouteSet interface
 type MockGatewayRouteSet struct {
 	ctrl     *gomock.Controller
@@ -1188,6 +1348,24 @@ func (m *MockGatewayRouteSet) List(filterResource ...func(*v1beta2.GatewayRoute)
 func (mr *MockGatewayRouteSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockGatewayRouteSet)(nil).List), filterResource...)
+}
+
+// UnsortedList mocks base method
+func (m *MockGatewayRouteSet) UnsortedList(filterResource ...func(*v1beta2.GatewayRoute) bool) []*v1beta2.GatewayRoute {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1beta2.GatewayRoute)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList
+func (mr *MockGatewayRouteSetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockGatewayRouteSet)(nil).UnsortedList), filterResource...)
 }
 
 // Map mocks base method
@@ -1357,4 +1535,18 @@ func (m *MockGatewayRouteSet) Delta(newSet v1beta2sets.GatewayRouteSet) sets.Res
 func (mr *MockGatewayRouteSetMockRecorder) Delta(newSet interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockGatewayRouteSet)(nil).Delta), newSet)
+}
+
+// Clone mocks base method
+func (m *MockGatewayRouteSet) Clone() v1beta2sets.GatewayRouteSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1beta2sets.GatewayRouteSet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone
+func (mr *MockGatewayRouteSetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockGatewayRouteSet)(nil).Clone))
 }

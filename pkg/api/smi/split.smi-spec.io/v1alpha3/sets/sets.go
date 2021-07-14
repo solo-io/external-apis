@@ -18,6 +18,8 @@ type TrafficSplitSet interface {
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*split_smi_spec_io_v1alpha3.TrafficSplit) bool) []*split_smi_spec_io_v1alpha3.TrafficSplit
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*split_smi_spec_io_v1alpha3.TrafficSplit) bool) []*split_smi_spec_io_v1alpha3.TrafficSplit
 	// Return the Set as a map of key to resource.
 	Map() map[string]*split_smi_spec_io_v1alpha3.TrafficSplit
 	// Insert a resource into the set.
@@ -42,6 +44,8 @@ type TrafficSplitSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another TrafficSplitSet
 	Delta(newSet TrafficSplitSet) sksets.ResourceDelta
+	// Create a deep copy of the current TrafficSplitSet
+	Clone() TrafficSplitSet
 }
 
 func makeGenericTrafficSplitSet(trafficSplitList []*split_smi_spec_io_v1alpha3.TrafficSplit) sksets.ResourceSet {
@@ -86,8 +90,27 @@ func (s *trafficSplitSet) List(filterResource ...func(*split_smi_spec_io_v1alpha
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	trafficSplitList := make([]*split_smi_spec_io_v1alpha3.TrafficSplit, 0, len(objs))
+	for _, obj := range objs {
+		trafficSplitList = append(trafficSplitList, obj.(*split_smi_spec_io_v1alpha3.TrafficSplit))
+	}
+	return trafficSplitList
+}
+
+func (s *trafficSplitSet) UnsortedList(filterResource ...func(*split_smi_spec_io_v1alpha3.TrafficSplit) bool) []*split_smi_spec_io_v1alpha3.TrafficSplit {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*split_smi_spec_io_v1alpha3.TrafficSplit))
+		})
+	}
+
 	var trafficSplitList []*split_smi_spec_io_v1alpha3.TrafficSplit
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		trafficSplitList = append(trafficSplitList, obj.(*split_smi_spec_io_v1alpha3.TrafficSplit))
 	}
 	return trafficSplitList
@@ -200,4 +223,11 @@ func (s *trafficSplitSet) Delta(newSet TrafficSplitSet) sksets.ResourceDelta {
 		}
 	}
 	return s.Generic().Delta(newSet.Generic())
+}
+
+func (s *trafficSplitSet) Clone() TrafficSplitSet {
+	if s == nil {
+		return nil
+	}
+	return &trafficSplitSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
 }

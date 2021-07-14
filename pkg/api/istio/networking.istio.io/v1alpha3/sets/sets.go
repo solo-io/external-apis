@@ -18,6 +18,8 @@ type DestinationRuleSet interface {
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*networking_istio_io_v1alpha3.DestinationRule) bool) []*networking_istio_io_v1alpha3.DestinationRule
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*networking_istio_io_v1alpha3.DestinationRule) bool) []*networking_istio_io_v1alpha3.DestinationRule
 	// Return the Set as a map of key to resource.
 	Map() map[string]*networking_istio_io_v1alpha3.DestinationRule
 	// Insert a resource into the set.
@@ -42,6 +44,8 @@ type DestinationRuleSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another DestinationRuleSet
 	Delta(newSet DestinationRuleSet) sksets.ResourceDelta
+	// Create a deep copy of the current DestinationRuleSet
+	Clone() DestinationRuleSet
 }
 
 func makeGenericDestinationRuleSet(destinationRuleList []*networking_istio_io_v1alpha3.DestinationRule) sksets.ResourceSet {
@@ -86,8 +90,27 @@ func (s *destinationRuleSet) List(filterResource ...func(*networking_istio_io_v1
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	destinationRuleList := make([]*networking_istio_io_v1alpha3.DestinationRule, 0, len(objs))
+	for _, obj := range objs {
+		destinationRuleList = append(destinationRuleList, obj.(*networking_istio_io_v1alpha3.DestinationRule))
+	}
+	return destinationRuleList
+}
+
+func (s *destinationRuleSet) UnsortedList(filterResource ...func(*networking_istio_io_v1alpha3.DestinationRule) bool) []*networking_istio_io_v1alpha3.DestinationRule {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1alpha3.DestinationRule))
+		})
+	}
+
 	var destinationRuleList []*networking_istio_io_v1alpha3.DestinationRule
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		destinationRuleList = append(destinationRuleList, obj.(*networking_istio_io_v1alpha3.DestinationRule))
 	}
 	return destinationRuleList
@@ -202,11 +225,20 @@ func (s *destinationRuleSet) Delta(newSet DestinationRuleSet) sksets.ResourceDel
 	return s.Generic().Delta(newSet.Generic())
 }
 
+func (s *destinationRuleSet) Clone() DestinationRuleSet {
+	if s == nil {
+		return nil
+	}
+	return &destinationRuleSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}
+
 type EnvoyFilterSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*networking_istio_io_v1alpha3.EnvoyFilter) bool) []*networking_istio_io_v1alpha3.EnvoyFilter
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*networking_istio_io_v1alpha3.EnvoyFilter) bool) []*networking_istio_io_v1alpha3.EnvoyFilter
 	// Return the Set as a map of key to resource.
 	Map() map[string]*networking_istio_io_v1alpha3.EnvoyFilter
 	// Insert a resource into the set.
@@ -231,6 +263,8 @@ type EnvoyFilterSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another EnvoyFilterSet
 	Delta(newSet EnvoyFilterSet) sksets.ResourceDelta
+	// Create a deep copy of the current EnvoyFilterSet
+	Clone() EnvoyFilterSet
 }
 
 func makeGenericEnvoyFilterSet(envoyFilterList []*networking_istio_io_v1alpha3.EnvoyFilter) sksets.ResourceSet {
@@ -275,8 +309,27 @@ func (s *envoyFilterSet) List(filterResource ...func(*networking_istio_io_v1alph
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	envoyFilterList := make([]*networking_istio_io_v1alpha3.EnvoyFilter, 0, len(objs))
+	for _, obj := range objs {
+		envoyFilterList = append(envoyFilterList, obj.(*networking_istio_io_v1alpha3.EnvoyFilter))
+	}
+	return envoyFilterList
+}
+
+func (s *envoyFilterSet) UnsortedList(filterResource ...func(*networking_istio_io_v1alpha3.EnvoyFilter) bool) []*networking_istio_io_v1alpha3.EnvoyFilter {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1alpha3.EnvoyFilter))
+		})
+	}
+
 	var envoyFilterList []*networking_istio_io_v1alpha3.EnvoyFilter
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		envoyFilterList = append(envoyFilterList, obj.(*networking_istio_io_v1alpha3.EnvoyFilter))
 	}
 	return envoyFilterList
@@ -391,11 +444,20 @@ func (s *envoyFilterSet) Delta(newSet EnvoyFilterSet) sksets.ResourceDelta {
 	return s.Generic().Delta(newSet.Generic())
 }
 
+func (s *envoyFilterSet) Clone() EnvoyFilterSet {
+	if s == nil {
+		return nil
+	}
+	return &envoyFilterSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}
+
 type GatewaySet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*networking_istio_io_v1alpha3.Gateway) bool) []*networking_istio_io_v1alpha3.Gateway
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*networking_istio_io_v1alpha3.Gateway) bool) []*networking_istio_io_v1alpha3.Gateway
 	// Return the Set as a map of key to resource.
 	Map() map[string]*networking_istio_io_v1alpha3.Gateway
 	// Insert a resource into the set.
@@ -420,6 +482,8 @@ type GatewaySet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another GatewaySet
 	Delta(newSet GatewaySet) sksets.ResourceDelta
+	// Create a deep copy of the current GatewaySet
+	Clone() GatewaySet
 }
 
 func makeGenericGatewaySet(gatewayList []*networking_istio_io_v1alpha3.Gateway) sksets.ResourceSet {
@@ -464,8 +528,27 @@ func (s *gatewaySet) List(filterResource ...func(*networking_istio_io_v1alpha3.G
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	gatewayList := make([]*networking_istio_io_v1alpha3.Gateway, 0, len(objs))
+	for _, obj := range objs {
+		gatewayList = append(gatewayList, obj.(*networking_istio_io_v1alpha3.Gateway))
+	}
+	return gatewayList
+}
+
+func (s *gatewaySet) UnsortedList(filterResource ...func(*networking_istio_io_v1alpha3.Gateway) bool) []*networking_istio_io_v1alpha3.Gateway {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1alpha3.Gateway))
+		})
+	}
+
 	var gatewayList []*networking_istio_io_v1alpha3.Gateway
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		gatewayList = append(gatewayList, obj.(*networking_istio_io_v1alpha3.Gateway))
 	}
 	return gatewayList
@@ -580,11 +663,20 @@ func (s *gatewaySet) Delta(newSet GatewaySet) sksets.ResourceDelta {
 	return s.Generic().Delta(newSet.Generic())
 }
 
+func (s *gatewaySet) Clone() GatewaySet {
+	if s == nil {
+		return nil
+	}
+	return &gatewaySet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}
+
 type ServiceEntrySet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*networking_istio_io_v1alpha3.ServiceEntry) bool) []*networking_istio_io_v1alpha3.ServiceEntry
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*networking_istio_io_v1alpha3.ServiceEntry) bool) []*networking_istio_io_v1alpha3.ServiceEntry
 	// Return the Set as a map of key to resource.
 	Map() map[string]*networking_istio_io_v1alpha3.ServiceEntry
 	// Insert a resource into the set.
@@ -609,6 +701,8 @@ type ServiceEntrySet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another ServiceEntrySet
 	Delta(newSet ServiceEntrySet) sksets.ResourceDelta
+	// Create a deep copy of the current ServiceEntrySet
+	Clone() ServiceEntrySet
 }
 
 func makeGenericServiceEntrySet(serviceEntryList []*networking_istio_io_v1alpha3.ServiceEntry) sksets.ResourceSet {
@@ -653,8 +747,27 @@ func (s *serviceEntrySet) List(filterResource ...func(*networking_istio_io_v1alp
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	serviceEntryList := make([]*networking_istio_io_v1alpha3.ServiceEntry, 0, len(objs))
+	for _, obj := range objs {
+		serviceEntryList = append(serviceEntryList, obj.(*networking_istio_io_v1alpha3.ServiceEntry))
+	}
+	return serviceEntryList
+}
+
+func (s *serviceEntrySet) UnsortedList(filterResource ...func(*networking_istio_io_v1alpha3.ServiceEntry) bool) []*networking_istio_io_v1alpha3.ServiceEntry {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1alpha3.ServiceEntry))
+		})
+	}
+
 	var serviceEntryList []*networking_istio_io_v1alpha3.ServiceEntry
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		serviceEntryList = append(serviceEntryList, obj.(*networking_istio_io_v1alpha3.ServiceEntry))
 	}
 	return serviceEntryList
@@ -769,11 +882,20 @@ func (s *serviceEntrySet) Delta(newSet ServiceEntrySet) sksets.ResourceDelta {
 	return s.Generic().Delta(newSet.Generic())
 }
 
+func (s *serviceEntrySet) Clone() ServiceEntrySet {
+	if s == nil {
+		return nil
+	}
+	return &serviceEntrySet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}
+
 type VirtualServiceSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*networking_istio_io_v1alpha3.VirtualService) bool) []*networking_istio_io_v1alpha3.VirtualService
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*networking_istio_io_v1alpha3.VirtualService) bool) []*networking_istio_io_v1alpha3.VirtualService
 	// Return the Set as a map of key to resource.
 	Map() map[string]*networking_istio_io_v1alpha3.VirtualService
 	// Insert a resource into the set.
@@ -798,6 +920,8 @@ type VirtualServiceSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another VirtualServiceSet
 	Delta(newSet VirtualServiceSet) sksets.ResourceDelta
+	// Create a deep copy of the current VirtualServiceSet
+	Clone() VirtualServiceSet
 }
 
 func makeGenericVirtualServiceSet(virtualServiceList []*networking_istio_io_v1alpha3.VirtualService) sksets.ResourceSet {
@@ -842,8 +966,27 @@ func (s *virtualServiceSet) List(filterResource ...func(*networking_istio_io_v1a
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	virtualServiceList := make([]*networking_istio_io_v1alpha3.VirtualService, 0, len(objs))
+	for _, obj := range objs {
+		virtualServiceList = append(virtualServiceList, obj.(*networking_istio_io_v1alpha3.VirtualService))
+	}
+	return virtualServiceList
+}
+
+func (s *virtualServiceSet) UnsortedList(filterResource ...func(*networking_istio_io_v1alpha3.VirtualService) bool) []*networking_istio_io_v1alpha3.VirtualService {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1alpha3.VirtualService))
+		})
+	}
+
 	var virtualServiceList []*networking_istio_io_v1alpha3.VirtualService
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		virtualServiceList = append(virtualServiceList, obj.(*networking_istio_io_v1alpha3.VirtualService))
 	}
 	return virtualServiceList
@@ -958,11 +1101,20 @@ func (s *virtualServiceSet) Delta(newSet VirtualServiceSet) sksets.ResourceDelta
 	return s.Generic().Delta(newSet.Generic())
 }
 
+func (s *virtualServiceSet) Clone() VirtualServiceSet {
+	if s == nil {
+		return nil
+	}
+	return &virtualServiceSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}
+
 type SidecarSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*networking_istio_io_v1alpha3.Sidecar) bool) []*networking_istio_io_v1alpha3.Sidecar
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*networking_istio_io_v1alpha3.Sidecar) bool) []*networking_istio_io_v1alpha3.Sidecar
 	// Return the Set as a map of key to resource.
 	Map() map[string]*networking_istio_io_v1alpha3.Sidecar
 	// Insert a resource into the set.
@@ -987,6 +1139,8 @@ type SidecarSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another SidecarSet
 	Delta(newSet SidecarSet) sksets.ResourceDelta
+	// Create a deep copy of the current SidecarSet
+	Clone() SidecarSet
 }
 
 func makeGenericSidecarSet(sidecarList []*networking_istio_io_v1alpha3.Sidecar) sksets.ResourceSet {
@@ -1031,8 +1185,27 @@ func (s *sidecarSet) List(filterResource ...func(*networking_istio_io_v1alpha3.S
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	sidecarList := make([]*networking_istio_io_v1alpha3.Sidecar, 0, len(objs))
+	for _, obj := range objs {
+		sidecarList = append(sidecarList, obj.(*networking_istio_io_v1alpha3.Sidecar))
+	}
+	return sidecarList
+}
+
+func (s *sidecarSet) UnsortedList(filterResource ...func(*networking_istio_io_v1alpha3.Sidecar) bool) []*networking_istio_io_v1alpha3.Sidecar {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1alpha3.Sidecar))
+		})
+	}
+
 	var sidecarList []*networking_istio_io_v1alpha3.Sidecar
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		sidecarList = append(sidecarList, obj.(*networking_istio_io_v1alpha3.Sidecar))
 	}
 	return sidecarList
@@ -1145,4 +1318,11 @@ func (s *sidecarSet) Delta(newSet SidecarSet) sksets.ResourceDelta {
 		}
 	}
 	return s.Generic().Delta(newSet.Generic())
+}
+
+func (s *sidecarSet) Clone() SidecarSet {
+	if s == nil {
+		return nil
+	}
+	return &sidecarSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
 }

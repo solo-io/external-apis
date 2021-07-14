@@ -18,6 +18,8 @@ type MeshSet interface {
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*appmesh_k8s_aws_v1beta2.Mesh) bool) []*appmesh_k8s_aws_v1beta2.Mesh
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.Mesh) bool) []*appmesh_k8s_aws_v1beta2.Mesh
 	// Return the Set as a map of key to resource.
 	Map() map[string]*appmesh_k8s_aws_v1beta2.Mesh
 	// Insert a resource into the set.
@@ -42,6 +44,8 @@ type MeshSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another MeshSet
 	Delta(newSet MeshSet) sksets.ResourceDelta
+	// Create a deep copy of the current MeshSet
+	Clone() MeshSet
 }
 
 func makeGenericMeshSet(meshList []*appmesh_k8s_aws_v1beta2.Mesh) sksets.ResourceSet {
@@ -86,8 +90,27 @@ func (s *meshSet) List(filterResource ...func(*appmesh_k8s_aws_v1beta2.Mesh) boo
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	meshList := make([]*appmesh_k8s_aws_v1beta2.Mesh, 0, len(objs))
+	for _, obj := range objs {
+		meshList = append(meshList, obj.(*appmesh_k8s_aws_v1beta2.Mesh))
+	}
+	return meshList
+}
+
+func (s *meshSet) UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.Mesh) bool) []*appmesh_k8s_aws_v1beta2.Mesh {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*appmesh_k8s_aws_v1beta2.Mesh))
+		})
+	}
+
 	var meshList []*appmesh_k8s_aws_v1beta2.Mesh
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		meshList = append(meshList, obj.(*appmesh_k8s_aws_v1beta2.Mesh))
 	}
 	return meshList
@@ -202,11 +225,20 @@ func (s *meshSet) Delta(newSet MeshSet) sksets.ResourceDelta {
 	return s.Generic().Delta(newSet.Generic())
 }
 
+func (s *meshSet) Clone() MeshSet {
+	if s == nil {
+		return nil
+	}
+	return &meshSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}
+
 type VirtualServiceSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualService) bool) []*appmesh_k8s_aws_v1beta2.VirtualService
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualService) bool) []*appmesh_k8s_aws_v1beta2.VirtualService
 	// Return the Set as a map of key to resource.
 	Map() map[string]*appmesh_k8s_aws_v1beta2.VirtualService
 	// Insert a resource into the set.
@@ -231,6 +263,8 @@ type VirtualServiceSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another VirtualServiceSet
 	Delta(newSet VirtualServiceSet) sksets.ResourceDelta
+	// Create a deep copy of the current VirtualServiceSet
+	Clone() VirtualServiceSet
 }
 
 func makeGenericVirtualServiceSet(virtualServiceList []*appmesh_k8s_aws_v1beta2.VirtualService) sksets.ResourceSet {
@@ -275,8 +309,27 @@ func (s *virtualServiceSet) List(filterResource ...func(*appmesh_k8s_aws_v1beta2
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	virtualServiceList := make([]*appmesh_k8s_aws_v1beta2.VirtualService, 0, len(objs))
+	for _, obj := range objs {
+		virtualServiceList = append(virtualServiceList, obj.(*appmesh_k8s_aws_v1beta2.VirtualService))
+	}
+	return virtualServiceList
+}
+
+func (s *virtualServiceSet) UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualService) bool) []*appmesh_k8s_aws_v1beta2.VirtualService {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualService))
+		})
+	}
+
 	var virtualServiceList []*appmesh_k8s_aws_v1beta2.VirtualService
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		virtualServiceList = append(virtualServiceList, obj.(*appmesh_k8s_aws_v1beta2.VirtualService))
 	}
 	return virtualServiceList
@@ -391,11 +444,20 @@ func (s *virtualServiceSet) Delta(newSet VirtualServiceSet) sksets.ResourceDelta
 	return s.Generic().Delta(newSet.Generic())
 }
 
+func (s *virtualServiceSet) Clone() VirtualServiceSet {
+	if s == nil {
+		return nil
+	}
+	return &virtualServiceSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}
+
 type VirtualNodeSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualNode) bool) []*appmesh_k8s_aws_v1beta2.VirtualNode
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualNode) bool) []*appmesh_k8s_aws_v1beta2.VirtualNode
 	// Return the Set as a map of key to resource.
 	Map() map[string]*appmesh_k8s_aws_v1beta2.VirtualNode
 	// Insert a resource into the set.
@@ -420,6 +482,8 @@ type VirtualNodeSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another VirtualNodeSet
 	Delta(newSet VirtualNodeSet) sksets.ResourceDelta
+	// Create a deep copy of the current VirtualNodeSet
+	Clone() VirtualNodeSet
 }
 
 func makeGenericVirtualNodeSet(virtualNodeList []*appmesh_k8s_aws_v1beta2.VirtualNode) sksets.ResourceSet {
@@ -464,8 +528,27 @@ func (s *virtualNodeSet) List(filterResource ...func(*appmesh_k8s_aws_v1beta2.Vi
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	virtualNodeList := make([]*appmesh_k8s_aws_v1beta2.VirtualNode, 0, len(objs))
+	for _, obj := range objs {
+		virtualNodeList = append(virtualNodeList, obj.(*appmesh_k8s_aws_v1beta2.VirtualNode))
+	}
+	return virtualNodeList
+}
+
+func (s *virtualNodeSet) UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualNode) bool) []*appmesh_k8s_aws_v1beta2.VirtualNode {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualNode))
+		})
+	}
+
 	var virtualNodeList []*appmesh_k8s_aws_v1beta2.VirtualNode
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		virtualNodeList = append(virtualNodeList, obj.(*appmesh_k8s_aws_v1beta2.VirtualNode))
 	}
 	return virtualNodeList
@@ -580,11 +663,20 @@ func (s *virtualNodeSet) Delta(newSet VirtualNodeSet) sksets.ResourceDelta {
 	return s.Generic().Delta(newSet.Generic())
 }
 
+func (s *virtualNodeSet) Clone() VirtualNodeSet {
+	if s == nil {
+		return nil
+	}
+	return &virtualNodeSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}
+
 type VirtualRouterSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualRouter) bool) []*appmesh_k8s_aws_v1beta2.VirtualRouter
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualRouter) bool) []*appmesh_k8s_aws_v1beta2.VirtualRouter
 	// Return the Set as a map of key to resource.
 	Map() map[string]*appmesh_k8s_aws_v1beta2.VirtualRouter
 	// Insert a resource into the set.
@@ -609,6 +701,8 @@ type VirtualRouterSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another VirtualRouterSet
 	Delta(newSet VirtualRouterSet) sksets.ResourceDelta
+	// Create a deep copy of the current VirtualRouterSet
+	Clone() VirtualRouterSet
 }
 
 func makeGenericVirtualRouterSet(virtualRouterList []*appmesh_k8s_aws_v1beta2.VirtualRouter) sksets.ResourceSet {
@@ -653,8 +747,27 @@ func (s *virtualRouterSet) List(filterResource ...func(*appmesh_k8s_aws_v1beta2.
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	virtualRouterList := make([]*appmesh_k8s_aws_v1beta2.VirtualRouter, 0, len(objs))
+	for _, obj := range objs {
+		virtualRouterList = append(virtualRouterList, obj.(*appmesh_k8s_aws_v1beta2.VirtualRouter))
+	}
+	return virtualRouterList
+}
+
+func (s *virtualRouterSet) UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualRouter) bool) []*appmesh_k8s_aws_v1beta2.VirtualRouter {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualRouter))
+		})
+	}
+
 	var virtualRouterList []*appmesh_k8s_aws_v1beta2.VirtualRouter
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		virtualRouterList = append(virtualRouterList, obj.(*appmesh_k8s_aws_v1beta2.VirtualRouter))
 	}
 	return virtualRouterList
@@ -769,11 +882,20 @@ func (s *virtualRouterSet) Delta(newSet VirtualRouterSet) sksets.ResourceDelta {
 	return s.Generic().Delta(newSet.Generic())
 }
 
+func (s *virtualRouterSet) Clone() VirtualRouterSet {
+	if s == nil {
+		return nil
+	}
+	return &virtualRouterSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}
+
 type VirtualGatewaySet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualGateway) bool) []*appmesh_k8s_aws_v1beta2.VirtualGateway
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualGateway) bool) []*appmesh_k8s_aws_v1beta2.VirtualGateway
 	// Return the Set as a map of key to resource.
 	Map() map[string]*appmesh_k8s_aws_v1beta2.VirtualGateway
 	// Insert a resource into the set.
@@ -798,6 +920,8 @@ type VirtualGatewaySet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another VirtualGatewaySet
 	Delta(newSet VirtualGatewaySet) sksets.ResourceDelta
+	// Create a deep copy of the current VirtualGatewaySet
+	Clone() VirtualGatewaySet
 }
 
 func makeGenericVirtualGatewaySet(virtualGatewayList []*appmesh_k8s_aws_v1beta2.VirtualGateway) sksets.ResourceSet {
@@ -842,8 +966,27 @@ func (s *virtualGatewaySet) List(filterResource ...func(*appmesh_k8s_aws_v1beta2
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	virtualGatewayList := make([]*appmesh_k8s_aws_v1beta2.VirtualGateway, 0, len(objs))
+	for _, obj := range objs {
+		virtualGatewayList = append(virtualGatewayList, obj.(*appmesh_k8s_aws_v1beta2.VirtualGateway))
+	}
+	return virtualGatewayList
+}
+
+func (s *virtualGatewaySet) UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualGateway) bool) []*appmesh_k8s_aws_v1beta2.VirtualGateway {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualGateway))
+		})
+	}
+
 	var virtualGatewayList []*appmesh_k8s_aws_v1beta2.VirtualGateway
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		virtualGatewayList = append(virtualGatewayList, obj.(*appmesh_k8s_aws_v1beta2.VirtualGateway))
 	}
 	return virtualGatewayList
@@ -958,11 +1101,20 @@ func (s *virtualGatewaySet) Delta(newSet VirtualGatewaySet) sksets.ResourceDelta
 	return s.Generic().Delta(newSet.Generic())
 }
 
+func (s *virtualGatewaySet) Clone() VirtualGatewaySet {
+	if s == nil {
+		return nil
+	}
+	return &virtualGatewaySet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}
+
 type GatewayRouteSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*appmesh_k8s_aws_v1beta2.GatewayRoute) bool) []*appmesh_k8s_aws_v1beta2.GatewayRoute
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.GatewayRoute) bool) []*appmesh_k8s_aws_v1beta2.GatewayRoute
 	// Return the Set as a map of key to resource.
 	Map() map[string]*appmesh_k8s_aws_v1beta2.GatewayRoute
 	// Insert a resource into the set.
@@ -987,6 +1139,8 @@ type GatewayRouteSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another GatewayRouteSet
 	Delta(newSet GatewayRouteSet) sksets.ResourceDelta
+	// Create a deep copy of the current GatewayRouteSet
+	Clone() GatewayRouteSet
 }
 
 func makeGenericGatewayRouteSet(gatewayRouteList []*appmesh_k8s_aws_v1beta2.GatewayRoute) sksets.ResourceSet {
@@ -1031,8 +1185,27 @@ func (s *gatewayRouteSet) List(filterResource ...func(*appmesh_k8s_aws_v1beta2.G
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	gatewayRouteList := make([]*appmesh_k8s_aws_v1beta2.GatewayRoute, 0, len(objs))
+	for _, obj := range objs {
+		gatewayRouteList = append(gatewayRouteList, obj.(*appmesh_k8s_aws_v1beta2.GatewayRoute))
+	}
+	return gatewayRouteList
+}
+
+func (s *gatewayRouteSet) UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.GatewayRoute) bool) []*appmesh_k8s_aws_v1beta2.GatewayRoute {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*appmesh_k8s_aws_v1beta2.GatewayRoute))
+		})
+	}
+
 	var gatewayRouteList []*appmesh_k8s_aws_v1beta2.GatewayRoute
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		gatewayRouteList = append(gatewayRouteList, obj.(*appmesh_k8s_aws_v1beta2.GatewayRoute))
 	}
 	return gatewayRouteList
@@ -1145,4 +1318,11 @@ func (s *gatewayRouteSet) Delta(newSet GatewayRouteSet) sksets.ResourceDelta {
 		}
 	}
 	return s.Generic().Delta(newSet.Generic())
+}
+
+func (s *gatewayRouteSet) Clone() GatewayRouteSet {
+	if s == nil {
+		return nil
+	}
+	return &gatewayRouteSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
 }

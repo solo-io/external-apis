@@ -18,6 +18,8 @@ type JobSet interface {
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*batch_v1.Job) bool) []*batch_v1.Job
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*batch_v1.Job) bool) []*batch_v1.Job
 	// Return the Set as a map of key to resource.
 	Map() map[string]*batch_v1.Job
 	// Insert a resource into the set.
@@ -42,6 +44,8 @@ type JobSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another JobSet
 	Delta(newSet JobSet) sksets.ResourceDelta
+	// Create a deep copy of the current JobSet
+	Clone() JobSet
 }
 
 func makeGenericJobSet(jobList []*batch_v1.Job) sksets.ResourceSet {
@@ -86,8 +90,27 @@ func (s *jobSet) List(filterResource ...func(*batch_v1.Job) bool) []*batch_v1.Jo
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	jobList := make([]*batch_v1.Job, 0, len(objs))
+	for _, obj := range objs {
+		jobList = append(jobList, obj.(*batch_v1.Job))
+	}
+	return jobList
+}
+
+func (s *jobSet) UnsortedList(filterResource ...func(*batch_v1.Job) bool) []*batch_v1.Job {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*batch_v1.Job))
+		})
+	}
+
 	var jobList []*batch_v1.Job
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		jobList = append(jobList, obj.(*batch_v1.Job))
 	}
 	return jobList
@@ -200,4 +223,11 @@ func (s *jobSet) Delta(newSet JobSet) sksets.ResourceDelta {
 		}
 	}
 	return s.Generic().Delta(newSet.Generic())
+}
+
+func (s *jobSet) Clone() JobSet {
+	if s == nil {
+		return nil
+	}
+	return &jobSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
 }

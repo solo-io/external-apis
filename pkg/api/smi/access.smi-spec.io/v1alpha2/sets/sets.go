@@ -18,6 +18,8 @@ type TrafficTargetSet interface {
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
 	List(filterResource ...func(*access_smi_spec_io_v1alpha2.TrafficTarget) bool) []*access_smi_spec_io_v1alpha2.TrafficTarget
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*access_smi_spec_io_v1alpha2.TrafficTarget) bool) []*access_smi_spec_io_v1alpha2.TrafficTarget
 	// Return the Set as a map of key to resource.
 	Map() map[string]*access_smi_spec_io_v1alpha2.TrafficTarget
 	// Insert a resource into the set.
@@ -42,6 +44,8 @@ type TrafficTargetSet interface {
 	Generic() sksets.ResourceSet
 	// returns the delta between this and and another TrafficTargetSet
 	Delta(newSet TrafficTargetSet) sksets.ResourceDelta
+	// Create a deep copy of the current TrafficTargetSet
+	Clone() TrafficTargetSet
 }
 
 func makeGenericTrafficTargetSet(trafficTargetList []*access_smi_spec_io_v1alpha2.TrafficTarget) sksets.ResourceSet {
@@ -86,8 +90,27 @@ func (s *trafficTargetSet) List(filterResource ...func(*access_smi_spec_io_v1alp
 		})
 	}
 
+	objs := s.Generic().List(genericFilters...)
+	trafficTargetList := make([]*access_smi_spec_io_v1alpha2.TrafficTarget, 0, len(objs))
+	for _, obj := range objs {
+		trafficTargetList = append(trafficTargetList, obj.(*access_smi_spec_io_v1alpha2.TrafficTarget))
+	}
+	return trafficTargetList
+}
+
+func (s *trafficTargetSet) UnsortedList(filterResource ...func(*access_smi_spec_io_v1alpha2.TrafficTarget) bool) []*access_smi_spec_io_v1alpha2.TrafficTarget {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*access_smi_spec_io_v1alpha2.TrafficTarget))
+		})
+	}
+
 	var trafficTargetList []*access_smi_spec_io_v1alpha2.TrafficTarget
-	for _, obj := range s.Generic().List(genericFilters...) {
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
 		trafficTargetList = append(trafficTargetList, obj.(*access_smi_spec_io_v1alpha2.TrafficTarget))
 	}
 	return trafficTargetList
@@ -200,4 +223,11 @@ func (s *trafficTargetSet) Delta(newSet TrafficTargetSet) sksets.ResourceDelta {
 		}
 	}
 	return s.Generic().Delta(newSet.Generic())
+}
+
+func (s *trafficTargetSet) Clone() TrafficTargetSet {
+	if s == nil {
+		return nil
+	}
+	return &trafficTargetSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
 }
