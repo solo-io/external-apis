@@ -9,6 +9,11 @@ replace (
 	github.com/Azure/go-autorest => github.com/Azure/go-autorest v14.2.0+incompatible
 	github.com/Sirupsen/logrus => github.com/sirupsen/logrus v1.4.2
 	github.com/docker/docker => github.com/moby/moby v0.7.3-0.20190826074503-38ab9da00309
+
+	k8s.io/api => k8s.io/api v0.20.4
+	k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.20.4
+	k8s.io/apimachinery => k8s.io/apimachinery v0.20.4
+	k8s.io/client-go => k8s.io/client-go v0.20.4
 )
 
 require (
@@ -18,8 +23,8 @@ require (
 	github.com/rotisserie/eris v0.1.1
 	github.com/servicemeshinterface/smi-sdk-go v0.4.1
 	github.com/solo-io/skv2 v0.18.3
-	istio.io/client-go v0.0.0-20210713195242-59adb375bae9
-	istio.io/istio v0.0.0-20210720120633-f8c8dba44cb7
+	istio.io/client-go v1.9.3-0.20210420212959-a7d9bf5db101
+	istio.io/istio v0.0.0-20210726200810-0602a86e6d0a
 	k8s.io/api v0.21.2
 	k8s.io/apiextensions-apiserver v0.21.2
 	k8s.io/apimachinery v0.21.2
