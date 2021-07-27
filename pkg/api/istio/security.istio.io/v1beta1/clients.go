@@ -42,6 +42,8 @@ func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
 type Clientset interface {
 	// clienset for the security.istio.io/v1beta1/v1beta1 APIs
 	AuthorizationPolicies() AuthorizationPolicyClient
+	// clienset for the security.istio.io/v1beta1/v1beta1 APIs
+	PeerAuthentications() PeerAuthenticationClient
 }
 
 type clientSet struct {
@@ -69,6 +71,11 @@ func NewClientset(client client.Client) Clientset {
 // clienset for the security.istio.io/v1beta1/v1beta1 APIs
 func (c *clientSet) AuthorizationPolicies() AuthorizationPolicyClient {
 	return NewAuthorizationPolicyClient(c.client)
+}
+
+// clienset for the security.istio.io/v1beta1/v1beta1 APIs
+func (c *clientSet) PeerAuthentications() PeerAuthenticationClient {
+	return NewPeerAuthenticationClient(c.client)
 }
 
 // Reader knows how to read and list AuthorizationPolicys.
@@ -211,4 +218,146 @@ func (m *multiclusterAuthorizationPolicyClient) Cluster(cluster string) (Authori
 		return nil, err
 	}
 	return NewAuthorizationPolicyClient(client), nil
+}
+
+// Reader knows how to read and list PeerAuthentications.
+type PeerAuthenticationReader interface {
+	// Get retrieves a PeerAuthentication for the given object key
+	GetPeerAuthentication(ctx context.Context, key client.ObjectKey) (*security_istio_io_v1beta1.PeerAuthentication, error)
+
+	// List retrieves list of PeerAuthentications for a given namespace and list options.
+	ListPeerAuthentication(ctx context.Context, opts ...client.ListOption) (*security_istio_io_v1beta1.PeerAuthenticationList, error)
+}
+
+// PeerAuthenticationTransitionFunction instructs the PeerAuthenticationWriter how to transition between an existing
+// PeerAuthentication object and a desired on an Upsert
+type PeerAuthenticationTransitionFunction func(existing, desired *security_istio_io_v1beta1.PeerAuthentication) error
+
+// Writer knows how to create, delete, and update PeerAuthentications.
+type PeerAuthenticationWriter interface {
+	// Create saves the PeerAuthentication object.
+	CreatePeerAuthentication(ctx context.Context, obj *security_istio_io_v1beta1.PeerAuthentication, opts ...client.CreateOption) error
+
+	// Delete deletes the PeerAuthentication object.
+	DeletePeerAuthentication(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error
+
+	// Update updates the given PeerAuthentication object.
+	UpdatePeerAuthentication(ctx context.Context, obj *security_istio_io_v1beta1.PeerAuthentication, opts ...client.UpdateOption) error
+
+	// Patch patches the given PeerAuthentication object.
+	PatchPeerAuthentication(ctx context.Context, obj *security_istio_io_v1beta1.PeerAuthentication, patch client.Patch, opts ...client.PatchOption) error
+
+	// DeleteAllOf deletes all PeerAuthentication objects matching the given options.
+	DeleteAllOfPeerAuthentication(ctx context.Context, opts ...client.DeleteAllOfOption) error
+
+	// Create or Update the PeerAuthentication object.
+	UpsertPeerAuthentication(ctx context.Context, obj *security_istio_io_v1beta1.PeerAuthentication, transitionFuncs ...PeerAuthenticationTransitionFunction) error
+}
+
+// StatusWriter knows how to update status subresource of a PeerAuthentication object.
+type PeerAuthenticationStatusWriter interface {
+	// Update updates the fields corresponding to the status subresource for the
+	// given PeerAuthentication object.
+	UpdatePeerAuthenticationStatus(ctx context.Context, obj *security_istio_io_v1beta1.PeerAuthentication, opts ...client.UpdateOption) error
+
+	// Patch patches the given PeerAuthentication object's subresource.
+	PatchPeerAuthenticationStatus(ctx context.Context, obj *security_istio_io_v1beta1.PeerAuthentication, patch client.Patch, opts ...client.PatchOption) error
+}
+
+// Client knows how to perform CRUD operations on PeerAuthentications.
+type PeerAuthenticationClient interface {
+	PeerAuthenticationReader
+	PeerAuthenticationWriter
+	PeerAuthenticationStatusWriter
+}
+
+type peerAuthenticationClient struct {
+	client client.Client
+}
+
+func NewPeerAuthenticationClient(client client.Client) *peerAuthenticationClient {
+	return &peerAuthenticationClient{client: client}
+}
+
+func (c *peerAuthenticationClient) GetPeerAuthentication(ctx context.Context, key client.ObjectKey) (*security_istio_io_v1beta1.PeerAuthentication, error) {
+	obj := &security_istio_io_v1beta1.PeerAuthentication{}
+	if err := c.client.Get(ctx, key, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+func (c *peerAuthenticationClient) ListPeerAuthentication(ctx context.Context, opts ...client.ListOption) (*security_istio_io_v1beta1.PeerAuthenticationList, error) {
+	list := &security_istio_io_v1beta1.PeerAuthenticationList{}
+	if err := c.client.List(ctx, list, opts...); err != nil {
+		return nil, err
+	}
+	return list, nil
+}
+
+func (c *peerAuthenticationClient) CreatePeerAuthentication(ctx context.Context, obj *security_istio_io_v1beta1.PeerAuthentication, opts ...client.CreateOption) error {
+	return c.client.Create(ctx, obj, opts...)
+}
+
+func (c *peerAuthenticationClient) DeletePeerAuthentication(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	obj := &security_istio_io_v1beta1.PeerAuthentication{}
+	obj.SetName(key.Name)
+	obj.SetNamespace(key.Namespace)
+	return c.client.Delete(ctx, obj, opts...)
+}
+
+func (c *peerAuthenticationClient) UpdatePeerAuthentication(ctx context.Context, obj *security_istio_io_v1beta1.PeerAuthentication, opts ...client.UpdateOption) error {
+	return c.client.Update(ctx, obj, opts...)
+}
+
+func (c *peerAuthenticationClient) PatchPeerAuthentication(ctx context.Context, obj *security_istio_io_v1beta1.PeerAuthentication, patch client.Patch, opts ...client.PatchOption) error {
+	return c.client.Patch(ctx, obj, patch, opts...)
+}
+
+func (c *peerAuthenticationClient) DeleteAllOfPeerAuthentication(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	obj := &security_istio_io_v1beta1.PeerAuthentication{}
+	return c.client.DeleteAllOf(ctx, obj, opts...)
+}
+
+func (c *peerAuthenticationClient) UpsertPeerAuthentication(ctx context.Context, obj *security_istio_io_v1beta1.PeerAuthentication, transitionFuncs ...PeerAuthenticationTransitionFunction) error {
+	genericTxFunc := func(existing, desired runtime.Object) error {
+		for _, txFunc := range transitionFuncs {
+			if err := txFunc(existing.(*security_istio_io_v1beta1.PeerAuthentication), desired.(*security_istio_io_v1beta1.PeerAuthentication)); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+	_, err := controllerutils.Upsert(ctx, c.client, obj, genericTxFunc)
+	return err
+}
+
+func (c *peerAuthenticationClient) UpdatePeerAuthenticationStatus(ctx context.Context, obj *security_istio_io_v1beta1.PeerAuthentication, opts ...client.UpdateOption) error {
+	return c.client.Status().Update(ctx, obj, opts...)
+}
+
+func (c *peerAuthenticationClient) PatchPeerAuthenticationStatus(ctx context.Context, obj *security_istio_io_v1beta1.PeerAuthentication, patch client.Patch, opts ...client.PatchOption) error {
+	return c.client.Status().Patch(ctx, obj, patch, opts...)
+}
+
+// Provides PeerAuthenticationClients for multiple clusters.
+type MulticlusterPeerAuthenticationClient interface {
+	// Cluster returns a PeerAuthenticationClient for the given cluster
+	Cluster(cluster string) (PeerAuthenticationClient, error)
+}
+
+type multiclusterPeerAuthenticationClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterPeerAuthenticationClient(client multicluster.Client) MulticlusterPeerAuthenticationClient {
+	return &multiclusterPeerAuthenticationClient{client: client}
+}
+
+func (m *multiclusterPeerAuthenticationClient) Cluster(cluster string) (PeerAuthenticationClient, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewPeerAuthenticationClient(client), nil
 }

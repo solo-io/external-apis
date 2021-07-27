@@ -50,6 +50,9 @@ func istioGroups() []model.Group {
 				{
 					Kind: "AuthorizationPolicy",
 				},
+				{
+					Kind: "PeerAuthentication",
+				},
 			},
 			CustomTypesImportPath: "istio.io/client-go/pkg/apis/security/v1beta1",
 			ApiRoot:               istioApiRoot,

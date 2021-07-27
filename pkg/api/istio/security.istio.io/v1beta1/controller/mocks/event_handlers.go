@@ -134,3 +134,124 @@ func (mr *MockAuthorizationPolicyEventWatcherMockRecorder) AddEventHandler(ctx, 
 	varargs := append([]interface{}{ctx, h}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockAuthorizationPolicyEventWatcher)(nil).AddEventHandler), varargs...)
 }
+
+// MockPeerAuthenticationEventHandler is a mock of PeerAuthenticationEventHandler interface
+type MockPeerAuthenticationEventHandler struct {
+	ctrl     *gomock.Controller
+	recorder *MockPeerAuthenticationEventHandlerMockRecorder
+}
+
+// MockPeerAuthenticationEventHandlerMockRecorder is the mock recorder for MockPeerAuthenticationEventHandler
+type MockPeerAuthenticationEventHandlerMockRecorder struct {
+	mock *MockPeerAuthenticationEventHandler
+}
+
+// NewMockPeerAuthenticationEventHandler creates a new mock instance
+func NewMockPeerAuthenticationEventHandler(ctrl *gomock.Controller) *MockPeerAuthenticationEventHandler {
+	mock := &MockPeerAuthenticationEventHandler{ctrl: ctrl}
+	mock.recorder = &MockPeerAuthenticationEventHandlerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockPeerAuthenticationEventHandler) EXPECT() *MockPeerAuthenticationEventHandlerMockRecorder {
+	return m.recorder
+}
+
+// CreatePeerAuthentication mocks base method
+func (m *MockPeerAuthenticationEventHandler) CreatePeerAuthentication(obj *v1beta1.PeerAuthentication) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreatePeerAuthentication", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreatePeerAuthentication indicates an expected call of CreatePeerAuthentication
+func (mr *MockPeerAuthenticationEventHandlerMockRecorder) CreatePeerAuthentication(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreatePeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationEventHandler)(nil).CreatePeerAuthentication), obj)
+}
+
+// UpdatePeerAuthentication mocks base method
+func (m *MockPeerAuthenticationEventHandler) UpdatePeerAuthentication(old, new *v1beta1.PeerAuthentication) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdatePeerAuthentication", old, new)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdatePeerAuthentication indicates an expected call of UpdatePeerAuthentication
+func (mr *MockPeerAuthenticationEventHandlerMockRecorder) UpdatePeerAuthentication(old, new interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdatePeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationEventHandler)(nil).UpdatePeerAuthentication), old, new)
+}
+
+// DeletePeerAuthentication mocks base method
+func (m *MockPeerAuthenticationEventHandler) DeletePeerAuthentication(obj *v1beta1.PeerAuthentication) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeletePeerAuthentication", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeletePeerAuthentication indicates an expected call of DeletePeerAuthentication
+func (mr *MockPeerAuthenticationEventHandlerMockRecorder) DeletePeerAuthentication(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeletePeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationEventHandler)(nil).DeletePeerAuthentication), obj)
+}
+
+// GenericPeerAuthentication mocks base method
+func (m *MockPeerAuthenticationEventHandler) GenericPeerAuthentication(obj *v1beta1.PeerAuthentication) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GenericPeerAuthentication", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// GenericPeerAuthentication indicates an expected call of GenericPeerAuthentication
+func (mr *MockPeerAuthenticationEventHandlerMockRecorder) GenericPeerAuthentication(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericPeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationEventHandler)(nil).GenericPeerAuthentication), obj)
+}
+
+// MockPeerAuthenticationEventWatcher is a mock of PeerAuthenticationEventWatcher interface
+type MockPeerAuthenticationEventWatcher struct {
+	ctrl     *gomock.Controller
+	recorder *MockPeerAuthenticationEventWatcherMockRecorder
+}
+
+// MockPeerAuthenticationEventWatcherMockRecorder is the mock recorder for MockPeerAuthenticationEventWatcher
+type MockPeerAuthenticationEventWatcherMockRecorder struct {
+	mock *MockPeerAuthenticationEventWatcher
+}
+
+// NewMockPeerAuthenticationEventWatcher creates a new mock instance
+func NewMockPeerAuthenticationEventWatcher(ctrl *gomock.Controller) *MockPeerAuthenticationEventWatcher {
+	mock := &MockPeerAuthenticationEventWatcher{ctrl: ctrl}
+	mock.recorder = &MockPeerAuthenticationEventWatcherMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockPeerAuthenticationEventWatcher) EXPECT() *MockPeerAuthenticationEventWatcherMockRecorder {
+	return m.recorder
+}
+
+// AddEventHandler mocks base method
+func (m *MockPeerAuthenticationEventWatcher) AddEventHandler(ctx context.Context, h controller.PeerAuthenticationEventHandler, predicates ...predicate.Predicate) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, h}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "AddEventHandler", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AddEventHandler indicates an expected call of AddEventHandler
+func (mr *MockPeerAuthenticationEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, h}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockPeerAuthenticationEventWatcher)(nil).AddEventHandler), varargs...)
+}

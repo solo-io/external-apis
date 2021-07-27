@@ -270,3 +270,259 @@ func (mr *MockAuthorizationPolicySetMockRecorder) Clone() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockAuthorizationPolicySet)(nil).Clone))
 }
+
+// MockPeerAuthenticationSet is a mock of PeerAuthenticationSet interface
+type MockPeerAuthenticationSet struct {
+	ctrl     *gomock.Controller
+	recorder *MockPeerAuthenticationSetMockRecorder
+}
+
+// MockPeerAuthenticationSetMockRecorder is the mock recorder for MockPeerAuthenticationSet
+type MockPeerAuthenticationSetMockRecorder struct {
+	mock *MockPeerAuthenticationSet
+}
+
+// NewMockPeerAuthenticationSet creates a new mock instance
+func NewMockPeerAuthenticationSet(ctrl *gomock.Controller) *MockPeerAuthenticationSet {
+	mock := &MockPeerAuthenticationSet{ctrl: ctrl}
+	mock.recorder = &MockPeerAuthenticationSetMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockPeerAuthenticationSet) EXPECT() *MockPeerAuthenticationSetMockRecorder {
+	return m.recorder
+}
+
+// Keys mocks base method
+func (m *MockPeerAuthenticationSet) Keys() sets0.String {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Keys")
+	ret0, _ := ret[0].(sets0.String)
+	return ret0
+}
+
+// Keys indicates an expected call of Keys
+func (mr *MockPeerAuthenticationSetMockRecorder) Keys() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Keys", reflect.TypeOf((*MockPeerAuthenticationSet)(nil).Keys))
+}
+
+// List mocks base method
+func (m *MockPeerAuthenticationSet) List(filterResource ...func(*v1beta1.PeerAuthentication) bool) []*v1beta1.PeerAuthentication {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
+	ret0, _ := ret[0].([]*v1beta1.PeerAuthentication)
+	return ret0
+}
+
+// List indicates an expected call of List
+func (mr *MockPeerAuthenticationSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockPeerAuthenticationSet)(nil).List), filterResource...)
+}
+
+// UnsortedList mocks base method
+func (m *MockPeerAuthenticationSet) UnsortedList(filterResource ...func(*v1beta1.PeerAuthentication) bool) []*v1beta1.PeerAuthentication {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1beta1.PeerAuthentication)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList
+func (mr *MockPeerAuthenticationSetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockPeerAuthenticationSet)(nil).UnsortedList), filterResource...)
+}
+
+// Map mocks base method
+func (m *MockPeerAuthenticationSet) Map() map[string]*v1beta1.PeerAuthentication {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Map")
+	ret0, _ := ret[0].(map[string]*v1beta1.PeerAuthentication)
+	return ret0
+}
+
+// Map indicates an expected call of Map
+func (mr *MockPeerAuthenticationSetMockRecorder) Map() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Map", reflect.TypeOf((*MockPeerAuthenticationSet)(nil).Map))
+}
+
+// Insert mocks base method
+func (m *MockPeerAuthenticationSet) Insert(peerAuthentication ...*v1beta1.PeerAuthentication) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range peerAuthentication {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "Insert", varargs...)
+}
+
+// Insert indicates an expected call of Insert
+func (mr *MockPeerAuthenticationSetMockRecorder) Insert(peerAuthentication ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockPeerAuthenticationSet)(nil).Insert), peerAuthentication...)
+}
+
+// Equal mocks base method
+func (m *MockPeerAuthenticationSet) Equal(peerAuthenticationSet v1beta1sets.PeerAuthenticationSet) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Equal", peerAuthenticationSet)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Equal indicates an expected call of Equal
+func (mr *MockPeerAuthenticationSetMockRecorder) Equal(peerAuthenticationSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Equal", reflect.TypeOf((*MockPeerAuthenticationSet)(nil).Equal), peerAuthenticationSet)
+}
+
+// Has mocks base method
+func (m *MockPeerAuthenticationSet) Has(peerAuthentication ezkube.ResourceId) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Has", peerAuthentication)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Has indicates an expected call of Has
+func (mr *MockPeerAuthenticationSetMockRecorder) Has(peerAuthentication interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Has", reflect.TypeOf((*MockPeerAuthenticationSet)(nil).Has), peerAuthentication)
+}
+
+// Delete mocks base method
+func (m *MockPeerAuthenticationSet) Delete(peerAuthentication ezkube.ResourceId) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Delete", peerAuthentication)
+}
+
+// Delete indicates an expected call of Delete
+func (mr *MockPeerAuthenticationSetMockRecorder) Delete(peerAuthentication interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockPeerAuthenticationSet)(nil).Delete), peerAuthentication)
+}
+
+// Union mocks base method
+func (m *MockPeerAuthenticationSet) Union(set v1beta1sets.PeerAuthenticationSet) v1beta1sets.PeerAuthenticationSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Union", set)
+	ret0, _ := ret[0].(v1beta1sets.PeerAuthenticationSet)
+	return ret0
+}
+
+// Union indicates an expected call of Union
+func (mr *MockPeerAuthenticationSetMockRecorder) Union(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Union", reflect.TypeOf((*MockPeerAuthenticationSet)(nil).Union), set)
+}
+
+// Difference mocks base method
+func (m *MockPeerAuthenticationSet) Difference(set v1beta1sets.PeerAuthenticationSet) v1beta1sets.PeerAuthenticationSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Difference", set)
+	ret0, _ := ret[0].(v1beta1sets.PeerAuthenticationSet)
+	return ret0
+}
+
+// Difference indicates an expected call of Difference
+func (mr *MockPeerAuthenticationSetMockRecorder) Difference(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Difference", reflect.TypeOf((*MockPeerAuthenticationSet)(nil).Difference), set)
+}
+
+// Intersection mocks base method
+func (m *MockPeerAuthenticationSet) Intersection(set v1beta1sets.PeerAuthenticationSet) v1beta1sets.PeerAuthenticationSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Intersection", set)
+	ret0, _ := ret[0].(v1beta1sets.PeerAuthenticationSet)
+	return ret0
+}
+
+// Intersection indicates an expected call of Intersection
+func (mr *MockPeerAuthenticationSetMockRecorder) Intersection(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockPeerAuthenticationSet)(nil).Intersection), set)
+}
+
+// Find mocks base method
+func (m *MockPeerAuthenticationSet) Find(id ezkube.ResourceId) (*v1beta1.PeerAuthentication, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1beta1.PeerAuthentication)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find
+func (mr *MockPeerAuthenticationSetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockPeerAuthenticationSet)(nil).Find), id)
+}
+
+// Length mocks base method
+func (m *MockPeerAuthenticationSet) Length() int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Length")
+	ret0, _ := ret[0].(int)
+	return ret0
+}
+
+// Length indicates an expected call of Length
+func (mr *MockPeerAuthenticationSetMockRecorder) Length() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Length", reflect.TypeOf((*MockPeerAuthenticationSet)(nil).Length))
+}
+
+// Generic mocks base method
+func (m *MockPeerAuthenticationSet) Generic() sets.ResourceSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Generic")
+	ret0, _ := ret[0].(sets.ResourceSet)
+	return ret0
+}
+
+// Generic indicates an expected call of Generic
+func (mr *MockPeerAuthenticationSetMockRecorder) Generic() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockPeerAuthenticationSet)(nil).Generic))
+}
+
+// Delta mocks base method
+func (m *MockPeerAuthenticationSet) Delta(newSet v1beta1sets.PeerAuthenticationSet) sets.ResourceDelta {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Delta", newSet)
+	ret0, _ := ret[0].(sets.ResourceDelta)
+	return ret0
+}
+
+// Delta indicates an expected call of Delta
+func (mr *MockPeerAuthenticationSetMockRecorder) Delta(newSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockPeerAuthenticationSet)(nil).Delta), newSet)
+}
+
+// Clone mocks base method
+func (m *MockPeerAuthenticationSet) Clone() v1beta1sets.PeerAuthenticationSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1beta1sets.PeerAuthenticationSet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone
+func (mr *MockPeerAuthenticationSetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockPeerAuthenticationSet)(nil).Clone))
+}
