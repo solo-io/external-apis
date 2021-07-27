@@ -9,3 +9,6 @@ import (
 
 // AuthorizationPolicySlice represents a slice of *AuthorizationPolicy
 type AuthorizationPolicySlice []*AuthorizationPolicy
+
+// PeerAuthenticationSlice represents a slice of *PeerAuthentication
+type PeerAuthenticationSlice []*PeerAuthentication

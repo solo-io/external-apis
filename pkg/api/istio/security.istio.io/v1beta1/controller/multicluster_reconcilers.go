@@ -88,3 +88,74 @@ func (g genericAuthorizationPolicyMulticlusterReconciler) Reconcile(cluster stri
 	}
 	return g.reconciler.ReconcileAuthorizationPolicy(cluster, obj)
 }
+
+// Reconcile Upsert events for the PeerAuthentication Resource across clusters.
+// implemented by the user
+type MulticlusterPeerAuthenticationReconciler interface {
+	ReconcilePeerAuthentication(clusterName string, obj *security_istio_io_v1beta1.PeerAuthentication) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the PeerAuthentication Resource across clusters.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type MulticlusterPeerAuthenticationDeletionReconciler interface {
+	ReconcilePeerAuthenticationDeletion(clusterName string, req reconcile.Request) error
+}
+
+type MulticlusterPeerAuthenticationReconcilerFuncs struct {
+	OnReconcilePeerAuthentication         func(clusterName string, obj *security_istio_io_v1beta1.PeerAuthentication) (reconcile.Result, error)
+	OnReconcilePeerAuthenticationDeletion func(clusterName string, req reconcile.Request) error
+}
+
+func (f *MulticlusterPeerAuthenticationReconcilerFuncs) ReconcilePeerAuthentication(clusterName string, obj *security_istio_io_v1beta1.PeerAuthentication) (reconcile.Result, error) {
+	if f.OnReconcilePeerAuthentication == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcilePeerAuthentication(clusterName, obj)
+}
+
+func (f *MulticlusterPeerAuthenticationReconcilerFuncs) ReconcilePeerAuthenticationDeletion(clusterName string, req reconcile.Request) error {
+	if f.OnReconcilePeerAuthenticationDeletion == nil {
+		return nil
+	}
+	return f.OnReconcilePeerAuthenticationDeletion(clusterName, req)
+}
+
+type MulticlusterPeerAuthenticationReconcileLoop interface {
+	// AddMulticlusterPeerAuthenticationReconciler adds a MulticlusterPeerAuthenticationReconciler to the MulticlusterPeerAuthenticationReconcileLoop.
+	AddMulticlusterPeerAuthenticationReconciler(ctx context.Context, rec MulticlusterPeerAuthenticationReconciler, predicates ...predicate.Predicate)
+}
+
+type multiclusterPeerAuthenticationReconcileLoop struct {
+	loop multicluster.Loop
+}
+
+func (m *multiclusterPeerAuthenticationReconcileLoop) AddMulticlusterPeerAuthenticationReconciler(ctx context.Context, rec MulticlusterPeerAuthenticationReconciler, predicates ...predicate.Predicate) {
+	genericReconciler := genericPeerAuthenticationMulticlusterReconciler{reconciler: rec}
+
+	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
+}
+
+func NewMulticlusterPeerAuthenticationReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterPeerAuthenticationReconcileLoop {
+	return &multiclusterPeerAuthenticationReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &security_istio_io_v1beta1.PeerAuthentication{}, options)}
+}
+
+type genericPeerAuthenticationMulticlusterReconciler struct {
+	reconciler MulticlusterPeerAuthenticationReconciler
+}
+
+func (g genericPeerAuthenticationMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) error {
+	if deletionReconciler, ok := g.reconciler.(MulticlusterPeerAuthenticationDeletionReconciler); ok {
+		return deletionReconciler.ReconcilePeerAuthenticationDeletion(cluster, req)
+	}
+	return nil
+}
+
+func (g genericPeerAuthenticationMulticlusterReconciler) Reconcile(cluster string, object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*security_istio_io_v1beta1.PeerAuthentication)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: PeerAuthentication handler received event for %T", object)
+	}
+	return g.reconciler.ReconcilePeerAuthentication(cluster, obj)
+}

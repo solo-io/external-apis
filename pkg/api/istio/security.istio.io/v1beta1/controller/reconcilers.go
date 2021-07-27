@@ -133,3 +133,120 @@ func (r genericAuthorizationPolicyFinalizer) Finalize(object ezkube.Object) erro
 	}
 	return r.finalizingReconciler.FinalizeAuthorizationPolicy(obj)
 }
+
+// Reconcile Upsert events for the PeerAuthentication Resource.
+// implemented by the user
+type PeerAuthenticationReconciler interface {
+	ReconcilePeerAuthentication(obj *security_istio_io_v1beta1.PeerAuthentication) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the PeerAuthentication Resource.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type PeerAuthenticationDeletionReconciler interface {
+	ReconcilePeerAuthenticationDeletion(req reconcile.Request) error
+}
+
+type PeerAuthenticationReconcilerFuncs struct {
+	OnReconcilePeerAuthentication         func(obj *security_istio_io_v1beta1.PeerAuthentication) (reconcile.Result, error)
+	OnReconcilePeerAuthenticationDeletion func(req reconcile.Request) error
+}
+
+func (f *PeerAuthenticationReconcilerFuncs) ReconcilePeerAuthentication(obj *security_istio_io_v1beta1.PeerAuthentication) (reconcile.Result, error) {
+	if f.OnReconcilePeerAuthentication == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcilePeerAuthentication(obj)
+}
+
+func (f *PeerAuthenticationReconcilerFuncs) ReconcilePeerAuthenticationDeletion(req reconcile.Request) error {
+	if f.OnReconcilePeerAuthenticationDeletion == nil {
+		return nil
+	}
+	return f.OnReconcilePeerAuthenticationDeletion(req)
+}
+
+// Reconcile and finalize the PeerAuthentication Resource
+// implemented by the user
+type PeerAuthenticationFinalizer interface {
+	PeerAuthenticationReconciler
+
+	// name of the finalizer used by this handler.
+	// finalizer names should be unique for a single task
+	PeerAuthenticationFinalizerName() string
+
+	// finalize the object before it is deleted.
+	// Watchers created with a finalizing handler will a
+	FinalizePeerAuthentication(obj *security_istio_io_v1beta1.PeerAuthentication) error
+}
+
+type PeerAuthenticationReconcileLoop interface {
+	RunPeerAuthenticationReconciler(ctx context.Context, rec PeerAuthenticationReconciler, predicates ...predicate.Predicate) error
+}
+
+type peerAuthenticationReconcileLoop struct {
+	loop reconcile.Loop
+}
+
+func NewPeerAuthenticationReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) PeerAuthenticationReconcileLoop {
+	return &peerAuthenticationReconcileLoop{
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &security_istio_io_v1beta1.PeerAuthentication{}, options),
+	}
+}
+
+func (c *peerAuthenticationReconcileLoop) RunPeerAuthenticationReconciler(ctx context.Context, reconciler PeerAuthenticationReconciler, predicates ...predicate.Predicate) error {
+	genericReconciler := genericPeerAuthenticationReconciler{
+		reconciler: reconciler,
+	}
+
+	var reconcilerWrapper reconcile.Reconciler
+	if finalizingReconciler, ok := reconciler.(PeerAuthenticationFinalizer); ok {
+		reconcilerWrapper = genericPeerAuthenticationFinalizer{
+			genericPeerAuthenticationReconciler: genericReconciler,
+			finalizingReconciler:                finalizingReconciler,
+		}
+	} else {
+		reconcilerWrapper = genericReconciler
+	}
+	return c.loop.RunReconciler(ctx, reconcilerWrapper, predicates...)
+}
+
+// genericPeerAuthenticationHandler implements a generic reconcile.Reconciler
+type genericPeerAuthenticationReconciler struct {
+	reconciler PeerAuthenticationReconciler
+}
+
+func (r genericPeerAuthenticationReconciler) Reconcile(object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*security_istio_io_v1beta1.PeerAuthentication)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: PeerAuthentication handler received event for %T", object)
+	}
+	return r.reconciler.ReconcilePeerAuthentication(obj)
+}
+
+func (r genericPeerAuthenticationReconciler) ReconcileDeletion(request reconcile.Request) error {
+	if deletionReconciler, ok := r.reconciler.(PeerAuthenticationDeletionReconciler); ok {
+		return deletionReconciler.ReconcilePeerAuthenticationDeletion(request)
+	}
+	return nil
+}
+
+// genericPeerAuthenticationFinalizer implements a generic reconcile.FinalizingReconciler
+type genericPeerAuthenticationFinalizer struct {
+	genericPeerAuthenticationReconciler
+	finalizingReconciler PeerAuthenticationFinalizer
+}
+
+func (r genericPeerAuthenticationFinalizer) FinalizerName() string {
+	return r.finalizingReconciler.PeerAuthenticationFinalizerName()
+}
+
+func (r genericPeerAuthenticationFinalizer) Finalize(object ezkube.Object) error {
+	obj, ok := object.(*security_istio_io_v1beta1.PeerAuthentication)
+	if !ok {
+		return errors.Errorf("internal error: PeerAuthentication handler received event for %T", object)
+	}
+	return r.finalizingReconciler.FinalizePeerAuthentication(obj)
+}

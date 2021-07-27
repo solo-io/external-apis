@@ -123,3 +123,110 @@ func (h genericAuthorizationPolicyHandler) Generic(object client.Object) error {
 	}
 	return h.handler.GenericAuthorizationPolicy(obj)
 }
+
+// Handle events for the PeerAuthentication Resource
+// DEPRECATED: Prefer reconciler pattern.
+type PeerAuthenticationEventHandler interface {
+	CreatePeerAuthentication(obj *security_istio_io_v1beta1.PeerAuthentication) error
+	UpdatePeerAuthentication(old, new *security_istio_io_v1beta1.PeerAuthentication) error
+	DeletePeerAuthentication(obj *security_istio_io_v1beta1.PeerAuthentication) error
+	GenericPeerAuthentication(obj *security_istio_io_v1beta1.PeerAuthentication) error
+}
+
+type PeerAuthenticationEventHandlerFuncs struct {
+	OnCreate  func(obj *security_istio_io_v1beta1.PeerAuthentication) error
+	OnUpdate  func(old, new *security_istio_io_v1beta1.PeerAuthentication) error
+	OnDelete  func(obj *security_istio_io_v1beta1.PeerAuthentication) error
+	OnGeneric func(obj *security_istio_io_v1beta1.PeerAuthentication) error
+}
+
+func (f *PeerAuthenticationEventHandlerFuncs) CreatePeerAuthentication(obj *security_istio_io_v1beta1.PeerAuthentication) error {
+	if f.OnCreate == nil {
+		return nil
+	}
+	return f.OnCreate(obj)
+}
+
+func (f *PeerAuthenticationEventHandlerFuncs) DeletePeerAuthentication(obj *security_istio_io_v1beta1.PeerAuthentication) error {
+	if f.OnDelete == nil {
+		return nil
+	}
+	return f.OnDelete(obj)
+}
+
+func (f *PeerAuthenticationEventHandlerFuncs) UpdatePeerAuthentication(objOld, objNew *security_istio_io_v1beta1.PeerAuthentication) error {
+	if f.OnUpdate == nil {
+		return nil
+	}
+	return f.OnUpdate(objOld, objNew)
+}
+
+func (f *PeerAuthenticationEventHandlerFuncs) GenericPeerAuthentication(obj *security_istio_io_v1beta1.PeerAuthentication) error {
+	if f.OnGeneric == nil {
+		return nil
+	}
+	return f.OnGeneric(obj)
+}
+
+type PeerAuthenticationEventWatcher interface {
+	AddEventHandler(ctx context.Context, h PeerAuthenticationEventHandler, predicates ...predicate.Predicate) error
+}
+
+type peerAuthenticationEventWatcher struct {
+	watcher events.EventWatcher
+}
+
+func NewPeerAuthenticationEventWatcher(name string, mgr manager.Manager) PeerAuthenticationEventWatcher {
+	return &peerAuthenticationEventWatcher{
+		watcher: events.NewWatcher(name, mgr, &security_istio_io_v1beta1.PeerAuthentication{}),
+	}
+}
+
+func (c *peerAuthenticationEventWatcher) AddEventHandler(ctx context.Context, h PeerAuthenticationEventHandler, predicates ...predicate.Predicate) error {
+	handler := genericPeerAuthenticationHandler{handler: h}
+	if err := c.watcher.Watch(ctx, handler, predicates...); err != nil {
+		return err
+	}
+	return nil
+}
+
+// genericPeerAuthenticationHandler implements a generic events.EventHandler
+type genericPeerAuthenticationHandler struct {
+	handler PeerAuthenticationEventHandler
+}
+
+func (h genericPeerAuthenticationHandler) Create(object client.Object) error {
+	obj, ok := object.(*security_istio_io_v1beta1.PeerAuthentication)
+	if !ok {
+		return errors.Errorf("internal error: PeerAuthentication handler received event for %T", object)
+	}
+	return h.handler.CreatePeerAuthentication(obj)
+}
+
+func (h genericPeerAuthenticationHandler) Delete(object client.Object) error {
+	obj, ok := object.(*security_istio_io_v1beta1.PeerAuthentication)
+	if !ok {
+		return errors.Errorf("internal error: PeerAuthentication handler received event for %T", object)
+	}
+	return h.handler.DeletePeerAuthentication(obj)
+}
+
+func (h genericPeerAuthenticationHandler) Update(old, new client.Object) error {
+	objOld, ok := old.(*security_istio_io_v1beta1.PeerAuthentication)
+	if !ok {
+		return errors.Errorf("internal error: PeerAuthentication handler received event for %T", old)
+	}
+	objNew, ok := new.(*security_istio_io_v1beta1.PeerAuthentication)
+	if !ok {
+		return errors.Errorf("internal error: PeerAuthentication handler received event for %T", new)
+	}
+	return h.handler.UpdatePeerAuthentication(objOld, objNew)
+}
+
+func (h genericPeerAuthenticationHandler) Generic(object client.Object) error {
+	obj, ok := object.(*security_istio_io_v1beta1.PeerAuthentication)
+	if !ok {
+		return errors.Errorf("internal error: PeerAuthentication handler received event for %T", object)
+	}
+	return h.handler.GenericPeerAuthentication(obj)
+}
