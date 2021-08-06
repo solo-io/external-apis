@@ -6,14 +6,15 @@ replace (
 	// pinned to solo-io's fork of cue version 95a50cebaffb4bdba8c544601d8fb867990ad1ad
 	cuelang.org/go => github.com/solo-io/cue v0.4.1-0.20210622213027-95a50cebaffb
 
-	github.com/Azure/go-autorest => github.com/Azure/go-autorest v14.2.0+incompatible
+	github.com/Azure/go-autorest => github.com/Azure/go-autorest v13.0.0+incompatible
 	github.com/Sirupsen/logrus => github.com/sirupsen/logrus v1.4.2
 	github.com/docker/docker => github.com/moby/moby v0.7.3-0.20190826074503-38ab9da00309
 
-	k8s.io/api => k8s.io/api v0.20.4
-	k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.20.4
-	k8s.io/apimachinery => k8s.io/apimachinery v0.20.4
-	k8s.io/client-go => k8s.io/client-go v0.20.4
+	k8s.io/api => k8s.io/api v0.19.7
+	k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.19.7
+	k8s.io/apimachinery => k8s.io/apimachinery v0.19.7
+	k8s.io/client-go => k8s.io/client-go v0.19.7
+	sigs.k8s.io/controller-runtime => sigs.k8s.io/controller-runtime v0.7.0
 )
 
 require (
