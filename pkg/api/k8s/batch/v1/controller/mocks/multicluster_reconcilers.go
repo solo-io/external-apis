@@ -15,30 +15,30 @@ import (
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
-// MockMulticlusterJobReconciler is a mock of MulticlusterJobReconciler interface.
+// MockMulticlusterJobReconciler is a mock of MulticlusterJobReconciler interface
 type MockMulticlusterJobReconciler struct {
 	ctrl     *gomock.Controller
 	recorder *MockMulticlusterJobReconcilerMockRecorder
 }
 
-// MockMulticlusterJobReconcilerMockRecorder is the mock recorder for MockMulticlusterJobReconciler.
+// MockMulticlusterJobReconcilerMockRecorder is the mock recorder for MockMulticlusterJobReconciler
 type MockMulticlusterJobReconcilerMockRecorder struct {
 	mock *MockMulticlusterJobReconciler
 }
 
-// NewMockMulticlusterJobReconciler creates a new mock instance.
+// NewMockMulticlusterJobReconciler creates a new mock instance
 func NewMockMulticlusterJobReconciler(ctrl *gomock.Controller) *MockMulticlusterJobReconciler {
 	mock := &MockMulticlusterJobReconciler{ctrl: ctrl}
 	mock.recorder = &MockMulticlusterJobReconcilerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockMulticlusterJobReconciler) EXPECT() *MockMulticlusterJobReconcilerMockRecorder {
 	return m.recorder
 }
 
-// ReconcileJob mocks base method.
+// ReconcileJob mocks base method
 func (m *MockMulticlusterJobReconciler) ReconcileJob(clusterName string, obj *v1.Job) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileJob", clusterName, obj)
@@ -47,36 +47,36 @@ func (m *MockMulticlusterJobReconciler) ReconcileJob(clusterName string, obj *v1
 	return ret0, ret1
 }
 
-// ReconcileJob indicates an expected call of ReconcileJob.
+// ReconcileJob indicates an expected call of ReconcileJob
 func (mr *MockMulticlusterJobReconcilerMockRecorder) ReconcileJob(clusterName, obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileJob", reflect.TypeOf((*MockMulticlusterJobReconciler)(nil).ReconcileJob), clusterName, obj)
 }
 
-// MockMulticlusterJobDeletionReconciler is a mock of MulticlusterJobDeletionReconciler interface.
+// MockMulticlusterJobDeletionReconciler is a mock of MulticlusterJobDeletionReconciler interface
 type MockMulticlusterJobDeletionReconciler struct {
 	ctrl     *gomock.Controller
 	recorder *MockMulticlusterJobDeletionReconcilerMockRecorder
 }
 
-// MockMulticlusterJobDeletionReconcilerMockRecorder is the mock recorder for MockMulticlusterJobDeletionReconciler.
+// MockMulticlusterJobDeletionReconcilerMockRecorder is the mock recorder for MockMulticlusterJobDeletionReconciler
 type MockMulticlusterJobDeletionReconcilerMockRecorder struct {
 	mock *MockMulticlusterJobDeletionReconciler
 }
 
-// NewMockMulticlusterJobDeletionReconciler creates a new mock instance.
+// NewMockMulticlusterJobDeletionReconciler creates a new mock instance
 func NewMockMulticlusterJobDeletionReconciler(ctrl *gomock.Controller) *MockMulticlusterJobDeletionReconciler {
 	mock := &MockMulticlusterJobDeletionReconciler{ctrl: ctrl}
 	mock.recorder = &MockMulticlusterJobDeletionReconcilerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockMulticlusterJobDeletionReconciler) EXPECT() *MockMulticlusterJobDeletionReconcilerMockRecorder {
 	return m.recorder
 }
 
-// ReconcileJobDeletion mocks base method.
+// ReconcileJobDeletion mocks base method
 func (m *MockMulticlusterJobDeletionReconciler) ReconcileJobDeletion(clusterName string, req reconcile.Request) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileJobDeletion", clusterName, req)
@@ -84,36 +84,36 @@ func (m *MockMulticlusterJobDeletionReconciler) ReconcileJobDeletion(clusterName
 	return ret0
 }
 
-// ReconcileJobDeletion indicates an expected call of ReconcileJobDeletion.
+// ReconcileJobDeletion indicates an expected call of ReconcileJobDeletion
 func (mr *MockMulticlusterJobDeletionReconcilerMockRecorder) ReconcileJobDeletion(clusterName, req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileJobDeletion", reflect.TypeOf((*MockMulticlusterJobDeletionReconciler)(nil).ReconcileJobDeletion), clusterName, req)
 }
 
-// MockMulticlusterJobReconcileLoop is a mock of MulticlusterJobReconcileLoop interface.
+// MockMulticlusterJobReconcileLoop is a mock of MulticlusterJobReconcileLoop interface
 type MockMulticlusterJobReconcileLoop struct {
 	ctrl     *gomock.Controller
 	recorder *MockMulticlusterJobReconcileLoopMockRecorder
 }
 
-// MockMulticlusterJobReconcileLoopMockRecorder is the mock recorder for MockMulticlusterJobReconcileLoop.
+// MockMulticlusterJobReconcileLoopMockRecorder is the mock recorder for MockMulticlusterJobReconcileLoop
 type MockMulticlusterJobReconcileLoopMockRecorder struct {
 	mock *MockMulticlusterJobReconcileLoop
 }
 
-// NewMockMulticlusterJobReconcileLoop creates a new mock instance.
+// NewMockMulticlusterJobReconcileLoop creates a new mock instance
 func NewMockMulticlusterJobReconcileLoop(ctrl *gomock.Controller) *MockMulticlusterJobReconcileLoop {
 	mock := &MockMulticlusterJobReconcileLoop{ctrl: ctrl}
 	mock.recorder = &MockMulticlusterJobReconcileLoopMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockMulticlusterJobReconcileLoop) EXPECT() *MockMulticlusterJobReconcileLoopMockRecorder {
 	return m.recorder
 }
 
-// AddMulticlusterJobReconciler mocks base method.
+// AddMulticlusterJobReconciler mocks base method
 func (m *MockMulticlusterJobReconcileLoop) AddMulticlusterJobReconciler(ctx context.Context, rec controller.MulticlusterJobReconciler, predicates ...predicate.Predicate) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, rec}
@@ -123,7 +123,7 @@ func (m *MockMulticlusterJobReconcileLoop) AddMulticlusterJobReconciler(ctx cont
 	m.ctrl.Call(m, "AddMulticlusterJobReconciler", varargs...)
 }
 
-// AddMulticlusterJobReconciler indicates an expected call of AddMulticlusterJobReconciler.
+// AddMulticlusterJobReconciler indicates an expected call of AddMulticlusterJobReconciler
 func (mr *MockMulticlusterJobReconcileLoopMockRecorder) AddMulticlusterJobReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, rec}, predicates...)

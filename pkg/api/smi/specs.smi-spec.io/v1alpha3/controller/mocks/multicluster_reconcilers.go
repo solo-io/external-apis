@@ -15,30 +15,30 @@ import (
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
-// MockMulticlusterHTTPRouteGroupReconciler is a mock of MulticlusterHTTPRouteGroupReconciler interface.
+// MockMulticlusterHTTPRouteGroupReconciler is a mock of MulticlusterHTTPRouteGroupReconciler interface
 type MockMulticlusterHTTPRouteGroupReconciler struct {
 	ctrl     *gomock.Controller
 	recorder *MockMulticlusterHTTPRouteGroupReconcilerMockRecorder
 }
 
-// MockMulticlusterHTTPRouteGroupReconcilerMockRecorder is the mock recorder for MockMulticlusterHTTPRouteGroupReconciler.
+// MockMulticlusterHTTPRouteGroupReconcilerMockRecorder is the mock recorder for MockMulticlusterHTTPRouteGroupReconciler
 type MockMulticlusterHTTPRouteGroupReconcilerMockRecorder struct {
 	mock *MockMulticlusterHTTPRouteGroupReconciler
 }
 
-// NewMockMulticlusterHTTPRouteGroupReconciler creates a new mock instance.
+// NewMockMulticlusterHTTPRouteGroupReconciler creates a new mock instance
 func NewMockMulticlusterHTTPRouteGroupReconciler(ctrl *gomock.Controller) *MockMulticlusterHTTPRouteGroupReconciler {
 	mock := &MockMulticlusterHTTPRouteGroupReconciler{ctrl: ctrl}
 	mock.recorder = &MockMulticlusterHTTPRouteGroupReconcilerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockMulticlusterHTTPRouteGroupReconciler) EXPECT() *MockMulticlusterHTTPRouteGroupReconcilerMockRecorder {
 	return m.recorder
 }
 
-// ReconcileHTTPRouteGroup mocks base method.
+// ReconcileHTTPRouteGroup mocks base method
 func (m *MockMulticlusterHTTPRouteGroupReconciler) ReconcileHTTPRouteGroup(clusterName string, obj *v1alpha3.HTTPRouteGroup) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileHTTPRouteGroup", clusterName, obj)
@@ -47,36 +47,36 @@ func (m *MockMulticlusterHTTPRouteGroupReconciler) ReconcileHTTPRouteGroup(clust
 	return ret0, ret1
 }
 
-// ReconcileHTTPRouteGroup indicates an expected call of ReconcileHTTPRouteGroup.
+// ReconcileHTTPRouteGroup indicates an expected call of ReconcileHTTPRouteGroup
 func (mr *MockMulticlusterHTTPRouteGroupReconcilerMockRecorder) ReconcileHTTPRouteGroup(clusterName, obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileHTTPRouteGroup", reflect.TypeOf((*MockMulticlusterHTTPRouteGroupReconciler)(nil).ReconcileHTTPRouteGroup), clusterName, obj)
 }
 
-// MockMulticlusterHTTPRouteGroupDeletionReconciler is a mock of MulticlusterHTTPRouteGroupDeletionReconciler interface.
+// MockMulticlusterHTTPRouteGroupDeletionReconciler is a mock of MulticlusterHTTPRouteGroupDeletionReconciler interface
 type MockMulticlusterHTTPRouteGroupDeletionReconciler struct {
 	ctrl     *gomock.Controller
 	recorder *MockMulticlusterHTTPRouteGroupDeletionReconcilerMockRecorder
 }
 
-// MockMulticlusterHTTPRouteGroupDeletionReconcilerMockRecorder is the mock recorder for MockMulticlusterHTTPRouteGroupDeletionReconciler.
+// MockMulticlusterHTTPRouteGroupDeletionReconcilerMockRecorder is the mock recorder for MockMulticlusterHTTPRouteGroupDeletionReconciler
 type MockMulticlusterHTTPRouteGroupDeletionReconcilerMockRecorder struct {
 	mock *MockMulticlusterHTTPRouteGroupDeletionReconciler
 }
 
-// NewMockMulticlusterHTTPRouteGroupDeletionReconciler creates a new mock instance.
+// NewMockMulticlusterHTTPRouteGroupDeletionReconciler creates a new mock instance
 func NewMockMulticlusterHTTPRouteGroupDeletionReconciler(ctrl *gomock.Controller) *MockMulticlusterHTTPRouteGroupDeletionReconciler {
 	mock := &MockMulticlusterHTTPRouteGroupDeletionReconciler{ctrl: ctrl}
 	mock.recorder = &MockMulticlusterHTTPRouteGroupDeletionReconcilerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockMulticlusterHTTPRouteGroupDeletionReconciler) EXPECT() *MockMulticlusterHTTPRouteGroupDeletionReconcilerMockRecorder {
 	return m.recorder
 }
 
-// ReconcileHTTPRouteGroupDeletion mocks base method.
+// ReconcileHTTPRouteGroupDeletion mocks base method
 func (m *MockMulticlusterHTTPRouteGroupDeletionReconciler) ReconcileHTTPRouteGroupDeletion(clusterName string, req reconcile.Request) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileHTTPRouteGroupDeletion", clusterName, req)
@@ -84,36 +84,36 @@ func (m *MockMulticlusterHTTPRouteGroupDeletionReconciler) ReconcileHTTPRouteGro
 	return ret0
 }
 
-// ReconcileHTTPRouteGroupDeletion indicates an expected call of ReconcileHTTPRouteGroupDeletion.
+// ReconcileHTTPRouteGroupDeletion indicates an expected call of ReconcileHTTPRouteGroupDeletion
 func (mr *MockMulticlusterHTTPRouteGroupDeletionReconcilerMockRecorder) ReconcileHTTPRouteGroupDeletion(clusterName, req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileHTTPRouteGroupDeletion", reflect.TypeOf((*MockMulticlusterHTTPRouteGroupDeletionReconciler)(nil).ReconcileHTTPRouteGroupDeletion), clusterName, req)
 }
 
-// MockMulticlusterHTTPRouteGroupReconcileLoop is a mock of MulticlusterHTTPRouteGroupReconcileLoop interface.
+// MockMulticlusterHTTPRouteGroupReconcileLoop is a mock of MulticlusterHTTPRouteGroupReconcileLoop interface
 type MockMulticlusterHTTPRouteGroupReconcileLoop struct {
 	ctrl     *gomock.Controller
 	recorder *MockMulticlusterHTTPRouteGroupReconcileLoopMockRecorder
 }
 
-// MockMulticlusterHTTPRouteGroupReconcileLoopMockRecorder is the mock recorder for MockMulticlusterHTTPRouteGroupReconcileLoop.
+// MockMulticlusterHTTPRouteGroupReconcileLoopMockRecorder is the mock recorder for MockMulticlusterHTTPRouteGroupReconcileLoop
 type MockMulticlusterHTTPRouteGroupReconcileLoopMockRecorder struct {
 	mock *MockMulticlusterHTTPRouteGroupReconcileLoop
 }
 
-// NewMockMulticlusterHTTPRouteGroupReconcileLoop creates a new mock instance.
+// NewMockMulticlusterHTTPRouteGroupReconcileLoop creates a new mock instance
 func NewMockMulticlusterHTTPRouteGroupReconcileLoop(ctrl *gomock.Controller) *MockMulticlusterHTTPRouteGroupReconcileLoop {
 	mock := &MockMulticlusterHTTPRouteGroupReconcileLoop{ctrl: ctrl}
 	mock.recorder = &MockMulticlusterHTTPRouteGroupReconcileLoopMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockMulticlusterHTTPRouteGroupReconcileLoop) EXPECT() *MockMulticlusterHTTPRouteGroupReconcileLoopMockRecorder {
 	return m.recorder
 }
 
-// AddMulticlusterHTTPRouteGroupReconciler mocks base method.
+// AddMulticlusterHTTPRouteGroupReconciler mocks base method
 func (m *MockMulticlusterHTTPRouteGroupReconcileLoop) AddMulticlusterHTTPRouteGroupReconciler(ctx context.Context, rec controller.MulticlusterHTTPRouteGroupReconciler, predicates ...predicate.Predicate) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, rec}
@@ -123,7 +123,7 @@ func (m *MockMulticlusterHTTPRouteGroupReconcileLoop) AddMulticlusterHTTPRouteGr
 	m.ctrl.Call(m, "AddMulticlusterHTTPRouteGroupReconciler", varargs...)
 }
 
-// AddMulticlusterHTTPRouteGroupReconciler indicates an expected call of AddMulticlusterHTTPRouteGroupReconciler.
+// AddMulticlusterHTTPRouteGroupReconciler indicates an expected call of AddMulticlusterHTTPRouteGroupReconciler
 func (mr *MockMulticlusterHTTPRouteGroupReconcileLoopMockRecorder) AddMulticlusterHTTPRouteGroupReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, rec}, predicates...)

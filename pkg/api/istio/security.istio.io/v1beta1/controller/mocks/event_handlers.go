@@ -14,30 +14,30 @@ import (
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
-// MockAuthorizationPolicyEventHandler is a mock of AuthorizationPolicyEventHandler interface.
+// MockAuthorizationPolicyEventHandler is a mock of AuthorizationPolicyEventHandler interface
 type MockAuthorizationPolicyEventHandler struct {
 	ctrl     *gomock.Controller
 	recorder *MockAuthorizationPolicyEventHandlerMockRecorder
 }
 
-// MockAuthorizationPolicyEventHandlerMockRecorder is the mock recorder for MockAuthorizationPolicyEventHandler.
+// MockAuthorizationPolicyEventHandlerMockRecorder is the mock recorder for MockAuthorizationPolicyEventHandler
 type MockAuthorizationPolicyEventHandlerMockRecorder struct {
 	mock *MockAuthorizationPolicyEventHandler
 }
 
-// NewMockAuthorizationPolicyEventHandler creates a new mock instance.
+// NewMockAuthorizationPolicyEventHandler creates a new mock instance
 func NewMockAuthorizationPolicyEventHandler(ctrl *gomock.Controller) *MockAuthorizationPolicyEventHandler {
 	mock := &MockAuthorizationPolicyEventHandler{ctrl: ctrl}
 	mock.recorder = &MockAuthorizationPolicyEventHandlerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockAuthorizationPolicyEventHandler) EXPECT() *MockAuthorizationPolicyEventHandlerMockRecorder {
 	return m.recorder
 }
 
-// CreateAuthorizationPolicy mocks base method.
+// CreateAuthorizationPolicy mocks base method
 func (m *MockAuthorizationPolicyEventHandler) CreateAuthorizationPolicy(obj *v1beta1.AuthorizationPolicy) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateAuthorizationPolicy", obj)
@@ -45,41 +45,13 @@ func (m *MockAuthorizationPolicyEventHandler) CreateAuthorizationPolicy(obj *v1b
 	return ret0
 }
 
-// CreateAuthorizationPolicy indicates an expected call of CreateAuthorizationPolicy.
+// CreateAuthorizationPolicy indicates an expected call of CreateAuthorizationPolicy
 func (mr *MockAuthorizationPolicyEventHandlerMockRecorder) CreateAuthorizationPolicy(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyEventHandler)(nil).CreateAuthorizationPolicy), obj)
 }
 
-// DeleteAuthorizationPolicy mocks base method.
-func (m *MockAuthorizationPolicyEventHandler) DeleteAuthorizationPolicy(obj *v1beta1.AuthorizationPolicy) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteAuthorizationPolicy", obj)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteAuthorizationPolicy indicates an expected call of DeleteAuthorizationPolicy.
-func (mr *MockAuthorizationPolicyEventHandlerMockRecorder) DeleteAuthorizationPolicy(obj interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyEventHandler)(nil).DeleteAuthorizationPolicy), obj)
-}
-
-// GenericAuthorizationPolicy mocks base method.
-func (m *MockAuthorizationPolicyEventHandler) GenericAuthorizationPolicy(obj *v1beta1.AuthorizationPolicy) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GenericAuthorizationPolicy", obj)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// GenericAuthorizationPolicy indicates an expected call of GenericAuthorizationPolicy.
-func (mr *MockAuthorizationPolicyEventHandlerMockRecorder) GenericAuthorizationPolicy(obj interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyEventHandler)(nil).GenericAuthorizationPolicy), obj)
-}
-
-// UpdateAuthorizationPolicy mocks base method.
+// UpdateAuthorizationPolicy mocks base method
 func (m *MockAuthorizationPolicyEventHandler) UpdateAuthorizationPolicy(old, new *v1beta1.AuthorizationPolicy) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateAuthorizationPolicy", old, new)
@@ -87,36 +59,64 @@ func (m *MockAuthorizationPolicyEventHandler) UpdateAuthorizationPolicy(old, new
 	return ret0
 }
 
-// UpdateAuthorizationPolicy indicates an expected call of UpdateAuthorizationPolicy.
+// UpdateAuthorizationPolicy indicates an expected call of UpdateAuthorizationPolicy
 func (mr *MockAuthorizationPolicyEventHandlerMockRecorder) UpdateAuthorizationPolicy(old, new interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyEventHandler)(nil).UpdateAuthorizationPolicy), old, new)
 }
 
-// MockAuthorizationPolicyEventWatcher is a mock of AuthorizationPolicyEventWatcher interface.
+// DeleteAuthorizationPolicy mocks base method
+func (m *MockAuthorizationPolicyEventHandler) DeleteAuthorizationPolicy(obj *v1beta1.AuthorizationPolicy) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteAuthorizationPolicy", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAuthorizationPolicy indicates an expected call of DeleteAuthorizationPolicy
+func (mr *MockAuthorizationPolicyEventHandlerMockRecorder) DeleteAuthorizationPolicy(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyEventHandler)(nil).DeleteAuthorizationPolicy), obj)
+}
+
+// GenericAuthorizationPolicy mocks base method
+func (m *MockAuthorizationPolicyEventHandler) GenericAuthorizationPolicy(obj *v1beta1.AuthorizationPolicy) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GenericAuthorizationPolicy", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// GenericAuthorizationPolicy indicates an expected call of GenericAuthorizationPolicy
+func (mr *MockAuthorizationPolicyEventHandlerMockRecorder) GenericAuthorizationPolicy(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyEventHandler)(nil).GenericAuthorizationPolicy), obj)
+}
+
+// MockAuthorizationPolicyEventWatcher is a mock of AuthorizationPolicyEventWatcher interface
 type MockAuthorizationPolicyEventWatcher struct {
 	ctrl     *gomock.Controller
 	recorder *MockAuthorizationPolicyEventWatcherMockRecorder
 }
 
-// MockAuthorizationPolicyEventWatcherMockRecorder is the mock recorder for MockAuthorizationPolicyEventWatcher.
+// MockAuthorizationPolicyEventWatcherMockRecorder is the mock recorder for MockAuthorizationPolicyEventWatcher
 type MockAuthorizationPolicyEventWatcherMockRecorder struct {
 	mock *MockAuthorizationPolicyEventWatcher
 }
 
-// NewMockAuthorizationPolicyEventWatcher creates a new mock instance.
+// NewMockAuthorizationPolicyEventWatcher creates a new mock instance
 func NewMockAuthorizationPolicyEventWatcher(ctrl *gomock.Controller) *MockAuthorizationPolicyEventWatcher {
 	mock := &MockAuthorizationPolicyEventWatcher{ctrl: ctrl}
 	mock.recorder = &MockAuthorizationPolicyEventWatcherMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockAuthorizationPolicyEventWatcher) EXPECT() *MockAuthorizationPolicyEventWatcherMockRecorder {
 	return m.recorder
 }
 
-// AddEventHandler mocks base method.
+// AddEventHandler mocks base method
 func (m *MockAuthorizationPolicyEventWatcher) AddEventHandler(ctx context.Context, h controller.AuthorizationPolicyEventHandler, predicates ...predicate.Predicate) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, h}
@@ -128,37 +128,37 @@ func (m *MockAuthorizationPolicyEventWatcher) AddEventHandler(ctx context.Contex
 	return ret0
 }
 
-// AddEventHandler indicates an expected call of AddEventHandler.
+// AddEventHandler indicates an expected call of AddEventHandler
 func (mr *MockAuthorizationPolicyEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, h}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockAuthorizationPolicyEventWatcher)(nil).AddEventHandler), varargs...)
 }
 
-// MockPeerAuthenticationEventHandler is a mock of PeerAuthenticationEventHandler interface.
+// MockPeerAuthenticationEventHandler is a mock of PeerAuthenticationEventHandler interface
 type MockPeerAuthenticationEventHandler struct {
 	ctrl     *gomock.Controller
 	recorder *MockPeerAuthenticationEventHandlerMockRecorder
 }
 
-// MockPeerAuthenticationEventHandlerMockRecorder is the mock recorder for MockPeerAuthenticationEventHandler.
+// MockPeerAuthenticationEventHandlerMockRecorder is the mock recorder for MockPeerAuthenticationEventHandler
 type MockPeerAuthenticationEventHandlerMockRecorder struct {
 	mock *MockPeerAuthenticationEventHandler
 }
 
-// NewMockPeerAuthenticationEventHandler creates a new mock instance.
+// NewMockPeerAuthenticationEventHandler creates a new mock instance
 func NewMockPeerAuthenticationEventHandler(ctrl *gomock.Controller) *MockPeerAuthenticationEventHandler {
 	mock := &MockPeerAuthenticationEventHandler{ctrl: ctrl}
 	mock.recorder = &MockPeerAuthenticationEventHandlerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockPeerAuthenticationEventHandler) EXPECT() *MockPeerAuthenticationEventHandlerMockRecorder {
 	return m.recorder
 }
 
-// CreatePeerAuthentication mocks base method.
+// CreatePeerAuthentication mocks base method
 func (m *MockPeerAuthenticationEventHandler) CreatePeerAuthentication(obj *v1beta1.PeerAuthentication) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreatePeerAuthentication", obj)
@@ -166,41 +166,13 @@ func (m *MockPeerAuthenticationEventHandler) CreatePeerAuthentication(obj *v1bet
 	return ret0
 }
 
-// CreatePeerAuthentication indicates an expected call of CreatePeerAuthentication.
+// CreatePeerAuthentication indicates an expected call of CreatePeerAuthentication
 func (mr *MockPeerAuthenticationEventHandlerMockRecorder) CreatePeerAuthentication(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreatePeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationEventHandler)(nil).CreatePeerAuthentication), obj)
 }
 
-// DeletePeerAuthentication mocks base method.
-func (m *MockPeerAuthenticationEventHandler) DeletePeerAuthentication(obj *v1beta1.PeerAuthentication) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeletePeerAuthentication", obj)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeletePeerAuthentication indicates an expected call of DeletePeerAuthentication.
-func (mr *MockPeerAuthenticationEventHandlerMockRecorder) DeletePeerAuthentication(obj interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeletePeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationEventHandler)(nil).DeletePeerAuthentication), obj)
-}
-
-// GenericPeerAuthentication mocks base method.
-func (m *MockPeerAuthenticationEventHandler) GenericPeerAuthentication(obj *v1beta1.PeerAuthentication) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GenericPeerAuthentication", obj)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// GenericPeerAuthentication indicates an expected call of GenericPeerAuthentication.
-func (mr *MockPeerAuthenticationEventHandlerMockRecorder) GenericPeerAuthentication(obj interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericPeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationEventHandler)(nil).GenericPeerAuthentication), obj)
-}
-
-// UpdatePeerAuthentication mocks base method.
+// UpdatePeerAuthentication mocks base method
 func (m *MockPeerAuthenticationEventHandler) UpdatePeerAuthentication(old, new *v1beta1.PeerAuthentication) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdatePeerAuthentication", old, new)
@@ -208,36 +180,64 @@ func (m *MockPeerAuthenticationEventHandler) UpdatePeerAuthentication(old, new *
 	return ret0
 }
 
-// UpdatePeerAuthentication indicates an expected call of UpdatePeerAuthentication.
+// UpdatePeerAuthentication indicates an expected call of UpdatePeerAuthentication
 func (mr *MockPeerAuthenticationEventHandlerMockRecorder) UpdatePeerAuthentication(old, new interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdatePeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationEventHandler)(nil).UpdatePeerAuthentication), old, new)
 }
 
-// MockPeerAuthenticationEventWatcher is a mock of PeerAuthenticationEventWatcher interface.
+// DeletePeerAuthentication mocks base method
+func (m *MockPeerAuthenticationEventHandler) DeletePeerAuthentication(obj *v1beta1.PeerAuthentication) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeletePeerAuthentication", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeletePeerAuthentication indicates an expected call of DeletePeerAuthentication
+func (mr *MockPeerAuthenticationEventHandlerMockRecorder) DeletePeerAuthentication(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeletePeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationEventHandler)(nil).DeletePeerAuthentication), obj)
+}
+
+// GenericPeerAuthentication mocks base method
+func (m *MockPeerAuthenticationEventHandler) GenericPeerAuthentication(obj *v1beta1.PeerAuthentication) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GenericPeerAuthentication", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// GenericPeerAuthentication indicates an expected call of GenericPeerAuthentication
+func (mr *MockPeerAuthenticationEventHandlerMockRecorder) GenericPeerAuthentication(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericPeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationEventHandler)(nil).GenericPeerAuthentication), obj)
+}
+
+// MockPeerAuthenticationEventWatcher is a mock of PeerAuthenticationEventWatcher interface
 type MockPeerAuthenticationEventWatcher struct {
 	ctrl     *gomock.Controller
 	recorder *MockPeerAuthenticationEventWatcherMockRecorder
 }
 
-// MockPeerAuthenticationEventWatcherMockRecorder is the mock recorder for MockPeerAuthenticationEventWatcher.
+// MockPeerAuthenticationEventWatcherMockRecorder is the mock recorder for MockPeerAuthenticationEventWatcher
 type MockPeerAuthenticationEventWatcherMockRecorder struct {
 	mock *MockPeerAuthenticationEventWatcher
 }
 
-// NewMockPeerAuthenticationEventWatcher creates a new mock instance.
+// NewMockPeerAuthenticationEventWatcher creates a new mock instance
 func NewMockPeerAuthenticationEventWatcher(ctrl *gomock.Controller) *MockPeerAuthenticationEventWatcher {
 	mock := &MockPeerAuthenticationEventWatcher{ctrl: ctrl}
 	mock.recorder = &MockPeerAuthenticationEventWatcherMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockPeerAuthenticationEventWatcher) EXPECT() *MockPeerAuthenticationEventWatcherMockRecorder {
 	return m.recorder
 }
 
-// AddEventHandler mocks base method.
+// AddEventHandler mocks base method
 func (m *MockPeerAuthenticationEventWatcher) AddEventHandler(ctx context.Context, h controller.PeerAuthenticationEventHandler, predicates ...predicate.Predicate) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, h}
@@ -249,7 +249,7 @@ func (m *MockPeerAuthenticationEventWatcher) AddEventHandler(ctx context.Context
 	return ret0
 }
 
-// AddEventHandler indicates an expected call of AddEventHandler.
+// AddEventHandler indicates an expected call of AddEventHandler
 func (mr *MockPeerAuthenticationEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, h}, predicates...)

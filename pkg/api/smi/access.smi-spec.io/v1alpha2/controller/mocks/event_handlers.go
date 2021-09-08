@@ -14,30 +14,30 @@ import (
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
-// MockTrafficTargetEventHandler is a mock of TrafficTargetEventHandler interface.
+// MockTrafficTargetEventHandler is a mock of TrafficTargetEventHandler interface
 type MockTrafficTargetEventHandler struct {
 	ctrl     *gomock.Controller
 	recorder *MockTrafficTargetEventHandlerMockRecorder
 }
 
-// MockTrafficTargetEventHandlerMockRecorder is the mock recorder for MockTrafficTargetEventHandler.
+// MockTrafficTargetEventHandlerMockRecorder is the mock recorder for MockTrafficTargetEventHandler
 type MockTrafficTargetEventHandlerMockRecorder struct {
 	mock *MockTrafficTargetEventHandler
 }
 
-// NewMockTrafficTargetEventHandler creates a new mock instance.
+// NewMockTrafficTargetEventHandler creates a new mock instance
 func NewMockTrafficTargetEventHandler(ctrl *gomock.Controller) *MockTrafficTargetEventHandler {
 	mock := &MockTrafficTargetEventHandler{ctrl: ctrl}
 	mock.recorder = &MockTrafficTargetEventHandlerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockTrafficTargetEventHandler) EXPECT() *MockTrafficTargetEventHandlerMockRecorder {
 	return m.recorder
 }
 
-// CreateTrafficTarget mocks base method.
+// CreateTrafficTarget mocks base method
 func (m *MockTrafficTargetEventHandler) CreateTrafficTarget(obj *v1alpha2.TrafficTarget) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateTrafficTarget", obj)
@@ -45,41 +45,13 @@ func (m *MockTrafficTargetEventHandler) CreateTrafficTarget(obj *v1alpha2.Traffi
 	return ret0
 }
 
-// CreateTrafficTarget indicates an expected call of CreateTrafficTarget.
+// CreateTrafficTarget indicates an expected call of CreateTrafficTarget
 func (mr *MockTrafficTargetEventHandlerMockRecorder) CreateTrafficTarget(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateTrafficTarget", reflect.TypeOf((*MockTrafficTargetEventHandler)(nil).CreateTrafficTarget), obj)
 }
 
-// DeleteTrafficTarget mocks base method.
-func (m *MockTrafficTargetEventHandler) DeleteTrafficTarget(obj *v1alpha2.TrafficTarget) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteTrafficTarget", obj)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteTrafficTarget indicates an expected call of DeleteTrafficTarget.
-func (mr *MockTrafficTargetEventHandlerMockRecorder) DeleteTrafficTarget(obj interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTrafficTarget", reflect.TypeOf((*MockTrafficTargetEventHandler)(nil).DeleteTrafficTarget), obj)
-}
-
-// GenericTrafficTarget mocks base method.
-func (m *MockTrafficTargetEventHandler) GenericTrafficTarget(obj *v1alpha2.TrafficTarget) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GenericTrafficTarget", obj)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// GenericTrafficTarget indicates an expected call of GenericTrafficTarget.
-func (mr *MockTrafficTargetEventHandlerMockRecorder) GenericTrafficTarget(obj interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericTrafficTarget", reflect.TypeOf((*MockTrafficTargetEventHandler)(nil).GenericTrafficTarget), obj)
-}
-
-// UpdateTrafficTarget mocks base method.
+// UpdateTrafficTarget mocks base method
 func (m *MockTrafficTargetEventHandler) UpdateTrafficTarget(old, new *v1alpha2.TrafficTarget) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateTrafficTarget", old, new)
@@ -87,36 +59,64 @@ func (m *MockTrafficTargetEventHandler) UpdateTrafficTarget(old, new *v1alpha2.T
 	return ret0
 }
 
-// UpdateTrafficTarget indicates an expected call of UpdateTrafficTarget.
+// UpdateTrafficTarget indicates an expected call of UpdateTrafficTarget
 func (mr *MockTrafficTargetEventHandlerMockRecorder) UpdateTrafficTarget(old, new interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateTrafficTarget", reflect.TypeOf((*MockTrafficTargetEventHandler)(nil).UpdateTrafficTarget), old, new)
 }
 
-// MockTrafficTargetEventWatcher is a mock of TrafficTargetEventWatcher interface.
+// DeleteTrafficTarget mocks base method
+func (m *MockTrafficTargetEventHandler) DeleteTrafficTarget(obj *v1alpha2.TrafficTarget) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteTrafficTarget", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteTrafficTarget indicates an expected call of DeleteTrafficTarget
+func (mr *MockTrafficTargetEventHandlerMockRecorder) DeleteTrafficTarget(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTrafficTarget", reflect.TypeOf((*MockTrafficTargetEventHandler)(nil).DeleteTrafficTarget), obj)
+}
+
+// GenericTrafficTarget mocks base method
+func (m *MockTrafficTargetEventHandler) GenericTrafficTarget(obj *v1alpha2.TrafficTarget) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GenericTrafficTarget", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// GenericTrafficTarget indicates an expected call of GenericTrafficTarget
+func (mr *MockTrafficTargetEventHandlerMockRecorder) GenericTrafficTarget(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericTrafficTarget", reflect.TypeOf((*MockTrafficTargetEventHandler)(nil).GenericTrafficTarget), obj)
+}
+
+// MockTrafficTargetEventWatcher is a mock of TrafficTargetEventWatcher interface
 type MockTrafficTargetEventWatcher struct {
 	ctrl     *gomock.Controller
 	recorder *MockTrafficTargetEventWatcherMockRecorder
 }
 
-// MockTrafficTargetEventWatcherMockRecorder is the mock recorder for MockTrafficTargetEventWatcher.
+// MockTrafficTargetEventWatcherMockRecorder is the mock recorder for MockTrafficTargetEventWatcher
 type MockTrafficTargetEventWatcherMockRecorder struct {
 	mock *MockTrafficTargetEventWatcher
 }
 
-// NewMockTrafficTargetEventWatcher creates a new mock instance.
+// NewMockTrafficTargetEventWatcher creates a new mock instance
 func NewMockTrafficTargetEventWatcher(ctrl *gomock.Controller) *MockTrafficTargetEventWatcher {
 	mock := &MockTrafficTargetEventWatcher{ctrl: ctrl}
 	mock.recorder = &MockTrafficTargetEventWatcherMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockTrafficTargetEventWatcher) EXPECT() *MockTrafficTargetEventWatcherMockRecorder {
 	return m.recorder
 }
 
-// AddEventHandler mocks base method.
+// AddEventHandler mocks base method
 func (m *MockTrafficTargetEventWatcher) AddEventHandler(ctx context.Context, h controller.TrafficTargetEventHandler, predicates ...predicate.Predicate) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, h}
@@ -128,7 +128,7 @@ func (m *MockTrafficTargetEventWatcher) AddEventHandler(ctx context.Context, h c
 	return ret0
 }
 
-// AddEventHandler indicates an expected call of AddEventHandler.
+// AddEventHandler indicates an expected call of AddEventHandler
 func (mr *MockTrafficTargetEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, h}, predicates...)
