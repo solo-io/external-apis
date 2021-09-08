@@ -15,30 +15,30 @@ import (
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
-// MockMulticlusterTrafficSplitReconciler is a mock of MulticlusterTrafficSplitReconciler interface
+// MockMulticlusterTrafficSplitReconciler is a mock of MulticlusterTrafficSplitReconciler interface.
 type MockMulticlusterTrafficSplitReconciler struct {
 	ctrl     *gomock.Controller
 	recorder *MockMulticlusterTrafficSplitReconcilerMockRecorder
 }
 
-// MockMulticlusterTrafficSplitReconcilerMockRecorder is the mock recorder for MockMulticlusterTrafficSplitReconciler
+// MockMulticlusterTrafficSplitReconcilerMockRecorder is the mock recorder for MockMulticlusterTrafficSplitReconciler.
 type MockMulticlusterTrafficSplitReconcilerMockRecorder struct {
 	mock *MockMulticlusterTrafficSplitReconciler
 }
 
-// NewMockMulticlusterTrafficSplitReconciler creates a new mock instance
+// NewMockMulticlusterTrafficSplitReconciler creates a new mock instance.
 func NewMockMulticlusterTrafficSplitReconciler(ctrl *gomock.Controller) *MockMulticlusterTrafficSplitReconciler {
 	mock := &MockMulticlusterTrafficSplitReconciler{ctrl: ctrl}
 	mock.recorder = &MockMulticlusterTrafficSplitReconcilerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockMulticlusterTrafficSplitReconciler) EXPECT() *MockMulticlusterTrafficSplitReconcilerMockRecorder {
 	return m.recorder
 }
 
-// ReconcileTrafficSplit mocks base method
+// ReconcileTrafficSplit mocks base method.
 func (m *MockMulticlusterTrafficSplitReconciler) ReconcileTrafficSplit(clusterName string, obj *v1alpha2.TrafficSplit) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileTrafficSplit", clusterName, obj)
@@ -47,36 +47,36 @@ func (m *MockMulticlusterTrafficSplitReconciler) ReconcileTrafficSplit(clusterNa
 	return ret0, ret1
 }
 
-// ReconcileTrafficSplit indicates an expected call of ReconcileTrafficSplit
+// ReconcileTrafficSplit indicates an expected call of ReconcileTrafficSplit.
 func (mr *MockMulticlusterTrafficSplitReconcilerMockRecorder) ReconcileTrafficSplit(clusterName, obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileTrafficSplit", reflect.TypeOf((*MockMulticlusterTrafficSplitReconciler)(nil).ReconcileTrafficSplit), clusterName, obj)
 }
 
-// MockMulticlusterTrafficSplitDeletionReconciler is a mock of MulticlusterTrafficSplitDeletionReconciler interface
+// MockMulticlusterTrafficSplitDeletionReconciler is a mock of MulticlusterTrafficSplitDeletionReconciler interface.
 type MockMulticlusterTrafficSplitDeletionReconciler struct {
 	ctrl     *gomock.Controller
 	recorder *MockMulticlusterTrafficSplitDeletionReconcilerMockRecorder
 }
 
-// MockMulticlusterTrafficSplitDeletionReconcilerMockRecorder is the mock recorder for MockMulticlusterTrafficSplitDeletionReconciler
+// MockMulticlusterTrafficSplitDeletionReconcilerMockRecorder is the mock recorder for MockMulticlusterTrafficSplitDeletionReconciler.
 type MockMulticlusterTrafficSplitDeletionReconcilerMockRecorder struct {
 	mock *MockMulticlusterTrafficSplitDeletionReconciler
 }
 
-// NewMockMulticlusterTrafficSplitDeletionReconciler creates a new mock instance
+// NewMockMulticlusterTrafficSplitDeletionReconciler creates a new mock instance.
 func NewMockMulticlusterTrafficSplitDeletionReconciler(ctrl *gomock.Controller) *MockMulticlusterTrafficSplitDeletionReconciler {
 	mock := &MockMulticlusterTrafficSplitDeletionReconciler{ctrl: ctrl}
 	mock.recorder = &MockMulticlusterTrafficSplitDeletionReconcilerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockMulticlusterTrafficSplitDeletionReconciler) EXPECT() *MockMulticlusterTrafficSplitDeletionReconcilerMockRecorder {
 	return m.recorder
 }
 
-// ReconcileTrafficSplitDeletion mocks base method
+// ReconcileTrafficSplitDeletion mocks base method.
 func (m *MockMulticlusterTrafficSplitDeletionReconciler) ReconcileTrafficSplitDeletion(clusterName string, req reconcile.Request) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileTrafficSplitDeletion", clusterName, req)
@@ -84,36 +84,36 @@ func (m *MockMulticlusterTrafficSplitDeletionReconciler) ReconcileTrafficSplitDe
 	return ret0
 }
 
-// ReconcileTrafficSplitDeletion indicates an expected call of ReconcileTrafficSplitDeletion
+// ReconcileTrafficSplitDeletion indicates an expected call of ReconcileTrafficSplitDeletion.
 func (mr *MockMulticlusterTrafficSplitDeletionReconcilerMockRecorder) ReconcileTrafficSplitDeletion(clusterName, req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileTrafficSplitDeletion", reflect.TypeOf((*MockMulticlusterTrafficSplitDeletionReconciler)(nil).ReconcileTrafficSplitDeletion), clusterName, req)
 }
 
-// MockMulticlusterTrafficSplitReconcileLoop is a mock of MulticlusterTrafficSplitReconcileLoop interface
+// MockMulticlusterTrafficSplitReconcileLoop is a mock of MulticlusterTrafficSplitReconcileLoop interface.
 type MockMulticlusterTrafficSplitReconcileLoop struct {
 	ctrl     *gomock.Controller
 	recorder *MockMulticlusterTrafficSplitReconcileLoopMockRecorder
 }
 
-// MockMulticlusterTrafficSplitReconcileLoopMockRecorder is the mock recorder for MockMulticlusterTrafficSplitReconcileLoop
+// MockMulticlusterTrafficSplitReconcileLoopMockRecorder is the mock recorder for MockMulticlusterTrafficSplitReconcileLoop.
 type MockMulticlusterTrafficSplitReconcileLoopMockRecorder struct {
 	mock *MockMulticlusterTrafficSplitReconcileLoop
 }
 
-// NewMockMulticlusterTrafficSplitReconcileLoop creates a new mock instance
+// NewMockMulticlusterTrafficSplitReconcileLoop creates a new mock instance.
 func NewMockMulticlusterTrafficSplitReconcileLoop(ctrl *gomock.Controller) *MockMulticlusterTrafficSplitReconcileLoop {
 	mock := &MockMulticlusterTrafficSplitReconcileLoop{ctrl: ctrl}
 	mock.recorder = &MockMulticlusterTrafficSplitReconcileLoopMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockMulticlusterTrafficSplitReconcileLoop) EXPECT() *MockMulticlusterTrafficSplitReconcileLoopMockRecorder {
 	return m.recorder
 }
 
-// AddMulticlusterTrafficSplitReconciler mocks base method
+// AddMulticlusterTrafficSplitReconciler mocks base method.
 func (m *MockMulticlusterTrafficSplitReconcileLoop) AddMulticlusterTrafficSplitReconciler(ctx context.Context, rec controller.MulticlusterTrafficSplitReconciler, predicates ...predicate.Predicate) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, rec}
@@ -123,7 +123,7 @@ func (m *MockMulticlusterTrafficSplitReconcileLoop) AddMulticlusterTrafficSplitR
 	m.ctrl.Call(m, "AddMulticlusterTrafficSplitReconciler", varargs...)
 }
 
-// AddMulticlusterTrafficSplitReconciler indicates an expected call of AddMulticlusterTrafficSplitReconciler
+// AddMulticlusterTrafficSplitReconciler indicates an expected call of AddMulticlusterTrafficSplitReconciler.
 func (mr *MockMulticlusterTrafficSplitReconcileLoopMockRecorder) AddMulticlusterTrafficSplitReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, rec}, predicates...)

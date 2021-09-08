@@ -60,7 +60,7 @@ type clientSet struct {
 
 func NewClientsetFromConfig(cfg *rest.Config) (Clientset, error) {
 	scheme := scheme.Scheme
-	if err := appmesh_k8s_aws_v1beta2.AddToScheme(scheme); err != nil {
+	if err := appmesh_k8s_aws_v1beta2.SchemeBuilder.AddToScheme(scheme); err != nil {
 		return nil, err
 	}
 	client, err := client.New(cfg, client.Options{
