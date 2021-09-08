@@ -8,6 +8,8 @@ replace (
 
 	github.com/Sirupsen/logrus => github.com/sirupsen/logrus v1.4.2
 	github.com/docker/docker => github.com/moby/moby v0.7.3-0.20190826074503-38ab9da00309
+
+	github.com/golang/mock => github.com/golang/mock v1.4.4
 )
 
 require (

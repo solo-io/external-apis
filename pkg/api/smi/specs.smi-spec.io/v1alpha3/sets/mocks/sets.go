@@ -15,171 +15,30 @@ import (
 	sets0 "k8s.io/apimachinery/pkg/util/sets"
 )
 
-// MockHTTPRouteGroupSet is a mock of HTTPRouteGroupSet interface.
+// MockHTTPRouteGroupSet is a mock of HTTPRouteGroupSet interface
 type MockHTTPRouteGroupSet struct {
 	ctrl     *gomock.Controller
 	recorder *MockHTTPRouteGroupSetMockRecorder
 }
 
-// MockHTTPRouteGroupSetMockRecorder is the mock recorder for MockHTTPRouteGroupSet.
+// MockHTTPRouteGroupSetMockRecorder is the mock recorder for MockHTTPRouteGroupSet
 type MockHTTPRouteGroupSetMockRecorder struct {
 	mock *MockHTTPRouteGroupSet
 }
 
-// NewMockHTTPRouteGroupSet creates a new mock instance.
+// NewMockHTTPRouteGroupSet creates a new mock instance
 func NewMockHTTPRouteGroupSet(ctrl *gomock.Controller) *MockHTTPRouteGroupSet {
 	mock := &MockHTTPRouteGroupSet{ctrl: ctrl}
 	mock.recorder = &MockHTTPRouteGroupSetMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockHTTPRouteGroupSet) EXPECT() *MockHTTPRouteGroupSetMockRecorder {
 	return m.recorder
 }
 
-// Clone mocks base method.
-func (m *MockHTTPRouteGroupSet) Clone() v1alpha3sets.HTTPRouteGroupSet {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Clone")
-	ret0, _ := ret[0].(v1alpha3sets.HTTPRouteGroupSet)
-	return ret0
-}
-
-// Clone indicates an expected call of Clone.
-func (mr *MockHTTPRouteGroupSetMockRecorder) Clone() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Clone))
-}
-
-// Delete mocks base method.
-func (m *MockHTTPRouteGroupSet) Delete(hTTPRouteGroup ezkube.ResourceId) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "Delete", hTTPRouteGroup)
-}
-
-// Delete indicates an expected call of Delete.
-func (mr *MockHTTPRouteGroupSetMockRecorder) Delete(hTTPRouteGroup interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Delete), hTTPRouteGroup)
-}
-
-// Delta mocks base method.
-func (m *MockHTTPRouteGroupSet) Delta(newSet v1alpha3sets.HTTPRouteGroupSet) sets.ResourceDelta {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Delta", newSet)
-	ret0, _ := ret[0].(sets.ResourceDelta)
-	return ret0
-}
-
-// Delta indicates an expected call of Delta.
-func (mr *MockHTTPRouteGroupSetMockRecorder) Delta(newSet interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Delta), newSet)
-}
-
-// Difference mocks base method.
-func (m *MockHTTPRouteGroupSet) Difference(set v1alpha3sets.HTTPRouteGroupSet) v1alpha3sets.HTTPRouteGroupSet {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Difference", set)
-	ret0, _ := ret[0].(v1alpha3sets.HTTPRouteGroupSet)
-	return ret0
-}
-
-// Difference indicates an expected call of Difference.
-func (mr *MockHTTPRouteGroupSetMockRecorder) Difference(set interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Difference", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Difference), set)
-}
-
-// Equal mocks base method.
-func (m *MockHTTPRouteGroupSet) Equal(hTTPRouteGroupSet v1alpha3sets.HTTPRouteGroupSet) bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Equal", hTTPRouteGroupSet)
-	ret0, _ := ret[0].(bool)
-	return ret0
-}
-
-// Equal indicates an expected call of Equal.
-func (mr *MockHTTPRouteGroupSetMockRecorder) Equal(hTTPRouteGroupSet interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Equal", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Equal), hTTPRouteGroupSet)
-}
-
-// Find mocks base method.
-func (m *MockHTTPRouteGroupSet) Find(id ezkube.ResourceId) (*v1alpha3.HTTPRouteGroup, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Find", id)
-	ret0, _ := ret[0].(*v1alpha3.HTTPRouteGroup)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// Find indicates an expected call of Find.
-func (mr *MockHTTPRouteGroupSetMockRecorder) Find(id interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Find), id)
-}
-
-// Generic mocks base method.
-func (m *MockHTTPRouteGroupSet) Generic() sets.ResourceSet {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Generic")
-	ret0, _ := ret[0].(sets.ResourceSet)
-	return ret0
-}
-
-// Generic indicates an expected call of Generic.
-func (mr *MockHTTPRouteGroupSetMockRecorder) Generic() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Generic))
-}
-
-// Has mocks base method.
-func (m *MockHTTPRouteGroupSet) Has(hTTPRouteGroup ezkube.ResourceId) bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Has", hTTPRouteGroup)
-	ret0, _ := ret[0].(bool)
-	return ret0
-}
-
-// Has indicates an expected call of Has.
-func (mr *MockHTTPRouteGroupSetMockRecorder) Has(hTTPRouteGroup interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Has", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Has), hTTPRouteGroup)
-}
-
-// Insert mocks base method.
-func (m *MockHTTPRouteGroupSet) Insert(hTTPRouteGroup ...*v1alpha3.HTTPRouteGroup) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{}
-	for _, a := range hTTPRouteGroup {
-		varargs = append(varargs, a)
-	}
-	m.ctrl.Call(m, "Insert", varargs...)
-}
-
-// Insert indicates an expected call of Insert.
-func (mr *MockHTTPRouteGroupSetMockRecorder) Insert(hTTPRouteGroup ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Insert), hTTPRouteGroup...)
-}
-
-// Intersection mocks base method.
-func (m *MockHTTPRouteGroupSet) Intersection(set v1alpha3sets.HTTPRouteGroupSet) v1alpha3sets.HTTPRouteGroupSet {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Intersection", set)
-	ret0, _ := ret[0].(v1alpha3sets.HTTPRouteGroupSet)
-	return ret0
-}
-
-// Intersection indicates an expected call of Intersection.
-func (mr *MockHTTPRouteGroupSetMockRecorder) Intersection(set interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Intersection), set)
-}
-
-// Keys mocks base method.
+// Keys mocks base method
 func (m *MockHTTPRouteGroupSet) Keys() sets0.String {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Keys")
@@ -187,27 +46,13 @@ func (m *MockHTTPRouteGroupSet) Keys() sets0.String {
 	return ret0
 }
 
-// Keys indicates an expected call of Keys.
+// Keys indicates an expected call of Keys
 func (mr *MockHTTPRouteGroupSetMockRecorder) Keys() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Keys", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Keys))
 }
 
-// Length mocks base method.
-func (m *MockHTTPRouteGroupSet) Length() int {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Length")
-	ret0, _ := ret[0].(int)
-	return ret0
-}
-
-// Length indicates an expected call of Length.
-func (mr *MockHTTPRouteGroupSetMockRecorder) Length() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Length", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Length))
-}
-
-// List mocks base method.
+// List mocks base method
 func (m *MockHTTPRouteGroupSet) List(filterResource ...func(*v1alpha3.HTTPRouteGroup) bool) []*v1alpha3.HTTPRouteGroup {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{}
@@ -219,41 +64,13 @@ func (m *MockHTTPRouteGroupSet) List(filterResource ...func(*v1alpha3.HTTPRouteG
 	return ret0
 }
 
-// List indicates an expected call of List.
+// List indicates an expected call of List
 func (mr *MockHTTPRouteGroupSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).List), filterResource...)
 }
 
-// Map mocks base method.
-func (m *MockHTTPRouteGroupSet) Map() map[string]*v1alpha3.HTTPRouteGroup {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Map")
-	ret0, _ := ret[0].(map[string]*v1alpha3.HTTPRouteGroup)
-	return ret0
-}
-
-// Map indicates an expected call of Map.
-func (mr *MockHTTPRouteGroupSetMockRecorder) Map() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Map", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Map))
-}
-
-// Union mocks base method.
-func (m *MockHTTPRouteGroupSet) Union(set v1alpha3sets.HTTPRouteGroupSet) v1alpha3sets.HTTPRouteGroupSet {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Union", set)
-	ret0, _ := ret[0].(v1alpha3sets.HTTPRouteGroupSet)
-	return ret0
-}
-
-// Union indicates an expected call of Union.
-func (mr *MockHTTPRouteGroupSetMockRecorder) Union(set interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Union", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Union), set)
-}
-
-// UnsortedList mocks base method.
+// UnsortedList mocks base method
 func (m *MockHTTPRouteGroupSet) UnsortedList(filterResource ...func(*v1alpha3.HTTPRouteGroup) bool) []*v1alpha3.HTTPRouteGroup {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{}
@@ -265,8 +82,191 @@ func (m *MockHTTPRouteGroupSet) UnsortedList(filterResource ...func(*v1alpha3.HT
 	return ret0
 }
 
-// UnsortedList indicates an expected call of UnsortedList.
+// UnsortedList indicates an expected call of UnsortedList
 func (mr *MockHTTPRouteGroupSetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).UnsortedList), filterResource...)
+}
+
+// Map mocks base method
+func (m *MockHTTPRouteGroupSet) Map() map[string]*v1alpha3.HTTPRouteGroup {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Map")
+	ret0, _ := ret[0].(map[string]*v1alpha3.HTTPRouteGroup)
+	return ret0
+}
+
+// Map indicates an expected call of Map
+func (mr *MockHTTPRouteGroupSetMockRecorder) Map() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Map", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Map))
+}
+
+// Insert mocks base method
+func (m *MockHTTPRouteGroupSet) Insert(hTTPRouteGroup ...*v1alpha3.HTTPRouteGroup) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range hTTPRouteGroup {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "Insert", varargs...)
+}
+
+// Insert indicates an expected call of Insert
+func (mr *MockHTTPRouteGroupSetMockRecorder) Insert(hTTPRouteGroup ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Insert), hTTPRouteGroup...)
+}
+
+// Equal mocks base method
+func (m *MockHTTPRouteGroupSet) Equal(hTTPRouteGroupSet v1alpha3sets.HTTPRouteGroupSet) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Equal", hTTPRouteGroupSet)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Equal indicates an expected call of Equal
+func (mr *MockHTTPRouteGroupSetMockRecorder) Equal(hTTPRouteGroupSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Equal", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Equal), hTTPRouteGroupSet)
+}
+
+// Has mocks base method
+func (m *MockHTTPRouteGroupSet) Has(hTTPRouteGroup ezkube.ResourceId) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Has", hTTPRouteGroup)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Has indicates an expected call of Has
+func (mr *MockHTTPRouteGroupSetMockRecorder) Has(hTTPRouteGroup interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Has", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Has), hTTPRouteGroup)
+}
+
+// Delete mocks base method
+func (m *MockHTTPRouteGroupSet) Delete(hTTPRouteGroup ezkube.ResourceId) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Delete", hTTPRouteGroup)
+}
+
+// Delete indicates an expected call of Delete
+func (mr *MockHTTPRouteGroupSetMockRecorder) Delete(hTTPRouteGroup interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Delete), hTTPRouteGroup)
+}
+
+// Union mocks base method
+func (m *MockHTTPRouteGroupSet) Union(set v1alpha3sets.HTTPRouteGroupSet) v1alpha3sets.HTTPRouteGroupSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Union", set)
+	ret0, _ := ret[0].(v1alpha3sets.HTTPRouteGroupSet)
+	return ret0
+}
+
+// Union indicates an expected call of Union
+func (mr *MockHTTPRouteGroupSetMockRecorder) Union(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Union", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Union), set)
+}
+
+// Difference mocks base method
+func (m *MockHTTPRouteGroupSet) Difference(set v1alpha3sets.HTTPRouteGroupSet) v1alpha3sets.HTTPRouteGroupSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Difference", set)
+	ret0, _ := ret[0].(v1alpha3sets.HTTPRouteGroupSet)
+	return ret0
+}
+
+// Difference indicates an expected call of Difference
+func (mr *MockHTTPRouteGroupSetMockRecorder) Difference(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Difference", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Difference), set)
+}
+
+// Intersection mocks base method
+func (m *MockHTTPRouteGroupSet) Intersection(set v1alpha3sets.HTTPRouteGroupSet) v1alpha3sets.HTTPRouteGroupSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Intersection", set)
+	ret0, _ := ret[0].(v1alpha3sets.HTTPRouteGroupSet)
+	return ret0
+}
+
+// Intersection indicates an expected call of Intersection
+func (mr *MockHTTPRouteGroupSetMockRecorder) Intersection(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Intersection), set)
+}
+
+// Find mocks base method
+func (m *MockHTTPRouteGroupSet) Find(id ezkube.ResourceId) (*v1alpha3.HTTPRouteGroup, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1alpha3.HTTPRouteGroup)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find
+func (mr *MockHTTPRouteGroupSetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Find), id)
+}
+
+// Length mocks base method
+func (m *MockHTTPRouteGroupSet) Length() int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Length")
+	ret0, _ := ret[0].(int)
+	return ret0
+}
+
+// Length indicates an expected call of Length
+func (mr *MockHTTPRouteGroupSetMockRecorder) Length() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Length", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Length))
+}
+
+// Generic mocks base method
+func (m *MockHTTPRouteGroupSet) Generic() sets.ResourceSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Generic")
+	ret0, _ := ret[0].(sets.ResourceSet)
+	return ret0
+}
+
+// Generic indicates an expected call of Generic
+func (mr *MockHTTPRouteGroupSetMockRecorder) Generic() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Generic))
+}
+
+// Delta mocks base method
+func (m *MockHTTPRouteGroupSet) Delta(newSet v1alpha3sets.HTTPRouteGroupSet) sets.ResourceDelta {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Delta", newSet)
+	ret0, _ := ret[0].(sets.ResourceDelta)
+	return ret0
+}
+
+// Delta indicates an expected call of Delta
+func (mr *MockHTTPRouteGroupSetMockRecorder) Delta(newSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Delta), newSet)
+}
+
+// Clone mocks base method
+func (m *MockHTTPRouteGroupSet) Clone() v1alpha3sets.HTTPRouteGroupSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1alpha3sets.HTTPRouteGroupSet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone
+func (mr *MockHTTPRouteGroupSetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Clone))
 }

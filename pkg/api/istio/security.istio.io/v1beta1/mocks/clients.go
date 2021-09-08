@@ -14,30 +14,30 @@ import (
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// MockMulticlusterClientset is a mock of MulticlusterClientset interface.
+// MockMulticlusterClientset is a mock of MulticlusterClientset interface
 type MockMulticlusterClientset struct {
 	ctrl     *gomock.Controller
 	recorder *MockMulticlusterClientsetMockRecorder
 }
 
-// MockMulticlusterClientsetMockRecorder is the mock recorder for MockMulticlusterClientset.
+// MockMulticlusterClientsetMockRecorder is the mock recorder for MockMulticlusterClientset
 type MockMulticlusterClientsetMockRecorder struct {
 	mock *MockMulticlusterClientset
 }
 
-// NewMockMulticlusterClientset creates a new mock instance.
+// NewMockMulticlusterClientset creates a new mock instance
 func NewMockMulticlusterClientset(ctrl *gomock.Controller) *MockMulticlusterClientset {
 	mock := &MockMulticlusterClientset{ctrl: ctrl}
 	mock.recorder = &MockMulticlusterClientsetMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockMulticlusterClientset) EXPECT() *MockMulticlusterClientsetMockRecorder {
 	return m.recorder
 }
 
-// Cluster mocks base method.
+// Cluster mocks base method
 func (m *MockMulticlusterClientset) Cluster(cluster string) (v1beta1.Clientset, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Cluster", cluster)
@@ -46,36 +46,36 @@ func (m *MockMulticlusterClientset) Cluster(cluster string) (v1beta1.Clientset, 
 	return ret0, ret1
 }
 
-// Cluster indicates an expected call of Cluster.
+// Cluster indicates an expected call of Cluster
 func (mr *MockMulticlusterClientsetMockRecorder) Cluster(cluster interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterClientset)(nil).Cluster), cluster)
 }
 
-// MockClientset is a mock of Clientset interface.
+// MockClientset is a mock of Clientset interface
 type MockClientset struct {
 	ctrl     *gomock.Controller
 	recorder *MockClientsetMockRecorder
 }
 
-// MockClientsetMockRecorder is the mock recorder for MockClientset.
+// MockClientsetMockRecorder is the mock recorder for MockClientset
 type MockClientsetMockRecorder struct {
 	mock *MockClientset
 }
 
-// NewMockClientset creates a new mock instance.
+// NewMockClientset creates a new mock instance
 func NewMockClientset(ctrl *gomock.Controller) *MockClientset {
 	mock := &MockClientset{ctrl: ctrl}
 	mock.recorder = &MockClientsetMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockClientset) EXPECT() *MockClientsetMockRecorder {
 	return m.recorder
 }
 
-// AuthorizationPolicies mocks base method.
+// AuthorizationPolicies mocks base method
 func (m *MockClientset) AuthorizationPolicies() v1beta1.AuthorizationPolicyClient {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "AuthorizationPolicies")
@@ -83,13 +83,13 @@ func (m *MockClientset) AuthorizationPolicies() v1beta1.AuthorizationPolicyClien
 	return ret0
 }
 
-// AuthorizationPolicies indicates an expected call of AuthorizationPolicies.
+// AuthorizationPolicies indicates an expected call of AuthorizationPolicies
 func (mr *MockClientsetMockRecorder) AuthorizationPolicies() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AuthorizationPolicies", reflect.TypeOf((*MockClientset)(nil).AuthorizationPolicies))
 }
 
-// PeerAuthentications mocks base method.
+// PeerAuthentications mocks base method
 func (m *MockClientset) PeerAuthentications() v1beta1.PeerAuthenticationClient {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PeerAuthentications")
@@ -97,36 +97,36 @@ func (m *MockClientset) PeerAuthentications() v1beta1.PeerAuthenticationClient {
 	return ret0
 }
 
-// PeerAuthentications indicates an expected call of PeerAuthentications.
+// PeerAuthentications indicates an expected call of PeerAuthentications
 func (mr *MockClientsetMockRecorder) PeerAuthentications() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PeerAuthentications", reflect.TypeOf((*MockClientset)(nil).PeerAuthentications))
 }
 
-// MockAuthorizationPolicyReader is a mock of AuthorizationPolicyReader interface.
+// MockAuthorizationPolicyReader is a mock of AuthorizationPolicyReader interface
 type MockAuthorizationPolicyReader struct {
 	ctrl     *gomock.Controller
 	recorder *MockAuthorizationPolicyReaderMockRecorder
 }
 
-// MockAuthorizationPolicyReaderMockRecorder is the mock recorder for MockAuthorizationPolicyReader.
+// MockAuthorizationPolicyReaderMockRecorder is the mock recorder for MockAuthorizationPolicyReader
 type MockAuthorizationPolicyReaderMockRecorder struct {
 	mock *MockAuthorizationPolicyReader
 }
 
-// NewMockAuthorizationPolicyReader creates a new mock instance.
+// NewMockAuthorizationPolicyReader creates a new mock instance
 func NewMockAuthorizationPolicyReader(ctrl *gomock.Controller) *MockAuthorizationPolicyReader {
 	mock := &MockAuthorizationPolicyReader{ctrl: ctrl}
 	mock.recorder = &MockAuthorizationPolicyReaderMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockAuthorizationPolicyReader) EXPECT() *MockAuthorizationPolicyReaderMockRecorder {
 	return m.recorder
 }
 
-// GetAuthorizationPolicy mocks base method.
+// GetAuthorizationPolicy mocks base method
 func (m *MockAuthorizationPolicyReader) GetAuthorizationPolicy(ctx context.Context, key client.ObjectKey) (*v1beta10.AuthorizationPolicy, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAuthorizationPolicy", ctx, key)
@@ -135,13 +135,13 @@ func (m *MockAuthorizationPolicyReader) GetAuthorizationPolicy(ctx context.Conte
 	return ret0, ret1
 }
 
-// GetAuthorizationPolicy indicates an expected call of GetAuthorizationPolicy.
+// GetAuthorizationPolicy indicates an expected call of GetAuthorizationPolicy
 func (mr *MockAuthorizationPolicyReaderMockRecorder) GetAuthorizationPolicy(ctx, key interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyReader)(nil).GetAuthorizationPolicy), ctx, key)
 }
 
-// ListAuthorizationPolicy mocks base method.
+// ListAuthorizationPolicy mocks base method
 func (m *MockAuthorizationPolicyReader) ListAuthorizationPolicy(ctx context.Context, opts ...client.ListOption) (*v1beta10.AuthorizationPolicyList, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx}
@@ -154,37 +154,37 @@ func (m *MockAuthorizationPolicyReader) ListAuthorizationPolicy(ctx context.Cont
 	return ret0, ret1
 }
 
-// ListAuthorizationPolicy indicates an expected call of ListAuthorizationPolicy.
+// ListAuthorizationPolicy indicates an expected call of ListAuthorizationPolicy
 func (mr *MockAuthorizationPolicyReaderMockRecorder) ListAuthorizationPolicy(ctx interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyReader)(nil).ListAuthorizationPolicy), varargs...)
 }
 
-// MockAuthorizationPolicyWriter is a mock of AuthorizationPolicyWriter interface.
+// MockAuthorizationPolicyWriter is a mock of AuthorizationPolicyWriter interface
 type MockAuthorizationPolicyWriter struct {
 	ctrl     *gomock.Controller
 	recorder *MockAuthorizationPolicyWriterMockRecorder
 }
 
-// MockAuthorizationPolicyWriterMockRecorder is the mock recorder for MockAuthorizationPolicyWriter.
+// MockAuthorizationPolicyWriterMockRecorder is the mock recorder for MockAuthorizationPolicyWriter
 type MockAuthorizationPolicyWriterMockRecorder struct {
 	mock *MockAuthorizationPolicyWriter
 }
 
-// NewMockAuthorizationPolicyWriter creates a new mock instance.
+// NewMockAuthorizationPolicyWriter creates a new mock instance
 func NewMockAuthorizationPolicyWriter(ctrl *gomock.Controller) *MockAuthorizationPolicyWriter {
 	mock := &MockAuthorizationPolicyWriter{ctrl: ctrl}
 	mock.recorder = &MockAuthorizationPolicyWriterMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockAuthorizationPolicyWriter) EXPECT() *MockAuthorizationPolicyWriterMockRecorder {
 	return m.recorder
 }
 
-// CreateAuthorizationPolicy mocks base method.
+// CreateAuthorizationPolicy mocks base method
 func (m *MockAuthorizationPolicyWriter) CreateAuthorizationPolicy(ctx context.Context, obj *v1beta10.AuthorizationPolicy, opts ...client.CreateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
@@ -196,33 +196,14 @@ func (m *MockAuthorizationPolicyWriter) CreateAuthorizationPolicy(ctx context.Co
 	return ret0
 }
 
-// CreateAuthorizationPolicy indicates an expected call of CreateAuthorizationPolicy.
+// CreateAuthorizationPolicy indicates an expected call of CreateAuthorizationPolicy
 func (mr *MockAuthorizationPolicyWriterMockRecorder) CreateAuthorizationPolicy(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyWriter)(nil).CreateAuthorizationPolicy), varargs...)
 }
 
-// DeleteAllOfAuthorizationPolicy mocks base method.
-func (m *MockAuthorizationPolicyWriter) DeleteAllOfAuthorizationPolicy(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DeleteAllOfAuthorizationPolicy", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteAllOfAuthorizationPolicy indicates an expected call of DeleteAllOfAuthorizationPolicy.
-func (mr *MockAuthorizationPolicyWriterMockRecorder) DeleteAllOfAuthorizationPolicy(ctx interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyWriter)(nil).DeleteAllOfAuthorizationPolicy), varargs...)
-}
-
-// DeleteAuthorizationPolicy mocks base method.
+// DeleteAuthorizationPolicy mocks base method
 func (m *MockAuthorizationPolicyWriter) DeleteAuthorizationPolicy(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, key}
@@ -234,33 +215,14 @@ func (m *MockAuthorizationPolicyWriter) DeleteAuthorizationPolicy(ctx context.Co
 	return ret0
 }
 
-// DeleteAuthorizationPolicy indicates an expected call of DeleteAuthorizationPolicy.
+// DeleteAuthorizationPolicy indicates an expected call of DeleteAuthorizationPolicy
 func (mr *MockAuthorizationPolicyWriterMockRecorder) DeleteAuthorizationPolicy(ctx, key interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, key}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyWriter)(nil).DeleteAuthorizationPolicy), varargs...)
 }
 
-// PatchAuthorizationPolicy mocks base method.
-func (m *MockAuthorizationPolicyWriter) PatchAuthorizationPolicy(ctx context.Context, obj *v1beta10.AuthorizationPolicy, patch client.Patch, opts ...client.PatchOption) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, obj, patch}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "PatchAuthorizationPolicy", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// PatchAuthorizationPolicy indicates an expected call of PatchAuthorizationPolicy.
-func (mr *MockAuthorizationPolicyWriterMockRecorder) PatchAuthorizationPolicy(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, obj, patch}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyWriter)(nil).PatchAuthorizationPolicy), varargs...)
-}
-
-// UpdateAuthorizationPolicy mocks base method.
+// UpdateAuthorizationPolicy mocks base method
 func (m *MockAuthorizationPolicyWriter) UpdateAuthorizationPolicy(ctx context.Context, obj *v1beta10.AuthorizationPolicy, opts ...client.UpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
@@ -272,14 +234,52 @@ func (m *MockAuthorizationPolicyWriter) UpdateAuthorizationPolicy(ctx context.Co
 	return ret0
 }
 
-// UpdateAuthorizationPolicy indicates an expected call of UpdateAuthorizationPolicy.
+// UpdateAuthorizationPolicy indicates an expected call of UpdateAuthorizationPolicy
 func (mr *MockAuthorizationPolicyWriterMockRecorder) UpdateAuthorizationPolicy(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyWriter)(nil).UpdateAuthorizationPolicy), varargs...)
 }
 
-// UpsertAuthorizationPolicy mocks base method.
+// PatchAuthorizationPolicy mocks base method
+func (m *MockAuthorizationPolicyWriter) PatchAuthorizationPolicy(ctx context.Context, obj *v1beta10.AuthorizationPolicy, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchAuthorizationPolicy", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchAuthorizationPolicy indicates an expected call of PatchAuthorizationPolicy
+func (mr *MockAuthorizationPolicyWriterMockRecorder) PatchAuthorizationPolicy(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyWriter)(nil).PatchAuthorizationPolicy), varargs...)
+}
+
+// DeleteAllOfAuthorizationPolicy mocks base method
+func (m *MockAuthorizationPolicyWriter) DeleteAllOfAuthorizationPolicy(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteAllOfAuthorizationPolicy", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllOfAuthorizationPolicy indicates an expected call of DeleteAllOfAuthorizationPolicy
+func (mr *MockAuthorizationPolicyWriterMockRecorder) DeleteAllOfAuthorizationPolicy(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyWriter)(nil).DeleteAllOfAuthorizationPolicy), varargs...)
+}
+
+// UpsertAuthorizationPolicy mocks base method
 func (m *MockAuthorizationPolicyWriter) UpsertAuthorizationPolicy(ctx context.Context, obj *v1beta10.AuthorizationPolicy, transitionFuncs ...v1beta1.AuthorizationPolicyTransitionFunction) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
@@ -291,56 +291,37 @@ func (m *MockAuthorizationPolicyWriter) UpsertAuthorizationPolicy(ctx context.Co
 	return ret0
 }
 
-// UpsertAuthorizationPolicy indicates an expected call of UpsertAuthorizationPolicy.
+// UpsertAuthorizationPolicy indicates an expected call of UpsertAuthorizationPolicy
 func (mr *MockAuthorizationPolicyWriterMockRecorder) UpsertAuthorizationPolicy(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyWriter)(nil).UpsertAuthorizationPolicy), varargs...)
 }
 
-// MockAuthorizationPolicyStatusWriter is a mock of AuthorizationPolicyStatusWriter interface.
+// MockAuthorizationPolicyStatusWriter is a mock of AuthorizationPolicyStatusWriter interface
 type MockAuthorizationPolicyStatusWriter struct {
 	ctrl     *gomock.Controller
 	recorder *MockAuthorizationPolicyStatusWriterMockRecorder
 }
 
-// MockAuthorizationPolicyStatusWriterMockRecorder is the mock recorder for MockAuthorizationPolicyStatusWriter.
+// MockAuthorizationPolicyStatusWriterMockRecorder is the mock recorder for MockAuthorizationPolicyStatusWriter
 type MockAuthorizationPolicyStatusWriterMockRecorder struct {
 	mock *MockAuthorizationPolicyStatusWriter
 }
 
-// NewMockAuthorizationPolicyStatusWriter creates a new mock instance.
+// NewMockAuthorizationPolicyStatusWriter creates a new mock instance
 func NewMockAuthorizationPolicyStatusWriter(ctrl *gomock.Controller) *MockAuthorizationPolicyStatusWriter {
 	mock := &MockAuthorizationPolicyStatusWriter{ctrl: ctrl}
 	mock.recorder = &MockAuthorizationPolicyStatusWriterMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockAuthorizationPolicyStatusWriter) EXPECT() *MockAuthorizationPolicyStatusWriterMockRecorder {
 	return m.recorder
 }
 
-// PatchAuthorizationPolicyStatus mocks base method.
-func (m *MockAuthorizationPolicyStatusWriter) PatchAuthorizationPolicyStatus(ctx context.Context, obj *v1beta10.AuthorizationPolicy, patch client.Patch, opts ...client.PatchOption) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, obj, patch}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "PatchAuthorizationPolicyStatus", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// PatchAuthorizationPolicyStatus indicates an expected call of PatchAuthorizationPolicyStatus.
-func (mr *MockAuthorizationPolicyStatusWriterMockRecorder) PatchAuthorizationPolicyStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, obj, patch}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchAuthorizationPolicyStatus", reflect.TypeOf((*MockAuthorizationPolicyStatusWriter)(nil).PatchAuthorizationPolicyStatus), varargs...)
-}
-
-// UpdateAuthorizationPolicyStatus mocks base method.
+// UpdateAuthorizationPolicyStatus mocks base method
 func (m *MockAuthorizationPolicyStatusWriter) UpdateAuthorizationPolicyStatus(ctx context.Context, obj *v1beta10.AuthorizationPolicy, opts ...client.UpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
@@ -352,94 +333,56 @@ func (m *MockAuthorizationPolicyStatusWriter) UpdateAuthorizationPolicyStatus(ct
 	return ret0
 }
 
-// UpdateAuthorizationPolicyStatus indicates an expected call of UpdateAuthorizationPolicyStatus.
+// UpdateAuthorizationPolicyStatus indicates an expected call of UpdateAuthorizationPolicyStatus
 func (mr *MockAuthorizationPolicyStatusWriterMockRecorder) UpdateAuthorizationPolicyStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateAuthorizationPolicyStatus", reflect.TypeOf((*MockAuthorizationPolicyStatusWriter)(nil).UpdateAuthorizationPolicyStatus), varargs...)
 }
 
-// MockAuthorizationPolicyClient is a mock of AuthorizationPolicyClient interface.
+// PatchAuthorizationPolicyStatus mocks base method
+func (m *MockAuthorizationPolicyStatusWriter) PatchAuthorizationPolicyStatus(ctx context.Context, obj *v1beta10.AuthorizationPolicy, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchAuthorizationPolicyStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchAuthorizationPolicyStatus indicates an expected call of PatchAuthorizationPolicyStatus
+func (mr *MockAuthorizationPolicyStatusWriterMockRecorder) PatchAuthorizationPolicyStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchAuthorizationPolicyStatus", reflect.TypeOf((*MockAuthorizationPolicyStatusWriter)(nil).PatchAuthorizationPolicyStatus), varargs...)
+}
+
+// MockAuthorizationPolicyClient is a mock of AuthorizationPolicyClient interface
 type MockAuthorizationPolicyClient struct {
 	ctrl     *gomock.Controller
 	recorder *MockAuthorizationPolicyClientMockRecorder
 }
 
-// MockAuthorizationPolicyClientMockRecorder is the mock recorder for MockAuthorizationPolicyClient.
+// MockAuthorizationPolicyClientMockRecorder is the mock recorder for MockAuthorizationPolicyClient
 type MockAuthorizationPolicyClientMockRecorder struct {
 	mock *MockAuthorizationPolicyClient
 }
 
-// NewMockAuthorizationPolicyClient creates a new mock instance.
+// NewMockAuthorizationPolicyClient creates a new mock instance
 func NewMockAuthorizationPolicyClient(ctrl *gomock.Controller) *MockAuthorizationPolicyClient {
 	mock := &MockAuthorizationPolicyClient{ctrl: ctrl}
 	mock.recorder = &MockAuthorizationPolicyClientMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockAuthorizationPolicyClient) EXPECT() *MockAuthorizationPolicyClientMockRecorder {
 	return m.recorder
 }
 
-// CreateAuthorizationPolicy mocks base method.
-func (m *MockAuthorizationPolicyClient) CreateAuthorizationPolicy(ctx context.Context, obj *v1beta10.AuthorizationPolicy, opts ...client.CreateOption) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, obj}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "CreateAuthorizationPolicy", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// CreateAuthorizationPolicy indicates an expected call of CreateAuthorizationPolicy.
-func (mr *MockAuthorizationPolicyClientMockRecorder) CreateAuthorizationPolicy(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, obj}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyClient)(nil).CreateAuthorizationPolicy), varargs...)
-}
-
-// DeleteAllOfAuthorizationPolicy mocks base method.
-func (m *MockAuthorizationPolicyClient) DeleteAllOfAuthorizationPolicy(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DeleteAllOfAuthorizationPolicy", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteAllOfAuthorizationPolicy indicates an expected call of DeleteAllOfAuthorizationPolicy.
-func (mr *MockAuthorizationPolicyClientMockRecorder) DeleteAllOfAuthorizationPolicy(ctx interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyClient)(nil).DeleteAllOfAuthorizationPolicy), varargs...)
-}
-
-// DeleteAuthorizationPolicy mocks base method.
-func (m *MockAuthorizationPolicyClient) DeleteAuthorizationPolicy(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, key}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DeleteAuthorizationPolicy", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteAuthorizationPolicy indicates an expected call of DeleteAuthorizationPolicy.
-func (mr *MockAuthorizationPolicyClientMockRecorder) DeleteAuthorizationPolicy(ctx, key interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, key}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyClient)(nil).DeleteAuthorizationPolicy), varargs...)
-}
-
-// GetAuthorizationPolicy mocks base method.
+// GetAuthorizationPolicy mocks base method
 func (m *MockAuthorizationPolicyClient) GetAuthorizationPolicy(ctx context.Context, key client.ObjectKey) (*v1beta10.AuthorizationPolicy, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAuthorizationPolicy", ctx, key)
@@ -448,13 +391,13 @@ func (m *MockAuthorizationPolicyClient) GetAuthorizationPolicy(ctx context.Conte
 	return ret0, ret1
 }
 
-// GetAuthorizationPolicy indicates an expected call of GetAuthorizationPolicy.
+// GetAuthorizationPolicy indicates an expected call of GetAuthorizationPolicy
 func (mr *MockAuthorizationPolicyClientMockRecorder) GetAuthorizationPolicy(ctx, key interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyClient)(nil).GetAuthorizationPolicy), ctx, key)
 }
 
-// ListAuthorizationPolicy mocks base method.
+// ListAuthorizationPolicy mocks base method
 func (m *MockAuthorizationPolicyClient) ListAuthorizationPolicy(ctx context.Context, opts ...client.ListOption) (*v1beta10.AuthorizationPolicyList, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx}
@@ -467,52 +410,52 @@ func (m *MockAuthorizationPolicyClient) ListAuthorizationPolicy(ctx context.Cont
 	return ret0, ret1
 }
 
-// ListAuthorizationPolicy indicates an expected call of ListAuthorizationPolicy.
+// ListAuthorizationPolicy indicates an expected call of ListAuthorizationPolicy
 func (mr *MockAuthorizationPolicyClientMockRecorder) ListAuthorizationPolicy(ctx interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyClient)(nil).ListAuthorizationPolicy), varargs...)
 }
 
-// PatchAuthorizationPolicy mocks base method.
-func (m *MockAuthorizationPolicyClient) PatchAuthorizationPolicy(ctx context.Context, obj *v1beta10.AuthorizationPolicy, patch client.Patch, opts ...client.PatchOption) error {
+// CreateAuthorizationPolicy mocks base method
+func (m *MockAuthorizationPolicyClient) CreateAuthorizationPolicy(ctx context.Context, obj *v1beta10.AuthorizationPolicy, opts ...client.CreateOption) error {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, obj, patch}
+	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "PatchAuthorizationPolicy", varargs...)
+	ret := m.ctrl.Call(m, "CreateAuthorizationPolicy", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// PatchAuthorizationPolicy indicates an expected call of PatchAuthorizationPolicy.
-func (mr *MockAuthorizationPolicyClientMockRecorder) PatchAuthorizationPolicy(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+// CreateAuthorizationPolicy indicates an expected call of CreateAuthorizationPolicy
+func (mr *MockAuthorizationPolicyClientMockRecorder) CreateAuthorizationPolicy(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, obj, patch}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyClient)(nil).PatchAuthorizationPolicy), varargs...)
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyClient)(nil).CreateAuthorizationPolicy), varargs...)
 }
 
-// PatchAuthorizationPolicyStatus mocks base method.
-func (m *MockAuthorizationPolicyClient) PatchAuthorizationPolicyStatus(ctx context.Context, obj *v1beta10.AuthorizationPolicy, patch client.Patch, opts ...client.PatchOption) error {
+// DeleteAuthorizationPolicy mocks base method
+func (m *MockAuthorizationPolicyClient) DeleteAuthorizationPolicy(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, obj, patch}
+	varargs := []interface{}{ctx, key}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "PatchAuthorizationPolicyStatus", varargs...)
+	ret := m.ctrl.Call(m, "DeleteAuthorizationPolicy", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// PatchAuthorizationPolicyStatus indicates an expected call of PatchAuthorizationPolicyStatus.
-func (mr *MockAuthorizationPolicyClientMockRecorder) PatchAuthorizationPolicyStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+// DeleteAuthorizationPolicy indicates an expected call of DeleteAuthorizationPolicy
+func (mr *MockAuthorizationPolicyClientMockRecorder) DeleteAuthorizationPolicy(ctx, key interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, obj, patch}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchAuthorizationPolicyStatus", reflect.TypeOf((*MockAuthorizationPolicyClient)(nil).PatchAuthorizationPolicyStatus), varargs...)
+	varargs := append([]interface{}{ctx, key}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyClient)(nil).DeleteAuthorizationPolicy), varargs...)
 }
 
-// UpdateAuthorizationPolicy mocks base method.
+// UpdateAuthorizationPolicy mocks base method
 func (m *MockAuthorizationPolicyClient) UpdateAuthorizationPolicy(ctx context.Context, obj *v1beta10.AuthorizationPolicy, opts ...client.UpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
@@ -524,33 +467,52 @@ func (m *MockAuthorizationPolicyClient) UpdateAuthorizationPolicy(ctx context.Co
 	return ret0
 }
 
-// UpdateAuthorizationPolicy indicates an expected call of UpdateAuthorizationPolicy.
+// UpdateAuthorizationPolicy indicates an expected call of UpdateAuthorizationPolicy
 func (mr *MockAuthorizationPolicyClientMockRecorder) UpdateAuthorizationPolicy(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyClient)(nil).UpdateAuthorizationPolicy), varargs...)
 }
 
-// UpdateAuthorizationPolicyStatus mocks base method.
-func (m *MockAuthorizationPolicyClient) UpdateAuthorizationPolicyStatus(ctx context.Context, obj *v1beta10.AuthorizationPolicy, opts ...client.UpdateOption) error {
+// PatchAuthorizationPolicy mocks base method
+func (m *MockAuthorizationPolicyClient) PatchAuthorizationPolicy(ctx context.Context, obj *v1beta10.AuthorizationPolicy, patch client.Patch, opts ...client.PatchOption) error {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, obj}
+	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "UpdateAuthorizationPolicyStatus", varargs...)
+	ret := m.ctrl.Call(m, "PatchAuthorizationPolicy", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// UpdateAuthorizationPolicyStatus indicates an expected call of UpdateAuthorizationPolicyStatus.
-func (mr *MockAuthorizationPolicyClientMockRecorder) UpdateAuthorizationPolicyStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+// PatchAuthorizationPolicy indicates an expected call of PatchAuthorizationPolicy
+func (mr *MockAuthorizationPolicyClientMockRecorder) PatchAuthorizationPolicy(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, obj}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateAuthorizationPolicyStatus", reflect.TypeOf((*MockAuthorizationPolicyClient)(nil).UpdateAuthorizationPolicyStatus), varargs...)
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyClient)(nil).PatchAuthorizationPolicy), varargs...)
 }
 
-// UpsertAuthorizationPolicy mocks base method.
+// DeleteAllOfAuthorizationPolicy mocks base method
+func (m *MockAuthorizationPolicyClient) DeleteAllOfAuthorizationPolicy(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteAllOfAuthorizationPolicy", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllOfAuthorizationPolicy indicates an expected call of DeleteAllOfAuthorizationPolicy
+func (mr *MockAuthorizationPolicyClientMockRecorder) DeleteAllOfAuthorizationPolicy(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyClient)(nil).DeleteAllOfAuthorizationPolicy), varargs...)
+}
+
+// UpsertAuthorizationPolicy mocks base method
 func (m *MockAuthorizationPolicyClient) UpsertAuthorizationPolicy(ctx context.Context, obj *v1beta10.AuthorizationPolicy, transitionFuncs ...v1beta1.AuthorizationPolicyTransitionFunction) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
@@ -562,37 +524,75 @@ func (m *MockAuthorizationPolicyClient) UpsertAuthorizationPolicy(ctx context.Co
 	return ret0
 }
 
-// UpsertAuthorizationPolicy indicates an expected call of UpsertAuthorizationPolicy.
+// UpsertAuthorizationPolicy indicates an expected call of UpsertAuthorizationPolicy
 func (mr *MockAuthorizationPolicyClientMockRecorder) UpsertAuthorizationPolicy(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyClient)(nil).UpsertAuthorizationPolicy), varargs...)
 }
 
-// MockMulticlusterAuthorizationPolicyClient is a mock of MulticlusterAuthorizationPolicyClient interface.
+// UpdateAuthorizationPolicyStatus mocks base method
+func (m *MockAuthorizationPolicyClient) UpdateAuthorizationPolicyStatus(ctx context.Context, obj *v1beta10.AuthorizationPolicy, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateAuthorizationPolicyStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateAuthorizationPolicyStatus indicates an expected call of UpdateAuthorizationPolicyStatus
+func (mr *MockAuthorizationPolicyClientMockRecorder) UpdateAuthorizationPolicyStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateAuthorizationPolicyStatus", reflect.TypeOf((*MockAuthorizationPolicyClient)(nil).UpdateAuthorizationPolicyStatus), varargs...)
+}
+
+// PatchAuthorizationPolicyStatus mocks base method
+func (m *MockAuthorizationPolicyClient) PatchAuthorizationPolicyStatus(ctx context.Context, obj *v1beta10.AuthorizationPolicy, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchAuthorizationPolicyStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchAuthorizationPolicyStatus indicates an expected call of PatchAuthorizationPolicyStatus
+func (mr *MockAuthorizationPolicyClientMockRecorder) PatchAuthorizationPolicyStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchAuthorizationPolicyStatus", reflect.TypeOf((*MockAuthorizationPolicyClient)(nil).PatchAuthorizationPolicyStatus), varargs...)
+}
+
+// MockMulticlusterAuthorizationPolicyClient is a mock of MulticlusterAuthorizationPolicyClient interface
 type MockMulticlusterAuthorizationPolicyClient struct {
 	ctrl     *gomock.Controller
 	recorder *MockMulticlusterAuthorizationPolicyClientMockRecorder
 }
 
-// MockMulticlusterAuthorizationPolicyClientMockRecorder is the mock recorder for MockMulticlusterAuthorizationPolicyClient.
+// MockMulticlusterAuthorizationPolicyClientMockRecorder is the mock recorder for MockMulticlusterAuthorizationPolicyClient
 type MockMulticlusterAuthorizationPolicyClientMockRecorder struct {
 	mock *MockMulticlusterAuthorizationPolicyClient
 }
 
-// NewMockMulticlusterAuthorizationPolicyClient creates a new mock instance.
+// NewMockMulticlusterAuthorizationPolicyClient creates a new mock instance
 func NewMockMulticlusterAuthorizationPolicyClient(ctrl *gomock.Controller) *MockMulticlusterAuthorizationPolicyClient {
 	mock := &MockMulticlusterAuthorizationPolicyClient{ctrl: ctrl}
 	mock.recorder = &MockMulticlusterAuthorizationPolicyClientMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockMulticlusterAuthorizationPolicyClient) EXPECT() *MockMulticlusterAuthorizationPolicyClientMockRecorder {
 	return m.recorder
 }
 
-// Cluster mocks base method.
+// Cluster mocks base method
 func (m *MockMulticlusterAuthorizationPolicyClient) Cluster(cluster string) (v1beta1.AuthorizationPolicyClient, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Cluster", cluster)
@@ -601,36 +601,36 @@ func (m *MockMulticlusterAuthorizationPolicyClient) Cluster(cluster string) (v1b
 	return ret0, ret1
 }
 
-// Cluster indicates an expected call of Cluster.
+// Cluster indicates an expected call of Cluster
 func (mr *MockMulticlusterAuthorizationPolicyClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterAuthorizationPolicyClient)(nil).Cluster), cluster)
 }
 
-// MockPeerAuthenticationReader is a mock of PeerAuthenticationReader interface.
+// MockPeerAuthenticationReader is a mock of PeerAuthenticationReader interface
 type MockPeerAuthenticationReader struct {
 	ctrl     *gomock.Controller
 	recorder *MockPeerAuthenticationReaderMockRecorder
 }
 
-// MockPeerAuthenticationReaderMockRecorder is the mock recorder for MockPeerAuthenticationReader.
+// MockPeerAuthenticationReaderMockRecorder is the mock recorder for MockPeerAuthenticationReader
 type MockPeerAuthenticationReaderMockRecorder struct {
 	mock *MockPeerAuthenticationReader
 }
 
-// NewMockPeerAuthenticationReader creates a new mock instance.
+// NewMockPeerAuthenticationReader creates a new mock instance
 func NewMockPeerAuthenticationReader(ctrl *gomock.Controller) *MockPeerAuthenticationReader {
 	mock := &MockPeerAuthenticationReader{ctrl: ctrl}
 	mock.recorder = &MockPeerAuthenticationReaderMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockPeerAuthenticationReader) EXPECT() *MockPeerAuthenticationReaderMockRecorder {
 	return m.recorder
 }
 
-// GetPeerAuthentication mocks base method.
+// GetPeerAuthentication mocks base method
 func (m *MockPeerAuthenticationReader) GetPeerAuthentication(ctx context.Context, key client.ObjectKey) (*v1beta10.PeerAuthentication, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetPeerAuthentication", ctx, key)
@@ -639,13 +639,13 @@ func (m *MockPeerAuthenticationReader) GetPeerAuthentication(ctx context.Context
 	return ret0, ret1
 }
 
-// GetPeerAuthentication indicates an expected call of GetPeerAuthentication.
+// GetPeerAuthentication indicates an expected call of GetPeerAuthentication
 func (mr *MockPeerAuthenticationReaderMockRecorder) GetPeerAuthentication(ctx, key interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationReader)(nil).GetPeerAuthentication), ctx, key)
 }
 
-// ListPeerAuthentication mocks base method.
+// ListPeerAuthentication mocks base method
 func (m *MockPeerAuthenticationReader) ListPeerAuthentication(ctx context.Context, opts ...client.ListOption) (*v1beta10.PeerAuthenticationList, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx}
@@ -658,37 +658,37 @@ func (m *MockPeerAuthenticationReader) ListPeerAuthentication(ctx context.Contex
 	return ret0, ret1
 }
 
-// ListPeerAuthentication indicates an expected call of ListPeerAuthentication.
+// ListPeerAuthentication indicates an expected call of ListPeerAuthentication
 func (mr *MockPeerAuthenticationReaderMockRecorder) ListPeerAuthentication(ctx interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListPeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationReader)(nil).ListPeerAuthentication), varargs...)
 }
 
-// MockPeerAuthenticationWriter is a mock of PeerAuthenticationWriter interface.
+// MockPeerAuthenticationWriter is a mock of PeerAuthenticationWriter interface
 type MockPeerAuthenticationWriter struct {
 	ctrl     *gomock.Controller
 	recorder *MockPeerAuthenticationWriterMockRecorder
 }
 
-// MockPeerAuthenticationWriterMockRecorder is the mock recorder for MockPeerAuthenticationWriter.
+// MockPeerAuthenticationWriterMockRecorder is the mock recorder for MockPeerAuthenticationWriter
 type MockPeerAuthenticationWriterMockRecorder struct {
 	mock *MockPeerAuthenticationWriter
 }
 
-// NewMockPeerAuthenticationWriter creates a new mock instance.
+// NewMockPeerAuthenticationWriter creates a new mock instance
 func NewMockPeerAuthenticationWriter(ctrl *gomock.Controller) *MockPeerAuthenticationWriter {
 	mock := &MockPeerAuthenticationWriter{ctrl: ctrl}
 	mock.recorder = &MockPeerAuthenticationWriterMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockPeerAuthenticationWriter) EXPECT() *MockPeerAuthenticationWriterMockRecorder {
 	return m.recorder
 }
 
-// CreatePeerAuthentication mocks base method.
+// CreatePeerAuthentication mocks base method
 func (m *MockPeerAuthenticationWriter) CreatePeerAuthentication(ctx context.Context, obj *v1beta10.PeerAuthentication, opts ...client.CreateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
@@ -700,33 +700,14 @@ func (m *MockPeerAuthenticationWriter) CreatePeerAuthentication(ctx context.Cont
 	return ret0
 }
 
-// CreatePeerAuthentication indicates an expected call of CreatePeerAuthentication.
+// CreatePeerAuthentication indicates an expected call of CreatePeerAuthentication
 func (mr *MockPeerAuthenticationWriterMockRecorder) CreatePeerAuthentication(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreatePeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationWriter)(nil).CreatePeerAuthentication), varargs...)
 }
 
-// DeleteAllOfPeerAuthentication mocks base method.
-func (m *MockPeerAuthenticationWriter) DeleteAllOfPeerAuthentication(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DeleteAllOfPeerAuthentication", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteAllOfPeerAuthentication indicates an expected call of DeleteAllOfPeerAuthentication.
-func (mr *MockPeerAuthenticationWriterMockRecorder) DeleteAllOfPeerAuthentication(ctx interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfPeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationWriter)(nil).DeleteAllOfPeerAuthentication), varargs...)
-}
-
-// DeletePeerAuthentication mocks base method.
+// DeletePeerAuthentication mocks base method
 func (m *MockPeerAuthenticationWriter) DeletePeerAuthentication(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, key}
@@ -738,33 +719,14 @@ func (m *MockPeerAuthenticationWriter) DeletePeerAuthentication(ctx context.Cont
 	return ret0
 }
 
-// DeletePeerAuthentication indicates an expected call of DeletePeerAuthentication.
+// DeletePeerAuthentication indicates an expected call of DeletePeerAuthentication
 func (mr *MockPeerAuthenticationWriterMockRecorder) DeletePeerAuthentication(ctx, key interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, key}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeletePeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationWriter)(nil).DeletePeerAuthentication), varargs...)
 }
 
-// PatchPeerAuthentication mocks base method.
-func (m *MockPeerAuthenticationWriter) PatchPeerAuthentication(ctx context.Context, obj *v1beta10.PeerAuthentication, patch client.Patch, opts ...client.PatchOption) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, obj, patch}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "PatchPeerAuthentication", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// PatchPeerAuthentication indicates an expected call of PatchPeerAuthentication.
-func (mr *MockPeerAuthenticationWriterMockRecorder) PatchPeerAuthentication(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, obj, patch}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchPeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationWriter)(nil).PatchPeerAuthentication), varargs...)
-}
-
-// UpdatePeerAuthentication mocks base method.
+// UpdatePeerAuthentication mocks base method
 func (m *MockPeerAuthenticationWriter) UpdatePeerAuthentication(ctx context.Context, obj *v1beta10.PeerAuthentication, opts ...client.UpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
@@ -776,14 +738,52 @@ func (m *MockPeerAuthenticationWriter) UpdatePeerAuthentication(ctx context.Cont
 	return ret0
 }
 
-// UpdatePeerAuthentication indicates an expected call of UpdatePeerAuthentication.
+// UpdatePeerAuthentication indicates an expected call of UpdatePeerAuthentication
 func (mr *MockPeerAuthenticationWriterMockRecorder) UpdatePeerAuthentication(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdatePeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationWriter)(nil).UpdatePeerAuthentication), varargs...)
 }
 
-// UpsertPeerAuthentication mocks base method.
+// PatchPeerAuthentication mocks base method
+func (m *MockPeerAuthenticationWriter) PatchPeerAuthentication(ctx context.Context, obj *v1beta10.PeerAuthentication, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchPeerAuthentication", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchPeerAuthentication indicates an expected call of PatchPeerAuthentication
+func (mr *MockPeerAuthenticationWriterMockRecorder) PatchPeerAuthentication(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchPeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationWriter)(nil).PatchPeerAuthentication), varargs...)
+}
+
+// DeleteAllOfPeerAuthentication mocks base method
+func (m *MockPeerAuthenticationWriter) DeleteAllOfPeerAuthentication(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteAllOfPeerAuthentication", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllOfPeerAuthentication indicates an expected call of DeleteAllOfPeerAuthentication
+func (mr *MockPeerAuthenticationWriterMockRecorder) DeleteAllOfPeerAuthentication(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfPeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationWriter)(nil).DeleteAllOfPeerAuthentication), varargs...)
+}
+
+// UpsertPeerAuthentication mocks base method
 func (m *MockPeerAuthenticationWriter) UpsertPeerAuthentication(ctx context.Context, obj *v1beta10.PeerAuthentication, transitionFuncs ...v1beta1.PeerAuthenticationTransitionFunction) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
@@ -795,56 +795,37 @@ func (m *MockPeerAuthenticationWriter) UpsertPeerAuthentication(ctx context.Cont
 	return ret0
 }
 
-// UpsertPeerAuthentication indicates an expected call of UpsertPeerAuthentication.
+// UpsertPeerAuthentication indicates an expected call of UpsertPeerAuthentication
 func (mr *MockPeerAuthenticationWriterMockRecorder) UpsertPeerAuthentication(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertPeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationWriter)(nil).UpsertPeerAuthentication), varargs...)
 }
 
-// MockPeerAuthenticationStatusWriter is a mock of PeerAuthenticationStatusWriter interface.
+// MockPeerAuthenticationStatusWriter is a mock of PeerAuthenticationStatusWriter interface
 type MockPeerAuthenticationStatusWriter struct {
 	ctrl     *gomock.Controller
 	recorder *MockPeerAuthenticationStatusWriterMockRecorder
 }
 
-// MockPeerAuthenticationStatusWriterMockRecorder is the mock recorder for MockPeerAuthenticationStatusWriter.
+// MockPeerAuthenticationStatusWriterMockRecorder is the mock recorder for MockPeerAuthenticationStatusWriter
 type MockPeerAuthenticationStatusWriterMockRecorder struct {
 	mock *MockPeerAuthenticationStatusWriter
 }
 
-// NewMockPeerAuthenticationStatusWriter creates a new mock instance.
+// NewMockPeerAuthenticationStatusWriter creates a new mock instance
 func NewMockPeerAuthenticationStatusWriter(ctrl *gomock.Controller) *MockPeerAuthenticationStatusWriter {
 	mock := &MockPeerAuthenticationStatusWriter{ctrl: ctrl}
 	mock.recorder = &MockPeerAuthenticationStatusWriterMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockPeerAuthenticationStatusWriter) EXPECT() *MockPeerAuthenticationStatusWriterMockRecorder {
 	return m.recorder
 }
 
-// PatchPeerAuthenticationStatus mocks base method.
-func (m *MockPeerAuthenticationStatusWriter) PatchPeerAuthenticationStatus(ctx context.Context, obj *v1beta10.PeerAuthentication, patch client.Patch, opts ...client.PatchOption) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, obj, patch}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "PatchPeerAuthenticationStatus", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// PatchPeerAuthenticationStatus indicates an expected call of PatchPeerAuthenticationStatus.
-func (mr *MockPeerAuthenticationStatusWriterMockRecorder) PatchPeerAuthenticationStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, obj, patch}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchPeerAuthenticationStatus", reflect.TypeOf((*MockPeerAuthenticationStatusWriter)(nil).PatchPeerAuthenticationStatus), varargs...)
-}
-
-// UpdatePeerAuthenticationStatus mocks base method.
+// UpdatePeerAuthenticationStatus mocks base method
 func (m *MockPeerAuthenticationStatusWriter) UpdatePeerAuthenticationStatus(ctx context.Context, obj *v1beta10.PeerAuthentication, opts ...client.UpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
@@ -856,94 +837,56 @@ func (m *MockPeerAuthenticationStatusWriter) UpdatePeerAuthenticationStatus(ctx 
 	return ret0
 }
 
-// UpdatePeerAuthenticationStatus indicates an expected call of UpdatePeerAuthenticationStatus.
+// UpdatePeerAuthenticationStatus indicates an expected call of UpdatePeerAuthenticationStatus
 func (mr *MockPeerAuthenticationStatusWriterMockRecorder) UpdatePeerAuthenticationStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdatePeerAuthenticationStatus", reflect.TypeOf((*MockPeerAuthenticationStatusWriter)(nil).UpdatePeerAuthenticationStatus), varargs...)
 }
 
-// MockPeerAuthenticationClient is a mock of PeerAuthenticationClient interface.
+// PatchPeerAuthenticationStatus mocks base method
+func (m *MockPeerAuthenticationStatusWriter) PatchPeerAuthenticationStatus(ctx context.Context, obj *v1beta10.PeerAuthentication, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchPeerAuthenticationStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchPeerAuthenticationStatus indicates an expected call of PatchPeerAuthenticationStatus
+func (mr *MockPeerAuthenticationStatusWriterMockRecorder) PatchPeerAuthenticationStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchPeerAuthenticationStatus", reflect.TypeOf((*MockPeerAuthenticationStatusWriter)(nil).PatchPeerAuthenticationStatus), varargs...)
+}
+
+// MockPeerAuthenticationClient is a mock of PeerAuthenticationClient interface
 type MockPeerAuthenticationClient struct {
 	ctrl     *gomock.Controller
 	recorder *MockPeerAuthenticationClientMockRecorder
 }
 
-// MockPeerAuthenticationClientMockRecorder is the mock recorder for MockPeerAuthenticationClient.
+// MockPeerAuthenticationClientMockRecorder is the mock recorder for MockPeerAuthenticationClient
 type MockPeerAuthenticationClientMockRecorder struct {
 	mock *MockPeerAuthenticationClient
 }
 
-// NewMockPeerAuthenticationClient creates a new mock instance.
+// NewMockPeerAuthenticationClient creates a new mock instance
 func NewMockPeerAuthenticationClient(ctrl *gomock.Controller) *MockPeerAuthenticationClient {
 	mock := &MockPeerAuthenticationClient{ctrl: ctrl}
 	mock.recorder = &MockPeerAuthenticationClientMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockPeerAuthenticationClient) EXPECT() *MockPeerAuthenticationClientMockRecorder {
 	return m.recorder
 }
 
-// CreatePeerAuthentication mocks base method.
-func (m *MockPeerAuthenticationClient) CreatePeerAuthentication(ctx context.Context, obj *v1beta10.PeerAuthentication, opts ...client.CreateOption) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, obj}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "CreatePeerAuthentication", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// CreatePeerAuthentication indicates an expected call of CreatePeerAuthentication.
-func (mr *MockPeerAuthenticationClientMockRecorder) CreatePeerAuthentication(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, obj}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreatePeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationClient)(nil).CreatePeerAuthentication), varargs...)
-}
-
-// DeleteAllOfPeerAuthentication mocks base method.
-func (m *MockPeerAuthenticationClient) DeleteAllOfPeerAuthentication(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DeleteAllOfPeerAuthentication", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteAllOfPeerAuthentication indicates an expected call of DeleteAllOfPeerAuthentication.
-func (mr *MockPeerAuthenticationClientMockRecorder) DeleteAllOfPeerAuthentication(ctx interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfPeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationClient)(nil).DeleteAllOfPeerAuthentication), varargs...)
-}
-
-// DeletePeerAuthentication mocks base method.
-func (m *MockPeerAuthenticationClient) DeletePeerAuthentication(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, key}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DeletePeerAuthentication", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeletePeerAuthentication indicates an expected call of DeletePeerAuthentication.
-func (mr *MockPeerAuthenticationClientMockRecorder) DeletePeerAuthentication(ctx, key interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, key}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeletePeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationClient)(nil).DeletePeerAuthentication), varargs...)
-}
-
-// GetPeerAuthentication mocks base method.
+// GetPeerAuthentication mocks base method
 func (m *MockPeerAuthenticationClient) GetPeerAuthentication(ctx context.Context, key client.ObjectKey) (*v1beta10.PeerAuthentication, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetPeerAuthentication", ctx, key)
@@ -952,13 +895,13 @@ func (m *MockPeerAuthenticationClient) GetPeerAuthentication(ctx context.Context
 	return ret0, ret1
 }
 
-// GetPeerAuthentication indicates an expected call of GetPeerAuthentication.
+// GetPeerAuthentication indicates an expected call of GetPeerAuthentication
 func (mr *MockPeerAuthenticationClientMockRecorder) GetPeerAuthentication(ctx, key interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationClient)(nil).GetPeerAuthentication), ctx, key)
 }
 
-// ListPeerAuthentication mocks base method.
+// ListPeerAuthentication mocks base method
 func (m *MockPeerAuthenticationClient) ListPeerAuthentication(ctx context.Context, opts ...client.ListOption) (*v1beta10.PeerAuthenticationList, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx}
@@ -971,52 +914,52 @@ func (m *MockPeerAuthenticationClient) ListPeerAuthentication(ctx context.Contex
 	return ret0, ret1
 }
 
-// ListPeerAuthentication indicates an expected call of ListPeerAuthentication.
+// ListPeerAuthentication indicates an expected call of ListPeerAuthentication
 func (mr *MockPeerAuthenticationClientMockRecorder) ListPeerAuthentication(ctx interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListPeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationClient)(nil).ListPeerAuthentication), varargs...)
 }
 
-// PatchPeerAuthentication mocks base method.
-func (m *MockPeerAuthenticationClient) PatchPeerAuthentication(ctx context.Context, obj *v1beta10.PeerAuthentication, patch client.Patch, opts ...client.PatchOption) error {
+// CreatePeerAuthentication mocks base method
+func (m *MockPeerAuthenticationClient) CreatePeerAuthentication(ctx context.Context, obj *v1beta10.PeerAuthentication, opts ...client.CreateOption) error {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, obj, patch}
+	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "PatchPeerAuthentication", varargs...)
+	ret := m.ctrl.Call(m, "CreatePeerAuthentication", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// PatchPeerAuthentication indicates an expected call of PatchPeerAuthentication.
-func (mr *MockPeerAuthenticationClientMockRecorder) PatchPeerAuthentication(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+// CreatePeerAuthentication indicates an expected call of CreatePeerAuthentication
+func (mr *MockPeerAuthenticationClientMockRecorder) CreatePeerAuthentication(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, obj, patch}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchPeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationClient)(nil).PatchPeerAuthentication), varargs...)
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreatePeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationClient)(nil).CreatePeerAuthentication), varargs...)
 }
 
-// PatchPeerAuthenticationStatus mocks base method.
-func (m *MockPeerAuthenticationClient) PatchPeerAuthenticationStatus(ctx context.Context, obj *v1beta10.PeerAuthentication, patch client.Patch, opts ...client.PatchOption) error {
+// DeletePeerAuthentication mocks base method
+func (m *MockPeerAuthenticationClient) DeletePeerAuthentication(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, obj, patch}
+	varargs := []interface{}{ctx, key}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "PatchPeerAuthenticationStatus", varargs...)
+	ret := m.ctrl.Call(m, "DeletePeerAuthentication", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// PatchPeerAuthenticationStatus indicates an expected call of PatchPeerAuthenticationStatus.
-func (mr *MockPeerAuthenticationClientMockRecorder) PatchPeerAuthenticationStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+// DeletePeerAuthentication indicates an expected call of DeletePeerAuthentication
+func (mr *MockPeerAuthenticationClientMockRecorder) DeletePeerAuthentication(ctx, key interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, obj, patch}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchPeerAuthenticationStatus", reflect.TypeOf((*MockPeerAuthenticationClient)(nil).PatchPeerAuthenticationStatus), varargs...)
+	varargs := append([]interface{}{ctx, key}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeletePeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationClient)(nil).DeletePeerAuthentication), varargs...)
 }
 
-// UpdatePeerAuthentication mocks base method.
+// UpdatePeerAuthentication mocks base method
 func (m *MockPeerAuthenticationClient) UpdatePeerAuthentication(ctx context.Context, obj *v1beta10.PeerAuthentication, opts ...client.UpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
@@ -1028,33 +971,52 @@ func (m *MockPeerAuthenticationClient) UpdatePeerAuthentication(ctx context.Cont
 	return ret0
 }
 
-// UpdatePeerAuthentication indicates an expected call of UpdatePeerAuthentication.
+// UpdatePeerAuthentication indicates an expected call of UpdatePeerAuthentication
 func (mr *MockPeerAuthenticationClientMockRecorder) UpdatePeerAuthentication(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdatePeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationClient)(nil).UpdatePeerAuthentication), varargs...)
 }
 
-// UpdatePeerAuthenticationStatus mocks base method.
-func (m *MockPeerAuthenticationClient) UpdatePeerAuthenticationStatus(ctx context.Context, obj *v1beta10.PeerAuthentication, opts ...client.UpdateOption) error {
+// PatchPeerAuthentication mocks base method
+func (m *MockPeerAuthenticationClient) PatchPeerAuthentication(ctx context.Context, obj *v1beta10.PeerAuthentication, patch client.Patch, opts ...client.PatchOption) error {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, obj}
+	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "UpdatePeerAuthenticationStatus", varargs...)
+	ret := m.ctrl.Call(m, "PatchPeerAuthentication", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// UpdatePeerAuthenticationStatus indicates an expected call of UpdatePeerAuthenticationStatus.
-func (mr *MockPeerAuthenticationClientMockRecorder) UpdatePeerAuthenticationStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+// PatchPeerAuthentication indicates an expected call of PatchPeerAuthentication
+func (mr *MockPeerAuthenticationClientMockRecorder) PatchPeerAuthentication(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, obj}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdatePeerAuthenticationStatus", reflect.TypeOf((*MockPeerAuthenticationClient)(nil).UpdatePeerAuthenticationStatus), varargs...)
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchPeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationClient)(nil).PatchPeerAuthentication), varargs...)
 }
 
-// UpsertPeerAuthentication mocks base method.
+// DeleteAllOfPeerAuthentication mocks base method
+func (m *MockPeerAuthenticationClient) DeleteAllOfPeerAuthentication(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteAllOfPeerAuthentication", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllOfPeerAuthentication indicates an expected call of DeleteAllOfPeerAuthentication
+func (mr *MockPeerAuthenticationClientMockRecorder) DeleteAllOfPeerAuthentication(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfPeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationClient)(nil).DeleteAllOfPeerAuthentication), varargs...)
+}
+
+// UpsertPeerAuthentication mocks base method
 func (m *MockPeerAuthenticationClient) UpsertPeerAuthentication(ctx context.Context, obj *v1beta10.PeerAuthentication, transitionFuncs ...v1beta1.PeerAuthenticationTransitionFunction) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
@@ -1066,37 +1028,75 @@ func (m *MockPeerAuthenticationClient) UpsertPeerAuthentication(ctx context.Cont
 	return ret0
 }
 
-// UpsertPeerAuthentication indicates an expected call of UpsertPeerAuthentication.
+// UpsertPeerAuthentication indicates an expected call of UpsertPeerAuthentication
 func (mr *MockPeerAuthenticationClientMockRecorder) UpsertPeerAuthentication(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertPeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationClient)(nil).UpsertPeerAuthentication), varargs...)
 }
 
-// MockMulticlusterPeerAuthenticationClient is a mock of MulticlusterPeerAuthenticationClient interface.
+// UpdatePeerAuthenticationStatus mocks base method
+func (m *MockPeerAuthenticationClient) UpdatePeerAuthenticationStatus(ctx context.Context, obj *v1beta10.PeerAuthentication, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdatePeerAuthenticationStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdatePeerAuthenticationStatus indicates an expected call of UpdatePeerAuthenticationStatus
+func (mr *MockPeerAuthenticationClientMockRecorder) UpdatePeerAuthenticationStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdatePeerAuthenticationStatus", reflect.TypeOf((*MockPeerAuthenticationClient)(nil).UpdatePeerAuthenticationStatus), varargs...)
+}
+
+// PatchPeerAuthenticationStatus mocks base method
+func (m *MockPeerAuthenticationClient) PatchPeerAuthenticationStatus(ctx context.Context, obj *v1beta10.PeerAuthentication, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchPeerAuthenticationStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchPeerAuthenticationStatus indicates an expected call of PatchPeerAuthenticationStatus
+func (mr *MockPeerAuthenticationClientMockRecorder) PatchPeerAuthenticationStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchPeerAuthenticationStatus", reflect.TypeOf((*MockPeerAuthenticationClient)(nil).PatchPeerAuthenticationStatus), varargs...)
+}
+
+// MockMulticlusterPeerAuthenticationClient is a mock of MulticlusterPeerAuthenticationClient interface
 type MockMulticlusterPeerAuthenticationClient struct {
 	ctrl     *gomock.Controller
 	recorder *MockMulticlusterPeerAuthenticationClientMockRecorder
 }
 
-// MockMulticlusterPeerAuthenticationClientMockRecorder is the mock recorder for MockMulticlusterPeerAuthenticationClient.
+// MockMulticlusterPeerAuthenticationClientMockRecorder is the mock recorder for MockMulticlusterPeerAuthenticationClient
 type MockMulticlusterPeerAuthenticationClientMockRecorder struct {
 	mock *MockMulticlusterPeerAuthenticationClient
 }
 
-// NewMockMulticlusterPeerAuthenticationClient creates a new mock instance.
+// NewMockMulticlusterPeerAuthenticationClient creates a new mock instance
 func NewMockMulticlusterPeerAuthenticationClient(ctrl *gomock.Controller) *MockMulticlusterPeerAuthenticationClient {
 	mock := &MockMulticlusterPeerAuthenticationClient{ctrl: ctrl}
 	mock.recorder = &MockMulticlusterPeerAuthenticationClientMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockMulticlusterPeerAuthenticationClient) EXPECT() *MockMulticlusterPeerAuthenticationClientMockRecorder {
 	return m.recorder
 }
 
-// Cluster mocks base method.
+// Cluster mocks base method
 func (m *MockMulticlusterPeerAuthenticationClient) Cluster(cluster string) (v1beta1.PeerAuthenticationClient, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Cluster", cluster)
@@ -1105,7 +1105,7 @@ func (m *MockMulticlusterPeerAuthenticationClient) Cluster(cluster string) (v1be
 	return ret0, ret1
 }
 
-// Cluster indicates an expected call of Cluster.
+// Cluster indicates an expected call of Cluster
 func (mr *MockMulticlusterPeerAuthenticationClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterPeerAuthenticationClient)(nil).Cluster), cluster)
