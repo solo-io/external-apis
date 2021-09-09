@@ -1,6 +1,6 @@
 module github.com/solo-io/external-apis
 
-go 1.14
+go 1.16
 
 replace (
 	// pinned to solo-io's fork of cue version 95a50cebaffb4bdba8c544601d8fb867990ad1ad
