@@ -15,30 +15,30 @@ import (
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
-// MockAuthorizationPolicyReconciler is a mock of AuthorizationPolicyReconciler interface
+// MockAuthorizationPolicyReconciler is a mock of AuthorizationPolicyReconciler interface.
 type MockAuthorizationPolicyReconciler struct {
 	ctrl     *gomock.Controller
 	recorder *MockAuthorizationPolicyReconcilerMockRecorder
 }
 
-// MockAuthorizationPolicyReconcilerMockRecorder is the mock recorder for MockAuthorizationPolicyReconciler
+// MockAuthorizationPolicyReconcilerMockRecorder is the mock recorder for MockAuthorizationPolicyReconciler.
 type MockAuthorizationPolicyReconcilerMockRecorder struct {
 	mock *MockAuthorizationPolicyReconciler
 }
 
-// NewMockAuthorizationPolicyReconciler creates a new mock instance
+// NewMockAuthorizationPolicyReconciler creates a new mock instance.
 func NewMockAuthorizationPolicyReconciler(ctrl *gomock.Controller) *MockAuthorizationPolicyReconciler {
 	mock := &MockAuthorizationPolicyReconciler{ctrl: ctrl}
 	mock.recorder = &MockAuthorizationPolicyReconcilerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockAuthorizationPolicyReconciler) EXPECT() *MockAuthorizationPolicyReconcilerMockRecorder {
 	return m.recorder
 }
 
-// ReconcileAuthorizationPolicy mocks base method
+// ReconcileAuthorizationPolicy mocks base method.
 func (m *MockAuthorizationPolicyReconciler) ReconcileAuthorizationPolicy(obj *v1beta1.AuthorizationPolicy) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileAuthorizationPolicy", obj)
@@ -47,36 +47,36 @@ func (m *MockAuthorizationPolicyReconciler) ReconcileAuthorizationPolicy(obj *v1
 	return ret0, ret1
 }
 
-// ReconcileAuthorizationPolicy indicates an expected call of ReconcileAuthorizationPolicy
+// ReconcileAuthorizationPolicy indicates an expected call of ReconcileAuthorizationPolicy.
 func (mr *MockAuthorizationPolicyReconcilerMockRecorder) ReconcileAuthorizationPolicy(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyReconciler)(nil).ReconcileAuthorizationPolicy), obj)
 }
 
-// MockAuthorizationPolicyDeletionReconciler is a mock of AuthorizationPolicyDeletionReconciler interface
+// MockAuthorizationPolicyDeletionReconciler is a mock of AuthorizationPolicyDeletionReconciler interface.
 type MockAuthorizationPolicyDeletionReconciler struct {
 	ctrl     *gomock.Controller
 	recorder *MockAuthorizationPolicyDeletionReconcilerMockRecorder
 }
 
-// MockAuthorizationPolicyDeletionReconcilerMockRecorder is the mock recorder for MockAuthorizationPolicyDeletionReconciler
+// MockAuthorizationPolicyDeletionReconcilerMockRecorder is the mock recorder for MockAuthorizationPolicyDeletionReconciler.
 type MockAuthorizationPolicyDeletionReconcilerMockRecorder struct {
 	mock *MockAuthorizationPolicyDeletionReconciler
 }
 
-// NewMockAuthorizationPolicyDeletionReconciler creates a new mock instance
+// NewMockAuthorizationPolicyDeletionReconciler creates a new mock instance.
 func NewMockAuthorizationPolicyDeletionReconciler(ctrl *gomock.Controller) *MockAuthorizationPolicyDeletionReconciler {
 	mock := &MockAuthorizationPolicyDeletionReconciler{ctrl: ctrl}
 	mock.recorder = &MockAuthorizationPolicyDeletionReconcilerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockAuthorizationPolicyDeletionReconciler) EXPECT() *MockAuthorizationPolicyDeletionReconcilerMockRecorder {
 	return m.recorder
 }
 
-// ReconcileAuthorizationPolicyDeletion mocks base method
+// ReconcileAuthorizationPolicyDeletion mocks base method.
 func (m *MockAuthorizationPolicyDeletionReconciler) ReconcileAuthorizationPolicyDeletion(req reconcile.Request) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileAuthorizationPolicyDeletion", req)
@@ -84,36 +84,64 @@ func (m *MockAuthorizationPolicyDeletionReconciler) ReconcileAuthorizationPolicy
 	return ret0
 }
 
-// ReconcileAuthorizationPolicyDeletion indicates an expected call of ReconcileAuthorizationPolicyDeletion
+// ReconcileAuthorizationPolicyDeletion indicates an expected call of ReconcileAuthorizationPolicyDeletion.
 func (mr *MockAuthorizationPolicyDeletionReconcilerMockRecorder) ReconcileAuthorizationPolicyDeletion(req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileAuthorizationPolicyDeletion", reflect.TypeOf((*MockAuthorizationPolicyDeletionReconciler)(nil).ReconcileAuthorizationPolicyDeletion), req)
 }
 
-// MockAuthorizationPolicyFinalizer is a mock of AuthorizationPolicyFinalizer interface
+// MockAuthorizationPolicyFinalizer is a mock of AuthorizationPolicyFinalizer interface.
 type MockAuthorizationPolicyFinalizer struct {
 	ctrl     *gomock.Controller
 	recorder *MockAuthorizationPolicyFinalizerMockRecorder
 }
 
-// MockAuthorizationPolicyFinalizerMockRecorder is the mock recorder for MockAuthorizationPolicyFinalizer
+// MockAuthorizationPolicyFinalizerMockRecorder is the mock recorder for MockAuthorizationPolicyFinalizer.
 type MockAuthorizationPolicyFinalizerMockRecorder struct {
 	mock *MockAuthorizationPolicyFinalizer
 }
 
-// NewMockAuthorizationPolicyFinalizer creates a new mock instance
+// NewMockAuthorizationPolicyFinalizer creates a new mock instance.
 func NewMockAuthorizationPolicyFinalizer(ctrl *gomock.Controller) *MockAuthorizationPolicyFinalizer {
 	mock := &MockAuthorizationPolicyFinalizer{ctrl: ctrl}
 	mock.recorder = &MockAuthorizationPolicyFinalizerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockAuthorizationPolicyFinalizer) EXPECT() *MockAuthorizationPolicyFinalizerMockRecorder {
 	return m.recorder
 }
 
-// ReconcileAuthorizationPolicy mocks base method
+// AuthorizationPolicyFinalizerName mocks base method.
+func (m *MockAuthorizationPolicyFinalizer) AuthorizationPolicyFinalizerName() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AuthorizationPolicyFinalizerName")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// AuthorizationPolicyFinalizerName indicates an expected call of AuthorizationPolicyFinalizerName.
+func (mr *MockAuthorizationPolicyFinalizerMockRecorder) AuthorizationPolicyFinalizerName() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AuthorizationPolicyFinalizerName", reflect.TypeOf((*MockAuthorizationPolicyFinalizer)(nil).AuthorizationPolicyFinalizerName))
+}
+
+// FinalizeAuthorizationPolicy mocks base method.
+func (m *MockAuthorizationPolicyFinalizer) FinalizeAuthorizationPolicy(obj *v1beta1.AuthorizationPolicy) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FinalizeAuthorizationPolicy", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// FinalizeAuthorizationPolicy indicates an expected call of FinalizeAuthorizationPolicy.
+func (mr *MockAuthorizationPolicyFinalizerMockRecorder) FinalizeAuthorizationPolicy(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FinalizeAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyFinalizer)(nil).FinalizeAuthorizationPolicy), obj)
+}
+
+// ReconcileAuthorizationPolicy mocks base method.
 func (m *MockAuthorizationPolicyFinalizer) ReconcileAuthorizationPolicy(obj *v1beta1.AuthorizationPolicy) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileAuthorizationPolicy", obj)
@@ -122,64 +150,36 @@ func (m *MockAuthorizationPolicyFinalizer) ReconcileAuthorizationPolicy(obj *v1b
 	return ret0, ret1
 }
 
-// ReconcileAuthorizationPolicy indicates an expected call of ReconcileAuthorizationPolicy
+// ReconcileAuthorizationPolicy indicates an expected call of ReconcileAuthorizationPolicy.
 func (mr *MockAuthorizationPolicyFinalizerMockRecorder) ReconcileAuthorizationPolicy(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyFinalizer)(nil).ReconcileAuthorizationPolicy), obj)
 }
 
-// AuthorizationPolicyFinalizerName mocks base method
-func (m *MockAuthorizationPolicyFinalizer) AuthorizationPolicyFinalizerName() string {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AuthorizationPolicyFinalizerName")
-	ret0, _ := ret[0].(string)
-	return ret0
-}
-
-// AuthorizationPolicyFinalizerName indicates an expected call of AuthorizationPolicyFinalizerName
-func (mr *MockAuthorizationPolicyFinalizerMockRecorder) AuthorizationPolicyFinalizerName() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AuthorizationPolicyFinalizerName", reflect.TypeOf((*MockAuthorizationPolicyFinalizer)(nil).AuthorizationPolicyFinalizerName))
-}
-
-// FinalizeAuthorizationPolicy mocks base method
-func (m *MockAuthorizationPolicyFinalizer) FinalizeAuthorizationPolicy(obj *v1beta1.AuthorizationPolicy) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FinalizeAuthorizationPolicy", obj)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// FinalizeAuthorizationPolicy indicates an expected call of FinalizeAuthorizationPolicy
-func (mr *MockAuthorizationPolicyFinalizerMockRecorder) FinalizeAuthorizationPolicy(obj interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FinalizeAuthorizationPolicy", reflect.TypeOf((*MockAuthorizationPolicyFinalizer)(nil).FinalizeAuthorizationPolicy), obj)
-}
-
-// MockAuthorizationPolicyReconcileLoop is a mock of AuthorizationPolicyReconcileLoop interface
+// MockAuthorizationPolicyReconcileLoop is a mock of AuthorizationPolicyReconcileLoop interface.
 type MockAuthorizationPolicyReconcileLoop struct {
 	ctrl     *gomock.Controller
 	recorder *MockAuthorizationPolicyReconcileLoopMockRecorder
 }
 
-// MockAuthorizationPolicyReconcileLoopMockRecorder is the mock recorder for MockAuthorizationPolicyReconcileLoop
+// MockAuthorizationPolicyReconcileLoopMockRecorder is the mock recorder for MockAuthorizationPolicyReconcileLoop.
 type MockAuthorizationPolicyReconcileLoopMockRecorder struct {
 	mock *MockAuthorizationPolicyReconcileLoop
 }
 
-// NewMockAuthorizationPolicyReconcileLoop creates a new mock instance
+// NewMockAuthorizationPolicyReconcileLoop creates a new mock instance.
 func NewMockAuthorizationPolicyReconcileLoop(ctrl *gomock.Controller) *MockAuthorizationPolicyReconcileLoop {
 	mock := &MockAuthorizationPolicyReconcileLoop{ctrl: ctrl}
 	mock.recorder = &MockAuthorizationPolicyReconcileLoopMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockAuthorizationPolicyReconcileLoop) EXPECT() *MockAuthorizationPolicyReconcileLoopMockRecorder {
 	return m.recorder
 }
 
-// RunAuthorizationPolicyReconciler mocks base method
+// RunAuthorizationPolicyReconciler mocks base method.
 func (m *MockAuthorizationPolicyReconcileLoop) RunAuthorizationPolicyReconciler(ctx context.Context, rec controller.AuthorizationPolicyReconciler, predicates ...predicate.Predicate) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, rec}
@@ -191,37 +191,37 @@ func (m *MockAuthorizationPolicyReconcileLoop) RunAuthorizationPolicyReconciler(
 	return ret0
 }
 
-// RunAuthorizationPolicyReconciler indicates an expected call of RunAuthorizationPolicyReconciler
+// RunAuthorizationPolicyReconciler indicates an expected call of RunAuthorizationPolicyReconciler.
 func (mr *MockAuthorizationPolicyReconcileLoopMockRecorder) RunAuthorizationPolicyReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, rec}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunAuthorizationPolicyReconciler", reflect.TypeOf((*MockAuthorizationPolicyReconcileLoop)(nil).RunAuthorizationPolicyReconciler), varargs...)
 }
 
-// MockPeerAuthenticationReconciler is a mock of PeerAuthenticationReconciler interface
+// MockPeerAuthenticationReconciler is a mock of PeerAuthenticationReconciler interface.
 type MockPeerAuthenticationReconciler struct {
 	ctrl     *gomock.Controller
 	recorder *MockPeerAuthenticationReconcilerMockRecorder
 }
 
-// MockPeerAuthenticationReconcilerMockRecorder is the mock recorder for MockPeerAuthenticationReconciler
+// MockPeerAuthenticationReconcilerMockRecorder is the mock recorder for MockPeerAuthenticationReconciler.
 type MockPeerAuthenticationReconcilerMockRecorder struct {
 	mock *MockPeerAuthenticationReconciler
 }
 
-// NewMockPeerAuthenticationReconciler creates a new mock instance
+// NewMockPeerAuthenticationReconciler creates a new mock instance.
 func NewMockPeerAuthenticationReconciler(ctrl *gomock.Controller) *MockPeerAuthenticationReconciler {
 	mock := &MockPeerAuthenticationReconciler{ctrl: ctrl}
 	mock.recorder = &MockPeerAuthenticationReconcilerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockPeerAuthenticationReconciler) EXPECT() *MockPeerAuthenticationReconcilerMockRecorder {
 	return m.recorder
 }
 
-// ReconcilePeerAuthentication mocks base method
+// ReconcilePeerAuthentication mocks base method.
 func (m *MockPeerAuthenticationReconciler) ReconcilePeerAuthentication(obj *v1beta1.PeerAuthentication) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcilePeerAuthentication", obj)
@@ -230,36 +230,36 @@ func (m *MockPeerAuthenticationReconciler) ReconcilePeerAuthentication(obj *v1be
 	return ret0, ret1
 }
 
-// ReconcilePeerAuthentication indicates an expected call of ReconcilePeerAuthentication
+// ReconcilePeerAuthentication indicates an expected call of ReconcilePeerAuthentication.
 func (mr *MockPeerAuthenticationReconcilerMockRecorder) ReconcilePeerAuthentication(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcilePeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationReconciler)(nil).ReconcilePeerAuthentication), obj)
 }
 
-// MockPeerAuthenticationDeletionReconciler is a mock of PeerAuthenticationDeletionReconciler interface
+// MockPeerAuthenticationDeletionReconciler is a mock of PeerAuthenticationDeletionReconciler interface.
 type MockPeerAuthenticationDeletionReconciler struct {
 	ctrl     *gomock.Controller
 	recorder *MockPeerAuthenticationDeletionReconcilerMockRecorder
 }
 
-// MockPeerAuthenticationDeletionReconcilerMockRecorder is the mock recorder for MockPeerAuthenticationDeletionReconciler
+// MockPeerAuthenticationDeletionReconcilerMockRecorder is the mock recorder for MockPeerAuthenticationDeletionReconciler.
 type MockPeerAuthenticationDeletionReconcilerMockRecorder struct {
 	mock *MockPeerAuthenticationDeletionReconciler
 }
 
-// NewMockPeerAuthenticationDeletionReconciler creates a new mock instance
+// NewMockPeerAuthenticationDeletionReconciler creates a new mock instance.
 func NewMockPeerAuthenticationDeletionReconciler(ctrl *gomock.Controller) *MockPeerAuthenticationDeletionReconciler {
 	mock := &MockPeerAuthenticationDeletionReconciler{ctrl: ctrl}
 	mock.recorder = &MockPeerAuthenticationDeletionReconcilerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockPeerAuthenticationDeletionReconciler) EXPECT() *MockPeerAuthenticationDeletionReconcilerMockRecorder {
 	return m.recorder
 }
 
-// ReconcilePeerAuthenticationDeletion mocks base method
+// ReconcilePeerAuthenticationDeletion mocks base method.
 func (m *MockPeerAuthenticationDeletionReconciler) ReconcilePeerAuthenticationDeletion(req reconcile.Request) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcilePeerAuthenticationDeletion", req)
@@ -267,36 +267,64 @@ func (m *MockPeerAuthenticationDeletionReconciler) ReconcilePeerAuthenticationDe
 	return ret0
 }
 
-// ReconcilePeerAuthenticationDeletion indicates an expected call of ReconcilePeerAuthenticationDeletion
+// ReconcilePeerAuthenticationDeletion indicates an expected call of ReconcilePeerAuthenticationDeletion.
 func (mr *MockPeerAuthenticationDeletionReconcilerMockRecorder) ReconcilePeerAuthenticationDeletion(req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcilePeerAuthenticationDeletion", reflect.TypeOf((*MockPeerAuthenticationDeletionReconciler)(nil).ReconcilePeerAuthenticationDeletion), req)
 }
 
-// MockPeerAuthenticationFinalizer is a mock of PeerAuthenticationFinalizer interface
+// MockPeerAuthenticationFinalizer is a mock of PeerAuthenticationFinalizer interface.
 type MockPeerAuthenticationFinalizer struct {
 	ctrl     *gomock.Controller
 	recorder *MockPeerAuthenticationFinalizerMockRecorder
 }
 
-// MockPeerAuthenticationFinalizerMockRecorder is the mock recorder for MockPeerAuthenticationFinalizer
+// MockPeerAuthenticationFinalizerMockRecorder is the mock recorder for MockPeerAuthenticationFinalizer.
 type MockPeerAuthenticationFinalizerMockRecorder struct {
 	mock *MockPeerAuthenticationFinalizer
 }
 
-// NewMockPeerAuthenticationFinalizer creates a new mock instance
+// NewMockPeerAuthenticationFinalizer creates a new mock instance.
 func NewMockPeerAuthenticationFinalizer(ctrl *gomock.Controller) *MockPeerAuthenticationFinalizer {
 	mock := &MockPeerAuthenticationFinalizer{ctrl: ctrl}
 	mock.recorder = &MockPeerAuthenticationFinalizerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockPeerAuthenticationFinalizer) EXPECT() *MockPeerAuthenticationFinalizerMockRecorder {
 	return m.recorder
 }
 
-// ReconcilePeerAuthentication mocks base method
+// FinalizePeerAuthentication mocks base method.
+func (m *MockPeerAuthenticationFinalizer) FinalizePeerAuthentication(obj *v1beta1.PeerAuthentication) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FinalizePeerAuthentication", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// FinalizePeerAuthentication indicates an expected call of FinalizePeerAuthentication.
+func (mr *MockPeerAuthenticationFinalizerMockRecorder) FinalizePeerAuthentication(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FinalizePeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationFinalizer)(nil).FinalizePeerAuthentication), obj)
+}
+
+// PeerAuthenticationFinalizerName mocks base method.
+func (m *MockPeerAuthenticationFinalizer) PeerAuthenticationFinalizerName() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PeerAuthenticationFinalizerName")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// PeerAuthenticationFinalizerName indicates an expected call of PeerAuthenticationFinalizerName.
+func (mr *MockPeerAuthenticationFinalizerMockRecorder) PeerAuthenticationFinalizerName() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PeerAuthenticationFinalizerName", reflect.TypeOf((*MockPeerAuthenticationFinalizer)(nil).PeerAuthenticationFinalizerName))
+}
+
+// ReconcilePeerAuthentication mocks base method.
 func (m *MockPeerAuthenticationFinalizer) ReconcilePeerAuthentication(obj *v1beta1.PeerAuthentication) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcilePeerAuthentication", obj)
@@ -305,64 +333,36 @@ func (m *MockPeerAuthenticationFinalizer) ReconcilePeerAuthentication(obj *v1bet
 	return ret0, ret1
 }
 
-// ReconcilePeerAuthentication indicates an expected call of ReconcilePeerAuthentication
+// ReconcilePeerAuthentication indicates an expected call of ReconcilePeerAuthentication.
 func (mr *MockPeerAuthenticationFinalizerMockRecorder) ReconcilePeerAuthentication(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcilePeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationFinalizer)(nil).ReconcilePeerAuthentication), obj)
 }
 
-// PeerAuthenticationFinalizerName mocks base method
-func (m *MockPeerAuthenticationFinalizer) PeerAuthenticationFinalizerName() string {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PeerAuthenticationFinalizerName")
-	ret0, _ := ret[0].(string)
-	return ret0
-}
-
-// PeerAuthenticationFinalizerName indicates an expected call of PeerAuthenticationFinalizerName
-func (mr *MockPeerAuthenticationFinalizerMockRecorder) PeerAuthenticationFinalizerName() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PeerAuthenticationFinalizerName", reflect.TypeOf((*MockPeerAuthenticationFinalizer)(nil).PeerAuthenticationFinalizerName))
-}
-
-// FinalizePeerAuthentication mocks base method
-func (m *MockPeerAuthenticationFinalizer) FinalizePeerAuthentication(obj *v1beta1.PeerAuthentication) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FinalizePeerAuthentication", obj)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// FinalizePeerAuthentication indicates an expected call of FinalizePeerAuthentication
-func (mr *MockPeerAuthenticationFinalizerMockRecorder) FinalizePeerAuthentication(obj interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FinalizePeerAuthentication", reflect.TypeOf((*MockPeerAuthenticationFinalizer)(nil).FinalizePeerAuthentication), obj)
-}
-
-// MockPeerAuthenticationReconcileLoop is a mock of PeerAuthenticationReconcileLoop interface
+// MockPeerAuthenticationReconcileLoop is a mock of PeerAuthenticationReconcileLoop interface.
 type MockPeerAuthenticationReconcileLoop struct {
 	ctrl     *gomock.Controller
 	recorder *MockPeerAuthenticationReconcileLoopMockRecorder
 }
 
-// MockPeerAuthenticationReconcileLoopMockRecorder is the mock recorder for MockPeerAuthenticationReconcileLoop
+// MockPeerAuthenticationReconcileLoopMockRecorder is the mock recorder for MockPeerAuthenticationReconcileLoop.
 type MockPeerAuthenticationReconcileLoopMockRecorder struct {
 	mock *MockPeerAuthenticationReconcileLoop
 }
 
-// NewMockPeerAuthenticationReconcileLoop creates a new mock instance
+// NewMockPeerAuthenticationReconcileLoop creates a new mock instance.
 func NewMockPeerAuthenticationReconcileLoop(ctrl *gomock.Controller) *MockPeerAuthenticationReconcileLoop {
 	mock := &MockPeerAuthenticationReconcileLoop{ctrl: ctrl}
 	mock.recorder = &MockPeerAuthenticationReconcileLoopMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockPeerAuthenticationReconcileLoop) EXPECT() *MockPeerAuthenticationReconcileLoopMockRecorder {
 	return m.recorder
 }
 
-// RunPeerAuthenticationReconciler mocks base method
+// RunPeerAuthenticationReconciler mocks base method.
 func (m *MockPeerAuthenticationReconcileLoop) RunPeerAuthenticationReconciler(ctx context.Context, rec controller.PeerAuthenticationReconciler, predicates ...predicate.Predicate) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, rec}
@@ -374,7 +374,7 @@ func (m *MockPeerAuthenticationReconcileLoop) RunPeerAuthenticationReconciler(ct
 	return ret0
 }
 
-// RunPeerAuthenticationReconciler indicates an expected call of RunPeerAuthenticationReconciler
+// RunPeerAuthenticationReconciler indicates an expected call of RunPeerAuthenticationReconciler.
 func (mr *MockPeerAuthenticationReconcileLoopMockRecorder) RunPeerAuthenticationReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, rec}, predicates...)

@@ -4,6 +4,7 @@ import (
 	"github.com/solo-io/skv2/codegen/model"
 	"istio.io/client-go/pkg/apis/networking/v1alpha3"
 	"istio.io/client-go/pkg/apis/security/v1beta1"
+	operator "istio.io/istio/operator/pkg/apis/istio/v1alpha1"
 )
 
 func init() {
@@ -55,6 +56,17 @@ func istioGroups() []model.Group {
 				},
 			},
 			CustomTypesImportPath: "istio.io/client-go/pkg/apis/security/v1beta1",
+			ApiRoot:               istioApiRoot,
+		},
+		{
+			GroupVersion: operator.SchemeGroupVersion,
+			Module:       "install.istio.io",
+			Resources: []model.Resource{
+				{
+					Kind: "IstioOperator",
+				},
+			},
+			CustomTypesImportPath: "istio.io/istio/operator/pkg/apis/istio/v1alpha1",
 			ApiRoot:               istioApiRoot,
 		},
 	}

@@ -50,7 +50,7 @@ type clientSet struct {
 
 func NewClientsetFromConfig(cfg *rest.Config) (Clientset, error) {
 	scheme := scheme.Scheme
-	if err := split_smi_spec_io_v1alpha1.AddToScheme(scheme); err != nil {
+	if err := split_smi_spec_io_v1alpha1.SchemeBuilder.AddToScheme(scheme); err != nil {
 		return nil, err
 	}
 	client, err := client.New(cfg, client.Options{

@@ -60,7 +60,7 @@ type clientSet struct {
 
 func NewClientsetFromConfig(cfg *rest.Config) (Clientset, error) {
 	scheme := scheme.Scheme
-	if err := networking_istio_io_v1alpha3.AddToScheme(scheme); err != nil {
+	if err := networking_istio_io_v1alpha3.SchemeBuilder.AddToScheme(scheme); err != nil {
 		return nil, err
 	}
 	client, err := client.New(cfg, client.Options{
