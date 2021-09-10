@@ -14,30 +14,30 @@ import (
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
-// MockIstioOperatorEventHandler is a mock of IstioOperatorEventHandler interface
+// MockIstioOperatorEventHandler is a mock of IstioOperatorEventHandler interface.
 type MockIstioOperatorEventHandler struct {
 	ctrl     *gomock.Controller
 	recorder *MockIstioOperatorEventHandlerMockRecorder
 }
 
-// MockIstioOperatorEventHandlerMockRecorder is the mock recorder for MockIstioOperatorEventHandler
+// MockIstioOperatorEventHandlerMockRecorder is the mock recorder for MockIstioOperatorEventHandler.
 type MockIstioOperatorEventHandlerMockRecorder struct {
 	mock *MockIstioOperatorEventHandler
 }
 
-// NewMockIstioOperatorEventHandler creates a new mock instance
+// NewMockIstioOperatorEventHandler creates a new mock instance.
 func NewMockIstioOperatorEventHandler(ctrl *gomock.Controller) *MockIstioOperatorEventHandler {
 	mock := &MockIstioOperatorEventHandler{ctrl: ctrl}
 	mock.recorder = &MockIstioOperatorEventHandlerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockIstioOperatorEventHandler) EXPECT() *MockIstioOperatorEventHandlerMockRecorder {
 	return m.recorder
 }
 
-// CreateIstioOperator mocks base method
+// CreateIstioOperator mocks base method.
 func (m *MockIstioOperatorEventHandler) CreateIstioOperator(obj *v1alpha1.IstioOperator) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateIstioOperator", obj)
@@ -45,27 +45,13 @@ func (m *MockIstioOperatorEventHandler) CreateIstioOperator(obj *v1alpha1.IstioO
 	return ret0
 }
 
-// CreateIstioOperator indicates an expected call of CreateIstioOperator
+// CreateIstioOperator indicates an expected call of CreateIstioOperator.
 func (mr *MockIstioOperatorEventHandlerMockRecorder) CreateIstioOperator(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateIstioOperator", reflect.TypeOf((*MockIstioOperatorEventHandler)(nil).CreateIstioOperator), obj)
 }
 
-// UpdateIstioOperator mocks base method
-func (m *MockIstioOperatorEventHandler) UpdateIstioOperator(old, new *v1alpha1.IstioOperator) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateIstioOperator", old, new)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// UpdateIstioOperator indicates an expected call of UpdateIstioOperator
-func (mr *MockIstioOperatorEventHandlerMockRecorder) UpdateIstioOperator(old, new interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateIstioOperator", reflect.TypeOf((*MockIstioOperatorEventHandler)(nil).UpdateIstioOperator), old, new)
-}
-
-// DeleteIstioOperator mocks base method
+// DeleteIstioOperator mocks base method.
 func (m *MockIstioOperatorEventHandler) DeleteIstioOperator(obj *v1alpha1.IstioOperator) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteIstioOperator", obj)
@@ -73,13 +59,13 @@ func (m *MockIstioOperatorEventHandler) DeleteIstioOperator(obj *v1alpha1.IstioO
 	return ret0
 }
 
-// DeleteIstioOperator indicates an expected call of DeleteIstioOperator
+// DeleteIstioOperator indicates an expected call of DeleteIstioOperator.
 func (mr *MockIstioOperatorEventHandlerMockRecorder) DeleteIstioOperator(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteIstioOperator", reflect.TypeOf((*MockIstioOperatorEventHandler)(nil).DeleteIstioOperator), obj)
 }
 
-// GenericIstioOperator mocks base method
+// GenericIstioOperator mocks base method.
 func (m *MockIstioOperatorEventHandler) GenericIstioOperator(obj *v1alpha1.IstioOperator) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GenericIstioOperator", obj)
@@ -87,36 +73,50 @@ func (m *MockIstioOperatorEventHandler) GenericIstioOperator(obj *v1alpha1.Istio
 	return ret0
 }
 
-// GenericIstioOperator indicates an expected call of GenericIstioOperator
+// GenericIstioOperator indicates an expected call of GenericIstioOperator.
 func (mr *MockIstioOperatorEventHandlerMockRecorder) GenericIstioOperator(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericIstioOperator", reflect.TypeOf((*MockIstioOperatorEventHandler)(nil).GenericIstioOperator), obj)
 }
 
-// MockIstioOperatorEventWatcher is a mock of IstioOperatorEventWatcher interface
+// UpdateIstioOperator mocks base method.
+func (m *MockIstioOperatorEventHandler) UpdateIstioOperator(old, new *v1alpha1.IstioOperator) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateIstioOperator", old, new)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateIstioOperator indicates an expected call of UpdateIstioOperator.
+func (mr *MockIstioOperatorEventHandlerMockRecorder) UpdateIstioOperator(old, new interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateIstioOperator", reflect.TypeOf((*MockIstioOperatorEventHandler)(nil).UpdateIstioOperator), old, new)
+}
+
+// MockIstioOperatorEventWatcher is a mock of IstioOperatorEventWatcher interface.
 type MockIstioOperatorEventWatcher struct {
 	ctrl     *gomock.Controller
 	recorder *MockIstioOperatorEventWatcherMockRecorder
 }
 
-// MockIstioOperatorEventWatcherMockRecorder is the mock recorder for MockIstioOperatorEventWatcher
+// MockIstioOperatorEventWatcherMockRecorder is the mock recorder for MockIstioOperatorEventWatcher.
 type MockIstioOperatorEventWatcherMockRecorder struct {
 	mock *MockIstioOperatorEventWatcher
 }
 
-// NewMockIstioOperatorEventWatcher creates a new mock instance
+// NewMockIstioOperatorEventWatcher creates a new mock instance.
 func NewMockIstioOperatorEventWatcher(ctrl *gomock.Controller) *MockIstioOperatorEventWatcher {
 	mock := &MockIstioOperatorEventWatcher{ctrl: ctrl}
 	mock.recorder = &MockIstioOperatorEventWatcherMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockIstioOperatorEventWatcher) EXPECT() *MockIstioOperatorEventWatcherMockRecorder {
 	return m.recorder
 }
 
-// AddEventHandler mocks base method
+// AddEventHandler mocks base method.
 func (m *MockIstioOperatorEventWatcher) AddEventHandler(ctx context.Context, h controller.IstioOperatorEventHandler, predicates ...predicate.Predicate) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, h}
@@ -128,7 +128,7 @@ func (m *MockIstioOperatorEventWatcher) AddEventHandler(ctx context.Context, h c
 	return ret0
 }
 
-// AddEventHandler indicates an expected call of AddEventHandler
+// AddEventHandler indicates an expected call of AddEventHandler.
 func (mr *MockIstioOperatorEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, h}, predicates...)

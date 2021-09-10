@@ -14,30 +14,30 @@ import (
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// MockMulticlusterClientset is a mock of MulticlusterClientset interface
+// MockMulticlusterClientset is a mock of MulticlusterClientset interface.
 type MockMulticlusterClientset struct {
 	ctrl     *gomock.Controller
 	recorder *MockMulticlusterClientsetMockRecorder
 }
 
-// MockMulticlusterClientsetMockRecorder is the mock recorder for MockMulticlusterClientset
+// MockMulticlusterClientsetMockRecorder is the mock recorder for MockMulticlusterClientset.
 type MockMulticlusterClientsetMockRecorder struct {
 	mock *MockMulticlusterClientset
 }
 
-// NewMockMulticlusterClientset creates a new mock instance
+// NewMockMulticlusterClientset creates a new mock instance.
 func NewMockMulticlusterClientset(ctrl *gomock.Controller) *MockMulticlusterClientset {
 	mock := &MockMulticlusterClientset{ctrl: ctrl}
 	mock.recorder = &MockMulticlusterClientsetMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockMulticlusterClientset) EXPECT() *MockMulticlusterClientsetMockRecorder {
 	return m.recorder
 }
 
-// Cluster mocks base method
+// Cluster mocks base method.
 func (m *MockMulticlusterClientset) Cluster(cluster string) (v1alpha1.Clientset, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Cluster", cluster)
@@ -46,36 +46,36 @@ func (m *MockMulticlusterClientset) Cluster(cluster string) (v1alpha1.Clientset,
 	return ret0, ret1
 }
 
-// Cluster indicates an expected call of Cluster
+// Cluster indicates an expected call of Cluster.
 func (mr *MockMulticlusterClientsetMockRecorder) Cluster(cluster interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterClientset)(nil).Cluster), cluster)
 }
 
-// MockClientset is a mock of Clientset interface
+// MockClientset is a mock of Clientset interface.
 type MockClientset struct {
 	ctrl     *gomock.Controller
 	recorder *MockClientsetMockRecorder
 }
 
-// MockClientsetMockRecorder is the mock recorder for MockClientset
+// MockClientsetMockRecorder is the mock recorder for MockClientset.
 type MockClientsetMockRecorder struct {
 	mock *MockClientset
 }
 
-// NewMockClientset creates a new mock instance
+// NewMockClientset creates a new mock instance.
 func NewMockClientset(ctrl *gomock.Controller) *MockClientset {
 	mock := &MockClientset{ctrl: ctrl}
 	mock.recorder = &MockClientsetMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockClientset) EXPECT() *MockClientsetMockRecorder {
 	return m.recorder
 }
 
-// IstioOperators mocks base method
+// IstioOperators mocks base method.
 func (m *MockClientset) IstioOperators() v1alpha1.IstioOperatorClient {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "IstioOperators")
@@ -83,36 +83,36 @@ func (m *MockClientset) IstioOperators() v1alpha1.IstioOperatorClient {
 	return ret0
 }
 
-// IstioOperators indicates an expected call of IstioOperators
+// IstioOperators indicates an expected call of IstioOperators.
 func (mr *MockClientsetMockRecorder) IstioOperators() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IstioOperators", reflect.TypeOf((*MockClientset)(nil).IstioOperators))
 }
 
-// MockIstioOperatorReader is a mock of IstioOperatorReader interface
+// MockIstioOperatorReader is a mock of IstioOperatorReader interface.
 type MockIstioOperatorReader struct {
 	ctrl     *gomock.Controller
 	recorder *MockIstioOperatorReaderMockRecorder
 }
 
-// MockIstioOperatorReaderMockRecorder is the mock recorder for MockIstioOperatorReader
+// MockIstioOperatorReaderMockRecorder is the mock recorder for MockIstioOperatorReader.
 type MockIstioOperatorReaderMockRecorder struct {
 	mock *MockIstioOperatorReader
 }
 
-// NewMockIstioOperatorReader creates a new mock instance
+// NewMockIstioOperatorReader creates a new mock instance.
 func NewMockIstioOperatorReader(ctrl *gomock.Controller) *MockIstioOperatorReader {
 	mock := &MockIstioOperatorReader{ctrl: ctrl}
 	mock.recorder = &MockIstioOperatorReaderMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockIstioOperatorReader) EXPECT() *MockIstioOperatorReaderMockRecorder {
 	return m.recorder
 }
 
-// GetIstioOperator mocks base method
+// GetIstioOperator mocks base method.
 func (m *MockIstioOperatorReader) GetIstioOperator(ctx context.Context, key client.ObjectKey) (*v1alpha10.IstioOperator, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetIstioOperator", ctx, key)
@@ -121,13 +121,13 @@ func (m *MockIstioOperatorReader) GetIstioOperator(ctx context.Context, key clie
 	return ret0, ret1
 }
 
-// GetIstioOperator indicates an expected call of GetIstioOperator
+// GetIstioOperator indicates an expected call of GetIstioOperator.
 func (mr *MockIstioOperatorReaderMockRecorder) GetIstioOperator(ctx, key interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetIstioOperator", reflect.TypeOf((*MockIstioOperatorReader)(nil).GetIstioOperator), ctx, key)
 }
 
-// ListIstioOperator mocks base method
+// ListIstioOperator mocks base method.
 func (m *MockIstioOperatorReader) ListIstioOperator(ctx context.Context, opts ...client.ListOption) (*v1alpha10.IstioOperatorList, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx}
@@ -140,37 +140,37 @@ func (m *MockIstioOperatorReader) ListIstioOperator(ctx context.Context, opts ..
 	return ret0, ret1
 }
 
-// ListIstioOperator indicates an expected call of ListIstioOperator
+// ListIstioOperator indicates an expected call of ListIstioOperator.
 func (mr *MockIstioOperatorReaderMockRecorder) ListIstioOperator(ctx interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListIstioOperator", reflect.TypeOf((*MockIstioOperatorReader)(nil).ListIstioOperator), varargs...)
 }
 
-// MockIstioOperatorWriter is a mock of IstioOperatorWriter interface
+// MockIstioOperatorWriter is a mock of IstioOperatorWriter interface.
 type MockIstioOperatorWriter struct {
 	ctrl     *gomock.Controller
 	recorder *MockIstioOperatorWriterMockRecorder
 }
 
-// MockIstioOperatorWriterMockRecorder is the mock recorder for MockIstioOperatorWriter
+// MockIstioOperatorWriterMockRecorder is the mock recorder for MockIstioOperatorWriter.
 type MockIstioOperatorWriterMockRecorder struct {
 	mock *MockIstioOperatorWriter
 }
 
-// NewMockIstioOperatorWriter creates a new mock instance
+// NewMockIstioOperatorWriter creates a new mock instance.
 func NewMockIstioOperatorWriter(ctrl *gomock.Controller) *MockIstioOperatorWriter {
 	mock := &MockIstioOperatorWriter{ctrl: ctrl}
 	mock.recorder = &MockIstioOperatorWriterMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockIstioOperatorWriter) EXPECT() *MockIstioOperatorWriterMockRecorder {
 	return m.recorder
 }
 
-// CreateIstioOperator mocks base method
+// CreateIstioOperator mocks base method.
 func (m *MockIstioOperatorWriter) CreateIstioOperator(ctx context.Context, obj *v1alpha10.IstioOperator, opts ...client.CreateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
@@ -182,71 +182,14 @@ func (m *MockIstioOperatorWriter) CreateIstioOperator(ctx context.Context, obj *
 	return ret0
 }
 
-// CreateIstioOperator indicates an expected call of CreateIstioOperator
+// CreateIstioOperator indicates an expected call of CreateIstioOperator.
 func (mr *MockIstioOperatorWriterMockRecorder) CreateIstioOperator(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateIstioOperator", reflect.TypeOf((*MockIstioOperatorWriter)(nil).CreateIstioOperator), varargs...)
 }
 
-// DeleteIstioOperator mocks base method
-func (m *MockIstioOperatorWriter) DeleteIstioOperator(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, key}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DeleteIstioOperator", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteIstioOperator indicates an expected call of DeleteIstioOperator
-func (mr *MockIstioOperatorWriterMockRecorder) DeleteIstioOperator(ctx, key interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, key}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteIstioOperator", reflect.TypeOf((*MockIstioOperatorWriter)(nil).DeleteIstioOperator), varargs...)
-}
-
-// UpdateIstioOperator mocks base method
-func (m *MockIstioOperatorWriter) UpdateIstioOperator(ctx context.Context, obj *v1alpha10.IstioOperator, opts ...client.UpdateOption) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, obj}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "UpdateIstioOperator", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// UpdateIstioOperator indicates an expected call of UpdateIstioOperator
-func (mr *MockIstioOperatorWriterMockRecorder) UpdateIstioOperator(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, obj}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateIstioOperator", reflect.TypeOf((*MockIstioOperatorWriter)(nil).UpdateIstioOperator), varargs...)
-}
-
-// PatchIstioOperator mocks base method
-func (m *MockIstioOperatorWriter) PatchIstioOperator(ctx context.Context, obj *v1alpha10.IstioOperator, patch client.Patch, opts ...client.PatchOption) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, obj, patch}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "PatchIstioOperator", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// PatchIstioOperator indicates an expected call of PatchIstioOperator
-func (mr *MockIstioOperatorWriterMockRecorder) PatchIstioOperator(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, obj, patch}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchIstioOperator", reflect.TypeOf((*MockIstioOperatorWriter)(nil).PatchIstioOperator), varargs...)
-}
-
-// DeleteAllOfIstioOperator mocks base method
+// DeleteAllOfIstioOperator mocks base method.
 func (m *MockIstioOperatorWriter) DeleteAllOfIstioOperator(ctx context.Context, opts ...client.DeleteAllOfOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx}
@@ -258,14 +201,71 @@ func (m *MockIstioOperatorWriter) DeleteAllOfIstioOperator(ctx context.Context, 
 	return ret0
 }
 
-// DeleteAllOfIstioOperator indicates an expected call of DeleteAllOfIstioOperator
+// DeleteAllOfIstioOperator indicates an expected call of DeleteAllOfIstioOperator.
 func (mr *MockIstioOperatorWriterMockRecorder) DeleteAllOfIstioOperator(ctx interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfIstioOperator", reflect.TypeOf((*MockIstioOperatorWriter)(nil).DeleteAllOfIstioOperator), varargs...)
 }
 
-// UpsertIstioOperator mocks base method
+// DeleteIstioOperator mocks base method.
+func (m *MockIstioOperatorWriter) DeleteIstioOperator(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, key}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteIstioOperator", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteIstioOperator indicates an expected call of DeleteIstioOperator.
+func (mr *MockIstioOperatorWriterMockRecorder) DeleteIstioOperator(ctx, key interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, key}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteIstioOperator", reflect.TypeOf((*MockIstioOperatorWriter)(nil).DeleteIstioOperator), varargs...)
+}
+
+// PatchIstioOperator mocks base method.
+func (m *MockIstioOperatorWriter) PatchIstioOperator(ctx context.Context, obj *v1alpha10.IstioOperator, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchIstioOperator", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchIstioOperator indicates an expected call of PatchIstioOperator.
+func (mr *MockIstioOperatorWriterMockRecorder) PatchIstioOperator(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchIstioOperator", reflect.TypeOf((*MockIstioOperatorWriter)(nil).PatchIstioOperator), varargs...)
+}
+
+// UpdateIstioOperator mocks base method.
+func (m *MockIstioOperatorWriter) UpdateIstioOperator(ctx context.Context, obj *v1alpha10.IstioOperator, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateIstioOperator", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateIstioOperator indicates an expected call of UpdateIstioOperator.
+func (mr *MockIstioOperatorWriterMockRecorder) UpdateIstioOperator(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateIstioOperator", reflect.TypeOf((*MockIstioOperatorWriter)(nil).UpdateIstioOperator), varargs...)
+}
+
+// UpsertIstioOperator mocks base method.
 func (m *MockIstioOperatorWriter) UpsertIstioOperator(ctx context.Context, obj *v1alpha10.IstioOperator, transitionFuncs ...v1alpha1.IstioOperatorTransitionFunction) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
@@ -277,56 +277,37 @@ func (m *MockIstioOperatorWriter) UpsertIstioOperator(ctx context.Context, obj *
 	return ret0
 }
 
-// UpsertIstioOperator indicates an expected call of UpsertIstioOperator
+// UpsertIstioOperator indicates an expected call of UpsertIstioOperator.
 func (mr *MockIstioOperatorWriterMockRecorder) UpsertIstioOperator(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertIstioOperator", reflect.TypeOf((*MockIstioOperatorWriter)(nil).UpsertIstioOperator), varargs...)
 }
 
-// MockIstioOperatorStatusWriter is a mock of IstioOperatorStatusWriter interface
+// MockIstioOperatorStatusWriter is a mock of IstioOperatorStatusWriter interface.
 type MockIstioOperatorStatusWriter struct {
 	ctrl     *gomock.Controller
 	recorder *MockIstioOperatorStatusWriterMockRecorder
 }
 
-// MockIstioOperatorStatusWriterMockRecorder is the mock recorder for MockIstioOperatorStatusWriter
+// MockIstioOperatorStatusWriterMockRecorder is the mock recorder for MockIstioOperatorStatusWriter.
 type MockIstioOperatorStatusWriterMockRecorder struct {
 	mock *MockIstioOperatorStatusWriter
 }
 
-// NewMockIstioOperatorStatusWriter creates a new mock instance
+// NewMockIstioOperatorStatusWriter creates a new mock instance.
 func NewMockIstioOperatorStatusWriter(ctrl *gomock.Controller) *MockIstioOperatorStatusWriter {
 	mock := &MockIstioOperatorStatusWriter{ctrl: ctrl}
 	mock.recorder = &MockIstioOperatorStatusWriterMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockIstioOperatorStatusWriter) EXPECT() *MockIstioOperatorStatusWriterMockRecorder {
 	return m.recorder
 }
 
-// UpdateIstioOperatorStatus mocks base method
-func (m *MockIstioOperatorStatusWriter) UpdateIstioOperatorStatus(ctx context.Context, obj *v1alpha10.IstioOperator, opts ...client.UpdateOption) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, obj}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "UpdateIstioOperatorStatus", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// UpdateIstioOperatorStatus indicates an expected call of UpdateIstioOperatorStatus
-func (mr *MockIstioOperatorStatusWriterMockRecorder) UpdateIstioOperatorStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, obj}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateIstioOperatorStatus", reflect.TypeOf((*MockIstioOperatorStatusWriter)(nil).UpdateIstioOperatorStatus), varargs...)
-}
-
-// PatchIstioOperatorStatus mocks base method
+// PatchIstioOperatorStatus mocks base method.
 func (m *MockIstioOperatorStatusWriter) PatchIstioOperatorStatus(ctx context.Context, obj *v1alpha10.IstioOperator, patch client.Patch, opts ...client.PatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
@@ -338,37 +319,113 @@ func (m *MockIstioOperatorStatusWriter) PatchIstioOperatorStatus(ctx context.Con
 	return ret0
 }
 
-// PatchIstioOperatorStatus indicates an expected call of PatchIstioOperatorStatus
+// PatchIstioOperatorStatus indicates an expected call of PatchIstioOperatorStatus.
 func (mr *MockIstioOperatorStatusWriterMockRecorder) PatchIstioOperatorStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj, patch}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchIstioOperatorStatus", reflect.TypeOf((*MockIstioOperatorStatusWriter)(nil).PatchIstioOperatorStatus), varargs...)
 }
 
-// MockIstioOperatorClient is a mock of IstioOperatorClient interface
+// UpdateIstioOperatorStatus mocks base method.
+func (m *MockIstioOperatorStatusWriter) UpdateIstioOperatorStatus(ctx context.Context, obj *v1alpha10.IstioOperator, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateIstioOperatorStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateIstioOperatorStatus indicates an expected call of UpdateIstioOperatorStatus.
+func (mr *MockIstioOperatorStatusWriterMockRecorder) UpdateIstioOperatorStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateIstioOperatorStatus", reflect.TypeOf((*MockIstioOperatorStatusWriter)(nil).UpdateIstioOperatorStatus), varargs...)
+}
+
+// MockIstioOperatorClient is a mock of IstioOperatorClient interface.
 type MockIstioOperatorClient struct {
 	ctrl     *gomock.Controller
 	recorder *MockIstioOperatorClientMockRecorder
 }
 
-// MockIstioOperatorClientMockRecorder is the mock recorder for MockIstioOperatorClient
+// MockIstioOperatorClientMockRecorder is the mock recorder for MockIstioOperatorClient.
 type MockIstioOperatorClientMockRecorder struct {
 	mock *MockIstioOperatorClient
 }
 
-// NewMockIstioOperatorClient creates a new mock instance
+// NewMockIstioOperatorClient creates a new mock instance.
 func NewMockIstioOperatorClient(ctrl *gomock.Controller) *MockIstioOperatorClient {
 	mock := &MockIstioOperatorClient{ctrl: ctrl}
 	mock.recorder = &MockIstioOperatorClientMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockIstioOperatorClient) EXPECT() *MockIstioOperatorClientMockRecorder {
 	return m.recorder
 }
 
-// GetIstioOperator mocks base method
+// CreateIstioOperator mocks base method.
+func (m *MockIstioOperatorClient) CreateIstioOperator(ctx context.Context, obj *v1alpha10.IstioOperator, opts ...client.CreateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateIstioOperator", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateIstioOperator indicates an expected call of CreateIstioOperator.
+func (mr *MockIstioOperatorClientMockRecorder) CreateIstioOperator(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateIstioOperator", reflect.TypeOf((*MockIstioOperatorClient)(nil).CreateIstioOperator), varargs...)
+}
+
+// DeleteAllOfIstioOperator mocks base method.
+func (m *MockIstioOperatorClient) DeleteAllOfIstioOperator(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteAllOfIstioOperator", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllOfIstioOperator indicates an expected call of DeleteAllOfIstioOperator.
+func (mr *MockIstioOperatorClientMockRecorder) DeleteAllOfIstioOperator(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfIstioOperator", reflect.TypeOf((*MockIstioOperatorClient)(nil).DeleteAllOfIstioOperator), varargs...)
+}
+
+// DeleteIstioOperator mocks base method.
+func (m *MockIstioOperatorClient) DeleteIstioOperator(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, key}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteIstioOperator", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteIstioOperator indicates an expected call of DeleteIstioOperator.
+func (mr *MockIstioOperatorClientMockRecorder) DeleteIstioOperator(ctx, key interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, key}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteIstioOperator", reflect.TypeOf((*MockIstioOperatorClient)(nil).DeleteIstioOperator), varargs...)
+}
+
+// GetIstioOperator mocks base method.
 func (m *MockIstioOperatorClient) GetIstioOperator(ctx context.Context, key client.ObjectKey) (*v1alpha10.IstioOperator, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetIstioOperator", ctx, key)
@@ -377,13 +434,13 @@ func (m *MockIstioOperatorClient) GetIstioOperator(ctx context.Context, key clie
 	return ret0, ret1
 }
 
-// GetIstioOperator indicates an expected call of GetIstioOperator
+// GetIstioOperator indicates an expected call of GetIstioOperator.
 func (mr *MockIstioOperatorClientMockRecorder) GetIstioOperator(ctx, key interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetIstioOperator", reflect.TypeOf((*MockIstioOperatorClient)(nil).GetIstioOperator), ctx, key)
 }
 
-// ListIstioOperator mocks base method
+// ListIstioOperator mocks base method.
 func (m *MockIstioOperatorClient) ListIstioOperator(ctx context.Context, opts ...client.ListOption) (*v1alpha10.IstioOperatorList, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx}
@@ -396,71 +453,14 @@ func (m *MockIstioOperatorClient) ListIstioOperator(ctx context.Context, opts ..
 	return ret0, ret1
 }
 
-// ListIstioOperator indicates an expected call of ListIstioOperator
+// ListIstioOperator indicates an expected call of ListIstioOperator.
 func (mr *MockIstioOperatorClientMockRecorder) ListIstioOperator(ctx interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListIstioOperator", reflect.TypeOf((*MockIstioOperatorClient)(nil).ListIstioOperator), varargs...)
 }
 
-// CreateIstioOperator mocks base method
-func (m *MockIstioOperatorClient) CreateIstioOperator(ctx context.Context, obj *v1alpha10.IstioOperator, opts ...client.CreateOption) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, obj}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "CreateIstioOperator", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// CreateIstioOperator indicates an expected call of CreateIstioOperator
-func (mr *MockIstioOperatorClientMockRecorder) CreateIstioOperator(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, obj}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateIstioOperator", reflect.TypeOf((*MockIstioOperatorClient)(nil).CreateIstioOperator), varargs...)
-}
-
-// DeleteIstioOperator mocks base method
-func (m *MockIstioOperatorClient) DeleteIstioOperator(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, key}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DeleteIstioOperator", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteIstioOperator indicates an expected call of DeleteIstioOperator
-func (mr *MockIstioOperatorClientMockRecorder) DeleteIstioOperator(ctx, key interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, key}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteIstioOperator", reflect.TypeOf((*MockIstioOperatorClient)(nil).DeleteIstioOperator), varargs...)
-}
-
-// UpdateIstioOperator mocks base method
-func (m *MockIstioOperatorClient) UpdateIstioOperator(ctx context.Context, obj *v1alpha10.IstioOperator, opts ...client.UpdateOption) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, obj}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "UpdateIstioOperator", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// UpdateIstioOperator indicates an expected call of UpdateIstioOperator
-func (mr *MockIstioOperatorClientMockRecorder) UpdateIstioOperator(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, obj}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateIstioOperator", reflect.TypeOf((*MockIstioOperatorClient)(nil).UpdateIstioOperator), varargs...)
-}
-
-// PatchIstioOperator mocks base method
+// PatchIstioOperator mocks base method.
 func (m *MockIstioOperatorClient) PatchIstioOperator(ctx context.Context, obj *v1alpha10.IstioOperator, patch client.Patch, opts ...client.PatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
@@ -472,71 +472,14 @@ func (m *MockIstioOperatorClient) PatchIstioOperator(ctx context.Context, obj *v
 	return ret0
 }
 
-// PatchIstioOperator indicates an expected call of PatchIstioOperator
+// PatchIstioOperator indicates an expected call of PatchIstioOperator.
 func (mr *MockIstioOperatorClientMockRecorder) PatchIstioOperator(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj, patch}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchIstioOperator", reflect.TypeOf((*MockIstioOperatorClient)(nil).PatchIstioOperator), varargs...)
 }
 
-// DeleteAllOfIstioOperator mocks base method
-func (m *MockIstioOperatorClient) DeleteAllOfIstioOperator(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DeleteAllOfIstioOperator", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteAllOfIstioOperator indicates an expected call of DeleteAllOfIstioOperator
-func (mr *MockIstioOperatorClientMockRecorder) DeleteAllOfIstioOperator(ctx interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfIstioOperator", reflect.TypeOf((*MockIstioOperatorClient)(nil).DeleteAllOfIstioOperator), varargs...)
-}
-
-// UpsertIstioOperator mocks base method
-func (m *MockIstioOperatorClient) UpsertIstioOperator(ctx context.Context, obj *v1alpha10.IstioOperator, transitionFuncs ...v1alpha1.IstioOperatorTransitionFunction) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, obj}
-	for _, a := range transitionFuncs {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "UpsertIstioOperator", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// UpsertIstioOperator indicates an expected call of UpsertIstioOperator
-func (mr *MockIstioOperatorClientMockRecorder) UpsertIstioOperator(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertIstioOperator", reflect.TypeOf((*MockIstioOperatorClient)(nil).UpsertIstioOperator), varargs...)
-}
-
-// UpdateIstioOperatorStatus mocks base method
-func (m *MockIstioOperatorClient) UpdateIstioOperatorStatus(ctx context.Context, obj *v1alpha10.IstioOperator, opts ...client.UpdateOption) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, obj}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "UpdateIstioOperatorStatus", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// UpdateIstioOperatorStatus indicates an expected call of UpdateIstioOperatorStatus
-func (mr *MockIstioOperatorClientMockRecorder) UpdateIstioOperatorStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, obj}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateIstioOperatorStatus", reflect.TypeOf((*MockIstioOperatorClient)(nil).UpdateIstioOperatorStatus), varargs...)
-}
-
-// PatchIstioOperatorStatus mocks base method
+// PatchIstioOperatorStatus mocks base method.
 func (m *MockIstioOperatorClient) PatchIstioOperatorStatus(ctx context.Context, obj *v1alpha10.IstioOperator, patch client.Patch, opts ...client.PatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
@@ -548,37 +491,94 @@ func (m *MockIstioOperatorClient) PatchIstioOperatorStatus(ctx context.Context, 
 	return ret0
 }
 
-// PatchIstioOperatorStatus indicates an expected call of PatchIstioOperatorStatus
+// PatchIstioOperatorStatus indicates an expected call of PatchIstioOperatorStatus.
 func (mr *MockIstioOperatorClientMockRecorder) PatchIstioOperatorStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, obj, patch}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchIstioOperatorStatus", reflect.TypeOf((*MockIstioOperatorClient)(nil).PatchIstioOperatorStatus), varargs...)
 }
 
-// MockMulticlusterIstioOperatorClient is a mock of MulticlusterIstioOperatorClient interface
+// UpdateIstioOperator mocks base method.
+func (m *MockIstioOperatorClient) UpdateIstioOperator(ctx context.Context, obj *v1alpha10.IstioOperator, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateIstioOperator", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateIstioOperator indicates an expected call of UpdateIstioOperator.
+func (mr *MockIstioOperatorClientMockRecorder) UpdateIstioOperator(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateIstioOperator", reflect.TypeOf((*MockIstioOperatorClient)(nil).UpdateIstioOperator), varargs...)
+}
+
+// UpdateIstioOperatorStatus mocks base method.
+func (m *MockIstioOperatorClient) UpdateIstioOperatorStatus(ctx context.Context, obj *v1alpha10.IstioOperator, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateIstioOperatorStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateIstioOperatorStatus indicates an expected call of UpdateIstioOperatorStatus.
+func (mr *MockIstioOperatorClientMockRecorder) UpdateIstioOperatorStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateIstioOperatorStatus", reflect.TypeOf((*MockIstioOperatorClient)(nil).UpdateIstioOperatorStatus), varargs...)
+}
+
+// UpsertIstioOperator mocks base method.
+func (m *MockIstioOperatorClient) UpsertIstioOperator(ctx context.Context, obj *v1alpha10.IstioOperator, transitionFuncs ...v1alpha1.IstioOperatorTransitionFunction) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range transitionFuncs {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpsertIstioOperator", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertIstioOperator indicates an expected call of UpsertIstioOperator.
+func (mr *MockIstioOperatorClientMockRecorder) UpsertIstioOperator(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertIstioOperator", reflect.TypeOf((*MockIstioOperatorClient)(nil).UpsertIstioOperator), varargs...)
+}
+
+// MockMulticlusterIstioOperatorClient is a mock of MulticlusterIstioOperatorClient interface.
 type MockMulticlusterIstioOperatorClient struct {
 	ctrl     *gomock.Controller
 	recorder *MockMulticlusterIstioOperatorClientMockRecorder
 }
 
-// MockMulticlusterIstioOperatorClientMockRecorder is the mock recorder for MockMulticlusterIstioOperatorClient
+// MockMulticlusterIstioOperatorClientMockRecorder is the mock recorder for MockMulticlusterIstioOperatorClient.
 type MockMulticlusterIstioOperatorClientMockRecorder struct {
 	mock *MockMulticlusterIstioOperatorClient
 }
 
-// NewMockMulticlusterIstioOperatorClient creates a new mock instance
+// NewMockMulticlusterIstioOperatorClient creates a new mock instance.
 func NewMockMulticlusterIstioOperatorClient(ctrl *gomock.Controller) *MockMulticlusterIstioOperatorClient {
 	mock := &MockMulticlusterIstioOperatorClient{ctrl: ctrl}
 	mock.recorder = &MockMulticlusterIstioOperatorClientMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockMulticlusterIstioOperatorClient) EXPECT() *MockMulticlusterIstioOperatorClientMockRecorder {
 	return m.recorder
 }
 
-// Cluster mocks base method
+// Cluster mocks base method.
 func (m *MockMulticlusterIstioOperatorClient) Cluster(cluster string) (v1alpha1.IstioOperatorClient, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Cluster", cluster)
@@ -587,7 +587,7 @@ func (m *MockMulticlusterIstioOperatorClient) Cluster(cluster string) (v1alpha1.
 	return ret0, ret1
 }
 
-// Cluster indicates an expected call of Cluster
+// Cluster indicates an expected call of Cluster.
 func (mr *MockMulticlusterIstioOperatorClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterIstioOperatorClient)(nil).Cluster), cluster)
