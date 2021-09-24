@@ -8,6 +8,7 @@ import (
 	certificatesv1beta1 "k8s.io/api/certificates/v1beta1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apiextensionsv1beta1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
 )
 
@@ -139,6 +140,18 @@ func k8sGroups() []model.Group {
 				},
 			},
 			CustomTypesImportPath: "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1",
+			ApiRoot:               k8sApiRoot,
+		},
+		{
+			GroupVersion: apiextensionsv1.SchemeGroupVersion,
+			Module:       "k8s.io/apiextensions-apiserver",
+			Resources: []model.Resource{
+				{
+					Kind:          "CustomResourceDefinition",
+					ClusterScoped: true,
+				},
+			},
+			CustomTypesImportPath: "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1",
 			ApiRoot:               k8sApiRoot,
 		},
 	}
