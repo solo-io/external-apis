@@ -302,6 +302,77 @@ func (g genericServiceEntryMulticlusterReconciler) Reconcile(cluster string, obj
 	return g.reconciler.ReconcileServiceEntry(cluster, obj)
 }
 
+// Reconcile Upsert events for the WorkloadEntry Resource across clusters.
+// implemented by the user
+type MulticlusterWorkloadEntryReconciler interface {
+	ReconcileWorkloadEntry(clusterName string, obj *networking_istio_io_v1alpha3.WorkloadEntry) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the WorkloadEntry Resource across clusters.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type MulticlusterWorkloadEntryDeletionReconciler interface {
+	ReconcileWorkloadEntryDeletion(clusterName string, req reconcile.Request) error
+}
+
+type MulticlusterWorkloadEntryReconcilerFuncs struct {
+	OnReconcileWorkloadEntry         func(clusterName string, obj *networking_istio_io_v1alpha3.WorkloadEntry) (reconcile.Result, error)
+	OnReconcileWorkloadEntryDeletion func(clusterName string, req reconcile.Request) error
+}
+
+func (f *MulticlusterWorkloadEntryReconcilerFuncs) ReconcileWorkloadEntry(clusterName string, obj *networking_istio_io_v1alpha3.WorkloadEntry) (reconcile.Result, error) {
+	if f.OnReconcileWorkloadEntry == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcileWorkloadEntry(clusterName, obj)
+}
+
+func (f *MulticlusterWorkloadEntryReconcilerFuncs) ReconcileWorkloadEntryDeletion(clusterName string, req reconcile.Request) error {
+	if f.OnReconcileWorkloadEntryDeletion == nil {
+		return nil
+	}
+	return f.OnReconcileWorkloadEntryDeletion(clusterName, req)
+}
+
+type MulticlusterWorkloadEntryReconcileLoop interface {
+	// AddMulticlusterWorkloadEntryReconciler adds a MulticlusterWorkloadEntryReconciler to the MulticlusterWorkloadEntryReconcileLoop.
+	AddMulticlusterWorkloadEntryReconciler(ctx context.Context, rec MulticlusterWorkloadEntryReconciler, predicates ...predicate.Predicate)
+}
+
+type multiclusterWorkloadEntryReconcileLoop struct {
+	loop multicluster.Loop
+}
+
+func (m *multiclusterWorkloadEntryReconcileLoop) AddMulticlusterWorkloadEntryReconciler(ctx context.Context, rec MulticlusterWorkloadEntryReconciler, predicates ...predicate.Predicate) {
+	genericReconciler := genericWorkloadEntryMulticlusterReconciler{reconciler: rec}
+
+	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
+}
+
+func NewMulticlusterWorkloadEntryReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterWorkloadEntryReconcileLoop {
+	return &multiclusterWorkloadEntryReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &networking_istio_io_v1alpha3.WorkloadEntry{}, options)}
+}
+
+type genericWorkloadEntryMulticlusterReconciler struct {
+	reconciler MulticlusterWorkloadEntryReconciler
+}
+
+func (g genericWorkloadEntryMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) error {
+	if deletionReconciler, ok := g.reconciler.(MulticlusterWorkloadEntryDeletionReconciler); ok {
+		return deletionReconciler.ReconcileWorkloadEntryDeletion(cluster, req)
+	}
+	return nil
+}
+
+func (g genericWorkloadEntryMulticlusterReconciler) Reconcile(cluster string, object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*networking_istio_io_v1alpha3.WorkloadEntry)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: WorkloadEntry handler received event for %T", object)
+	}
+	return g.reconciler.ReconcileWorkloadEntry(cluster, obj)
+}
+
 // Reconcile Upsert events for the VirtualService Resource across clusters.
 // implemented by the user
 type MulticlusterVirtualServiceReconciler interface {

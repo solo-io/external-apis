@@ -19,6 +19,9 @@ type GatewaySlice []*Gateway
 // ServiceEntrySlice represents a slice of *ServiceEntry
 type ServiceEntrySlice []*ServiceEntry
 
+// WorkloadEntrySlice represents a slice of *WorkloadEntry
+type WorkloadEntrySlice []*WorkloadEntry
+
 // VirtualServiceSlice represents a slice of *VirtualService
 type VirtualServiceSlice []*VirtualService
 

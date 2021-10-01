@@ -498,6 +498,127 @@ func (mr *MockServiceEntryEventWatcherMockRecorder) AddEventHandler(ctx, h inter
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockServiceEntryEventWatcher)(nil).AddEventHandler), varargs...)
 }
 
+// MockWorkloadEntryEventHandler is a mock of WorkloadEntryEventHandler interface.
+type MockWorkloadEntryEventHandler struct {
+	ctrl     *gomock.Controller
+	recorder *MockWorkloadEntryEventHandlerMockRecorder
+}
+
+// MockWorkloadEntryEventHandlerMockRecorder is the mock recorder for MockWorkloadEntryEventHandler.
+type MockWorkloadEntryEventHandlerMockRecorder struct {
+	mock *MockWorkloadEntryEventHandler
+}
+
+// NewMockWorkloadEntryEventHandler creates a new mock instance.
+func NewMockWorkloadEntryEventHandler(ctrl *gomock.Controller) *MockWorkloadEntryEventHandler {
+	mock := &MockWorkloadEntryEventHandler{ctrl: ctrl}
+	mock.recorder = &MockWorkloadEntryEventHandlerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockWorkloadEntryEventHandler) EXPECT() *MockWorkloadEntryEventHandlerMockRecorder {
+	return m.recorder
+}
+
+// CreateWorkloadEntry mocks base method.
+func (m *MockWorkloadEntryEventHandler) CreateWorkloadEntry(obj *v1alpha3.WorkloadEntry) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateWorkloadEntry", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateWorkloadEntry indicates an expected call of CreateWorkloadEntry.
+func (mr *MockWorkloadEntryEventHandlerMockRecorder) CreateWorkloadEntry(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateWorkloadEntry", reflect.TypeOf((*MockWorkloadEntryEventHandler)(nil).CreateWorkloadEntry), obj)
+}
+
+// DeleteWorkloadEntry mocks base method.
+func (m *MockWorkloadEntryEventHandler) DeleteWorkloadEntry(obj *v1alpha3.WorkloadEntry) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteWorkloadEntry", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteWorkloadEntry indicates an expected call of DeleteWorkloadEntry.
+func (mr *MockWorkloadEntryEventHandlerMockRecorder) DeleteWorkloadEntry(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWorkloadEntry", reflect.TypeOf((*MockWorkloadEntryEventHandler)(nil).DeleteWorkloadEntry), obj)
+}
+
+// GenericWorkloadEntry mocks base method.
+func (m *MockWorkloadEntryEventHandler) GenericWorkloadEntry(obj *v1alpha3.WorkloadEntry) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GenericWorkloadEntry", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// GenericWorkloadEntry indicates an expected call of GenericWorkloadEntry.
+func (mr *MockWorkloadEntryEventHandlerMockRecorder) GenericWorkloadEntry(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericWorkloadEntry", reflect.TypeOf((*MockWorkloadEntryEventHandler)(nil).GenericWorkloadEntry), obj)
+}
+
+// UpdateWorkloadEntry mocks base method.
+func (m *MockWorkloadEntryEventHandler) UpdateWorkloadEntry(old, new *v1alpha3.WorkloadEntry) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateWorkloadEntry", old, new)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateWorkloadEntry indicates an expected call of UpdateWorkloadEntry.
+func (mr *MockWorkloadEntryEventHandlerMockRecorder) UpdateWorkloadEntry(old, new interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateWorkloadEntry", reflect.TypeOf((*MockWorkloadEntryEventHandler)(nil).UpdateWorkloadEntry), old, new)
+}
+
+// MockWorkloadEntryEventWatcher is a mock of WorkloadEntryEventWatcher interface.
+type MockWorkloadEntryEventWatcher struct {
+	ctrl     *gomock.Controller
+	recorder *MockWorkloadEntryEventWatcherMockRecorder
+}
+
+// MockWorkloadEntryEventWatcherMockRecorder is the mock recorder for MockWorkloadEntryEventWatcher.
+type MockWorkloadEntryEventWatcherMockRecorder struct {
+	mock *MockWorkloadEntryEventWatcher
+}
+
+// NewMockWorkloadEntryEventWatcher creates a new mock instance.
+func NewMockWorkloadEntryEventWatcher(ctrl *gomock.Controller) *MockWorkloadEntryEventWatcher {
+	mock := &MockWorkloadEntryEventWatcher{ctrl: ctrl}
+	mock.recorder = &MockWorkloadEntryEventWatcherMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockWorkloadEntryEventWatcher) EXPECT() *MockWorkloadEntryEventWatcherMockRecorder {
+	return m.recorder
+}
+
+// AddEventHandler mocks base method.
+func (m *MockWorkloadEntryEventWatcher) AddEventHandler(ctx context.Context, h controller.WorkloadEntryEventHandler, predicates ...predicate.Predicate) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, h}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "AddEventHandler", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AddEventHandler indicates an expected call of AddEventHandler.
+func (mr *MockWorkloadEntryEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, h}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockWorkloadEntryEventWatcher)(nil).AddEventHandler), varargs...)
+}
+
 // MockVirtualServiceEventHandler is a mock of VirtualServiceEventHandler interface.
 type MockVirtualServiceEventHandler struct {
 	ctrl     *gomock.Controller

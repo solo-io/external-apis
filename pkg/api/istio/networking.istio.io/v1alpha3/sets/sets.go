@@ -889,6 +889,225 @@ func (s *serviceEntrySet) Clone() ServiceEntrySet {
 	return &serviceEntrySet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
 }
 
+type WorkloadEntrySet interface {
+	// Get the set stored keys
+	Keys() sets.String
+	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	List(filterResource ...func(*networking_istio_io_v1alpha3.WorkloadEntry) bool) []*networking_istio_io_v1alpha3.WorkloadEntry
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	UnsortedList(filterResource ...func(*networking_istio_io_v1alpha3.WorkloadEntry) bool) []*networking_istio_io_v1alpha3.WorkloadEntry
+	// Return the Set as a map of key to resource.
+	Map() map[string]*networking_istio_io_v1alpha3.WorkloadEntry
+	// Insert a resource into the set.
+	Insert(workloadEntry ...*networking_istio_io_v1alpha3.WorkloadEntry)
+	// Compare the equality of the keys in two sets (not the resources themselves)
+	Equal(workloadEntrySet WorkloadEntrySet) bool
+	// Check if the set contains a key matching the resource (not the resource itself)
+	Has(workloadEntry ezkube.ResourceId) bool
+	// Delete the key matching the resource
+	Delete(workloadEntry ezkube.ResourceId)
+	// Return the union with the provided set
+	Union(set WorkloadEntrySet) WorkloadEntrySet
+	// Return the difference with the provided set
+	Difference(set WorkloadEntrySet) WorkloadEntrySet
+	// Return the intersection with the provided set
+	Intersection(set WorkloadEntrySet) WorkloadEntrySet
+	// Find the resource with the given ID
+	Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.WorkloadEntry, error)
+	// Get the length of the set
+	Length() int
+	// returns the generic implementation of the set
+	Generic() sksets.ResourceSet
+	// returns the delta between this and and another WorkloadEntrySet
+	Delta(newSet WorkloadEntrySet) sksets.ResourceDelta
+	// Create a deep copy of the current WorkloadEntrySet
+	Clone() WorkloadEntrySet
+}
+
+func makeGenericWorkloadEntrySet(workloadEntryList []*networking_istio_io_v1alpha3.WorkloadEntry) sksets.ResourceSet {
+	var genericResources []ezkube.ResourceId
+	for _, obj := range workloadEntryList {
+		genericResources = append(genericResources, obj)
+	}
+	return sksets.NewResourceSet(genericResources...)
+}
+
+type workloadEntrySet struct {
+	set sksets.ResourceSet
+}
+
+func NewWorkloadEntrySet(workloadEntryList ...*networking_istio_io_v1alpha3.WorkloadEntry) WorkloadEntrySet {
+	return &workloadEntrySet{set: makeGenericWorkloadEntrySet(workloadEntryList)}
+}
+
+func NewWorkloadEntrySetFromList(workloadEntryList *networking_istio_io_v1alpha3.WorkloadEntryList) WorkloadEntrySet {
+	list := make([]*networking_istio_io_v1alpha3.WorkloadEntry, 0, len(workloadEntryList.Items))
+	for idx := range workloadEntryList.Items {
+		list = append(list, &workloadEntryList.Items[idx])
+	}
+	return &workloadEntrySet{set: makeGenericWorkloadEntrySet(list)}
+}
+
+func (s *workloadEntrySet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	return s.Generic().Keys()
+}
+
+func (s *workloadEntrySet) List(filterResource ...func(*networking_istio_io_v1alpha3.WorkloadEntry) bool) []*networking_istio_io_v1alpha3.WorkloadEntry {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1alpha3.WorkloadEntry))
+		})
+	}
+
+	objs := s.Generic().List(genericFilters...)
+	workloadEntryList := make([]*networking_istio_io_v1alpha3.WorkloadEntry, 0, len(objs))
+	for _, obj := range objs {
+		workloadEntryList = append(workloadEntryList, obj.(*networking_istio_io_v1alpha3.WorkloadEntry))
+	}
+	return workloadEntryList
+}
+
+func (s *workloadEntrySet) UnsortedList(filterResource ...func(*networking_istio_io_v1alpha3.WorkloadEntry) bool) []*networking_istio_io_v1alpha3.WorkloadEntry {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1alpha3.WorkloadEntry))
+		})
+	}
+
+	var workloadEntryList []*networking_istio_io_v1alpha3.WorkloadEntry
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
+		workloadEntryList = append(workloadEntryList, obj.(*networking_istio_io_v1alpha3.WorkloadEntry))
+	}
+	return workloadEntryList
+}
+
+func (s *workloadEntrySet) Map() map[string]*networking_istio_io_v1alpha3.WorkloadEntry {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*networking_istio_io_v1alpha3.WorkloadEntry{}
+	for k, v := range s.Generic().Map() {
+		newMap[k] = v.(*networking_istio_io_v1alpha3.WorkloadEntry)
+	}
+	return newMap
+}
+
+func (s *workloadEntrySet) Insert(
+	workloadEntryList ...*networking_istio_io_v1alpha3.WorkloadEntry,
+) {
+	if s == nil {
+		panic("cannot insert into nil set")
+	}
+
+	for _, obj := range workloadEntryList {
+		s.Generic().Insert(obj)
+	}
+}
+
+func (s *workloadEntrySet) Has(workloadEntry ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	return s.Generic().Has(workloadEntry)
+}
+
+func (s *workloadEntrySet) Equal(
+	workloadEntrySet WorkloadEntrySet,
+) bool {
+	if s == nil {
+		return workloadEntrySet == nil
+	}
+	return s.Generic().Equal(workloadEntrySet.Generic())
+}
+
+func (s *workloadEntrySet) Delete(WorkloadEntry ezkube.ResourceId) {
+	if s == nil {
+		return
+	}
+	s.Generic().Delete(WorkloadEntry)
+}
+
+func (s *workloadEntrySet) Union(set WorkloadEntrySet) WorkloadEntrySet {
+	if s == nil {
+		return set
+	}
+	return NewWorkloadEntrySet(append(s.List(), set.List()...)...)
+}
+
+func (s *workloadEntrySet) Difference(set WorkloadEntrySet) WorkloadEntrySet {
+	if s == nil {
+		return set
+	}
+	newSet := s.Generic().Difference(set.Generic())
+	return &workloadEntrySet{set: newSet}
+}
+
+func (s *workloadEntrySet) Intersection(set WorkloadEntrySet) WorkloadEntrySet {
+	if s == nil {
+		return nil
+	}
+	newSet := s.Generic().Intersection(set.Generic())
+	var workloadEntryList []*networking_istio_io_v1alpha3.WorkloadEntry
+	for _, obj := range newSet.List() {
+		workloadEntryList = append(workloadEntryList, obj.(*networking_istio_io_v1alpha3.WorkloadEntry))
+	}
+	return NewWorkloadEntrySet(workloadEntryList...)
+}
+
+func (s *workloadEntrySet) Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.WorkloadEntry, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find WorkloadEntry %v", sksets.Key(id))
+	}
+	obj, err := s.Generic().Find(&networking_istio_io_v1alpha3.WorkloadEntry{}, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return obj.(*networking_istio_io_v1alpha3.WorkloadEntry), nil
+}
+
+func (s *workloadEntrySet) Length() int {
+	if s == nil {
+		return 0
+	}
+	return s.Generic().Length()
+}
+
+func (s *workloadEntrySet) Generic() sksets.ResourceSet {
+	if s == nil {
+		return nil
+	}
+	return s.set
+}
+
+func (s *workloadEntrySet) Delta(newSet WorkloadEntrySet) sksets.ResourceDelta {
+	if s == nil {
+		return sksets.ResourceDelta{
+			Inserted: newSet.Generic(),
+		}
+	}
+	return s.Generic().Delta(newSet.Generic())
+}
+
+func (s *workloadEntrySet) Clone() WorkloadEntrySet {
+	if s == nil {
+		return nil
+	}
+	return &workloadEntrySet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}
+
 type VirtualServiceSet interface {
 	// Get the set stored keys
 	Keys() sets.String

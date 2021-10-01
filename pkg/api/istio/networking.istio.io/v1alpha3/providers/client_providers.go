@@ -129,6 +129,34 @@ func ServiceEntryClientFromConfigFactoryProvider() ServiceEntryClientFromConfigF
 	}
 }
 
+// Provider for WorkloadEntryClient from Clientset
+func WorkloadEntryClientFromClientsetProvider(clients networking_istio_io_v1alpha3.Clientset) networking_istio_io_v1alpha3.WorkloadEntryClient {
+	return clients.WorkloadEntries()
+}
+
+// Provider for WorkloadEntry Client from Client
+func WorkloadEntryClientProvider(client client.Client) networking_istio_io_v1alpha3.WorkloadEntryClient {
+	return networking_istio_io_v1alpha3.NewWorkloadEntryClient(client)
+}
+
+type WorkloadEntryClientFactory func(client client.Client) networking_istio_io_v1alpha3.WorkloadEntryClient
+
+func WorkloadEntryClientFactoryProvider() WorkloadEntryClientFactory {
+	return WorkloadEntryClientProvider
+}
+
+type WorkloadEntryClientFromConfigFactory func(cfg *rest.Config) (networking_istio_io_v1alpha3.WorkloadEntryClient, error)
+
+func WorkloadEntryClientFromConfigFactoryProvider() WorkloadEntryClientFromConfigFactory {
+	return func(cfg *rest.Config) (networking_istio_io_v1alpha3.WorkloadEntryClient, error) {
+		clients, err := networking_istio_io_v1alpha3.NewClientsetFromConfig(cfg)
+		if err != nil {
+			return nil, err
+		}
+		return clients.WorkloadEntries(), nil
+	}
+}
+
 // Provider for VirtualServiceClient from Clientset
 func VirtualServiceClientFromClientsetProvider(clients networking_istio_io_v1alpha3.Clientset) networking_istio_io_v1alpha3.VirtualServiceClient {
 	return clients.VirtualServices()
