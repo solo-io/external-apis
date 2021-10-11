@@ -49,6 +49,8 @@ type Clientset interface {
 	// clienset for the networking.istio.io/v1alpha3/v1alpha3 APIs
 	ServiceEntries() ServiceEntryClient
 	// clienset for the networking.istio.io/v1alpha3/v1alpha3 APIs
+	WorkloadEntries() WorkloadEntryClient
+	// clienset for the networking.istio.io/v1alpha3/v1alpha3 APIs
 	VirtualServices() VirtualServiceClient
 	// clienset for the networking.istio.io/v1alpha3/v1alpha3 APIs
 	Sidecars() SidecarClient
@@ -94,6 +96,11 @@ func (c *clientSet) Gateways() GatewayClient {
 // clienset for the networking.istio.io/v1alpha3/v1alpha3 APIs
 func (c *clientSet) ServiceEntries() ServiceEntryClient {
 	return NewServiceEntryClient(c.client)
+}
+
+// clienset for the networking.istio.io/v1alpha3/v1alpha3 APIs
+func (c *clientSet) WorkloadEntries() WorkloadEntryClient {
+	return NewWorkloadEntryClient(c.client)
 }
 
 // clienset for the networking.istio.io/v1alpha3/v1alpha3 APIs
@@ -672,6 +679,148 @@ func (m *multiclusterServiceEntryClient) Cluster(cluster string) (ServiceEntryCl
 		return nil, err
 	}
 	return NewServiceEntryClient(client), nil
+}
+
+// Reader knows how to read and list WorkloadEntrys.
+type WorkloadEntryReader interface {
+	// Get retrieves a WorkloadEntry for the given object key
+	GetWorkloadEntry(ctx context.Context, key client.ObjectKey) (*networking_istio_io_v1alpha3.WorkloadEntry, error)
+
+	// List retrieves list of WorkloadEntrys for a given namespace and list options.
+	ListWorkloadEntry(ctx context.Context, opts ...client.ListOption) (*networking_istio_io_v1alpha3.WorkloadEntryList, error)
+}
+
+// WorkloadEntryTransitionFunction instructs the WorkloadEntryWriter how to transition between an existing
+// WorkloadEntry object and a desired on an Upsert
+type WorkloadEntryTransitionFunction func(existing, desired *networking_istio_io_v1alpha3.WorkloadEntry) error
+
+// Writer knows how to create, delete, and update WorkloadEntrys.
+type WorkloadEntryWriter interface {
+	// Create saves the WorkloadEntry object.
+	CreateWorkloadEntry(ctx context.Context, obj *networking_istio_io_v1alpha3.WorkloadEntry, opts ...client.CreateOption) error
+
+	// Delete deletes the WorkloadEntry object.
+	DeleteWorkloadEntry(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error
+
+	// Update updates the given WorkloadEntry object.
+	UpdateWorkloadEntry(ctx context.Context, obj *networking_istio_io_v1alpha3.WorkloadEntry, opts ...client.UpdateOption) error
+
+	// Patch patches the given WorkloadEntry object.
+	PatchWorkloadEntry(ctx context.Context, obj *networking_istio_io_v1alpha3.WorkloadEntry, patch client.Patch, opts ...client.PatchOption) error
+
+	// DeleteAllOf deletes all WorkloadEntry objects matching the given options.
+	DeleteAllOfWorkloadEntry(ctx context.Context, opts ...client.DeleteAllOfOption) error
+
+	// Create or Update the WorkloadEntry object.
+	UpsertWorkloadEntry(ctx context.Context, obj *networking_istio_io_v1alpha3.WorkloadEntry, transitionFuncs ...WorkloadEntryTransitionFunction) error
+}
+
+// StatusWriter knows how to update status subresource of a WorkloadEntry object.
+type WorkloadEntryStatusWriter interface {
+	// Update updates the fields corresponding to the status subresource for the
+	// given WorkloadEntry object.
+	UpdateWorkloadEntryStatus(ctx context.Context, obj *networking_istio_io_v1alpha3.WorkloadEntry, opts ...client.UpdateOption) error
+
+	// Patch patches the given WorkloadEntry object's subresource.
+	PatchWorkloadEntryStatus(ctx context.Context, obj *networking_istio_io_v1alpha3.WorkloadEntry, patch client.Patch, opts ...client.PatchOption) error
+}
+
+// Client knows how to perform CRUD operations on WorkloadEntrys.
+type WorkloadEntryClient interface {
+	WorkloadEntryReader
+	WorkloadEntryWriter
+	WorkloadEntryStatusWriter
+}
+
+type workloadEntryClient struct {
+	client client.Client
+}
+
+func NewWorkloadEntryClient(client client.Client) *workloadEntryClient {
+	return &workloadEntryClient{client: client}
+}
+
+func (c *workloadEntryClient) GetWorkloadEntry(ctx context.Context, key client.ObjectKey) (*networking_istio_io_v1alpha3.WorkloadEntry, error) {
+	obj := &networking_istio_io_v1alpha3.WorkloadEntry{}
+	if err := c.client.Get(ctx, key, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+func (c *workloadEntryClient) ListWorkloadEntry(ctx context.Context, opts ...client.ListOption) (*networking_istio_io_v1alpha3.WorkloadEntryList, error) {
+	list := &networking_istio_io_v1alpha3.WorkloadEntryList{}
+	if err := c.client.List(ctx, list, opts...); err != nil {
+		return nil, err
+	}
+	return list, nil
+}
+
+func (c *workloadEntryClient) CreateWorkloadEntry(ctx context.Context, obj *networking_istio_io_v1alpha3.WorkloadEntry, opts ...client.CreateOption) error {
+	return c.client.Create(ctx, obj, opts...)
+}
+
+func (c *workloadEntryClient) DeleteWorkloadEntry(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	obj := &networking_istio_io_v1alpha3.WorkloadEntry{}
+	obj.SetName(key.Name)
+	obj.SetNamespace(key.Namespace)
+	return c.client.Delete(ctx, obj, opts...)
+}
+
+func (c *workloadEntryClient) UpdateWorkloadEntry(ctx context.Context, obj *networking_istio_io_v1alpha3.WorkloadEntry, opts ...client.UpdateOption) error {
+	return c.client.Update(ctx, obj, opts...)
+}
+
+func (c *workloadEntryClient) PatchWorkloadEntry(ctx context.Context, obj *networking_istio_io_v1alpha3.WorkloadEntry, patch client.Patch, opts ...client.PatchOption) error {
+	return c.client.Patch(ctx, obj, patch, opts...)
+}
+
+func (c *workloadEntryClient) DeleteAllOfWorkloadEntry(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	obj := &networking_istio_io_v1alpha3.WorkloadEntry{}
+	return c.client.DeleteAllOf(ctx, obj, opts...)
+}
+
+func (c *workloadEntryClient) UpsertWorkloadEntry(ctx context.Context, obj *networking_istio_io_v1alpha3.WorkloadEntry, transitionFuncs ...WorkloadEntryTransitionFunction) error {
+	genericTxFunc := func(existing, desired runtime.Object) error {
+		for _, txFunc := range transitionFuncs {
+			if err := txFunc(existing.(*networking_istio_io_v1alpha3.WorkloadEntry), desired.(*networking_istio_io_v1alpha3.WorkloadEntry)); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+	_, err := controllerutils.Upsert(ctx, c.client, obj, genericTxFunc)
+	return err
+}
+
+func (c *workloadEntryClient) UpdateWorkloadEntryStatus(ctx context.Context, obj *networking_istio_io_v1alpha3.WorkloadEntry, opts ...client.UpdateOption) error {
+	return c.client.Status().Update(ctx, obj, opts...)
+}
+
+func (c *workloadEntryClient) PatchWorkloadEntryStatus(ctx context.Context, obj *networking_istio_io_v1alpha3.WorkloadEntry, patch client.Patch, opts ...client.PatchOption) error {
+	return c.client.Status().Patch(ctx, obj, patch, opts...)
+}
+
+// Provides WorkloadEntryClients for multiple clusters.
+type MulticlusterWorkloadEntryClient interface {
+	// Cluster returns a WorkloadEntryClient for the given cluster
+	Cluster(cluster string) (WorkloadEntryClient, error)
+}
+
+type multiclusterWorkloadEntryClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterWorkloadEntryClient(client multicluster.Client) MulticlusterWorkloadEntryClient {
+	return &multiclusterWorkloadEntryClient{client: client}
+}
+
+func (m *multiclusterWorkloadEntryClient) Cluster(cluster string) (WorkloadEntryClient, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewWorkloadEntryClient(client), nil
 }
 
 // Reader knows how to read and list VirtualServices.

@@ -485,6 +485,123 @@ func (r genericServiceEntryFinalizer) Finalize(object ezkube.Object) error {
 	return r.finalizingReconciler.FinalizeServiceEntry(obj)
 }
 
+// Reconcile Upsert events for the WorkloadEntry Resource.
+// implemented by the user
+type WorkloadEntryReconciler interface {
+	ReconcileWorkloadEntry(obj *networking_istio_io_v1alpha3.WorkloadEntry) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the WorkloadEntry Resource.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type WorkloadEntryDeletionReconciler interface {
+	ReconcileWorkloadEntryDeletion(req reconcile.Request) error
+}
+
+type WorkloadEntryReconcilerFuncs struct {
+	OnReconcileWorkloadEntry         func(obj *networking_istio_io_v1alpha3.WorkloadEntry) (reconcile.Result, error)
+	OnReconcileWorkloadEntryDeletion func(req reconcile.Request) error
+}
+
+func (f *WorkloadEntryReconcilerFuncs) ReconcileWorkloadEntry(obj *networking_istio_io_v1alpha3.WorkloadEntry) (reconcile.Result, error) {
+	if f.OnReconcileWorkloadEntry == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcileWorkloadEntry(obj)
+}
+
+func (f *WorkloadEntryReconcilerFuncs) ReconcileWorkloadEntryDeletion(req reconcile.Request) error {
+	if f.OnReconcileWorkloadEntryDeletion == nil {
+		return nil
+	}
+	return f.OnReconcileWorkloadEntryDeletion(req)
+}
+
+// Reconcile and finalize the WorkloadEntry Resource
+// implemented by the user
+type WorkloadEntryFinalizer interface {
+	WorkloadEntryReconciler
+
+	// name of the finalizer used by this handler.
+	// finalizer names should be unique for a single task
+	WorkloadEntryFinalizerName() string
+
+	// finalize the object before it is deleted.
+	// Watchers created with a finalizing handler will a
+	FinalizeWorkloadEntry(obj *networking_istio_io_v1alpha3.WorkloadEntry) error
+}
+
+type WorkloadEntryReconcileLoop interface {
+	RunWorkloadEntryReconciler(ctx context.Context, rec WorkloadEntryReconciler, predicates ...predicate.Predicate) error
+}
+
+type workloadEntryReconcileLoop struct {
+	loop reconcile.Loop
+}
+
+func NewWorkloadEntryReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) WorkloadEntryReconcileLoop {
+	return &workloadEntryReconcileLoop{
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &networking_istio_io_v1alpha3.WorkloadEntry{}, options),
+	}
+}
+
+func (c *workloadEntryReconcileLoop) RunWorkloadEntryReconciler(ctx context.Context, reconciler WorkloadEntryReconciler, predicates ...predicate.Predicate) error {
+	genericReconciler := genericWorkloadEntryReconciler{
+		reconciler: reconciler,
+	}
+
+	var reconcilerWrapper reconcile.Reconciler
+	if finalizingReconciler, ok := reconciler.(WorkloadEntryFinalizer); ok {
+		reconcilerWrapper = genericWorkloadEntryFinalizer{
+			genericWorkloadEntryReconciler: genericReconciler,
+			finalizingReconciler:           finalizingReconciler,
+		}
+	} else {
+		reconcilerWrapper = genericReconciler
+	}
+	return c.loop.RunReconciler(ctx, reconcilerWrapper, predicates...)
+}
+
+// genericWorkloadEntryHandler implements a generic reconcile.Reconciler
+type genericWorkloadEntryReconciler struct {
+	reconciler WorkloadEntryReconciler
+}
+
+func (r genericWorkloadEntryReconciler) Reconcile(object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*networking_istio_io_v1alpha3.WorkloadEntry)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: WorkloadEntry handler received event for %T", object)
+	}
+	return r.reconciler.ReconcileWorkloadEntry(obj)
+}
+
+func (r genericWorkloadEntryReconciler) ReconcileDeletion(request reconcile.Request) error {
+	if deletionReconciler, ok := r.reconciler.(WorkloadEntryDeletionReconciler); ok {
+		return deletionReconciler.ReconcileWorkloadEntryDeletion(request)
+	}
+	return nil
+}
+
+// genericWorkloadEntryFinalizer implements a generic reconcile.FinalizingReconciler
+type genericWorkloadEntryFinalizer struct {
+	genericWorkloadEntryReconciler
+	finalizingReconciler WorkloadEntryFinalizer
+}
+
+func (r genericWorkloadEntryFinalizer) FinalizerName() string {
+	return r.finalizingReconciler.WorkloadEntryFinalizerName()
+}
+
+func (r genericWorkloadEntryFinalizer) Finalize(object ezkube.Object) error {
+	obj, ok := object.(*networking_istio_io_v1alpha3.WorkloadEntry)
+	if !ok {
+		return errors.Errorf("internal error: WorkloadEntry handler received event for %T", object)
+	}
+	return r.finalizingReconciler.FinalizeWorkloadEntry(obj)
+}
+
 // Reconcile Upsert events for the VirtualService Resource.
 // implemented by the user
 type VirtualServiceReconciler interface {

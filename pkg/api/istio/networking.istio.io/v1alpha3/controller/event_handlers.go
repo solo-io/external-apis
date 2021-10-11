@@ -445,6 +445,113 @@ func (h genericServiceEntryHandler) Generic(object client.Object) error {
 	return h.handler.GenericServiceEntry(obj)
 }
 
+// Handle events for the WorkloadEntry Resource
+// DEPRECATED: Prefer reconciler pattern.
+type WorkloadEntryEventHandler interface {
+	CreateWorkloadEntry(obj *networking_istio_io_v1alpha3.WorkloadEntry) error
+	UpdateWorkloadEntry(old, new *networking_istio_io_v1alpha3.WorkloadEntry) error
+	DeleteWorkloadEntry(obj *networking_istio_io_v1alpha3.WorkloadEntry) error
+	GenericWorkloadEntry(obj *networking_istio_io_v1alpha3.WorkloadEntry) error
+}
+
+type WorkloadEntryEventHandlerFuncs struct {
+	OnCreate  func(obj *networking_istio_io_v1alpha3.WorkloadEntry) error
+	OnUpdate  func(old, new *networking_istio_io_v1alpha3.WorkloadEntry) error
+	OnDelete  func(obj *networking_istio_io_v1alpha3.WorkloadEntry) error
+	OnGeneric func(obj *networking_istio_io_v1alpha3.WorkloadEntry) error
+}
+
+func (f *WorkloadEntryEventHandlerFuncs) CreateWorkloadEntry(obj *networking_istio_io_v1alpha3.WorkloadEntry) error {
+	if f.OnCreate == nil {
+		return nil
+	}
+	return f.OnCreate(obj)
+}
+
+func (f *WorkloadEntryEventHandlerFuncs) DeleteWorkloadEntry(obj *networking_istio_io_v1alpha3.WorkloadEntry) error {
+	if f.OnDelete == nil {
+		return nil
+	}
+	return f.OnDelete(obj)
+}
+
+func (f *WorkloadEntryEventHandlerFuncs) UpdateWorkloadEntry(objOld, objNew *networking_istio_io_v1alpha3.WorkloadEntry) error {
+	if f.OnUpdate == nil {
+		return nil
+	}
+	return f.OnUpdate(objOld, objNew)
+}
+
+func (f *WorkloadEntryEventHandlerFuncs) GenericWorkloadEntry(obj *networking_istio_io_v1alpha3.WorkloadEntry) error {
+	if f.OnGeneric == nil {
+		return nil
+	}
+	return f.OnGeneric(obj)
+}
+
+type WorkloadEntryEventWatcher interface {
+	AddEventHandler(ctx context.Context, h WorkloadEntryEventHandler, predicates ...predicate.Predicate) error
+}
+
+type workloadEntryEventWatcher struct {
+	watcher events.EventWatcher
+}
+
+func NewWorkloadEntryEventWatcher(name string, mgr manager.Manager) WorkloadEntryEventWatcher {
+	return &workloadEntryEventWatcher{
+		watcher: events.NewWatcher(name, mgr, &networking_istio_io_v1alpha3.WorkloadEntry{}),
+	}
+}
+
+func (c *workloadEntryEventWatcher) AddEventHandler(ctx context.Context, h WorkloadEntryEventHandler, predicates ...predicate.Predicate) error {
+	handler := genericWorkloadEntryHandler{handler: h}
+	if err := c.watcher.Watch(ctx, handler, predicates...); err != nil {
+		return err
+	}
+	return nil
+}
+
+// genericWorkloadEntryHandler implements a generic events.EventHandler
+type genericWorkloadEntryHandler struct {
+	handler WorkloadEntryEventHandler
+}
+
+func (h genericWorkloadEntryHandler) Create(object client.Object) error {
+	obj, ok := object.(*networking_istio_io_v1alpha3.WorkloadEntry)
+	if !ok {
+		return errors.Errorf("internal error: WorkloadEntry handler received event for %T", object)
+	}
+	return h.handler.CreateWorkloadEntry(obj)
+}
+
+func (h genericWorkloadEntryHandler) Delete(object client.Object) error {
+	obj, ok := object.(*networking_istio_io_v1alpha3.WorkloadEntry)
+	if !ok {
+		return errors.Errorf("internal error: WorkloadEntry handler received event for %T", object)
+	}
+	return h.handler.DeleteWorkloadEntry(obj)
+}
+
+func (h genericWorkloadEntryHandler) Update(old, new client.Object) error {
+	objOld, ok := old.(*networking_istio_io_v1alpha3.WorkloadEntry)
+	if !ok {
+		return errors.Errorf("internal error: WorkloadEntry handler received event for %T", old)
+	}
+	objNew, ok := new.(*networking_istio_io_v1alpha3.WorkloadEntry)
+	if !ok {
+		return errors.Errorf("internal error: WorkloadEntry handler received event for %T", new)
+	}
+	return h.handler.UpdateWorkloadEntry(objOld, objNew)
+}
+
+func (h genericWorkloadEntryHandler) Generic(object client.Object) error {
+	obj, ok := object.(*networking_istio_io_v1alpha3.WorkloadEntry)
+	if !ok {
+		return errors.Errorf("internal error: WorkloadEntry handler received event for %T", object)
+	}
+	return h.handler.GenericWorkloadEntry(obj)
+}
+
 // Handle events for the VirtualService Resource
 // DEPRECATED: Prefer reconciler pattern.
 type VirtualServiceEventHandler interface {
