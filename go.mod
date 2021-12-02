@@ -17,11 +17,11 @@ require (
 	github.com/rotisserie/eris v0.1.1
 	github.com/servicemeshinterface/smi-sdk-go v0.4.1
 	github.com/solo-io/skv2 v0.19.8
-	istio.io/client-go v1.9.5-0.20210607162355-6a6709ba5473
-	istio.io/istio v0.0.0-20210903183209-9d4e257a8202
-	k8s.io/api v0.20.1
-	k8s.io/apiextensions-apiserver v0.20.1
-	k8s.io/apimachinery v0.20.1
-	k8s.io/client-go v0.20.1
-	sigs.k8s.io/controller-runtime v0.7.0
+	istio.io/client-go v1.12.0-alpha.5.0.20211124144007-2c98ed70c967
+	istio.io/istio v0.0.0-20211202012955-9928258d2089
+	k8s.io/api v0.22.4
+	k8s.io/apiextensions-apiserver v0.22.4
+	k8s.io/apimachinery v0.22.4
+	k8s.io/client-go v0.22.4
+	sigs.k8s.io/controller-runtime v0.10.3
 )
