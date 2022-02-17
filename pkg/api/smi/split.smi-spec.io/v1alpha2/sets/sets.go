@@ -85,6 +85,7 @@ func (s *trafficSplitSet) List(filterResource ...func(*split_smi_spec_io_v1alpha
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*split_smi_spec_io_v1alpha2.TrafficSplit))
 		})
@@ -104,6 +105,7 @@ func (s *trafficSplitSet) UnsortedList(filterResource ...func(*split_smi_spec_io
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*split_smi_spec_io_v1alpha2.TrafficSplit))
 		})

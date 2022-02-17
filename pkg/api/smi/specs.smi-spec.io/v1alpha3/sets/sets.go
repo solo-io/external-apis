@@ -85,6 +85,7 @@ func (s *hTTPRouteGroupSet) List(filterResource ...func(*specs_smi_spec_io_v1alp
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
 		})
@@ -104,6 +105,7 @@ func (s *hTTPRouteGroupSet) UnsortedList(filterResource ...func(*specs_smi_spec_
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
 		})
