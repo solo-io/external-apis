@@ -85,6 +85,7 @@ func (s *destinationRuleSet) List(filterResource ...func(*networking_istio_io_v1
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*networking_istio_io_v1alpha3.DestinationRule))
 		})
@@ -104,6 +105,7 @@ func (s *destinationRuleSet) UnsortedList(filterResource ...func(*networking_ist
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*networking_istio_io_v1alpha3.DestinationRule))
 		})
@@ -304,6 +306,7 @@ func (s *envoyFilterSet) List(filterResource ...func(*networking_istio_io_v1alph
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*networking_istio_io_v1alpha3.EnvoyFilter))
 		})
@@ -323,6 +326,7 @@ func (s *envoyFilterSet) UnsortedList(filterResource ...func(*networking_istio_i
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*networking_istio_io_v1alpha3.EnvoyFilter))
 		})
@@ -523,6 +527,7 @@ func (s *gatewaySet) List(filterResource ...func(*networking_istio_io_v1alpha3.G
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*networking_istio_io_v1alpha3.Gateway))
 		})
@@ -542,6 +547,7 @@ func (s *gatewaySet) UnsortedList(filterResource ...func(*networking_istio_io_v1
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*networking_istio_io_v1alpha3.Gateway))
 		})
@@ -742,6 +748,7 @@ func (s *serviceEntrySet) List(filterResource ...func(*networking_istio_io_v1alp
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*networking_istio_io_v1alpha3.ServiceEntry))
 		})
@@ -761,6 +768,7 @@ func (s *serviceEntrySet) UnsortedList(filterResource ...func(*networking_istio_
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*networking_istio_io_v1alpha3.ServiceEntry))
 		})
@@ -961,6 +969,7 @@ func (s *workloadEntrySet) List(filterResource ...func(*networking_istio_io_v1al
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*networking_istio_io_v1alpha3.WorkloadEntry))
 		})
@@ -980,6 +989,7 @@ func (s *workloadEntrySet) UnsortedList(filterResource ...func(*networking_istio
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*networking_istio_io_v1alpha3.WorkloadEntry))
 		})
@@ -1180,6 +1190,7 @@ func (s *virtualServiceSet) List(filterResource ...func(*networking_istio_io_v1a
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*networking_istio_io_v1alpha3.VirtualService))
 		})
@@ -1199,6 +1210,7 @@ func (s *virtualServiceSet) UnsortedList(filterResource ...func(*networking_isti
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*networking_istio_io_v1alpha3.VirtualService))
 		})
@@ -1399,6 +1411,7 @@ func (s *sidecarSet) List(filterResource ...func(*networking_istio_io_v1alpha3.S
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*networking_istio_io_v1alpha3.Sidecar))
 		})
@@ -1418,6 +1431,7 @@ func (s *sidecarSet) UnsortedList(filterResource ...func(*networking_istio_io_v1
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*networking_istio_io_v1alpha3.Sidecar))
 		})

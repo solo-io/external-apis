@@ -85,6 +85,7 @@ func (s *meshSet) List(filterResource ...func(*appmesh_k8s_aws_v1beta2.Mesh) boo
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*appmesh_k8s_aws_v1beta2.Mesh))
 		})
@@ -104,6 +105,7 @@ func (s *meshSet) UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.M
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*appmesh_k8s_aws_v1beta2.Mesh))
 		})
@@ -304,6 +306,7 @@ func (s *virtualServiceSet) List(filterResource ...func(*appmesh_k8s_aws_v1beta2
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualService))
 		})
@@ -323,6 +326,7 @@ func (s *virtualServiceSet) UnsortedList(filterResource ...func(*appmesh_k8s_aws
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualService))
 		})
@@ -523,6 +527,7 @@ func (s *virtualNodeSet) List(filterResource ...func(*appmesh_k8s_aws_v1beta2.Vi
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualNode))
 		})
@@ -542,6 +547,7 @@ func (s *virtualNodeSet) UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualNode))
 		})
@@ -742,6 +748,7 @@ func (s *virtualRouterSet) List(filterResource ...func(*appmesh_k8s_aws_v1beta2.
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualRouter))
 		})
@@ -761,6 +768,7 @@ func (s *virtualRouterSet) UnsortedList(filterResource ...func(*appmesh_k8s_aws_
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualRouter))
 		})
@@ -961,6 +969,7 @@ func (s *virtualGatewaySet) List(filterResource ...func(*appmesh_k8s_aws_v1beta2
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualGateway))
 		})
@@ -980,6 +989,7 @@ func (s *virtualGatewaySet) UnsortedList(filterResource ...func(*appmesh_k8s_aws
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualGateway))
 		})
@@ -1180,6 +1190,7 @@ func (s *gatewayRouteSet) List(filterResource ...func(*appmesh_k8s_aws_v1beta2.G
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*appmesh_k8s_aws_v1beta2.GatewayRoute))
 		})
@@ -1199,6 +1210,7 @@ func (s *gatewayRouteSet) UnsortedList(filterResource ...func(*appmesh_k8s_aws_v
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*appmesh_k8s_aws_v1beta2.GatewayRoute))
 		})

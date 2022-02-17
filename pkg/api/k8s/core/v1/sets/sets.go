@@ -85,6 +85,7 @@ func (s *secretSet) List(filterResource ...func(*v1.Secret) bool) []*v1.Secret {
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*v1.Secret))
 		})
@@ -104,6 +105,7 @@ func (s *secretSet) UnsortedList(filterResource ...func(*v1.Secret) bool) []*v1.
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*v1.Secret))
 		})
@@ -304,6 +306,7 @@ func (s *serviceAccountSet) List(filterResource ...func(*v1.ServiceAccount) bool
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*v1.ServiceAccount))
 		})
@@ -323,6 +326,7 @@ func (s *serviceAccountSet) UnsortedList(filterResource ...func(*v1.ServiceAccou
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*v1.ServiceAccount))
 		})
@@ -523,6 +527,7 @@ func (s *configMapSet) List(filterResource ...func(*v1.ConfigMap) bool) []*v1.Co
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*v1.ConfigMap))
 		})
@@ -542,6 +547,7 @@ func (s *configMapSet) UnsortedList(filterResource ...func(*v1.ConfigMap) bool) 
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*v1.ConfigMap))
 		})
@@ -742,6 +748,7 @@ func (s *serviceSet) List(filterResource ...func(*v1.Service) bool) []*v1.Servic
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*v1.Service))
 		})
@@ -761,6 +768,7 @@ func (s *serviceSet) UnsortedList(filterResource ...func(*v1.Service) bool) []*v
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*v1.Service))
 		})
@@ -961,6 +969,7 @@ func (s *podSet) List(filterResource ...func(*v1.Pod) bool) []*v1.Pod {
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*v1.Pod))
 		})
@@ -980,6 +989,7 @@ func (s *podSet) UnsortedList(filterResource ...func(*v1.Pod) bool) []*v1.Pod {
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*v1.Pod))
 		})
@@ -1180,6 +1190,7 @@ func (s *endpointsSet) List(filterResource ...func(*v1.Endpoints) bool) []*v1.En
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*v1.Endpoints))
 		})
@@ -1199,6 +1210,7 @@ func (s *endpointsSet) UnsortedList(filterResource ...func(*v1.Endpoints) bool) 
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*v1.Endpoints))
 		})
@@ -1399,6 +1411,7 @@ func (s *namespaceSet) List(filterResource ...func(*v1.Namespace) bool) []*v1.Na
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*v1.Namespace))
 		})
@@ -1418,6 +1431,7 @@ func (s *namespaceSet) UnsortedList(filterResource ...func(*v1.Namespace) bool) 
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*v1.Namespace))
 		})
@@ -1618,6 +1632,7 @@ func (s *nodeSet) List(filterResource ...func(*v1.Node) bool) []*v1.Node {
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*v1.Node))
 		})
@@ -1637,6 +1652,7 @@ func (s *nodeSet) UnsortedList(filterResource ...func(*v1.Node) bool) []*v1.Node
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*v1.Node))
 		})

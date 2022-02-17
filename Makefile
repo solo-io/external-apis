@@ -15,8 +15,8 @@ mod-download:
 .PHONY: codegen-deps
 codegen-deps: mod-download
 	mkdir -p $(DEPSGOBIN)
-	go install github.com/golang/mock/mockgen
-	go install golang.org/x/tools/cmd/goimports
+	go install github.com/golang/mock/mockgen@v1.5.0
+	go install golang.org/x/tools/cmd/goimports@v0.1.2
 
 .PHONY: generated-code
 generated-code:

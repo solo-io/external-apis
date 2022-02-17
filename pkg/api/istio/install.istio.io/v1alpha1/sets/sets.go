@@ -85,6 +85,7 @@ func (s *istioOperatorSet) List(filterResource ...func(*install_istio_io_v1alpha
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*install_istio_io_v1alpha1.IstioOperator))
 		})
@@ -104,6 +105,7 @@ func (s *istioOperatorSet) UnsortedList(filterResource ...func(*install_istio_io
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*install_istio_io_v1alpha1.IstioOperator))
 		})
