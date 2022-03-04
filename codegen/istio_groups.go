@@ -2,7 +2,7 @@ package codegen
 
 import (
 	"github.com/solo-io/skv2/codegen/model"
-	"istio.io/client-go/pkg/apis/networking/v1alpha3"
+	networking "istio.io/client-go/pkg/apis/networking/v1beta1"
 	"istio.io/client-go/pkg/apis/security/v1beta1"
 	operator "istio.io/istio/operator/pkg/apis/istio/v1alpha1"
 )
@@ -19,7 +19,7 @@ const (
 func istioGroups() []model.Group {
 	return []model.Group{
 		{
-			GroupVersion: v1alpha3.SchemeGroupVersion,
+			GroupVersion: networking.SchemeGroupVersion,
 			Module:       istioModule,
 			Resources: []model.Resource{
 				{
@@ -44,7 +44,7 @@ func istioGroups() []model.Group {
 					Kind: "Sidecar",
 				},
 			},
-			CustomTypesImportPath: "istio.io/client-go/pkg/apis/networking/v1alpha3",
+			CustomTypesImportPath: "istio.io/client-go/pkg/apis/networking/v1beta1",
 			ApiRoot:               istioApiRoot,
 		},
 		{
