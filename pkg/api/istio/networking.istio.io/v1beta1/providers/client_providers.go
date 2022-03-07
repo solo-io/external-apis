@@ -45,34 +45,6 @@ func DestinationRuleClientFromConfigFactoryProvider() DestinationRuleClientFromC
 	}
 }
 
-// Provider for EnvoyFilterClient from Clientset
-func EnvoyFilterClientFromClientsetProvider(clients networking_istio_io_v1beta1.Clientset) networking_istio_io_v1beta1.EnvoyFilterClient {
-	return clients.EnvoyFilters()
-}
-
-// Provider for EnvoyFilter Client from Client
-func EnvoyFilterClientProvider(client client.Client) networking_istio_io_v1beta1.EnvoyFilterClient {
-	return networking_istio_io_v1beta1.NewEnvoyFilterClient(client)
-}
-
-type EnvoyFilterClientFactory func(client client.Client) networking_istio_io_v1beta1.EnvoyFilterClient
-
-func EnvoyFilterClientFactoryProvider() EnvoyFilterClientFactory {
-	return EnvoyFilterClientProvider
-}
-
-type EnvoyFilterClientFromConfigFactory func(cfg *rest.Config) (networking_istio_io_v1beta1.EnvoyFilterClient, error)
-
-func EnvoyFilterClientFromConfigFactoryProvider() EnvoyFilterClientFromConfigFactory {
-	return func(cfg *rest.Config) (networking_istio_io_v1beta1.EnvoyFilterClient, error) {
-		clients, err := networking_istio_io_v1beta1.NewClientsetFromConfig(cfg)
-		if err != nil {
-			return nil, err
-		}
-		return clients.EnvoyFilters(), nil
-	}
-}
-
 // Provider for GatewayClient from Clientset
 func GatewayClientFromClientsetProvider(clients networking_istio_io_v1beta1.Clientset) networking_istio_io_v1beta1.GatewayClient {
 	return clients.Gateways()

@@ -43,8 +43,6 @@ type Clientset interface {
 	// clienset for the networking.istio.io/v1beta1/v1beta1 APIs
 	DestinationRules() DestinationRuleClient
 	// clienset for the networking.istio.io/v1beta1/v1beta1 APIs
-	EnvoyFilters() EnvoyFilterClient
-	// clienset for the networking.istio.io/v1beta1/v1beta1 APIs
 	Gateways() GatewayClient
 	// clienset for the networking.istio.io/v1beta1/v1beta1 APIs
 	ServiceEntries() ServiceEntryClient
@@ -81,11 +79,6 @@ func NewClientset(client client.Client) Clientset {
 // clienset for the networking.istio.io/v1beta1/v1beta1 APIs
 func (c *clientSet) DestinationRules() DestinationRuleClient {
 	return NewDestinationRuleClient(c.client)
-}
-
-// clienset for the networking.istio.io/v1beta1/v1beta1 APIs
-func (c *clientSet) EnvoyFilters() EnvoyFilterClient {
-	return NewEnvoyFilterClient(c.client)
 }
 
 // clienset for the networking.istio.io/v1beta1/v1beta1 APIs
@@ -253,148 +246,6 @@ func (m *multiclusterDestinationRuleClient) Cluster(cluster string) (Destination
 		return nil, err
 	}
 	return NewDestinationRuleClient(client), nil
-}
-
-// Reader knows how to read and list EnvoyFilters.
-type EnvoyFilterReader interface {
-	// Get retrieves a EnvoyFilter for the given object key
-	GetEnvoyFilter(ctx context.Context, key client.ObjectKey) (*networking_istio_io_v1beta1.EnvoyFilter, error)
-
-	// List retrieves list of EnvoyFilters for a given namespace and list options.
-	ListEnvoyFilter(ctx context.Context, opts ...client.ListOption) (*networking_istio_io_v1beta1.EnvoyFilterList, error)
-}
-
-// EnvoyFilterTransitionFunction instructs the EnvoyFilterWriter how to transition between an existing
-// EnvoyFilter object and a desired on an Upsert
-type EnvoyFilterTransitionFunction func(existing, desired *networking_istio_io_v1beta1.EnvoyFilter) error
-
-// Writer knows how to create, delete, and update EnvoyFilters.
-type EnvoyFilterWriter interface {
-	// Create saves the EnvoyFilter object.
-	CreateEnvoyFilter(ctx context.Context, obj *networking_istio_io_v1beta1.EnvoyFilter, opts ...client.CreateOption) error
-
-	// Delete deletes the EnvoyFilter object.
-	DeleteEnvoyFilter(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error
-
-	// Update updates the given EnvoyFilter object.
-	UpdateEnvoyFilter(ctx context.Context, obj *networking_istio_io_v1beta1.EnvoyFilter, opts ...client.UpdateOption) error
-
-	// Patch patches the given EnvoyFilter object.
-	PatchEnvoyFilter(ctx context.Context, obj *networking_istio_io_v1beta1.EnvoyFilter, patch client.Patch, opts ...client.PatchOption) error
-
-	// DeleteAllOf deletes all EnvoyFilter objects matching the given options.
-	DeleteAllOfEnvoyFilter(ctx context.Context, opts ...client.DeleteAllOfOption) error
-
-	// Create or Update the EnvoyFilter object.
-	UpsertEnvoyFilter(ctx context.Context, obj *networking_istio_io_v1beta1.EnvoyFilter, transitionFuncs ...EnvoyFilterTransitionFunction) error
-}
-
-// StatusWriter knows how to update status subresource of a EnvoyFilter object.
-type EnvoyFilterStatusWriter interface {
-	// Update updates the fields corresponding to the status subresource for the
-	// given EnvoyFilter object.
-	UpdateEnvoyFilterStatus(ctx context.Context, obj *networking_istio_io_v1beta1.EnvoyFilter, opts ...client.UpdateOption) error
-
-	// Patch patches the given EnvoyFilter object's subresource.
-	PatchEnvoyFilterStatus(ctx context.Context, obj *networking_istio_io_v1beta1.EnvoyFilter, patch client.Patch, opts ...client.PatchOption) error
-}
-
-// Client knows how to perform CRUD operations on EnvoyFilters.
-type EnvoyFilterClient interface {
-	EnvoyFilterReader
-	EnvoyFilterWriter
-	EnvoyFilterStatusWriter
-}
-
-type envoyFilterClient struct {
-	client client.Client
-}
-
-func NewEnvoyFilterClient(client client.Client) *envoyFilterClient {
-	return &envoyFilterClient{client: client}
-}
-
-func (c *envoyFilterClient) GetEnvoyFilter(ctx context.Context, key client.ObjectKey) (*networking_istio_io_v1beta1.EnvoyFilter, error) {
-	obj := &networking_istio_io_v1beta1.EnvoyFilter{}
-	if err := c.client.Get(ctx, key, obj); err != nil {
-		return nil, err
-	}
-	return obj, nil
-}
-
-func (c *envoyFilterClient) ListEnvoyFilter(ctx context.Context, opts ...client.ListOption) (*networking_istio_io_v1beta1.EnvoyFilterList, error) {
-	list := &networking_istio_io_v1beta1.EnvoyFilterList{}
-	if err := c.client.List(ctx, list, opts...); err != nil {
-		return nil, err
-	}
-	return list, nil
-}
-
-func (c *envoyFilterClient) CreateEnvoyFilter(ctx context.Context, obj *networking_istio_io_v1beta1.EnvoyFilter, opts ...client.CreateOption) error {
-	return c.client.Create(ctx, obj, opts...)
-}
-
-func (c *envoyFilterClient) DeleteEnvoyFilter(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	obj := &networking_istio_io_v1beta1.EnvoyFilter{}
-	obj.SetName(key.Name)
-	obj.SetNamespace(key.Namespace)
-	return c.client.Delete(ctx, obj, opts...)
-}
-
-func (c *envoyFilterClient) UpdateEnvoyFilter(ctx context.Context, obj *networking_istio_io_v1beta1.EnvoyFilter, opts ...client.UpdateOption) error {
-	return c.client.Update(ctx, obj, opts...)
-}
-
-func (c *envoyFilterClient) PatchEnvoyFilter(ctx context.Context, obj *networking_istio_io_v1beta1.EnvoyFilter, patch client.Patch, opts ...client.PatchOption) error {
-	return c.client.Patch(ctx, obj, patch, opts...)
-}
-
-func (c *envoyFilterClient) DeleteAllOfEnvoyFilter(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &networking_istio_io_v1beta1.EnvoyFilter{}
-	return c.client.DeleteAllOf(ctx, obj, opts...)
-}
-
-func (c *envoyFilterClient) UpsertEnvoyFilter(ctx context.Context, obj *networking_istio_io_v1beta1.EnvoyFilter, transitionFuncs ...EnvoyFilterTransitionFunction) error {
-	genericTxFunc := func(existing, desired runtime.Object) error {
-		for _, txFunc := range transitionFuncs {
-			if err := txFunc(existing.(*networking_istio_io_v1beta1.EnvoyFilter), desired.(*networking_istio_io_v1beta1.EnvoyFilter)); err != nil {
-				return err
-			}
-		}
-		return nil
-	}
-	_, err := controllerutils.Upsert(ctx, c.client, obj, genericTxFunc)
-	return err
-}
-
-func (c *envoyFilterClient) UpdateEnvoyFilterStatus(ctx context.Context, obj *networking_istio_io_v1beta1.EnvoyFilter, opts ...client.UpdateOption) error {
-	return c.client.Status().Update(ctx, obj, opts...)
-}
-
-func (c *envoyFilterClient) PatchEnvoyFilterStatus(ctx context.Context, obj *networking_istio_io_v1beta1.EnvoyFilter, patch client.Patch, opts ...client.PatchOption) error {
-	return c.client.Status().Patch(ctx, obj, patch, opts...)
-}
-
-// Provides EnvoyFilterClients for multiple clusters.
-type MulticlusterEnvoyFilterClient interface {
-	// Cluster returns a EnvoyFilterClient for the given cluster
-	Cluster(cluster string) (EnvoyFilterClient, error)
-}
-
-type multiclusterEnvoyFilterClient struct {
-	client multicluster.Client
-}
-
-func NewMulticlusterEnvoyFilterClient(client multicluster.Client) MulticlusterEnvoyFilterClient {
-	return &multiclusterEnvoyFilterClient{client: client}
-}
-
-func (m *multiclusterEnvoyFilterClient) Cluster(cluster string) (EnvoyFilterClient, error) {
-	client, err := m.client.Cluster(cluster)
-	if err != nil {
-		return nil, err
-	}
-	return NewEnvoyFilterClient(client), nil
 }
 
 // Reader knows how to read and list Gateways.

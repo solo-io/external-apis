@@ -10,9 +10,6 @@ import (
 // DestinationRuleSlice represents a slice of *DestinationRule
 type DestinationRuleSlice []*DestinationRule
 
-// EnvoyFilterSlice represents a slice of *EnvoyFilter
-type EnvoyFilterSlice []*EnvoyFilter
-
 // GatewaySlice represents a slice of *Gateway
 type GatewaySlice []*Gateway
 
