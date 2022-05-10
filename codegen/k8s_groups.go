@@ -7,6 +7,7 @@ import (
 	batchv1 "k8s.io/api/batch/v1"
 	certificatesv1beta1 "k8s.io/api/certificates/v1beta1"
 	corev1 "k8s.io/api/core/v1"
+	networkingv1 "k8s.io/api/networking/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apiextensionsv1beta1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
@@ -118,6 +119,16 @@ func k8sGroups() []model.Group {
 				},
 			},
 			CustomTypesImportPath: "k8s.io/api/rbac/v1",
+			ApiRoot:               k8sApiRoot,
+		},
+		{
+			GroupVersion: networkingv1.SchemeGroupVersion,
+			Resources: []model.Resource{
+				{
+					Kind: "NetworkPolicy",
+				},
+			},
+			CustomTypesImportPath: "k8s.io/api/networking/v1",
 			ApiRoot:               k8sApiRoot,
 		},
 		{
