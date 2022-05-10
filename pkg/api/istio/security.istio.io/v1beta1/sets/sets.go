@@ -85,6 +85,7 @@ func (s *authorizationPolicySet) List(filterResource ...func(*security_istio_io_
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*security_istio_io_v1beta1.AuthorizationPolicy))
 		})
@@ -104,6 +105,7 @@ func (s *authorizationPolicySet) UnsortedList(filterResource ...func(*security_i
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*security_istio_io_v1beta1.AuthorizationPolicy))
 		})
@@ -304,6 +306,7 @@ func (s *peerAuthenticationSet) List(filterResource ...func(*security_istio_io_v
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*security_istio_io_v1beta1.PeerAuthentication))
 		})
@@ -323,6 +326,7 @@ func (s *peerAuthenticationSet) UnsortedList(filterResource ...func(*security_is
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*security_istio_io_v1beta1.PeerAuthentication))
 		})

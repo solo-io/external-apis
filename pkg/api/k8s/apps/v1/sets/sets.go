@@ -85,6 +85,7 @@ func (s *deploymentSet) List(filterResource ...func(*apps_v1.Deployment) bool) [
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*apps_v1.Deployment))
 		})
@@ -104,6 +105,7 @@ func (s *deploymentSet) UnsortedList(filterResource ...func(*apps_v1.Deployment)
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*apps_v1.Deployment))
 		})
@@ -304,6 +306,7 @@ func (s *replicaSetSet) List(filterResource ...func(*apps_v1.ReplicaSet) bool) [
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*apps_v1.ReplicaSet))
 		})
@@ -323,6 +326,7 @@ func (s *replicaSetSet) UnsortedList(filterResource ...func(*apps_v1.ReplicaSet)
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*apps_v1.ReplicaSet))
 		})
@@ -523,6 +527,7 @@ func (s *daemonSetSet) List(filterResource ...func(*apps_v1.DaemonSet) bool) []*
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*apps_v1.DaemonSet))
 		})
@@ -542,6 +547,7 @@ func (s *daemonSetSet) UnsortedList(filterResource ...func(*apps_v1.DaemonSet) b
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*apps_v1.DaemonSet))
 		})
@@ -742,6 +748,7 @@ func (s *statefulSetSet) List(filterResource ...func(*apps_v1.StatefulSet) bool)
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*apps_v1.StatefulSet))
 		})
@@ -761,6 +768,7 @@ func (s *statefulSetSet) UnsortedList(filterResource ...func(*apps_v1.StatefulSe
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*apps_v1.StatefulSet))
 		})
