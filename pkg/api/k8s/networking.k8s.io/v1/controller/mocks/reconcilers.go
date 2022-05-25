@@ -15,30 +15,30 @@ import (
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
-// MockNetworkPolicyReconciler is a mock of NetworkPolicyReconciler interface
+// MockNetworkPolicyReconciler is a mock of NetworkPolicyReconciler interface.
 type MockNetworkPolicyReconciler struct {
 	ctrl     *gomock.Controller
 	recorder *MockNetworkPolicyReconcilerMockRecorder
 }
 
-// MockNetworkPolicyReconcilerMockRecorder is the mock recorder for MockNetworkPolicyReconciler
+// MockNetworkPolicyReconcilerMockRecorder is the mock recorder for MockNetworkPolicyReconciler.
 type MockNetworkPolicyReconcilerMockRecorder struct {
 	mock *MockNetworkPolicyReconciler
 }
 
-// NewMockNetworkPolicyReconciler creates a new mock instance
+// NewMockNetworkPolicyReconciler creates a new mock instance.
 func NewMockNetworkPolicyReconciler(ctrl *gomock.Controller) *MockNetworkPolicyReconciler {
 	mock := &MockNetworkPolicyReconciler{ctrl: ctrl}
 	mock.recorder = &MockNetworkPolicyReconcilerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockNetworkPolicyReconciler) EXPECT() *MockNetworkPolicyReconcilerMockRecorder {
 	return m.recorder
 }
 
-// ReconcileNetworkPolicy mocks base method
+// ReconcileNetworkPolicy mocks base method.
 func (m *MockNetworkPolicyReconciler) ReconcileNetworkPolicy(obj *v1.NetworkPolicy) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileNetworkPolicy", obj)
@@ -47,36 +47,36 @@ func (m *MockNetworkPolicyReconciler) ReconcileNetworkPolicy(obj *v1.NetworkPoli
 	return ret0, ret1
 }
 
-// ReconcileNetworkPolicy indicates an expected call of ReconcileNetworkPolicy
+// ReconcileNetworkPolicy indicates an expected call of ReconcileNetworkPolicy.
 func (mr *MockNetworkPolicyReconcilerMockRecorder) ReconcileNetworkPolicy(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileNetworkPolicy", reflect.TypeOf((*MockNetworkPolicyReconciler)(nil).ReconcileNetworkPolicy), obj)
 }
 
-// MockNetworkPolicyDeletionReconciler is a mock of NetworkPolicyDeletionReconciler interface
+// MockNetworkPolicyDeletionReconciler is a mock of NetworkPolicyDeletionReconciler interface.
 type MockNetworkPolicyDeletionReconciler struct {
 	ctrl     *gomock.Controller
 	recorder *MockNetworkPolicyDeletionReconcilerMockRecorder
 }
 
-// MockNetworkPolicyDeletionReconcilerMockRecorder is the mock recorder for MockNetworkPolicyDeletionReconciler
+// MockNetworkPolicyDeletionReconcilerMockRecorder is the mock recorder for MockNetworkPolicyDeletionReconciler.
 type MockNetworkPolicyDeletionReconcilerMockRecorder struct {
 	mock *MockNetworkPolicyDeletionReconciler
 }
 
-// NewMockNetworkPolicyDeletionReconciler creates a new mock instance
+// NewMockNetworkPolicyDeletionReconciler creates a new mock instance.
 func NewMockNetworkPolicyDeletionReconciler(ctrl *gomock.Controller) *MockNetworkPolicyDeletionReconciler {
 	mock := &MockNetworkPolicyDeletionReconciler{ctrl: ctrl}
 	mock.recorder = &MockNetworkPolicyDeletionReconcilerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockNetworkPolicyDeletionReconciler) EXPECT() *MockNetworkPolicyDeletionReconcilerMockRecorder {
 	return m.recorder
 }
 
-// ReconcileNetworkPolicyDeletion mocks base method
+// ReconcileNetworkPolicyDeletion mocks base method.
 func (m *MockNetworkPolicyDeletionReconciler) ReconcileNetworkPolicyDeletion(req reconcile.Request) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileNetworkPolicyDeletion", req)
@@ -84,36 +84,64 @@ func (m *MockNetworkPolicyDeletionReconciler) ReconcileNetworkPolicyDeletion(req
 	return ret0
 }
 
-// ReconcileNetworkPolicyDeletion indicates an expected call of ReconcileNetworkPolicyDeletion
+// ReconcileNetworkPolicyDeletion indicates an expected call of ReconcileNetworkPolicyDeletion.
 func (mr *MockNetworkPolicyDeletionReconcilerMockRecorder) ReconcileNetworkPolicyDeletion(req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileNetworkPolicyDeletion", reflect.TypeOf((*MockNetworkPolicyDeletionReconciler)(nil).ReconcileNetworkPolicyDeletion), req)
 }
 
-// MockNetworkPolicyFinalizer is a mock of NetworkPolicyFinalizer interface
+// MockNetworkPolicyFinalizer is a mock of NetworkPolicyFinalizer interface.
 type MockNetworkPolicyFinalizer struct {
 	ctrl     *gomock.Controller
 	recorder *MockNetworkPolicyFinalizerMockRecorder
 }
 
-// MockNetworkPolicyFinalizerMockRecorder is the mock recorder for MockNetworkPolicyFinalizer
+// MockNetworkPolicyFinalizerMockRecorder is the mock recorder for MockNetworkPolicyFinalizer.
 type MockNetworkPolicyFinalizerMockRecorder struct {
 	mock *MockNetworkPolicyFinalizer
 }
 
-// NewMockNetworkPolicyFinalizer creates a new mock instance
+// NewMockNetworkPolicyFinalizer creates a new mock instance.
 func NewMockNetworkPolicyFinalizer(ctrl *gomock.Controller) *MockNetworkPolicyFinalizer {
 	mock := &MockNetworkPolicyFinalizer{ctrl: ctrl}
 	mock.recorder = &MockNetworkPolicyFinalizerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockNetworkPolicyFinalizer) EXPECT() *MockNetworkPolicyFinalizerMockRecorder {
 	return m.recorder
 }
 
-// ReconcileNetworkPolicy mocks base method
+// FinalizeNetworkPolicy mocks base method.
+func (m *MockNetworkPolicyFinalizer) FinalizeNetworkPolicy(obj *v1.NetworkPolicy) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FinalizeNetworkPolicy", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// FinalizeNetworkPolicy indicates an expected call of FinalizeNetworkPolicy.
+func (mr *MockNetworkPolicyFinalizerMockRecorder) FinalizeNetworkPolicy(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FinalizeNetworkPolicy", reflect.TypeOf((*MockNetworkPolicyFinalizer)(nil).FinalizeNetworkPolicy), obj)
+}
+
+// NetworkPolicyFinalizerName mocks base method.
+func (m *MockNetworkPolicyFinalizer) NetworkPolicyFinalizerName() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NetworkPolicyFinalizerName")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// NetworkPolicyFinalizerName indicates an expected call of NetworkPolicyFinalizerName.
+func (mr *MockNetworkPolicyFinalizerMockRecorder) NetworkPolicyFinalizerName() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NetworkPolicyFinalizerName", reflect.TypeOf((*MockNetworkPolicyFinalizer)(nil).NetworkPolicyFinalizerName))
+}
+
+// ReconcileNetworkPolicy mocks base method.
 func (m *MockNetworkPolicyFinalizer) ReconcileNetworkPolicy(obj *v1.NetworkPolicy) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileNetworkPolicy", obj)
@@ -122,64 +150,36 @@ func (m *MockNetworkPolicyFinalizer) ReconcileNetworkPolicy(obj *v1.NetworkPolic
 	return ret0, ret1
 }
 
-// ReconcileNetworkPolicy indicates an expected call of ReconcileNetworkPolicy
+// ReconcileNetworkPolicy indicates an expected call of ReconcileNetworkPolicy.
 func (mr *MockNetworkPolicyFinalizerMockRecorder) ReconcileNetworkPolicy(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileNetworkPolicy", reflect.TypeOf((*MockNetworkPolicyFinalizer)(nil).ReconcileNetworkPolicy), obj)
 }
 
-// NetworkPolicyFinalizerName mocks base method
-func (m *MockNetworkPolicyFinalizer) NetworkPolicyFinalizerName() string {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "NetworkPolicyFinalizerName")
-	ret0, _ := ret[0].(string)
-	return ret0
-}
-
-// NetworkPolicyFinalizerName indicates an expected call of NetworkPolicyFinalizerName
-func (mr *MockNetworkPolicyFinalizerMockRecorder) NetworkPolicyFinalizerName() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NetworkPolicyFinalizerName", reflect.TypeOf((*MockNetworkPolicyFinalizer)(nil).NetworkPolicyFinalizerName))
-}
-
-// FinalizeNetworkPolicy mocks base method
-func (m *MockNetworkPolicyFinalizer) FinalizeNetworkPolicy(obj *v1.NetworkPolicy) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FinalizeNetworkPolicy", obj)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// FinalizeNetworkPolicy indicates an expected call of FinalizeNetworkPolicy
-func (mr *MockNetworkPolicyFinalizerMockRecorder) FinalizeNetworkPolicy(obj interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FinalizeNetworkPolicy", reflect.TypeOf((*MockNetworkPolicyFinalizer)(nil).FinalizeNetworkPolicy), obj)
-}
-
-// MockNetworkPolicyReconcileLoop is a mock of NetworkPolicyReconcileLoop interface
+// MockNetworkPolicyReconcileLoop is a mock of NetworkPolicyReconcileLoop interface.
 type MockNetworkPolicyReconcileLoop struct {
 	ctrl     *gomock.Controller
 	recorder *MockNetworkPolicyReconcileLoopMockRecorder
 }
 
-// MockNetworkPolicyReconcileLoopMockRecorder is the mock recorder for MockNetworkPolicyReconcileLoop
+// MockNetworkPolicyReconcileLoopMockRecorder is the mock recorder for MockNetworkPolicyReconcileLoop.
 type MockNetworkPolicyReconcileLoopMockRecorder struct {
 	mock *MockNetworkPolicyReconcileLoop
 }
 
-// NewMockNetworkPolicyReconcileLoop creates a new mock instance
+// NewMockNetworkPolicyReconcileLoop creates a new mock instance.
 func NewMockNetworkPolicyReconcileLoop(ctrl *gomock.Controller) *MockNetworkPolicyReconcileLoop {
 	mock := &MockNetworkPolicyReconcileLoop{ctrl: ctrl}
 	mock.recorder = &MockNetworkPolicyReconcileLoopMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockNetworkPolicyReconcileLoop) EXPECT() *MockNetworkPolicyReconcileLoopMockRecorder {
 	return m.recorder
 }
 
-// RunNetworkPolicyReconciler mocks base method
+// RunNetworkPolicyReconciler mocks base method.
 func (m *MockNetworkPolicyReconcileLoop) RunNetworkPolicyReconciler(ctx context.Context, rec controller.NetworkPolicyReconciler, predicates ...predicate.Predicate) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, rec}
@@ -191,7 +191,7 @@ func (m *MockNetworkPolicyReconcileLoop) RunNetworkPolicyReconciler(ctx context.
 	return ret0
 }
 
-// RunNetworkPolicyReconciler indicates an expected call of RunNetworkPolicyReconciler
+// RunNetworkPolicyReconciler indicates an expected call of RunNetworkPolicyReconciler.
 func (mr *MockNetworkPolicyReconcileLoopMockRecorder) RunNetworkPolicyReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, rec}, predicates...)

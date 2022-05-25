@@ -85,6 +85,7 @@ func (s *networkPolicySet) List(filterResource ...func(*networking_k8s_io_v1.Net
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*networking_k8s_io_v1.NetworkPolicy))
 		})
@@ -104,6 +105,7 @@ func (s *networkPolicySet) UnsortedList(filterResource ...func(*networking_k8s_i
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*networking_k8s_io_v1.NetworkPolicy))
 		})

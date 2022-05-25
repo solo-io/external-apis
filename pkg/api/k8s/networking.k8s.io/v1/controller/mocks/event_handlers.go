@@ -14,30 +14,30 @@ import (
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
-// MockNetworkPolicyEventHandler is a mock of NetworkPolicyEventHandler interface
+// MockNetworkPolicyEventHandler is a mock of NetworkPolicyEventHandler interface.
 type MockNetworkPolicyEventHandler struct {
 	ctrl     *gomock.Controller
 	recorder *MockNetworkPolicyEventHandlerMockRecorder
 }
 
-// MockNetworkPolicyEventHandlerMockRecorder is the mock recorder for MockNetworkPolicyEventHandler
+// MockNetworkPolicyEventHandlerMockRecorder is the mock recorder for MockNetworkPolicyEventHandler.
 type MockNetworkPolicyEventHandlerMockRecorder struct {
 	mock *MockNetworkPolicyEventHandler
 }
 
-// NewMockNetworkPolicyEventHandler creates a new mock instance
+// NewMockNetworkPolicyEventHandler creates a new mock instance.
 func NewMockNetworkPolicyEventHandler(ctrl *gomock.Controller) *MockNetworkPolicyEventHandler {
 	mock := &MockNetworkPolicyEventHandler{ctrl: ctrl}
 	mock.recorder = &MockNetworkPolicyEventHandlerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockNetworkPolicyEventHandler) EXPECT() *MockNetworkPolicyEventHandlerMockRecorder {
 	return m.recorder
 }
 
-// CreateNetworkPolicy mocks base method
+// CreateNetworkPolicy mocks base method.
 func (m *MockNetworkPolicyEventHandler) CreateNetworkPolicy(obj *v1.NetworkPolicy) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateNetworkPolicy", obj)
@@ -45,27 +45,13 @@ func (m *MockNetworkPolicyEventHandler) CreateNetworkPolicy(obj *v1.NetworkPolic
 	return ret0
 }
 
-// CreateNetworkPolicy indicates an expected call of CreateNetworkPolicy
+// CreateNetworkPolicy indicates an expected call of CreateNetworkPolicy.
 func (mr *MockNetworkPolicyEventHandlerMockRecorder) CreateNetworkPolicy(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateNetworkPolicy", reflect.TypeOf((*MockNetworkPolicyEventHandler)(nil).CreateNetworkPolicy), obj)
 }
 
-// UpdateNetworkPolicy mocks base method
-func (m *MockNetworkPolicyEventHandler) UpdateNetworkPolicy(old, new *v1.NetworkPolicy) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateNetworkPolicy", old, new)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// UpdateNetworkPolicy indicates an expected call of UpdateNetworkPolicy
-func (mr *MockNetworkPolicyEventHandlerMockRecorder) UpdateNetworkPolicy(old, new interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateNetworkPolicy", reflect.TypeOf((*MockNetworkPolicyEventHandler)(nil).UpdateNetworkPolicy), old, new)
-}
-
-// DeleteNetworkPolicy mocks base method
+// DeleteNetworkPolicy mocks base method.
 func (m *MockNetworkPolicyEventHandler) DeleteNetworkPolicy(obj *v1.NetworkPolicy) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteNetworkPolicy", obj)
@@ -73,13 +59,13 @@ func (m *MockNetworkPolicyEventHandler) DeleteNetworkPolicy(obj *v1.NetworkPolic
 	return ret0
 }
 
-// DeleteNetworkPolicy indicates an expected call of DeleteNetworkPolicy
+// DeleteNetworkPolicy indicates an expected call of DeleteNetworkPolicy.
 func (mr *MockNetworkPolicyEventHandlerMockRecorder) DeleteNetworkPolicy(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteNetworkPolicy", reflect.TypeOf((*MockNetworkPolicyEventHandler)(nil).DeleteNetworkPolicy), obj)
 }
 
-// GenericNetworkPolicy mocks base method
+// GenericNetworkPolicy mocks base method.
 func (m *MockNetworkPolicyEventHandler) GenericNetworkPolicy(obj *v1.NetworkPolicy) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GenericNetworkPolicy", obj)
@@ -87,36 +73,50 @@ func (m *MockNetworkPolicyEventHandler) GenericNetworkPolicy(obj *v1.NetworkPoli
 	return ret0
 }
 
-// GenericNetworkPolicy indicates an expected call of GenericNetworkPolicy
+// GenericNetworkPolicy indicates an expected call of GenericNetworkPolicy.
 func (mr *MockNetworkPolicyEventHandlerMockRecorder) GenericNetworkPolicy(obj interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericNetworkPolicy", reflect.TypeOf((*MockNetworkPolicyEventHandler)(nil).GenericNetworkPolicy), obj)
 }
 
-// MockNetworkPolicyEventWatcher is a mock of NetworkPolicyEventWatcher interface
+// UpdateNetworkPolicy mocks base method.
+func (m *MockNetworkPolicyEventHandler) UpdateNetworkPolicy(old, new *v1.NetworkPolicy) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateNetworkPolicy", old, new)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateNetworkPolicy indicates an expected call of UpdateNetworkPolicy.
+func (mr *MockNetworkPolicyEventHandlerMockRecorder) UpdateNetworkPolicy(old, new interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateNetworkPolicy", reflect.TypeOf((*MockNetworkPolicyEventHandler)(nil).UpdateNetworkPolicy), old, new)
+}
+
+// MockNetworkPolicyEventWatcher is a mock of NetworkPolicyEventWatcher interface.
 type MockNetworkPolicyEventWatcher struct {
 	ctrl     *gomock.Controller
 	recorder *MockNetworkPolicyEventWatcherMockRecorder
 }
 
-// MockNetworkPolicyEventWatcherMockRecorder is the mock recorder for MockNetworkPolicyEventWatcher
+// MockNetworkPolicyEventWatcherMockRecorder is the mock recorder for MockNetworkPolicyEventWatcher.
 type MockNetworkPolicyEventWatcherMockRecorder struct {
 	mock *MockNetworkPolicyEventWatcher
 }
 
-// NewMockNetworkPolicyEventWatcher creates a new mock instance
+// NewMockNetworkPolicyEventWatcher creates a new mock instance.
 func NewMockNetworkPolicyEventWatcher(ctrl *gomock.Controller) *MockNetworkPolicyEventWatcher {
 	mock := &MockNetworkPolicyEventWatcher{ctrl: ctrl}
 	mock.recorder = &MockNetworkPolicyEventWatcherMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockNetworkPolicyEventWatcher) EXPECT() *MockNetworkPolicyEventWatcherMockRecorder {
 	return m.recorder
 }
 
-// AddEventHandler mocks base method
+// AddEventHandler mocks base method.
 func (m *MockNetworkPolicyEventWatcher) AddEventHandler(ctx context.Context, h controller.NetworkPolicyEventHandler, predicates ...predicate.Predicate) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, h}
@@ -128,7 +128,7 @@ func (m *MockNetworkPolicyEventWatcher) AddEventHandler(ctx context.Context, h c
 	return ret0
 }
 
-// AddEventHandler indicates an expected call of AddEventHandler
+// AddEventHandler indicates an expected call of AddEventHandler.
 func (mr *MockNetworkPolicyEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, h}, predicates...)
