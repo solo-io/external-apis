@@ -12,6 +12,14 @@ replace (
 
 	istio.io/client-go => istio.io/client-go v1.12.2
 
+	k8s.io/api => k8s.io/api v0.22.2
+	k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.22.2
+	k8s.io/apimachinery => k8s.io/apimachinery v0.22.2
+	k8s.io/apiserver => k8s.io/apiserver v0.22.2
+	k8s.io/cli-runtime => k8s.io/cli-runtime v0.22.2
+	k8s.io/client-go => k8s.io/client-go v0.22.2
+	k8s.io/kubectl => k8s.io/kubectl v0.22.2
+
 	// Using private fork of controller-tools. See commit msg for more context
 	// as to why we are using a private fork.
 	sigs.k8s.io/controller-tools => github.com/cilium/controller-tools v0.6.2
@@ -25,11 +33,9 @@ replace (
 
 require (
 	github.com/aws/aws-app-mesh-controller-for-k8s v1.1.1
-	github.com/cilium/cilium v1.11.5 // indirect
-	github.com/evanphx/json-patch v5.6.0+incompatible // indirect
+	github.com/cilium/cilium v1.11.5
 	github.com/golang/mock v1.6.0
 	github.com/pkg/errors v0.9.1
-	github.com/prometheus/client_model v0.2.1-0.20210607210712-147c58e9608a // indirect
 	github.com/rotisserie/eris v0.1.1
 	github.com/servicemeshinterface/smi-sdk-go v0.4.1
 	github.com/solo-io/skv2 v0.22.8
