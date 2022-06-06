@@ -20,9 +20,9 @@ replace (
 	k8s.io/client-go => k8s.io/client-go v0.22.2
 	k8s.io/kubectl => k8s.io/kubectl v0.22.2
 
-	// Using private fork of controller-tools. See commit msg for more context
-	// as to why we are using a private fork.
-	sigs.k8s.io/controller-tools => github.com/cilium/controller-tools v0.6.2
+// Using private fork of controller-tools. See commit msg for more context
+// as to why we are using a private fork.
+//sigs.k8s.io/controller-tools => github.com/cilium/controller-tools v0.6.2
 //github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.9.0
 //github.com/envoyproxy/go-control-plane => 	github.com/envoyproxy/go-control-plane v0.10.2-0.20220420171917-689c2bccf0ec
 //github.com/envoyproxy/go-control-plane => 	github.com/envoyproxy/go-control-plane v0.10.2-0.20220325020618-49ff273808a1
