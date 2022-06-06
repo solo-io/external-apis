@@ -25,6 +25,7 @@ replace (
 
 require (
 	github.com/aws/aws-app-mesh-controller-for-k8s v1.1.1
+	github.com/cilium/cilium v1.11.5 // indirect
 	github.com/evanphx/json-patch v5.6.0+incompatible // indirect
 	github.com/golang/mock v1.6.0
 	github.com/pkg/errors v0.9.1
