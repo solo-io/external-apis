@@ -28,7 +28,7 @@ require (
 	github.com/servicemeshinterface/smi-sdk-go v0.4.1
 	github.com/solo-io/skv2 v0.22.8
 	istio.io/client-go v1.13.7
-	istio.io/istio v0.0.0-20220811200256-4d8554d016cc
+	istio.io/istio v0.0.0-20220812032556-81e2be94452f
 	k8s.io/api v0.24.2
 	k8s.io/apiextensions-apiserver v0.24.2
 	k8s.io/apimachinery v0.24.2
