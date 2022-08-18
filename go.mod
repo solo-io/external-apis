@@ -8,14 +8,18 @@ replace (
 )
 
 require (
-	github.com/aws/aws-app-mesh-controller-for-k8s v1.1.1
+	github.com/Masterminds/sprig/v3 v3.2.0 // indirect
+	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/mock v1.6.0
+	github.com/google/gofuzz v1.2.0 // indirect
+	github.com/lib/pq v1.8.0 // indirect
+	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/rotisserie/eris v0.1.1
-	github.com/servicemeshinterface/smi-sdk-go v0.4.1
+	github.com/sirupsen/logrus v1.7.0 // indirect
 	github.com/solo-io/skv2 v0.21.6
-	istio.io/client-go v1.9.5-0.20210607162355-6a6709ba5473
-	istio.io/istio v0.0.0-20210903183209-9d4e257a8202
+	golang.org/x/time v0.0.0-20201208040808-7e3f01d25324 // indirect
+	honnef.co/go/tools v0.0.1-2020.1.5 // indirect
 	k8s.io/api v0.20.1
 	k8s.io/apiextensions-apiserver v0.20.1
 	k8s.io/apimachinery v0.20.1
