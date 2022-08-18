@@ -1,16 +1,17 @@
-package codegen
+package cillium
 
 import (
 	ciliumv2 "github.com/cilium/cilium/pkg/k8s/apis/cilium.io/v2"
+	"github.com/solo-io/external-apis/codegen"
 	"github.com/solo-io/skv2/codegen/model"
 )
 
 func init() {
-	Groups = append(Groups, ciliumGroups()...)
+	codegen.Groups = append(codegen.Groups, ciliumGroups()...)
 }
 
 const (
-	ciliumApiRoot = apiRoot + "/cilium"
+	ciliumApiRoot = codegen.ApiRoot + "/cilium"
 	ciliumModule  = "github.com/cilium/cilium"
 )
 

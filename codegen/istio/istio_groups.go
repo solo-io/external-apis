@@ -1,6 +1,7 @@
-package codegen
+package istio
 
 import (
+	"github.com/solo-io/external-apis/codegen"
 	"github.com/solo-io/skv2/codegen/model"
 	networkingv1alpha3 "istio.io/client-go/pkg/apis/networking/v1alpha3"
 	networkingv1beta1 "istio.io/client-go/pkg/apis/networking/v1beta1"
@@ -9,11 +10,11 @@ import (
 )
 
 func init() {
-	Groups = append(Groups, istioGroups()...)
+	codegen.Groups = append(codegen.Groups, istioGroups()...)
 }
 
 const (
-	istioApiRoot = apiRoot + "/istio"
+	istioApiRoot = codegen.ApiRoot + "/istio"
 	istioModule  = "istio.io/client-go"
 )
 

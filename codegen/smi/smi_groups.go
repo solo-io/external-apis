@@ -1,4 +1,4 @@
-package codegen
+package smi
 
 import (
 	accessv1alpha2 "github.com/servicemeshinterface/smi-sdk-go/pkg/apis/access/v1alpha2"
@@ -6,15 +6,16 @@ import (
 	splitv1alpha1 "github.com/servicemeshinterface/smi-sdk-go/pkg/apis/split/v1alpha1"
 	splitv1alpha2 "github.com/servicemeshinterface/smi-sdk-go/pkg/apis/split/v1alpha2"
 	splitv1alpha3 "github.com/servicemeshinterface/smi-sdk-go/pkg/apis/split/v1alpha3"
+	"github.com/solo-io/external-apis/codegen"
 	"github.com/solo-io/skv2/codegen/model"
 )
 
 func init() {
-	Groups = append(Groups, smiGroups()...)
+	codegen.Groups = append(codegen.Groups, smiGroups()...)
 }
 
 const (
-	smiApiRoot = apiRoot + "/smi"
+	smiApiRoot = codegen.ApiRoot + "/smi"
 )
 
 func smiGroups() []model.Group {

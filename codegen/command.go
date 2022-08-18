@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	apiRoot = "pkg/api"
+	ApiRoot = "pkg/api"
 )
 
 var Groups []model.Group

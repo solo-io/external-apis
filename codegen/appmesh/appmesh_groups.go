@@ -1,16 +1,17 @@
-package codegen
+package appmesh
 
 import (
 	"github.com/aws/aws-app-mesh-controller-for-k8s/apis/appmesh/v1beta2"
+	"github.com/solo-io/external-apis/codegen"
 	"github.com/solo-io/skv2/codegen/model"
 )
 
 func init() {
-	Groups = append(Groups, appmeshGroups()...)
+	codegen.Groups = append(codegen.Groups, appmeshGroups()...)
 }
 
 const (
-	appmeshApiRoot      = apiRoot + "/appmesh"
+	appmeshApiRoot      = codegen.ApiRoot + "/appmesh"
 	appmeshModule       = "github.com/aws/aws-app-mesh-controller-for-k8s"
 	appmeshTypesPackage = appmeshModule + "/apis/appmesh/v1beta2"
 )

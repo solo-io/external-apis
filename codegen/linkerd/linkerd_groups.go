@@ -1,4 +1,4 @@
-package codegen
+package linkerd
 
 // TODO: Uncomment to reenable generating linkerd types once they bump to kube 1.18.x
 // import (
@@ -11,7 +11,7 @@ package codegen
 // }
 
 // const (
-// 	linkerdApiRoot = apiRoot + "/linkerd"
+// 	linkerdApiRoot = ApiRoot + "/linkerd"
 // )
 
 // func linkerdGroups() []model.Group {

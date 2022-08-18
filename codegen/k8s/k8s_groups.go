@@ -1,6 +1,7 @@
-package codegen
+package k8s
 
 import (
+	"github.com/solo-io/external-apis/codegen"
 	"github.com/solo-io/skv2/codegen/model"
 	admissionregistrationv1 "k8s.io/api/admissionregistration/v1"
 	appsv1 "k8s.io/api/apps/v1"
@@ -14,12 +15,12 @@ import (
 )
 
 const (
-	k8sApiRoot = apiRoot + "/k8s"
+	k8sApiRoot = codegen.ApiRoot + "/k8s"
 	k8sModule  = "k8s.io/api"
 )
 
 func init() {
-	Groups = append(Groups, k8sGroups()...)
+	codegen.Groups = append(codegen.Groups, k8sGroups()...)
 }
 
 func k8sGroups() []model.Group {
