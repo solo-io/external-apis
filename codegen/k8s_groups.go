@@ -96,6 +96,9 @@ func k8sGroups() []model.Group {
 				{
 					Kind: "ValidatingWebhookConfiguration",
 				},
+				{
+					Kind: "MutatingWebhookConfiguration",
+				},
 			},
 			CustomTypesImportPath: "k8s.io/api/admissionregistration/v1",
 			ApiRoot:               k8sApiRoot,
