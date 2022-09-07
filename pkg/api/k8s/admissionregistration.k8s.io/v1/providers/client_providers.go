@@ -44,3 +44,31 @@ func ValidatingWebhookConfigurationClientFromConfigFactoryProvider() ValidatingW
 		return clients.ValidatingWebhookConfigurations(), nil
 	}
 }
+
+// Provider for MutatingWebhookConfigurationClient from Clientset
+func MutatingWebhookConfigurationClientFromClientsetProvider(clients admissionregistration_k8s_io_v1.Clientset) admissionregistration_k8s_io_v1.MutatingWebhookConfigurationClient {
+	return clients.MutatingWebhookConfigurations()
+}
+
+// Provider for MutatingWebhookConfiguration Client from Client
+func MutatingWebhookConfigurationClientProvider(client client.Client) admissionregistration_k8s_io_v1.MutatingWebhookConfigurationClient {
+	return admissionregistration_k8s_io_v1.NewMutatingWebhookConfigurationClient(client)
+}
+
+type MutatingWebhookConfigurationClientFactory func(client client.Client) admissionregistration_k8s_io_v1.MutatingWebhookConfigurationClient
+
+func MutatingWebhookConfigurationClientFactoryProvider() MutatingWebhookConfigurationClientFactory {
+	return MutatingWebhookConfigurationClientProvider
+}
+
+type MutatingWebhookConfigurationClientFromConfigFactory func(cfg *rest.Config) (admissionregistration_k8s_io_v1.MutatingWebhookConfigurationClient, error)
+
+func MutatingWebhookConfigurationClientFromConfigFactoryProvider() MutatingWebhookConfigurationClientFromConfigFactory {
+	return func(cfg *rest.Config) (admissionregistration_k8s_io_v1.MutatingWebhookConfigurationClient, error) {
+		clients, err := admissionregistration_k8s_io_v1.NewClientsetFromConfig(cfg)
+		if err != nil {
+			return nil, err
+		}
+		return clients.MutatingWebhookConfigurations(), nil
+	}
+}

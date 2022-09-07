@@ -9,3 +9,6 @@ import (
 
 // ValidatingWebhookConfigurationSlice represents a slice of *ValidatingWebhookConfiguration
 type ValidatingWebhookConfigurationSlice []*ValidatingWebhookConfiguration
+
+// MutatingWebhookConfigurationSlice represents a slice of *MutatingWebhookConfiguration
+type MutatingWebhookConfigurationSlice []*MutatingWebhookConfiguration

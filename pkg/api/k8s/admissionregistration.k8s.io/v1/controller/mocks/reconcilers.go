@@ -197,3 +197,186 @@ func (mr *MockValidatingWebhookConfigurationReconcileLoopMockRecorder) RunValida
 	varargs := append([]interface{}{ctx, rec}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunValidatingWebhookConfigurationReconciler", reflect.TypeOf((*MockValidatingWebhookConfigurationReconcileLoop)(nil).RunValidatingWebhookConfigurationReconciler), varargs...)
 }
+
+// MockMutatingWebhookConfigurationReconciler is a mock of MutatingWebhookConfigurationReconciler interface.
+type MockMutatingWebhookConfigurationReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockMutatingWebhookConfigurationReconcilerMockRecorder
+}
+
+// MockMutatingWebhookConfigurationReconcilerMockRecorder is the mock recorder for MockMutatingWebhookConfigurationReconciler.
+type MockMutatingWebhookConfigurationReconcilerMockRecorder struct {
+	mock *MockMutatingWebhookConfigurationReconciler
+}
+
+// NewMockMutatingWebhookConfigurationReconciler creates a new mock instance.
+func NewMockMutatingWebhookConfigurationReconciler(ctrl *gomock.Controller) *MockMutatingWebhookConfigurationReconciler {
+	mock := &MockMutatingWebhookConfigurationReconciler{ctrl: ctrl}
+	mock.recorder = &MockMutatingWebhookConfigurationReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMutatingWebhookConfigurationReconciler) EXPECT() *MockMutatingWebhookConfigurationReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationReconciler) ReconcileMutatingWebhookConfiguration(obj *v1.MutatingWebhookConfiguration) (reconcile.Result, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileMutatingWebhookConfiguration", obj)
+	ret0, _ := ret[0].(reconcile.Result)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReconcileMutatingWebhookConfiguration indicates an expected call of ReconcileMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationReconcilerMockRecorder) ReconcileMutatingWebhookConfiguration(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationReconciler)(nil).ReconcileMutatingWebhookConfiguration), obj)
+}
+
+// MockMutatingWebhookConfigurationDeletionReconciler is a mock of MutatingWebhookConfigurationDeletionReconciler interface.
+type MockMutatingWebhookConfigurationDeletionReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockMutatingWebhookConfigurationDeletionReconcilerMockRecorder
+}
+
+// MockMutatingWebhookConfigurationDeletionReconcilerMockRecorder is the mock recorder for MockMutatingWebhookConfigurationDeletionReconciler.
+type MockMutatingWebhookConfigurationDeletionReconcilerMockRecorder struct {
+	mock *MockMutatingWebhookConfigurationDeletionReconciler
+}
+
+// NewMockMutatingWebhookConfigurationDeletionReconciler creates a new mock instance.
+func NewMockMutatingWebhookConfigurationDeletionReconciler(ctrl *gomock.Controller) *MockMutatingWebhookConfigurationDeletionReconciler {
+	mock := &MockMutatingWebhookConfigurationDeletionReconciler{ctrl: ctrl}
+	mock.recorder = &MockMutatingWebhookConfigurationDeletionReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMutatingWebhookConfigurationDeletionReconciler) EXPECT() *MockMutatingWebhookConfigurationDeletionReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileMutatingWebhookConfigurationDeletion mocks base method.
+func (m *MockMutatingWebhookConfigurationDeletionReconciler) ReconcileMutatingWebhookConfigurationDeletion(req reconcile.Request) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileMutatingWebhookConfigurationDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ReconcileMutatingWebhookConfigurationDeletion indicates an expected call of ReconcileMutatingWebhookConfigurationDeletion.
+func (mr *MockMutatingWebhookConfigurationDeletionReconcilerMockRecorder) ReconcileMutatingWebhookConfigurationDeletion(req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileMutatingWebhookConfigurationDeletion", reflect.TypeOf((*MockMutatingWebhookConfigurationDeletionReconciler)(nil).ReconcileMutatingWebhookConfigurationDeletion), req)
+}
+
+// MockMutatingWebhookConfigurationFinalizer is a mock of MutatingWebhookConfigurationFinalizer interface.
+type MockMutatingWebhookConfigurationFinalizer struct {
+	ctrl     *gomock.Controller
+	recorder *MockMutatingWebhookConfigurationFinalizerMockRecorder
+}
+
+// MockMutatingWebhookConfigurationFinalizerMockRecorder is the mock recorder for MockMutatingWebhookConfigurationFinalizer.
+type MockMutatingWebhookConfigurationFinalizerMockRecorder struct {
+	mock *MockMutatingWebhookConfigurationFinalizer
+}
+
+// NewMockMutatingWebhookConfigurationFinalizer creates a new mock instance.
+func NewMockMutatingWebhookConfigurationFinalizer(ctrl *gomock.Controller) *MockMutatingWebhookConfigurationFinalizer {
+	mock := &MockMutatingWebhookConfigurationFinalizer{ctrl: ctrl}
+	mock.recorder = &MockMutatingWebhookConfigurationFinalizerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMutatingWebhookConfigurationFinalizer) EXPECT() *MockMutatingWebhookConfigurationFinalizerMockRecorder {
+	return m.recorder
+}
+
+// FinalizeMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationFinalizer) FinalizeMutatingWebhookConfiguration(obj *v1.MutatingWebhookConfiguration) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FinalizeMutatingWebhookConfiguration", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// FinalizeMutatingWebhookConfiguration indicates an expected call of FinalizeMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationFinalizerMockRecorder) FinalizeMutatingWebhookConfiguration(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FinalizeMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationFinalizer)(nil).FinalizeMutatingWebhookConfiguration), obj)
+}
+
+// MutatingWebhookConfigurationFinalizerName mocks base method.
+func (m *MockMutatingWebhookConfigurationFinalizer) MutatingWebhookConfigurationFinalizerName() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "MutatingWebhookConfigurationFinalizerName")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// MutatingWebhookConfigurationFinalizerName indicates an expected call of MutatingWebhookConfigurationFinalizerName.
+func (mr *MockMutatingWebhookConfigurationFinalizerMockRecorder) MutatingWebhookConfigurationFinalizerName() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MutatingWebhookConfigurationFinalizerName", reflect.TypeOf((*MockMutatingWebhookConfigurationFinalizer)(nil).MutatingWebhookConfigurationFinalizerName))
+}
+
+// ReconcileMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationFinalizer) ReconcileMutatingWebhookConfiguration(obj *v1.MutatingWebhookConfiguration) (reconcile.Result, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileMutatingWebhookConfiguration", obj)
+	ret0, _ := ret[0].(reconcile.Result)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReconcileMutatingWebhookConfiguration indicates an expected call of ReconcileMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationFinalizerMockRecorder) ReconcileMutatingWebhookConfiguration(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationFinalizer)(nil).ReconcileMutatingWebhookConfiguration), obj)
+}
+
+// MockMutatingWebhookConfigurationReconcileLoop is a mock of MutatingWebhookConfigurationReconcileLoop interface.
+type MockMutatingWebhookConfigurationReconcileLoop struct {
+	ctrl     *gomock.Controller
+	recorder *MockMutatingWebhookConfigurationReconcileLoopMockRecorder
+}
+
+// MockMutatingWebhookConfigurationReconcileLoopMockRecorder is the mock recorder for MockMutatingWebhookConfigurationReconcileLoop.
+type MockMutatingWebhookConfigurationReconcileLoopMockRecorder struct {
+	mock *MockMutatingWebhookConfigurationReconcileLoop
+}
+
+// NewMockMutatingWebhookConfigurationReconcileLoop creates a new mock instance.
+func NewMockMutatingWebhookConfigurationReconcileLoop(ctrl *gomock.Controller) *MockMutatingWebhookConfigurationReconcileLoop {
+	mock := &MockMutatingWebhookConfigurationReconcileLoop{ctrl: ctrl}
+	mock.recorder = &MockMutatingWebhookConfigurationReconcileLoopMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMutatingWebhookConfigurationReconcileLoop) EXPECT() *MockMutatingWebhookConfigurationReconcileLoopMockRecorder {
+	return m.recorder
+}
+
+// RunMutatingWebhookConfigurationReconciler mocks base method.
+func (m *MockMutatingWebhookConfigurationReconcileLoop) RunMutatingWebhookConfigurationReconciler(ctx context.Context, rec controller.MutatingWebhookConfigurationReconciler, predicates ...predicate.Predicate) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, rec}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "RunMutatingWebhookConfigurationReconciler", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// RunMutatingWebhookConfigurationReconciler indicates an expected call of RunMutatingWebhookConfigurationReconciler.
+func (mr *MockMutatingWebhookConfigurationReconcileLoopMockRecorder) RunMutatingWebhookConfigurationReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, rec}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunMutatingWebhookConfigurationReconciler", reflect.TypeOf((*MockMutatingWebhookConfigurationReconcileLoop)(nil).RunMutatingWebhookConfigurationReconciler), varargs...)
+}

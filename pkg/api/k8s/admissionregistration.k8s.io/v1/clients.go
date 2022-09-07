@@ -42,6 +42,8 @@ func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
 type Clientset interface {
 	// clienset for the admissionregistration.k8s.io/v1/v1 APIs
 	ValidatingWebhookConfigurations() ValidatingWebhookConfigurationClient
+	// clienset for the admissionregistration.k8s.io/v1/v1 APIs
+	MutatingWebhookConfigurations() MutatingWebhookConfigurationClient
 }
 
 type clientSet struct {
@@ -69,6 +71,11 @@ func NewClientset(client client.Client) Clientset {
 // clienset for the admissionregistration.k8s.io/v1/v1 APIs
 func (c *clientSet) ValidatingWebhookConfigurations() ValidatingWebhookConfigurationClient {
 	return NewValidatingWebhookConfigurationClient(c.client)
+}
+
+// clienset for the admissionregistration.k8s.io/v1/v1 APIs
+func (c *clientSet) MutatingWebhookConfigurations() MutatingWebhookConfigurationClient {
+	return NewMutatingWebhookConfigurationClient(c.client)
 }
 
 // Reader knows how to read and list ValidatingWebhookConfigurations.
@@ -211,4 +218,146 @@ func (m *multiclusterValidatingWebhookConfigurationClient) Cluster(cluster strin
 		return nil, err
 	}
 	return NewValidatingWebhookConfigurationClient(client), nil
+}
+
+// Reader knows how to read and list MutatingWebhookConfigurations.
+type MutatingWebhookConfigurationReader interface {
+	// Get retrieves a MutatingWebhookConfiguration for the given object key
+	GetMutatingWebhookConfiguration(ctx context.Context, key client.ObjectKey) (*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration, error)
+
+	// List retrieves list of MutatingWebhookConfigurations for a given namespace and list options.
+	ListMutatingWebhookConfiguration(ctx context.Context, opts ...client.ListOption) (*admissionregistration_k8s_io_v1.MutatingWebhookConfigurationList, error)
+}
+
+// MutatingWebhookConfigurationTransitionFunction instructs the MutatingWebhookConfigurationWriter how to transition between an existing
+// MutatingWebhookConfiguration object and a desired on an Upsert
+type MutatingWebhookConfigurationTransitionFunction func(existing, desired *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) error
+
+// Writer knows how to create, delete, and update MutatingWebhookConfigurations.
+type MutatingWebhookConfigurationWriter interface {
+	// Create saves the MutatingWebhookConfiguration object.
+	CreateMutatingWebhookConfiguration(ctx context.Context, obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration, opts ...client.CreateOption) error
+
+	// Delete deletes the MutatingWebhookConfiguration object.
+	DeleteMutatingWebhookConfiguration(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error
+
+	// Update updates the given MutatingWebhookConfiguration object.
+	UpdateMutatingWebhookConfiguration(ctx context.Context, obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration, opts ...client.UpdateOption) error
+
+	// Patch patches the given MutatingWebhookConfiguration object.
+	PatchMutatingWebhookConfiguration(ctx context.Context, obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration, patch client.Patch, opts ...client.PatchOption) error
+
+	// DeleteAllOf deletes all MutatingWebhookConfiguration objects matching the given options.
+	DeleteAllOfMutatingWebhookConfiguration(ctx context.Context, opts ...client.DeleteAllOfOption) error
+
+	// Create or Update the MutatingWebhookConfiguration object.
+	UpsertMutatingWebhookConfiguration(ctx context.Context, obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration, transitionFuncs ...MutatingWebhookConfigurationTransitionFunction) error
+}
+
+// StatusWriter knows how to update status subresource of a MutatingWebhookConfiguration object.
+type MutatingWebhookConfigurationStatusWriter interface {
+	// Update updates the fields corresponding to the status subresource for the
+	// given MutatingWebhookConfiguration object.
+	UpdateMutatingWebhookConfigurationStatus(ctx context.Context, obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration, opts ...client.UpdateOption) error
+
+	// Patch patches the given MutatingWebhookConfiguration object's subresource.
+	PatchMutatingWebhookConfigurationStatus(ctx context.Context, obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration, patch client.Patch, opts ...client.PatchOption) error
+}
+
+// Client knows how to perform CRUD operations on MutatingWebhookConfigurations.
+type MutatingWebhookConfigurationClient interface {
+	MutatingWebhookConfigurationReader
+	MutatingWebhookConfigurationWriter
+	MutatingWebhookConfigurationStatusWriter
+}
+
+type mutatingWebhookConfigurationClient struct {
+	client client.Client
+}
+
+func NewMutatingWebhookConfigurationClient(client client.Client) *mutatingWebhookConfigurationClient {
+	return &mutatingWebhookConfigurationClient{client: client}
+}
+
+func (c *mutatingWebhookConfigurationClient) GetMutatingWebhookConfiguration(ctx context.Context, key client.ObjectKey) (*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration, error) {
+	obj := &admissionregistration_k8s_io_v1.MutatingWebhookConfiguration{}
+	if err := c.client.Get(ctx, key, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+func (c *mutatingWebhookConfigurationClient) ListMutatingWebhookConfiguration(ctx context.Context, opts ...client.ListOption) (*admissionregistration_k8s_io_v1.MutatingWebhookConfigurationList, error) {
+	list := &admissionregistration_k8s_io_v1.MutatingWebhookConfigurationList{}
+	if err := c.client.List(ctx, list, opts...); err != nil {
+		return nil, err
+	}
+	return list, nil
+}
+
+func (c *mutatingWebhookConfigurationClient) CreateMutatingWebhookConfiguration(ctx context.Context, obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration, opts ...client.CreateOption) error {
+	return c.client.Create(ctx, obj, opts...)
+}
+
+func (c *mutatingWebhookConfigurationClient) DeleteMutatingWebhookConfiguration(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	obj := &admissionregistration_k8s_io_v1.MutatingWebhookConfiguration{}
+	obj.SetName(key.Name)
+	obj.SetNamespace(key.Namespace)
+	return c.client.Delete(ctx, obj, opts...)
+}
+
+func (c *mutatingWebhookConfigurationClient) UpdateMutatingWebhookConfiguration(ctx context.Context, obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration, opts ...client.UpdateOption) error {
+	return c.client.Update(ctx, obj, opts...)
+}
+
+func (c *mutatingWebhookConfigurationClient) PatchMutatingWebhookConfiguration(ctx context.Context, obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration, patch client.Patch, opts ...client.PatchOption) error {
+	return c.client.Patch(ctx, obj, patch, opts...)
+}
+
+func (c *mutatingWebhookConfigurationClient) DeleteAllOfMutatingWebhookConfiguration(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	obj := &admissionregistration_k8s_io_v1.MutatingWebhookConfiguration{}
+	return c.client.DeleteAllOf(ctx, obj, opts...)
+}
+
+func (c *mutatingWebhookConfigurationClient) UpsertMutatingWebhookConfiguration(ctx context.Context, obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration, transitionFuncs ...MutatingWebhookConfigurationTransitionFunction) error {
+	genericTxFunc := func(existing, desired runtime.Object) error {
+		for _, txFunc := range transitionFuncs {
+			if err := txFunc(existing.(*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration), desired.(*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration)); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+	_, err := controllerutils.Upsert(ctx, c.client, obj, genericTxFunc)
+	return err
+}
+
+func (c *mutatingWebhookConfigurationClient) UpdateMutatingWebhookConfigurationStatus(ctx context.Context, obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration, opts ...client.UpdateOption) error {
+	return c.client.Status().Update(ctx, obj, opts...)
+}
+
+func (c *mutatingWebhookConfigurationClient) PatchMutatingWebhookConfigurationStatus(ctx context.Context, obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration, patch client.Patch, opts ...client.PatchOption) error {
+	return c.client.Status().Patch(ctx, obj, patch, opts...)
+}
+
+// Provides MutatingWebhookConfigurationClients for multiple clusters.
+type MulticlusterMutatingWebhookConfigurationClient interface {
+	// Cluster returns a MutatingWebhookConfigurationClient for the given cluster
+	Cluster(cluster string) (MutatingWebhookConfigurationClient, error)
+}
+
+type multiclusterMutatingWebhookConfigurationClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterMutatingWebhookConfigurationClient(client multicluster.Client) MulticlusterMutatingWebhookConfigurationClient {
+	return &multiclusterMutatingWebhookConfigurationClient{client: client}
+}
+
+func (m *multiclusterMutatingWebhookConfigurationClient) Cluster(cluster string) (MutatingWebhookConfigurationClient, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewMutatingWebhookConfigurationClient(client), nil
 }

@@ -270,3 +270,259 @@ func (mr *MockValidatingWebhookConfigurationSetMockRecorder) UnsortedList(filter
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockValidatingWebhookConfigurationSet)(nil).UnsortedList), filterResource...)
 }
+
+// MockMutatingWebhookConfigurationSet is a mock of MutatingWebhookConfigurationSet interface.
+type MockMutatingWebhookConfigurationSet struct {
+	ctrl     *gomock.Controller
+	recorder *MockMutatingWebhookConfigurationSetMockRecorder
+}
+
+// MockMutatingWebhookConfigurationSetMockRecorder is the mock recorder for MockMutatingWebhookConfigurationSet.
+type MockMutatingWebhookConfigurationSetMockRecorder struct {
+	mock *MockMutatingWebhookConfigurationSet
+}
+
+// NewMockMutatingWebhookConfigurationSet creates a new mock instance.
+func NewMockMutatingWebhookConfigurationSet(ctrl *gomock.Controller) *MockMutatingWebhookConfigurationSet {
+	mock := &MockMutatingWebhookConfigurationSet{ctrl: ctrl}
+	mock.recorder = &MockMutatingWebhookConfigurationSetMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMutatingWebhookConfigurationSet) EXPECT() *MockMutatingWebhookConfigurationSetMockRecorder {
+	return m.recorder
+}
+
+// Clone mocks base method.
+func (m *MockMutatingWebhookConfigurationSet) Clone() v1sets.MutatingWebhookConfigurationSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1sets.MutatingWebhookConfigurationSet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone.
+func (mr *MockMutatingWebhookConfigurationSetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockMutatingWebhookConfigurationSet)(nil).Clone))
+}
+
+// Delete mocks base method.
+func (m *MockMutatingWebhookConfigurationSet) Delete(mutatingWebhookConfiguration ezkube.ResourceId) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Delete", mutatingWebhookConfiguration)
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockMutatingWebhookConfigurationSetMockRecorder) Delete(mutatingWebhookConfiguration interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockMutatingWebhookConfigurationSet)(nil).Delete), mutatingWebhookConfiguration)
+}
+
+// Delta mocks base method.
+func (m *MockMutatingWebhookConfigurationSet) Delta(newSet v1sets.MutatingWebhookConfigurationSet) sets.ResourceDelta {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Delta", newSet)
+	ret0, _ := ret[0].(sets.ResourceDelta)
+	return ret0
+}
+
+// Delta indicates an expected call of Delta.
+func (mr *MockMutatingWebhookConfigurationSetMockRecorder) Delta(newSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockMutatingWebhookConfigurationSet)(nil).Delta), newSet)
+}
+
+// Difference mocks base method.
+func (m *MockMutatingWebhookConfigurationSet) Difference(set v1sets.MutatingWebhookConfigurationSet) v1sets.MutatingWebhookConfigurationSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Difference", set)
+	ret0, _ := ret[0].(v1sets.MutatingWebhookConfigurationSet)
+	return ret0
+}
+
+// Difference indicates an expected call of Difference.
+func (mr *MockMutatingWebhookConfigurationSetMockRecorder) Difference(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Difference", reflect.TypeOf((*MockMutatingWebhookConfigurationSet)(nil).Difference), set)
+}
+
+// Equal mocks base method.
+func (m *MockMutatingWebhookConfigurationSet) Equal(mutatingWebhookConfigurationSet v1sets.MutatingWebhookConfigurationSet) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Equal", mutatingWebhookConfigurationSet)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Equal indicates an expected call of Equal.
+func (mr *MockMutatingWebhookConfigurationSetMockRecorder) Equal(mutatingWebhookConfigurationSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Equal", reflect.TypeOf((*MockMutatingWebhookConfigurationSet)(nil).Equal), mutatingWebhookConfigurationSet)
+}
+
+// Find mocks base method.
+func (m *MockMutatingWebhookConfigurationSet) Find(id ezkube.ResourceId) (*v1.MutatingWebhookConfiguration, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1.MutatingWebhookConfiguration)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockMutatingWebhookConfigurationSetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockMutatingWebhookConfigurationSet)(nil).Find), id)
+}
+
+// Generic mocks base method.
+func (m *MockMutatingWebhookConfigurationSet) Generic() sets.ResourceSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Generic")
+	ret0, _ := ret[0].(sets.ResourceSet)
+	return ret0
+}
+
+// Generic indicates an expected call of Generic.
+func (mr *MockMutatingWebhookConfigurationSetMockRecorder) Generic() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockMutatingWebhookConfigurationSet)(nil).Generic))
+}
+
+// Has mocks base method.
+func (m *MockMutatingWebhookConfigurationSet) Has(mutatingWebhookConfiguration ezkube.ResourceId) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Has", mutatingWebhookConfiguration)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Has indicates an expected call of Has.
+func (mr *MockMutatingWebhookConfigurationSetMockRecorder) Has(mutatingWebhookConfiguration interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Has", reflect.TypeOf((*MockMutatingWebhookConfigurationSet)(nil).Has), mutatingWebhookConfiguration)
+}
+
+// Insert mocks base method.
+func (m *MockMutatingWebhookConfigurationSet) Insert(mutatingWebhookConfiguration ...*v1.MutatingWebhookConfiguration) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range mutatingWebhookConfiguration {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "Insert", varargs...)
+}
+
+// Insert indicates an expected call of Insert.
+func (mr *MockMutatingWebhookConfigurationSetMockRecorder) Insert(mutatingWebhookConfiguration ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockMutatingWebhookConfigurationSet)(nil).Insert), mutatingWebhookConfiguration...)
+}
+
+// Intersection mocks base method.
+func (m *MockMutatingWebhookConfigurationSet) Intersection(set v1sets.MutatingWebhookConfigurationSet) v1sets.MutatingWebhookConfigurationSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Intersection", set)
+	ret0, _ := ret[0].(v1sets.MutatingWebhookConfigurationSet)
+	return ret0
+}
+
+// Intersection indicates an expected call of Intersection.
+func (mr *MockMutatingWebhookConfigurationSetMockRecorder) Intersection(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockMutatingWebhookConfigurationSet)(nil).Intersection), set)
+}
+
+// Keys mocks base method.
+func (m *MockMutatingWebhookConfigurationSet) Keys() sets0.String {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Keys")
+	ret0, _ := ret[0].(sets0.String)
+	return ret0
+}
+
+// Keys indicates an expected call of Keys.
+func (mr *MockMutatingWebhookConfigurationSetMockRecorder) Keys() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Keys", reflect.TypeOf((*MockMutatingWebhookConfigurationSet)(nil).Keys))
+}
+
+// Length mocks base method.
+func (m *MockMutatingWebhookConfigurationSet) Length() int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Length")
+	ret0, _ := ret[0].(int)
+	return ret0
+}
+
+// Length indicates an expected call of Length.
+func (mr *MockMutatingWebhookConfigurationSetMockRecorder) Length() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Length", reflect.TypeOf((*MockMutatingWebhookConfigurationSet)(nil).Length))
+}
+
+// List mocks base method.
+func (m *MockMutatingWebhookConfigurationSet) List(filterResource ...func(*v1.MutatingWebhookConfiguration) bool) []*v1.MutatingWebhookConfiguration {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
+	ret0, _ := ret[0].([]*v1.MutatingWebhookConfiguration)
+	return ret0
+}
+
+// List indicates an expected call of List.
+func (mr *MockMutatingWebhookConfigurationSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockMutatingWebhookConfigurationSet)(nil).List), filterResource...)
+}
+
+// Map mocks base method.
+func (m *MockMutatingWebhookConfigurationSet) Map() map[string]*v1.MutatingWebhookConfiguration {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Map")
+	ret0, _ := ret[0].(map[string]*v1.MutatingWebhookConfiguration)
+	return ret0
+}
+
+// Map indicates an expected call of Map.
+func (mr *MockMutatingWebhookConfigurationSetMockRecorder) Map() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Map", reflect.TypeOf((*MockMutatingWebhookConfigurationSet)(nil).Map))
+}
+
+// Union mocks base method.
+func (m *MockMutatingWebhookConfigurationSet) Union(set v1sets.MutatingWebhookConfigurationSet) v1sets.MutatingWebhookConfigurationSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Union", set)
+	ret0, _ := ret[0].(v1sets.MutatingWebhookConfigurationSet)
+	return ret0
+}
+
+// Union indicates an expected call of Union.
+func (mr *MockMutatingWebhookConfigurationSetMockRecorder) Union(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Union", reflect.TypeOf((*MockMutatingWebhookConfigurationSet)(nil).Union), set)
+}
+
+// UnsortedList mocks base method.
+func (m *MockMutatingWebhookConfigurationSet) UnsortedList(filterResource ...func(*v1.MutatingWebhookConfiguration) bool) []*v1.MutatingWebhookConfiguration {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1.MutatingWebhookConfiguration)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList.
+func (mr *MockMutatingWebhookConfigurationSetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockMutatingWebhookConfigurationSet)(nil).UnsortedList), filterResource...)
+}

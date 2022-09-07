@@ -133,3 +133,120 @@ func (r genericValidatingWebhookConfigurationFinalizer) Finalize(object ezkube.O
 	}
 	return r.finalizingReconciler.FinalizeValidatingWebhookConfiguration(obj)
 }
+
+// Reconcile Upsert events for the MutatingWebhookConfiguration Resource.
+// implemented by the user
+type MutatingWebhookConfigurationReconciler interface {
+	ReconcileMutatingWebhookConfiguration(obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the MutatingWebhookConfiguration Resource.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type MutatingWebhookConfigurationDeletionReconciler interface {
+	ReconcileMutatingWebhookConfigurationDeletion(req reconcile.Request) error
+}
+
+type MutatingWebhookConfigurationReconcilerFuncs struct {
+	OnReconcileMutatingWebhookConfiguration         func(obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) (reconcile.Result, error)
+	OnReconcileMutatingWebhookConfigurationDeletion func(req reconcile.Request) error
+}
+
+func (f *MutatingWebhookConfigurationReconcilerFuncs) ReconcileMutatingWebhookConfiguration(obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) (reconcile.Result, error) {
+	if f.OnReconcileMutatingWebhookConfiguration == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcileMutatingWebhookConfiguration(obj)
+}
+
+func (f *MutatingWebhookConfigurationReconcilerFuncs) ReconcileMutatingWebhookConfigurationDeletion(req reconcile.Request) error {
+	if f.OnReconcileMutatingWebhookConfigurationDeletion == nil {
+		return nil
+	}
+	return f.OnReconcileMutatingWebhookConfigurationDeletion(req)
+}
+
+// Reconcile and finalize the MutatingWebhookConfiguration Resource
+// implemented by the user
+type MutatingWebhookConfigurationFinalizer interface {
+	MutatingWebhookConfigurationReconciler
+
+	// name of the finalizer used by this handler.
+	// finalizer names should be unique for a single task
+	MutatingWebhookConfigurationFinalizerName() string
+
+	// finalize the object before it is deleted.
+	// Watchers created with a finalizing handler will a
+	FinalizeMutatingWebhookConfiguration(obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) error
+}
+
+type MutatingWebhookConfigurationReconcileLoop interface {
+	RunMutatingWebhookConfigurationReconciler(ctx context.Context, rec MutatingWebhookConfigurationReconciler, predicates ...predicate.Predicate) error
+}
+
+type mutatingWebhookConfigurationReconcileLoop struct {
+	loop reconcile.Loop
+}
+
+func NewMutatingWebhookConfigurationReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) MutatingWebhookConfigurationReconcileLoop {
+	return &mutatingWebhookConfigurationReconcileLoop{
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &admissionregistration_k8s_io_v1.MutatingWebhookConfiguration{}, options),
+	}
+}
+
+func (c *mutatingWebhookConfigurationReconcileLoop) RunMutatingWebhookConfigurationReconciler(ctx context.Context, reconciler MutatingWebhookConfigurationReconciler, predicates ...predicate.Predicate) error {
+	genericReconciler := genericMutatingWebhookConfigurationReconciler{
+		reconciler: reconciler,
+	}
+
+	var reconcilerWrapper reconcile.Reconciler
+	if finalizingReconciler, ok := reconciler.(MutatingWebhookConfigurationFinalizer); ok {
+		reconcilerWrapper = genericMutatingWebhookConfigurationFinalizer{
+			genericMutatingWebhookConfigurationReconciler: genericReconciler,
+			finalizingReconciler:                          finalizingReconciler,
+		}
+	} else {
+		reconcilerWrapper = genericReconciler
+	}
+	return c.loop.RunReconciler(ctx, reconcilerWrapper, predicates...)
+}
+
+// genericMutatingWebhookConfigurationHandler implements a generic reconcile.Reconciler
+type genericMutatingWebhookConfigurationReconciler struct {
+	reconciler MutatingWebhookConfigurationReconciler
+}
+
+func (r genericMutatingWebhookConfigurationReconciler) Reconcile(object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: MutatingWebhookConfiguration handler received event for %T", object)
+	}
+	return r.reconciler.ReconcileMutatingWebhookConfiguration(obj)
+}
+
+func (r genericMutatingWebhookConfigurationReconciler) ReconcileDeletion(request reconcile.Request) error {
+	if deletionReconciler, ok := r.reconciler.(MutatingWebhookConfigurationDeletionReconciler); ok {
+		return deletionReconciler.ReconcileMutatingWebhookConfigurationDeletion(request)
+	}
+	return nil
+}
+
+// genericMutatingWebhookConfigurationFinalizer implements a generic reconcile.FinalizingReconciler
+type genericMutatingWebhookConfigurationFinalizer struct {
+	genericMutatingWebhookConfigurationReconciler
+	finalizingReconciler MutatingWebhookConfigurationFinalizer
+}
+
+func (r genericMutatingWebhookConfigurationFinalizer) FinalizerName() string {
+	return r.finalizingReconciler.MutatingWebhookConfigurationFinalizerName()
+}
+
+func (r genericMutatingWebhookConfigurationFinalizer) Finalize(object ezkube.Object) error {
+	obj, ok := object.(*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration)
+	if !ok {
+		return errors.Errorf("internal error: MutatingWebhookConfiguration handler received event for %T", object)
+	}
+	return r.finalizingReconciler.FinalizeMutatingWebhookConfiguration(obj)
+}
