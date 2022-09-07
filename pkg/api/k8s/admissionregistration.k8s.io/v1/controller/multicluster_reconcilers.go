@@ -88,3 +88,74 @@ func (g genericValidatingWebhookConfigurationMulticlusterReconciler) Reconcile(c
 	}
 	return g.reconciler.ReconcileValidatingWebhookConfiguration(cluster, obj)
 }
+
+// Reconcile Upsert events for the MutatingWebhookConfiguration Resource across clusters.
+// implemented by the user
+type MulticlusterMutatingWebhookConfigurationReconciler interface {
+	ReconcileMutatingWebhookConfiguration(clusterName string, obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the MutatingWebhookConfiguration Resource across clusters.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type MulticlusterMutatingWebhookConfigurationDeletionReconciler interface {
+	ReconcileMutatingWebhookConfigurationDeletion(clusterName string, req reconcile.Request) error
+}
+
+type MulticlusterMutatingWebhookConfigurationReconcilerFuncs struct {
+	OnReconcileMutatingWebhookConfiguration         func(clusterName string, obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) (reconcile.Result, error)
+	OnReconcileMutatingWebhookConfigurationDeletion func(clusterName string, req reconcile.Request) error
+}
+
+func (f *MulticlusterMutatingWebhookConfigurationReconcilerFuncs) ReconcileMutatingWebhookConfiguration(clusterName string, obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) (reconcile.Result, error) {
+	if f.OnReconcileMutatingWebhookConfiguration == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcileMutatingWebhookConfiguration(clusterName, obj)
+}
+
+func (f *MulticlusterMutatingWebhookConfigurationReconcilerFuncs) ReconcileMutatingWebhookConfigurationDeletion(clusterName string, req reconcile.Request) error {
+	if f.OnReconcileMutatingWebhookConfigurationDeletion == nil {
+		return nil
+	}
+	return f.OnReconcileMutatingWebhookConfigurationDeletion(clusterName, req)
+}
+
+type MulticlusterMutatingWebhookConfigurationReconcileLoop interface {
+	// AddMulticlusterMutatingWebhookConfigurationReconciler adds a MulticlusterMutatingWebhookConfigurationReconciler to the MulticlusterMutatingWebhookConfigurationReconcileLoop.
+	AddMulticlusterMutatingWebhookConfigurationReconciler(ctx context.Context, rec MulticlusterMutatingWebhookConfigurationReconciler, predicates ...predicate.Predicate)
+}
+
+type multiclusterMutatingWebhookConfigurationReconcileLoop struct {
+	loop multicluster.Loop
+}
+
+func (m *multiclusterMutatingWebhookConfigurationReconcileLoop) AddMulticlusterMutatingWebhookConfigurationReconciler(ctx context.Context, rec MulticlusterMutatingWebhookConfigurationReconciler, predicates ...predicate.Predicate) {
+	genericReconciler := genericMutatingWebhookConfigurationMulticlusterReconciler{reconciler: rec}
+
+	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
+}
+
+func NewMulticlusterMutatingWebhookConfigurationReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterMutatingWebhookConfigurationReconcileLoop {
+	return &multiclusterMutatingWebhookConfigurationReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &admissionregistration_k8s_io_v1.MutatingWebhookConfiguration{}, options)}
+}
+
+type genericMutatingWebhookConfigurationMulticlusterReconciler struct {
+	reconciler MulticlusterMutatingWebhookConfigurationReconciler
+}
+
+func (g genericMutatingWebhookConfigurationMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) error {
+	if deletionReconciler, ok := g.reconciler.(MulticlusterMutatingWebhookConfigurationDeletionReconciler); ok {
+		return deletionReconciler.ReconcileMutatingWebhookConfigurationDeletion(cluster, req)
+	}
+	return nil
+}
+
+func (g genericMutatingWebhookConfigurationMulticlusterReconciler) Reconcile(cluster string, object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: MutatingWebhookConfiguration handler received event for %T", object)
+	}
+	return g.reconciler.ReconcileMutatingWebhookConfiguration(cluster, obj)
+}

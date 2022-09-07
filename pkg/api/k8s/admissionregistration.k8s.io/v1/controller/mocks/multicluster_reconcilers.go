@@ -129,3 +129,118 @@ func (mr *MockMulticlusterValidatingWebhookConfigurationReconcileLoopMockRecorde
 	varargs := append([]interface{}{ctx, rec}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddMulticlusterValidatingWebhookConfigurationReconciler", reflect.TypeOf((*MockMulticlusterValidatingWebhookConfigurationReconcileLoop)(nil).AddMulticlusterValidatingWebhookConfigurationReconciler), varargs...)
 }
+
+// MockMulticlusterMutatingWebhookConfigurationReconciler is a mock of MulticlusterMutatingWebhookConfigurationReconciler interface.
+type MockMulticlusterMutatingWebhookConfigurationReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterMutatingWebhookConfigurationReconcilerMockRecorder
+}
+
+// MockMulticlusterMutatingWebhookConfigurationReconcilerMockRecorder is the mock recorder for MockMulticlusterMutatingWebhookConfigurationReconciler.
+type MockMulticlusterMutatingWebhookConfigurationReconcilerMockRecorder struct {
+	mock *MockMulticlusterMutatingWebhookConfigurationReconciler
+}
+
+// NewMockMulticlusterMutatingWebhookConfigurationReconciler creates a new mock instance.
+func NewMockMulticlusterMutatingWebhookConfigurationReconciler(ctrl *gomock.Controller) *MockMulticlusterMutatingWebhookConfigurationReconciler {
+	mock := &MockMulticlusterMutatingWebhookConfigurationReconciler{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterMutatingWebhookConfigurationReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterMutatingWebhookConfigurationReconciler) EXPECT() *MockMulticlusterMutatingWebhookConfigurationReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileMutatingWebhookConfiguration mocks base method.
+func (m *MockMulticlusterMutatingWebhookConfigurationReconciler) ReconcileMutatingWebhookConfiguration(clusterName string, obj *v1.MutatingWebhookConfiguration) (reconcile.Result, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileMutatingWebhookConfiguration", clusterName, obj)
+	ret0, _ := ret[0].(reconcile.Result)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReconcileMutatingWebhookConfiguration indicates an expected call of ReconcileMutatingWebhookConfiguration.
+func (mr *MockMulticlusterMutatingWebhookConfigurationReconcilerMockRecorder) ReconcileMutatingWebhookConfiguration(clusterName, obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileMutatingWebhookConfiguration", reflect.TypeOf((*MockMulticlusterMutatingWebhookConfigurationReconciler)(nil).ReconcileMutatingWebhookConfiguration), clusterName, obj)
+}
+
+// MockMulticlusterMutatingWebhookConfigurationDeletionReconciler is a mock of MulticlusterMutatingWebhookConfigurationDeletionReconciler interface.
+type MockMulticlusterMutatingWebhookConfigurationDeletionReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterMutatingWebhookConfigurationDeletionReconcilerMockRecorder
+}
+
+// MockMulticlusterMutatingWebhookConfigurationDeletionReconcilerMockRecorder is the mock recorder for MockMulticlusterMutatingWebhookConfigurationDeletionReconciler.
+type MockMulticlusterMutatingWebhookConfigurationDeletionReconcilerMockRecorder struct {
+	mock *MockMulticlusterMutatingWebhookConfigurationDeletionReconciler
+}
+
+// NewMockMulticlusterMutatingWebhookConfigurationDeletionReconciler creates a new mock instance.
+func NewMockMulticlusterMutatingWebhookConfigurationDeletionReconciler(ctrl *gomock.Controller) *MockMulticlusterMutatingWebhookConfigurationDeletionReconciler {
+	mock := &MockMulticlusterMutatingWebhookConfigurationDeletionReconciler{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterMutatingWebhookConfigurationDeletionReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterMutatingWebhookConfigurationDeletionReconciler) EXPECT() *MockMulticlusterMutatingWebhookConfigurationDeletionReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileMutatingWebhookConfigurationDeletion mocks base method.
+func (m *MockMulticlusterMutatingWebhookConfigurationDeletionReconciler) ReconcileMutatingWebhookConfigurationDeletion(clusterName string, req reconcile.Request) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileMutatingWebhookConfigurationDeletion", clusterName, req)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ReconcileMutatingWebhookConfigurationDeletion indicates an expected call of ReconcileMutatingWebhookConfigurationDeletion.
+func (mr *MockMulticlusterMutatingWebhookConfigurationDeletionReconcilerMockRecorder) ReconcileMutatingWebhookConfigurationDeletion(clusterName, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileMutatingWebhookConfigurationDeletion", reflect.TypeOf((*MockMulticlusterMutatingWebhookConfigurationDeletionReconciler)(nil).ReconcileMutatingWebhookConfigurationDeletion), clusterName, req)
+}
+
+// MockMulticlusterMutatingWebhookConfigurationReconcileLoop is a mock of MulticlusterMutatingWebhookConfigurationReconcileLoop interface.
+type MockMulticlusterMutatingWebhookConfigurationReconcileLoop struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterMutatingWebhookConfigurationReconcileLoopMockRecorder
+}
+
+// MockMulticlusterMutatingWebhookConfigurationReconcileLoopMockRecorder is the mock recorder for MockMulticlusterMutatingWebhookConfigurationReconcileLoop.
+type MockMulticlusterMutatingWebhookConfigurationReconcileLoopMockRecorder struct {
+	mock *MockMulticlusterMutatingWebhookConfigurationReconcileLoop
+}
+
+// NewMockMulticlusterMutatingWebhookConfigurationReconcileLoop creates a new mock instance.
+func NewMockMulticlusterMutatingWebhookConfigurationReconcileLoop(ctrl *gomock.Controller) *MockMulticlusterMutatingWebhookConfigurationReconcileLoop {
+	mock := &MockMulticlusterMutatingWebhookConfigurationReconcileLoop{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterMutatingWebhookConfigurationReconcileLoopMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterMutatingWebhookConfigurationReconcileLoop) EXPECT() *MockMulticlusterMutatingWebhookConfigurationReconcileLoopMockRecorder {
+	return m.recorder
+}
+
+// AddMulticlusterMutatingWebhookConfigurationReconciler mocks base method.
+func (m *MockMulticlusterMutatingWebhookConfigurationReconcileLoop) AddMulticlusterMutatingWebhookConfigurationReconciler(ctx context.Context, rec controller.MulticlusterMutatingWebhookConfigurationReconciler, predicates ...predicate.Predicate) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, rec}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "AddMulticlusterMutatingWebhookConfigurationReconciler", varargs...)
+}
+
+// AddMulticlusterMutatingWebhookConfigurationReconciler indicates an expected call of AddMulticlusterMutatingWebhookConfigurationReconciler.
+func (mr *MockMulticlusterMutatingWebhookConfigurationReconcileLoopMockRecorder) AddMulticlusterMutatingWebhookConfigurationReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, rec}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddMulticlusterMutatingWebhookConfigurationReconciler", reflect.TypeOf((*MockMulticlusterMutatingWebhookConfigurationReconcileLoop)(nil).AddMulticlusterMutatingWebhookConfigurationReconciler), varargs...)
+}

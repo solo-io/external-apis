@@ -134,3 +134,124 @@ func (mr *MockValidatingWebhookConfigurationEventWatcherMockRecorder) AddEventHa
 	varargs := append([]interface{}{ctx, h}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockValidatingWebhookConfigurationEventWatcher)(nil).AddEventHandler), varargs...)
 }
+
+// MockMutatingWebhookConfigurationEventHandler is a mock of MutatingWebhookConfigurationEventHandler interface.
+type MockMutatingWebhookConfigurationEventHandler struct {
+	ctrl     *gomock.Controller
+	recorder *MockMutatingWebhookConfigurationEventHandlerMockRecorder
+}
+
+// MockMutatingWebhookConfigurationEventHandlerMockRecorder is the mock recorder for MockMutatingWebhookConfigurationEventHandler.
+type MockMutatingWebhookConfigurationEventHandlerMockRecorder struct {
+	mock *MockMutatingWebhookConfigurationEventHandler
+}
+
+// NewMockMutatingWebhookConfigurationEventHandler creates a new mock instance.
+func NewMockMutatingWebhookConfigurationEventHandler(ctrl *gomock.Controller) *MockMutatingWebhookConfigurationEventHandler {
+	mock := &MockMutatingWebhookConfigurationEventHandler{ctrl: ctrl}
+	mock.recorder = &MockMutatingWebhookConfigurationEventHandlerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMutatingWebhookConfigurationEventHandler) EXPECT() *MockMutatingWebhookConfigurationEventHandlerMockRecorder {
+	return m.recorder
+}
+
+// CreateMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationEventHandler) CreateMutatingWebhookConfiguration(obj *v1.MutatingWebhookConfiguration) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateMutatingWebhookConfiguration", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateMutatingWebhookConfiguration indicates an expected call of CreateMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationEventHandlerMockRecorder) CreateMutatingWebhookConfiguration(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationEventHandler)(nil).CreateMutatingWebhookConfiguration), obj)
+}
+
+// DeleteMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationEventHandler) DeleteMutatingWebhookConfiguration(obj *v1.MutatingWebhookConfiguration) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteMutatingWebhookConfiguration", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteMutatingWebhookConfiguration indicates an expected call of DeleteMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationEventHandlerMockRecorder) DeleteMutatingWebhookConfiguration(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationEventHandler)(nil).DeleteMutatingWebhookConfiguration), obj)
+}
+
+// GenericMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationEventHandler) GenericMutatingWebhookConfiguration(obj *v1.MutatingWebhookConfiguration) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GenericMutatingWebhookConfiguration", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// GenericMutatingWebhookConfiguration indicates an expected call of GenericMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationEventHandlerMockRecorder) GenericMutatingWebhookConfiguration(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationEventHandler)(nil).GenericMutatingWebhookConfiguration), obj)
+}
+
+// UpdateMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationEventHandler) UpdateMutatingWebhookConfiguration(old, new *v1.MutatingWebhookConfiguration) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateMutatingWebhookConfiguration", old, new)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateMutatingWebhookConfiguration indicates an expected call of UpdateMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationEventHandlerMockRecorder) UpdateMutatingWebhookConfiguration(old, new interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationEventHandler)(nil).UpdateMutatingWebhookConfiguration), old, new)
+}
+
+// MockMutatingWebhookConfigurationEventWatcher is a mock of MutatingWebhookConfigurationEventWatcher interface.
+type MockMutatingWebhookConfigurationEventWatcher struct {
+	ctrl     *gomock.Controller
+	recorder *MockMutatingWebhookConfigurationEventWatcherMockRecorder
+}
+
+// MockMutatingWebhookConfigurationEventWatcherMockRecorder is the mock recorder for MockMutatingWebhookConfigurationEventWatcher.
+type MockMutatingWebhookConfigurationEventWatcherMockRecorder struct {
+	mock *MockMutatingWebhookConfigurationEventWatcher
+}
+
+// NewMockMutatingWebhookConfigurationEventWatcher creates a new mock instance.
+func NewMockMutatingWebhookConfigurationEventWatcher(ctrl *gomock.Controller) *MockMutatingWebhookConfigurationEventWatcher {
+	mock := &MockMutatingWebhookConfigurationEventWatcher{ctrl: ctrl}
+	mock.recorder = &MockMutatingWebhookConfigurationEventWatcherMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMutatingWebhookConfigurationEventWatcher) EXPECT() *MockMutatingWebhookConfigurationEventWatcherMockRecorder {
+	return m.recorder
+}
+
+// AddEventHandler mocks base method.
+func (m *MockMutatingWebhookConfigurationEventWatcher) AddEventHandler(ctx context.Context, h controller.MutatingWebhookConfigurationEventHandler, predicates ...predicate.Predicate) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, h}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "AddEventHandler", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AddEventHandler indicates an expected call of AddEventHandler.
+func (mr *MockMutatingWebhookConfigurationEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, h}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockMutatingWebhookConfigurationEventWatcher)(nil).AddEventHandler), varargs...)
+}

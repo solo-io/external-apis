@@ -75,6 +75,20 @@ func (m *MockClientset) EXPECT() *MockClientsetMockRecorder {
 	return m.recorder
 }
 
+// MutatingWebhookConfigurations mocks base method.
+func (m *MockClientset) MutatingWebhookConfigurations() v1.MutatingWebhookConfigurationClient {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "MutatingWebhookConfigurations")
+	ret0, _ := ret[0].(v1.MutatingWebhookConfigurationClient)
+	return ret0
+}
+
+// MutatingWebhookConfigurations indicates an expected call of MutatingWebhookConfigurations.
+func (mr *MockClientsetMockRecorder) MutatingWebhookConfigurations() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MutatingWebhookConfigurations", reflect.TypeOf((*MockClientset)(nil).MutatingWebhookConfigurations))
+}
+
 // ValidatingWebhookConfigurations mocks base method.
 func (m *MockClientset) ValidatingWebhookConfigurations() v1.ValidatingWebhookConfigurationClient {
 	m.ctrl.T.Helper()
@@ -591,4 +605,508 @@ func (m *MockMulticlusterValidatingWebhookConfigurationClient) Cluster(cluster s
 func (mr *MockMulticlusterValidatingWebhookConfigurationClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterValidatingWebhookConfigurationClient)(nil).Cluster), cluster)
+}
+
+// MockMutatingWebhookConfigurationReader is a mock of MutatingWebhookConfigurationReader interface.
+type MockMutatingWebhookConfigurationReader struct {
+	ctrl     *gomock.Controller
+	recorder *MockMutatingWebhookConfigurationReaderMockRecorder
+}
+
+// MockMutatingWebhookConfigurationReaderMockRecorder is the mock recorder for MockMutatingWebhookConfigurationReader.
+type MockMutatingWebhookConfigurationReaderMockRecorder struct {
+	mock *MockMutatingWebhookConfigurationReader
+}
+
+// NewMockMutatingWebhookConfigurationReader creates a new mock instance.
+func NewMockMutatingWebhookConfigurationReader(ctrl *gomock.Controller) *MockMutatingWebhookConfigurationReader {
+	mock := &MockMutatingWebhookConfigurationReader{ctrl: ctrl}
+	mock.recorder = &MockMutatingWebhookConfigurationReaderMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMutatingWebhookConfigurationReader) EXPECT() *MockMutatingWebhookConfigurationReaderMockRecorder {
+	return m.recorder
+}
+
+// GetMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationReader) GetMutatingWebhookConfiguration(ctx context.Context, key client.ObjectKey) (*v10.MutatingWebhookConfiguration, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMutatingWebhookConfiguration", ctx, key)
+	ret0, _ := ret[0].(*v10.MutatingWebhookConfiguration)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMutatingWebhookConfiguration indicates an expected call of GetMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationReaderMockRecorder) GetMutatingWebhookConfiguration(ctx, key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationReader)(nil).GetMutatingWebhookConfiguration), ctx, key)
+}
+
+// ListMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationReader) ListMutatingWebhookConfiguration(ctx context.Context, opts ...client.ListOption) (*v10.MutatingWebhookConfigurationList, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListMutatingWebhookConfiguration", varargs...)
+	ret0, _ := ret[0].(*v10.MutatingWebhookConfigurationList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListMutatingWebhookConfiguration indicates an expected call of ListMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationReaderMockRecorder) ListMutatingWebhookConfiguration(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationReader)(nil).ListMutatingWebhookConfiguration), varargs...)
+}
+
+// MockMutatingWebhookConfigurationWriter is a mock of MutatingWebhookConfigurationWriter interface.
+type MockMutatingWebhookConfigurationWriter struct {
+	ctrl     *gomock.Controller
+	recorder *MockMutatingWebhookConfigurationWriterMockRecorder
+}
+
+// MockMutatingWebhookConfigurationWriterMockRecorder is the mock recorder for MockMutatingWebhookConfigurationWriter.
+type MockMutatingWebhookConfigurationWriterMockRecorder struct {
+	mock *MockMutatingWebhookConfigurationWriter
+}
+
+// NewMockMutatingWebhookConfigurationWriter creates a new mock instance.
+func NewMockMutatingWebhookConfigurationWriter(ctrl *gomock.Controller) *MockMutatingWebhookConfigurationWriter {
+	mock := &MockMutatingWebhookConfigurationWriter{ctrl: ctrl}
+	mock.recorder = &MockMutatingWebhookConfigurationWriterMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMutatingWebhookConfigurationWriter) EXPECT() *MockMutatingWebhookConfigurationWriterMockRecorder {
+	return m.recorder
+}
+
+// CreateMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationWriter) CreateMutatingWebhookConfiguration(ctx context.Context, obj *v10.MutatingWebhookConfiguration, opts ...client.CreateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateMutatingWebhookConfiguration", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateMutatingWebhookConfiguration indicates an expected call of CreateMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationWriterMockRecorder) CreateMutatingWebhookConfiguration(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationWriter)(nil).CreateMutatingWebhookConfiguration), varargs...)
+}
+
+// DeleteAllOfMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationWriter) DeleteAllOfMutatingWebhookConfiguration(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteAllOfMutatingWebhookConfiguration", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllOfMutatingWebhookConfiguration indicates an expected call of DeleteAllOfMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationWriterMockRecorder) DeleteAllOfMutatingWebhookConfiguration(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationWriter)(nil).DeleteAllOfMutatingWebhookConfiguration), varargs...)
+}
+
+// DeleteMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationWriter) DeleteMutatingWebhookConfiguration(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, key}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteMutatingWebhookConfiguration", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteMutatingWebhookConfiguration indicates an expected call of DeleteMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationWriterMockRecorder) DeleteMutatingWebhookConfiguration(ctx, key interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, key}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationWriter)(nil).DeleteMutatingWebhookConfiguration), varargs...)
+}
+
+// PatchMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationWriter) PatchMutatingWebhookConfiguration(ctx context.Context, obj *v10.MutatingWebhookConfiguration, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchMutatingWebhookConfiguration", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchMutatingWebhookConfiguration indicates an expected call of PatchMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationWriterMockRecorder) PatchMutatingWebhookConfiguration(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationWriter)(nil).PatchMutatingWebhookConfiguration), varargs...)
+}
+
+// UpdateMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationWriter) UpdateMutatingWebhookConfiguration(ctx context.Context, obj *v10.MutatingWebhookConfiguration, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateMutatingWebhookConfiguration", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateMutatingWebhookConfiguration indicates an expected call of UpdateMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationWriterMockRecorder) UpdateMutatingWebhookConfiguration(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationWriter)(nil).UpdateMutatingWebhookConfiguration), varargs...)
+}
+
+// UpsertMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationWriter) UpsertMutatingWebhookConfiguration(ctx context.Context, obj *v10.MutatingWebhookConfiguration, transitionFuncs ...v1.MutatingWebhookConfigurationTransitionFunction) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range transitionFuncs {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpsertMutatingWebhookConfiguration", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertMutatingWebhookConfiguration indicates an expected call of UpsertMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationWriterMockRecorder) UpsertMutatingWebhookConfiguration(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationWriter)(nil).UpsertMutatingWebhookConfiguration), varargs...)
+}
+
+// MockMutatingWebhookConfigurationStatusWriter is a mock of MutatingWebhookConfigurationStatusWriter interface.
+type MockMutatingWebhookConfigurationStatusWriter struct {
+	ctrl     *gomock.Controller
+	recorder *MockMutatingWebhookConfigurationStatusWriterMockRecorder
+}
+
+// MockMutatingWebhookConfigurationStatusWriterMockRecorder is the mock recorder for MockMutatingWebhookConfigurationStatusWriter.
+type MockMutatingWebhookConfigurationStatusWriterMockRecorder struct {
+	mock *MockMutatingWebhookConfigurationStatusWriter
+}
+
+// NewMockMutatingWebhookConfigurationStatusWriter creates a new mock instance.
+func NewMockMutatingWebhookConfigurationStatusWriter(ctrl *gomock.Controller) *MockMutatingWebhookConfigurationStatusWriter {
+	mock := &MockMutatingWebhookConfigurationStatusWriter{ctrl: ctrl}
+	mock.recorder = &MockMutatingWebhookConfigurationStatusWriterMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMutatingWebhookConfigurationStatusWriter) EXPECT() *MockMutatingWebhookConfigurationStatusWriterMockRecorder {
+	return m.recorder
+}
+
+// PatchMutatingWebhookConfigurationStatus mocks base method.
+func (m *MockMutatingWebhookConfigurationStatusWriter) PatchMutatingWebhookConfigurationStatus(ctx context.Context, obj *v10.MutatingWebhookConfiguration, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchMutatingWebhookConfigurationStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchMutatingWebhookConfigurationStatus indicates an expected call of PatchMutatingWebhookConfigurationStatus.
+func (mr *MockMutatingWebhookConfigurationStatusWriterMockRecorder) PatchMutatingWebhookConfigurationStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchMutatingWebhookConfigurationStatus", reflect.TypeOf((*MockMutatingWebhookConfigurationStatusWriter)(nil).PatchMutatingWebhookConfigurationStatus), varargs...)
+}
+
+// UpdateMutatingWebhookConfigurationStatus mocks base method.
+func (m *MockMutatingWebhookConfigurationStatusWriter) UpdateMutatingWebhookConfigurationStatus(ctx context.Context, obj *v10.MutatingWebhookConfiguration, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateMutatingWebhookConfigurationStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateMutatingWebhookConfigurationStatus indicates an expected call of UpdateMutatingWebhookConfigurationStatus.
+func (mr *MockMutatingWebhookConfigurationStatusWriterMockRecorder) UpdateMutatingWebhookConfigurationStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMutatingWebhookConfigurationStatus", reflect.TypeOf((*MockMutatingWebhookConfigurationStatusWriter)(nil).UpdateMutatingWebhookConfigurationStatus), varargs...)
+}
+
+// MockMutatingWebhookConfigurationClient is a mock of MutatingWebhookConfigurationClient interface.
+type MockMutatingWebhookConfigurationClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockMutatingWebhookConfigurationClientMockRecorder
+}
+
+// MockMutatingWebhookConfigurationClientMockRecorder is the mock recorder for MockMutatingWebhookConfigurationClient.
+type MockMutatingWebhookConfigurationClientMockRecorder struct {
+	mock *MockMutatingWebhookConfigurationClient
+}
+
+// NewMockMutatingWebhookConfigurationClient creates a new mock instance.
+func NewMockMutatingWebhookConfigurationClient(ctrl *gomock.Controller) *MockMutatingWebhookConfigurationClient {
+	mock := &MockMutatingWebhookConfigurationClient{ctrl: ctrl}
+	mock.recorder = &MockMutatingWebhookConfigurationClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMutatingWebhookConfigurationClient) EXPECT() *MockMutatingWebhookConfigurationClientMockRecorder {
+	return m.recorder
+}
+
+// CreateMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationClient) CreateMutatingWebhookConfiguration(ctx context.Context, obj *v10.MutatingWebhookConfiguration, opts ...client.CreateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateMutatingWebhookConfiguration", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateMutatingWebhookConfiguration indicates an expected call of CreateMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationClientMockRecorder) CreateMutatingWebhookConfiguration(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationClient)(nil).CreateMutatingWebhookConfiguration), varargs...)
+}
+
+// DeleteAllOfMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationClient) DeleteAllOfMutatingWebhookConfiguration(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteAllOfMutatingWebhookConfiguration", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllOfMutatingWebhookConfiguration indicates an expected call of DeleteAllOfMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationClientMockRecorder) DeleteAllOfMutatingWebhookConfiguration(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationClient)(nil).DeleteAllOfMutatingWebhookConfiguration), varargs...)
+}
+
+// DeleteMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationClient) DeleteMutatingWebhookConfiguration(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, key}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteMutatingWebhookConfiguration", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteMutatingWebhookConfiguration indicates an expected call of DeleteMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationClientMockRecorder) DeleteMutatingWebhookConfiguration(ctx, key interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, key}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationClient)(nil).DeleteMutatingWebhookConfiguration), varargs...)
+}
+
+// GetMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationClient) GetMutatingWebhookConfiguration(ctx context.Context, key client.ObjectKey) (*v10.MutatingWebhookConfiguration, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMutatingWebhookConfiguration", ctx, key)
+	ret0, _ := ret[0].(*v10.MutatingWebhookConfiguration)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMutatingWebhookConfiguration indicates an expected call of GetMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationClientMockRecorder) GetMutatingWebhookConfiguration(ctx, key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationClient)(nil).GetMutatingWebhookConfiguration), ctx, key)
+}
+
+// ListMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationClient) ListMutatingWebhookConfiguration(ctx context.Context, opts ...client.ListOption) (*v10.MutatingWebhookConfigurationList, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListMutatingWebhookConfiguration", varargs...)
+	ret0, _ := ret[0].(*v10.MutatingWebhookConfigurationList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListMutatingWebhookConfiguration indicates an expected call of ListMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationClientMockRecorder) ListMutatingWebhookConfiguration(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationClient)(nil).ListMutatingWebhookConfiguration), varargs...)
+}
+
+// PatchMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationClient) PatchMutatingWebhookConfiguration(ctx context.Context, obj *v10.MutatingWebhookConfiguration, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchMutatingWebhookConfiguration", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchMutatingWebhookConfiguration indicates an expected call of PatchMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationClientMockRecorder) PatchMutatingWebhookConfiguration(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationClient)(nil).PatchMutatingWebhookConfiguration), varargs...)
+}
+
+// PatchMutatingWebhookConfigurationStatus mocks base method.
+func (m *MockMutatingWebhookConfigurationClient) PatchMutatingWebhookConfigurationStatus(ctx context.Context, obj *v10.MutatingWebhookConfiguration, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchMutatingWebhookConfigurationStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchMutatingWebhookConfigurationStatus indicates an expected call of PatchMutatingWebhookConfigurationStatus.
+func (mr *MockMutatingWebhookConfigurationClientMockRecorder) PatchMutatingWebhookConfigurationStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchMutatingWebhookConfigurationStatus", reflect.TypeOf((*MockMutatingWebhookConfigurationClient)(nil).PatchMutatingWebhookConfigurationStatus), varargs...)
+}
+
+// UpdateMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationClient) UpdateMutatingWebhookConfiguration(ctx context.Context, obj *v10.MutatingWebhookConfiguration, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateMutatingWebhookConfiguration", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateMutatingWebhookConfiguration indicates an expected call of UpdateMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationClientMockRecorder) UpdateMutatingWebhookConfiguration(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationClient)(nil).UpdateMutatingWebhookConfiguration), varargs...)
+}
+
+// UpdateMutatingWebhookConfigurationStatus mocks base method.
+func (m *MockMutatingWebhookConfigurationClient) UpdateMutatingWebhookConfigurationStatus(ctx context.Context, obj *v10.MutatingWebhookConfiguration, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateMutatingWebhookConfigurationStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateMutatingWebhookConfigurationStatus indicates an expected call of UpdateMutatingWebhookConfigurationStatus.
+func (mr *MockMutatingWebhookConfigurationClientMockRecorder) UpdateMutatingWebhookConfigurationStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMutatingWebhookConfigurationStatus", reflect.TypeOf((*MockMutatingWebhookConfigurationClient)(nil).UpdateMutatingWebhookConfigurationStatus), varargs...)
+}
+
+// UpsertMutatingWebhookConfiguration mocks base method.
+func (m *MockMutatingWebhookConfigurationClient) UpsertMutatingWebhookConfiguration(ctx context.Context, obj *v10.MutatingWebhookConfiguration, transitionFuncs ...v1.MutatingWebhookConfigurationTransitionFunction) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range transitionFuncs {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpsertMutatingWebhookConfiguration", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertMutatingWebhookConfiguration indicates an expected call of UpsertMutatingWebhookConfiguration.
+func (mr *MockMutatingWebhookConfigurationClientMockRecorder) UpsertMutatingWebhookConfiguration(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertMutatingWebhookConfiguration", reflect.TypeOf((*MockMutatingWebhookConfigurationClient)(nil).UpsertMutatingWebhookConfiguration), varargs...)
+}
+
+// MockMulticlusterMutatingWebhookConfigurationClient is a mock of MulticlusterMutatingWebhookConfigurationClient interface.
+type MockMulticlusterMutatingWebhookConfigurationClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterMutatingWebhookConfigurationClientMockRecorder
+}
+
+// MockMulticlusterMutatingWebhookConfigurationClientMockRecorder is the mock recorder for MockMulticlusterMutatingWebhookConfigurationClient.
+type MockMulticlusterMutatingWebhookConfigurationClientMockRecorder struct {
+	mock *MockMulticlusterMutatingWebhookConfigurationClient
+}
+
+// NewMockMulticlusterMutatingWebhookConfigurationClient creates a new mock instance.
+func NewMockMulticlusterMutatingWebhookConfigurationClient(ctrl *gomock.Controller) *MockMulticlusterMutatingWebhookConfigurationClient {
+	mock := &MockMulticlusterMutatingWebhookConfigurationClient{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterMutatingWebhookConfigurationClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterMutatingWebhookConfigurationClient) EXPECT() *MockMulticlusterMutatingWebhookConfigurationClientMockRecorder {
+	return m.recorder
+}
+
+// Cluster mocks base method.
+func (m *MockMulticlusterMutatingWebhookConfigurationClient) Cluster(cluster string) (v1.MutatingWebhookConfigurationClient, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Cluster", cluster)
+	ret0, _ := ret[0].(v1.MutatingWebhookConfigurationClient)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Cluster indicates an expected call of Cluster.
+func (mr *MockMulticlusterMutatingWebhookConfigurationClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterMutatingWebhookConfigurationClient)(nil).Cluster), cluster)
 }

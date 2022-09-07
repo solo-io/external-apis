@@ -123,3 +123,110 @@ func (h genericValidatingWebhookConfigurationHandler) Generic(object client.Obje
 	}
 	return h.handler.GenericValidatingWebhookConfiguration(obj)
 }
+
+// Handle events for the MutatingWebhookConfiguration Resource
+// DEPRECATED: Prefer reconciler pattern.
+type MutatingWebhookConfigurationEventHandler interface {
+	CreateMutatingWebhookConfiguration(obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) error
+	UpdateMutatingWebhookConfiguration(old, new *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) error
+	DeleteMutatingWebhookConfiguration(obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) error
+	GenericMutatingWebhookConfiguration(obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) error
+}
+
+type MutatingWebhookConfigurationEventHandlerFuncs struct {
+	OnCreate  func(obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) error
+	OnUpdate  func(old, new *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) error
+	OnDelete  func(obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) error
+	OnGeneric func(obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) error
+}
+
+func (f *MutatingWebhookConfigurationEventHandlerFuncs) CreateMutatingWebhookConfiguration(obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) error {
+	if f.OnCreate == nil {
+		return nil
+	}
+	return f.OnCreate(obj)
+}
+
+func (f *MutatingWebhookConfigurationEventHandlerFuncs) DeleteMutatingWebhookConfiguration(obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) error {
+	if f.OnDelete == nil {
+		return nil
+	}
+	return f.OnDelete(obj)
+}
+
+func (f *MutatingWebhookConfigurationEventHandlerFuncs) UpdateMutatingWebhookConfiguration(objOld, objNew *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) error {
+	if f.OnUpdate == nil {
+		return nil
+	}
+	return f.OnUpdate(objOld, objNew)
+}
+
+func (f *MutatingWebhookConfigurationEventHandlerFuncs) GenericMutatingWebhookConfiguration(obj *admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) error {
+	if f.OnGeneric == nil {
+		return nil
+	}
+	return f.OnGeneric(obj)
+}
+
+type MutatingWebhookConfigurationEventWatcher interface {
+	AddEventHandler(ctx context.Context, h MutatingWebhookConfigurationEventHandler, predicates ...predicate.Predicate) error
+}
+
+type mutatingWebhookConfigurationEventWatcher struct {
+	watcher events.EventWatcher
+}
+
+func NewMutatingWebhookConfigurationEventWatcher(name string, mgr manager.Manager) MutatingWebhookConfigurationEventWatcher {
+	return &mutatingWebhookConfigurationEventWatcher{
+		watcher: events.NewWatcher(name, mgr, &admissionregistration_k8s_io_v1.MutatingWebhookConfiguration{}),
+	}
+}
+
+func (c *mutatingWebhookConfigurationEventWatcher) AddEventHandler(ctx context.Context, h MutatingWebhookConfigurationEventHandler, predicates ...predicate.Predicate) error {
+	handler := genericMutatingWebhookConfigurationHandler{handler: h}
+	if err := c.watcher.Watch(ctx, handler, predicates...); err != nil {
+		return err
+	}
+	return nil
+}
+
+// genericMutatingWebhookConfigurationHandler implements a generic events.EventHandler
+type genericMutatingWebhookConfigurationHandler struct {
+	handler MutatingWebhookConfigurationEventHandler
+}
+
+func (h genericMutatingWebhookConfigurationHandler) Create(object client.Object) error {
+	obj, ok := object.(*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration)
+	if !ok {
+		return errors.Errorf("internal error: MutatingWebhookConfiguration handler received event for %T", object)
+	}
+	return h.handler.CreateMutatingWebhookConfiguration(obj)
+}
+
+func (h genericMutatingWebhookConfigurationHandler) Delete(object client.Object) error {
+	obj, ok := object.(*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration)
+	if !ok {
+		return errors.Errorf("internal error: MutatingWebhookConfiguration handler received event for %T", object)
+	}
+	return h.handler.DeleteMutatingWebhookConfiguration(obj)
+}
+
+func (h genericMutatingWebhookConfigurationHandler) Update(old, new client.Object) error {
+	objOld, ok := old.(*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration)
+	if !ok {
+		return errors.Errorf("internal error: MutatingWebhookConfiguration handler received event for %T", old)
+	}
+	objNew, ok := new.(*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration)
+	if !ok {
+		return errors.Errorf("internal error: MutatingWebhookConfiguration handler received event for %T", new)
+	}
+	return h.handler.UpdateMutatingWebhookConfiguration(objOld, objNew)
+}
+
+func (h genericMutatingWebhookConfigurationHandler) Generic(object client.Object) error {
+	obj, ok := object.(*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration)
+	if !ok {
+		return errors.Errorf("internal error: MutatingWebhookConfiguration handler received event for %T", object)
+	}
+	return h.handler.GenericMutatingWebhookConfiguration(obj)
+}
