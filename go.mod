@@ -28,12 +28,12 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/rotisserie/eris v0.1.1
 	github.com/servicemeshinterface/smi-sdk-go v0.4.1
-	github.com/solo-io/skv2 v0.22.8
-	istio.io/client-go v1.12.2
+	github.com/solo-io/skv2 v0.25.0
+	istio.io/client-go v1.13.4
 	istio.io/istio v0.0.0-20220606165002-e8b889bc440d
-	k8s.io/api v0.24.1
-	k8s.io/apiextensions-apiserver v0.24.0
-	k8s.io/apimachinery v0.24.1
-	k8s.io/client-go v0.24.1
-	sigs.k8s.io/controller-runtime v0.12.1
+	k8s.io/api v0.25.4
+	k8s.io/apiextensions-apiserver v0.25.4
+	k8s.io/apimachinery v0.25.4
+	k8s.io/client-go v0.25.4
+	sigs.k8s.io/controller-runtime v0.13.1
 )
