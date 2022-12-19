@@ -67,7 +67,7 @@ func NewAuthorizationPolicySet(authorizationPolicyList ...*security_istio_io_v1b
 func NewAuthorizationPolicySetFromList(authorizationPolicyList *security_istio_io_v1beta1.AuthorizationPolicyList) AuthorizationPolicySet {
 	list := make([]*security_istio_io_v1beta1.AuthorizationPolicy, 0, len(authorizationPolicyList.Items))
 	for idx := range authorizationPolicyList.Items {
-		list = append(list, &authorizationPolicyList.Items[idx])
+		list = append(list, authorizationPolicyList.Items[idx])
 	}
 	return &authorizationPolicySet{set: makeGenericAuthorizationPolicySet(list)}
 }
@@ -288,7 +288,7 @@ func NewPeerAuthenticationSet(peerAuthenticationList ...*security_istio_io_v1bet
 func NewPeerAuthenticationSetFromList(peerAuthenticationList *security_istio_io_v1beta1.PeerAuthenticationList) PeerAuthenticationSet {
 	list := make([]*security_istio_io_v1beta1.PeerAuthentication, 0, len(peerAuthenticationList.Items))
 	for idx := range peerAuthenticationList.Items {
-		list = append(list, &peerAuthenticationList.Items[idx])
+		list = append(list, peerAuthenticationList.Items[idx])
 	}
 	return &peerAuthenticationSet{set: makeGenericPeerAuthenticationSet(list)}
 }

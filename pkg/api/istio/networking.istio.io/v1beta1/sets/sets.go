@@ -67,7 +67,7 @@ func NewDestinationRuleSet(destinationRuleList ...*networking_istio_io_v1beta1.D
 func NewDestinationRuleSetFromList(destinationRuleList *networking_istio_io_v1beta1.DestinationRuleList) DestinationRuleSet {
 	list := make([]*networking_istio_io_v1beta1.DestinationRule, 0, len(destinationRuleList.Items))
 	for idx := range destinationRuleList.Items {
-		list = append(list, &destinationRuleList.Items[idx])
+		list = append(list, destinationRuleList.Items[idx])
 	}
 	return &destinationRuleSet{set: makeGenericDestinationRuleSet(list)}
 }
@@ -288,7 +288,7 @@ func NewGatewaySet(gatewayList ...*networking_istio_io_v1beta1.Gateway) GatewayS
 func NewGatewaySetFromList(gatewayList *networking_istio_io_v1beta1.GatewayList) GatewaySet {
 	list := make([]*networking_istio_io_v1beta1.Gateway, 0, len(gatewayList.Items))
 	for idx := range gatewayList.Items {
-		list = append(list, &gatewayList.Items[idx])
+		list = append(list, gatewayList.Items[idx])
 	}
 	return &gatewaySet{set: makeGenericGatewaySet(list)}
 }
@@ -509,7 +509,7 @@ func NewServiceEntrySet(serviceEntryList ...*networking_istio_io_v1beta1.Service
 func NewServiceEntrySetFromList(serviceEntryList *networking_istio_io_v1beta1.ServiceEntryList) ServiceEntrySet {
 	list := make([]*networking_istio_io_v1beta1.ServiceEntry, 0, len(serviceEntryList.Items))
 	for idx := range serviceEntryList.Items {
-		list = append(list, &serviceEntryList.Items[idx])
+		list = append(list, serviceEntryList.Items[idx])
 	}
 	return &serviceEntrySet{set: makeGenericServiceEntrySet(list)}
 }
@@ -730,7 +730,7 @@ func NewWorkloadEntrySet(workloadEntryList ...*networking_istio_io_v1beta1.Workl
 func NewWorkloadEntrySetFromList(workloadEntryList *networking_istio_io_v1beta1.WorkloadEntryList) WorkloadEntrySet {
 	list := make([]*networking_istio_io_v1beta1.WorkloadEntry, 0, len(workloadEntryList.Items))
 	for idx := range workloadEntryList.Items {
-		list = append(list, &workloadEntryList.Items[idx])
+		list = append(list, workloadEntryList.Items[idx])
 	}
 	return &workloadEntrySet{set: makeGenericWorkloadEntrySet(list)}
 }
@@ -951,7 +951,7 @@ func NewVirtualServiceSet(virtualServiceList ...*networking_istio_io_v1beta1.Vir
 func NewVirtualServiceSetFromList(virtualServiceList *networking_istio_io_v1beta1.VirtualServiceList) VirtualServiceSet {
 	list := make([]*networking_istio_io_v1beta1.VirtualService, 0, len(virtualServiceList.Items))
 	for idx := range virtualServiceList.Items {
-		list = append(list, &virtualServiceList.Items[idx])
+		list = append(list, virtualServiceList.Items[idx])
 	}
 	return &virtualServiceSet{set: makeGenericVirtualServiceSet(list)}
 }
@@ -1172,7 +1172,7 @@ func NewSidecarSet(sidecarList ...*networking_istio_io_v1beta1.Sidecar) SidecarS
 func NewSidecarSetFromList(sidecarList *networking_istio_io_v1beta1.SidecarList) SidecarSet {
 	list := make([]*networking_istio_io_v1beta1.Sidecar, 0, len(sidecarList.Items))
 	for idx := range sidecarList.Items {
-		list = append(list, &sidecarList.Items[idx])
+		list = append(list, sidecarList.Items[idx])
 	}
 	return &sidecarSet{set: makeGenericSidecarSet(list)}
 }
