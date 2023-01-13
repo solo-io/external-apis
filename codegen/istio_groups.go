@@ -44,6 +44,7 @@ func istioGroups() []model.Group {
 			},
 			CustomTypesImportPath: "istio.io/client-go/pkg/apis/networking/v1beta1",
 			ApiRoot:               istioApiRoot,
+			PointerSlices:         true,
 		},
 		{
 			GroupVersion: networkingv1alpha3.SchemeGroupVersion,
@@ -55,6 +56,7 @@ func istioGroups() []model.Group {
 			},
 			CustomTypesImportPath: "istio.io/client-go/pkg/apis/networking/v1alpha3",
 			ApiRoot:               istioApiRoot,
+			PointerSlices:         true,
 		},
 		{
 			GroupVersion: v1beta1.SchemeGroupVersion,
@@ -69,6 +71,7 @@ func istioGroups() []model.Group {
 			},
 			CustomTypesImportPath: "istio.io/client-go/pkg/apis/security/v1beta1",
 			ApiRoot:               istioApiRoot,
+			PointerSlices:         true,
 		},
 		{
 			GroupVersion: operator.SchemeGroupVersion,

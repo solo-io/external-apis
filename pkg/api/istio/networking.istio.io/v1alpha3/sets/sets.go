@@ -67,7 +67,7 @@ func NewEnvoyFilterSet(envoyFilterList ...*networking_istio_io_v1alpha3.EnvoyFil
 func NewEnvoyFilterSetFromList(envoyFilterList *networking_istio_io_v1alpha3.EnvoyFilterList) EnvoyFilterSet {
 	list := make([]*networking_istio_io_v1alpha3.EnvoyFilter, 0, len(envoyFilterList.Items))
 	for idx := range envoyFilterList.Items {
-		list = append(list, &envoyFilterList.Items[idx])
+		list = append(list, envoyFilterList.Items[idx])
 	}
 	return &envoyFilterSet{set: makeGenericEnvoyFilterSet(list)}
 }
