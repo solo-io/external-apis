@@ -9,7 +9,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/rotisserie/eris v0.1.1
 	github.com/servicemeshinterface/smi-sdk-go v0.4.1
-	github.com/solo-io/skv2 v0.25.1-0.20221219222213-74465424f9c8
+	github.com/solo-io/skv2 v0.27.0
 	istio.io/client-go v1.15.4
 	istio.io/istio v0.0.0-20221208171804-952b2e8bc4b0
 	k8s.io/api v0.25.4
@@ -111,7 +111,7 @@ require (
 	github.com/solo-io/anyvendor v0.0.4 // indirect
 	github.com/solo-io/cue v0.4.6 // indirect
 	github.com/solo-io/go-utils v0.21.4 // indirect
-	github.com/solo-io/protoc-gen-ext v0.0.16 // indirect
+	github.com/solo-io/protoc-gen-ext v0.0.18 // indirect
 	github.com/spf13/afero v1.8.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.5.0 // indirect
