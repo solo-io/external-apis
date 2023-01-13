@@ -1,6 +1,6 @@
 module github.com/solo-io/external-apis
 
-go 1.18
+go 1.19
 
 require (
 	github.com/aws/aws-app-mesh-controller-for-k8s v1.1.1
