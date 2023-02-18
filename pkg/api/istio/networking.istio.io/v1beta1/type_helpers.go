@@ -19,6 +19,9 @@ type ServiceEntrySlice []*ServiceEntry
 // WorkloadEntrySlice represents a slice of *WorkloadEntry
 type WorkloadEntrySlice []*WorkloadEntry
 
+// WorkloadGroupSlice represents a slice of *WorkloadGroup
+type WorkloadGroupSlice []*WorkloadGroup
+
 // VirtualServiceSlice represents a slice of *VirtualService
 type VirtualServiceSlice []*VirtualService
 

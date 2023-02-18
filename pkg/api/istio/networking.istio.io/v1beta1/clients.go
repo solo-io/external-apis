@@ -49,6 +49,8 @@ type Clientset interface {
 	// clienset for the networking.istio.io/v1beta1/v1beta1 APIs
 	WorkloadEntries() WorkloadEntryClient
 	// clienset for the networking.istio.io/v1beta1/v1beta1 APIs
+	WorkloadGroups() WorkloadGroupClient
+	// clienset for the networking.istio.io/v1beta1/v1beta1 APIs
 	VirtualServices() VirtualServiceClient
 	// clienset for the networking.istio.io/v1beta1/v1beta1 APIs
 	Sidecars() SidecarClient
@@ -94,6 +96,11 @@ func (c *clientSet) ServiceEntries() ServiceEntryClient {
 // clienset for the networking.istio.io/v1beta1/v1beta1 APIs
 func (c *clientSet) WorkloadEntries() WorkloadEntryClient {
 	return NewWorkloadEntryClient(c.client)
+}
+
+// clienset for the networking.istio.io/v1beta1/v1beta1 APIs
+func (c *clientSet) WorkloadGroups() WorkloadGroupClient {
+	return NewWorkloadGroupClient(c.client)
 }
 
 // clienset for the networking.istio.io/v1beta1/v1beta1 APIs
@@ -672,6 +679,148 @@ func (m *multiclusterWorkloadEntryClient) Cluster(cluster string) (WorkloadEntry
 		return nil, err
 	}
 	return NewWorkloadEntryClient(client), nil
+}
+
+// Reader knows how to read and list WorkloadGroups.
+type WorkloadGroupReader interface {
+	// Get retrieves a WorkloadGroup for the given object key
+	GetWorkloadGroup(ctx context.Context, key client.ObjectKey) (*networking_istio_io_v1beta1.WorkloadGroup, error)
+
+	// List retrieves list of WorkloadGroups for a given namespace and list options.
+	ListWorkloadGroup(ctx context.Context, opts ...client.ListOption) (*networking_istio_io_v1beta1.WorkloadGroupList, error)
+}
+
+// WorkloadGroupTransitionFunction instructs the WorkloadGroupWriter how to transition between an existing
+// WorkloadGroup object and a desired on an Upsert
+type WorkloadGroupTransitionFunction func(existing, desired *networking_istio_io_v1beta1.WorkloadGroup) error
+
+// Writer knows how to create, delete, and update WorkloadGroups.
+type WorkloadGroupWriter interface {
+	// Create saves the WorkloadGroup object.
+	CreateWorkloadGroup(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadGroup, opts ...client.CreateOption) error
+
+	// Delete deletes the WorkloadGroup object.
+	DeleteWorkloadGroup(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error
+
+	// Update updates the given WorkloadGroup object.
+	UpdateWorkloadGroup(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadGroup, opts ...client.UpdateOption) error
+
+	// Patch patches the given WorkloadGroup object.
+	PatchWorkloadGroup(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadGroup, patch client.Patch, opts ...client.PatchOption) error
+
+	// DeleteAllOf deletes all WorkloadGroup objects matching the given options.
+	DeleteAllOfWorkloadGroup(ctx context.Context, opts ...client.DeleteAllOfOption) error
+
+	// Create or Update the WorkloadGroup object.
+	UpsertWorkloadGroup(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadGroup, transitionFuncs ...WorkloadGroupTransitionFunction) error
+}
+
+// StatusWriter knows how to update status subresource of a WorkloadGroup object.
+type WorkloadGroupStatusWriter interface {
+	// Update updates the fields corresponding to the status subresource for the
+	// given WorkloadGroup object.
+	UpdateWorkloadGroupStatus(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadGroup, opts ...client.UpdateOption) error
+
+	// Patch patches the given WorkloadGroup object's subresource.
+	PatchWorkloadGroupStatus(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadGroup, patch client.Patch, opts ...client.PatchOption) error
+}
+
+// Client knows how to perform CRUD operations on WorkloadGroups.
+type WorkloadGroupClient interface {
+	WorkloadGroupReader
+	WorkloadGroupWriter
+	WorkloadGroupStatusWriter
+}
+
+type workloadGroupClient struct {
+	client client.Client
+}
+
+func NewWorkloadGroupClient(client client.Client) *workloadGroupClient {
+	return &workloadGroupClient{client: client}
+}
+
+func (c *workloadGroupClient) GetWorkloadGroup(ctx context.Context, key client.ObjectKey) (*networking_istio_io_v1beta1.WorkloadGroup, error) {
+	obj := &networking_istio_io_v1beta1.WorkloadGroup{}
+	if err := c.client.Get(ctx, key, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+func (c *workloadGroupClient) ListWorkloadGroup(ctx context.Context, opts ...client.ListOption) (*networking_istio_io_v1beta1.WorkloadGroupList, error) {
+	list := &networking_istio_io_v1beta1.WorkloadGroupList{}
+	if err := c.client.List(ctx, list, opts...); err != nil {
+		return nil, err
+	}
+	return list, nil
+}
+
+func (c *workloadGroupClient) CreateWorkloadGroup(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadGroup, opts ...client.CreateOption) error {
+	return c.client.Create(ctx, obj, opts...)
+}
+
+func (c *workloadGroupClient) DeleteWorkloadGroup(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	obj := &networking_istio_io_v1beta1.WorkloadGroup{}
+	obj.SetName(key.Name)
+	obj.SetNamespace(key.Namespace)
+	return c.client.Delete(ctx, obj, opts...)
+}
+
+func (c *workloadGroupClient) UpdateWorkloadGroup(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadGroup, opts ...client.UpdateOption) error {
+	return c.client.Update(ctx, obj, opts...)
+}
+
+func (c *workloadGroupClient) PatchWorkloadGroup(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadGroup, patch client.Patch, opts ...client.PatchOption) error {
+	return c.client.Patch(ctx, obj, patch, opts...)
+}
+
+func (c *workloadGroupClient) DeleteAllOfWorkloadGroup(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	obj := &networking_istio_io_v1beta1.WorkloadGroup{}
+	return c.client.DeleteAllOf(ctx, obj, opts...)
+}
+
+func (c *workloadGroupClient) UpsertWorkloadGroup(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadGroup, transitionFuncs ...WorkloadGroupTransitionFunction) error {
+	genericTxFunc := func(existing, desired runtime.Object) error {
+		for _, txFunc := range transitionFuncs {
+			if err := txFunc(existing.(*networking_istio_io_v1beta1.WorkloadGroup), desired.(*networking_istio_io_v1beta1.WorkloadGroup)); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+	_, err := controllerutils.Upsert(ctx, c.client, obj, genericTxFunc)
+	return err
+}
+
+func (c *workloadGroupClient) UpdateWorkloadGroupStatus(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadGroup, opts ...client.UpdateOption) error {
+	return c.client.Status().Update(ctx, obj, opts...)
+}
+
+func (c *workloadGroupClient) PatchWorkloadGroupStatus(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadGroup, patch client.Patch, opts ...client.PatchOption) error {
+	return c.client.Status().Patch(ctx, obj, patch, opts...)
+}
+
+// Provides WorkloadGroupClients for multiple clusters.
+type MulticlusterWorkloadGroupClient interface {
+	// Cluster returns a WorkloadGroupClient for the given cluster
+	Cluster(cluster string) (WorkloadGroupClient, error)
+}
+
+type multiclusterWorkloadGroupClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterWorkloadGroupClient(client multicluster.Client) MulticlusterWorkloadGroupClient {
+	return &multiclusterWorkloadGroupClient{client: client}
+}
+
+func (m *multiclusterWorkloadGroupClient) Cluster(cluster string) (WorkloadGroupClient, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewWorkloadGroupClient(client), nil
 }
 
 // Reader knows how to read and list VirtualServices.

@@ -22,6 +22,6 @@ codegen-deps: mod-download
 generated-code:
 	go run generate.go
 	go generate -v ./...
-	goimports -w .
+	$(DEPSGOBIN)/goimports -w .
 	go mod tidy 
 
