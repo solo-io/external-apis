@@ -159,6 +159,20 @@ func (mr *MockClientsetMockRecorder) WorkloadEntries() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WorkloadEntries", reflect.TypeOf((*MockClientset)(nil).WorkloadEntries))
 }
 
+// WorkloadGroups mocks base method.
+func (m *MockClientset) WorkloadGroups() v1beta1.WorkloadGroupClient {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "WorkloadGroups")
+	ret0, _ := ret[0].(v1beta1.WorkloadGroupClient)
+	return ret0
+}
+
+// WorkloadGroups indicates an expected call of WorkloadGroups.
+func (mr *MockClientsetMockRecorder) WorkloadGroups() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WorkloadGroups", reflect.TypeOf((*MockClientset)(nil).WorkloadGroups))
+}
+
 // MockDestinationRuleReader is a mock of DestinationRuleReader interface.
 type MockDestinationRuleReader struct {
 	ctrl     *gomock.Controller
@@ -2173,6 +2187,510 @@ func (m *MockMulticlusterWorkloadEntryClient) Cluster(cluster string) (v1beta1.W
 func (mr *MockMulticlusterWorkloadEntryClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterWorkloadEntryClient)(nil).Cluster), cluster)
+}
+
+// MockWorkloadGroupReader is a mock of WorkloadGroupReader interface.
+type MockWorkloadGroupReader struct {
+	ctrl     *gomock.Controller
+	recorder *MockWorkloadGroupReaderMockRecorder
+}
+
+// MockWorkloadGroupReaderMockRecorder is the mock recorder for MockWorkloadGroupReader.
+type MockWorkloadGroupReaderMockRecorder struct {
+	mock *MockWorkloadGroupReader
+}
+
+// NewMockWorkloadGroupReader creates a new mock instance.
+func NewMockWorkloadGroupReader(ctrl *gomock.Controller) *MockWorkloadGroupReader {
+	mock := &MockWorkloadGroupReader{ctrl: ctrl}
+	mock.recorder = &MockWorkloadGroupReaderMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockWorkloadGroupReader) EXPECT() *MockWorkloadGroupReaderMockRecorder {
+	return m.recorder
+}
+
+// GetWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupReader) GetWorkloadGroup(ctx context.Context, key client.ObjectKey) (*v1beta10.WorkloadGroup, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWorkloadGroup", ctx, key)
+	ret0, _ := ret[0].(*v1beta10.WorkloadGroup)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWorkloadGroup indicates an expected call of GetWorkloadGroup.
+func (mr *MockWorkloadGroupReaderMockRecorder) GetWorkloadGroup(ctx, key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupReader)(nil).GetWorkloadGroup), ctx, key)
+}
+
+// ListWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupReader) ListWorkloadGroup(ctx context.Context, opts ...client.ListOption) (*v1beta10.WorkloadGroupList, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListWorkloadGroup", varargs...)
+	ret0, _ := ret[0].(*v1beta10.WorkloadGroupList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListWorkloadGroup indicates an expected call of ListWorkloadGroup.
+func (mr *MockWorkloadGroupReaderMockRecorder) ListWorkloadGroup(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupReader)(nil).ListWorkloadGroup), varargs...)
+}
+
+// MockWorkloadGroupWriter is a mock of WorkloadGroupWriter interface.
+type MockWorkloadGroupWriter struct {
+	ctrl     *gomock.Controller
+	recorder *MockWorkloadGroupWriterMockRecorder
+}
+
+// MockWorkloadGroupWriterMockRecorder is the mock recorder for MockWorkloadGroupWriter.
+type MockWorkloadGroupWriterMockRecorder struct {
+	mock *MockWorkloadGroupWriter
+}
+
+// NewMockWorkloadGroupWriter creates a new mock instance.
+func NewMockWorkloadGroupWriter(ctrl *gomock.Controller) *MockWorkloadGroupWriter {
+	mock := &MockWorkloadGroupWriter{ctrl: ctrl}
+	mock.recorder = &MockWorkloadGroupWriterMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockWorkloadGroupWriter) EXPECT() *MockWorkloadGroupWriterMockRecorder {
+	return m.recorder
+}
+
+// CreateWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupWriter) CreateWorkloadGroup(ctx context.Context, obj *v1beta10.WorkloadGroup, opts ...client.CreateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateWorkloadGroup", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateWorkloadGroup indicates an expected call of CreateWorkloadGroup.
+func (mr *MockWorkloadGroupWriterMockRecorder) CreateWorkloadGroup(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupWriter)(nil).CreateWorkloadGroup), varargs...)
+}
+
+// DeleteAllOfWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupWriter) DeleteAllOfWorkloadGroup(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteAllOfWorkloadGroup", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllOfWorkloadGroup indicates an expected call of DeleteAllOfWorkloadGroup.
+func (mr *MockWorkloadGroupWriterMockRecorder) DeleteAllOfWorkloadGroup(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupWriter)(nil).DeleteAllOfWorkloadGroup), varargs...)
+}
+
+// DeleteWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupWriter) DeleteWorkloadGroup(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, key}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteWorkloadGroup", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteWorkloadGroup indicates an expected call of DeleteWorkloadGroup.
+func (mr *MockWorkloadGroupWriterMockRecorder) DeleteWorkloadGroup(ctx, key interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, key}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupWriter)(nil).DeleteWorkloadGroup), varargs...)
+}
+
+// PatchWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupWriter) PatchWorkloadGroup(ctx context.Context, obj *v1beta10.WorkloadGroup, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchWorkloadGroup", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchWorkloadGroup indicates an expected call of PatchWorkloadGroup.
+func (mr *MockWorkloadGroupWriterMockRecorder) PatchWorkloadGroup(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupWriter)(nil).PatchWorkloadGroup), varargs...)
+}
+
+// UpdateWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupWriter) UpdateWorkloadGroup(ctx context.Context, obj *v1beta10.WorkloadGroup, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateWorkloadGroup", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateWorkloadGroup indicates an expected call of UpdateWorkloadGroup.
+func (mr *MockWorkloadGroupWriterMockRecorder) UpdateWorkloadGroup(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupWriter)(nil).UpdateWorkloadGroup), varargs...)
+}
+
+// UpsertWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupWriter) UpsertWorkloadGroup(ctx context.Context, obj *v1beta10.WorkloadGroup, transitionFuncs ...v1beta1.WorkloadGroupTransitionFunction) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range transitionFuncs {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpsertWorkloadGroup", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertWorkloadGroup indicates an expected call of UpsertWorkloadGroup.
+func (mr *MockWorkloadGroupWriterMockRecorder) UpsertWorkloadGroup(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupWriter)(nil).UpsertWorkloadGroup), varargs...)
+}
+
+// MockWorkloadGroupStatusWriter is a mock of WorkloadGroupStatusWriter interface.
+type MockWorkloadGroupStatusWriter struct {
+	ctrl     *gomock.Controller
+	recorder *MockWorkloadGroupStatusWriterMockRecorder
+}
+
+// MockWorkloadGroupStatusWriterMockRecorder is the mock recorder for MockWorkloadGroupStatusWriter.
+type MockWorkloadGroupStatusWriterMockRecorder struct {
+	mock *MockWorkloadGroupStatusWriter
+}
+
+// NewMockWorkloadGroupStatusWriter creates a new mock instance.
+func NewMockWorkloadGroupStatusWriter(ctrl *gomock.Controller) *MockWorkloadGroupStatusWriter {
+	mock := &MockWorkloadGroupStatusWriter{ctrl: ctrl}
+	mock.recorder = &MockWorkloadGroupStatusWriterMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockWorkloadGroupStatusWriter) EXPECT() *MockWorkloadGroupStatusWriterMockRecorder {
+	return m.recorder
+}
+
+// PatchWorkloadGroupStatus mocks base method.
+func (m *MockWorkloadGroupStatusWriter) PatchWorkloadGroupStatus(ctx context.Context, obj *v1beta10.WorkloadGroup, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchWorkloadGroupStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchWorkloadGroupStatus indicates an expected call of PatchWorkloadGroupStatus.
+func (mr *MockWorkloadGroupStatusWriterMockRecorder) PatchWorkloadGroupStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchWorkloadGroupStatus", reflect.TypeOf((*MockWorkloadGroupStatusWriter)(nil).PatchWorkloadGroupStatus), varargs...)
+}
+
+// UpdateWorkloadGroupStatus mocks base method.
+func (m *MockWorkloadGroupStatusWriter) UpdateWorkloadGroupStatus(ctx context.Context, obj *v1beta10.WorkloadGroup, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateWorkloadGroupStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateWorkloadGroupStatus indicates an expected call of UpdateWorkloadGroupStatus.
+func (mr *MockWorkloadGroupStatusWriterMockRecorder) UpdateWorkloadGroupStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateWorkloadGroupStatus", reflect.TypeOf((*MockWorkloadGroupStatusWriter)(nil).UpdateWorkloadGroupStatus), varargs...)
+}
+
+// MockWorkloadGroupClient is a mock of WorkloadGroupClient interface.
+type MockWorkloadGroupClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockWorkloadGroupClientMockRecorder
+}
+
+// MockWorkloadGroupClientMockRecorder is the mock recorder for MockWorkloadGroupClient.
+type MockWorkloadGroupClientMockRecorder struct {
+	mock *MockWorkloadGroupClient
+}
+
+// NewMockWorkloadGroupClient creates a new mock instance.
+func NewMockWorkloadGroupClient(ctrl *gomock.Controller) *MockWorkloadGroupClient {
+	mock := &MockWorkloadGroupClient{ctrl: ctrl}
+	mock.recorder = &MockWorkloadGroupClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockWorkloadGroupClient) EXPECT() *MockWorkloadGroupClientMockRecorder {
+	return m.recorder
+}
+
+// CreateWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupClient) CreateWorkloadGroup(ctx context.Context, obj *v1beta10.WorkloadGroup, opts ...client.CreateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateWorkloadGroup", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateWorkloadGroup indicates an expected call of CreateWorkloadGroup.
+func (mr *MockWorkloadGroupClientMockRecorder) CreateWorkloadGroup(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupClient)(nil).CreateWorkloadGroup), varargs...)
+}
+
+// DeleteAllOfWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupClient) DeleteAllOfWorkloadGroup(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteAllOfWorkloadGroup", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllOfWorkloadGroup indicates an expected call of DeleteAllOfWorkloadGroup.
+func (mr *MockWorkloadGroupClientMockRecorder) DeleteAllOfWorkloadGroup(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupClient)(nil).DeleteAllOfWorkloadGroup), varargs...)
+}
+
+// DeleteWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupClient) DeleteWorkloadGroup(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, key}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteWorkloadGroup", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteWorkloadGroup indicates an expected call of DeleteWorkloadGroup.
+func (mr *MockWorkloadGroupClientMockRecorder) DeleteWorkloadGroup(ctx, key interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, key}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupClient)(nil).DeleteWorkloadGroup), varargs...)
+}
+
+// GetWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupClient) GetWorkloadGroup(ctx context.Context, key client.ObjectKey) (*v1beta10.WorkloadGroup, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWorkloadGroup", ctx, key)
+	ret0, _ := ret[0].(*v1beta10.WorkloadGroup)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWorkloadGroup indicates an expected call of GetWorkloadGroup.
+func (mr *MockWorkloadGroupClientMockRecorder) GetWorkloadGroup(ctx, key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupClient)(nil).GetWorkloadGroup), ctx, key)
+}
+
+// ListWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupClient) ListWorkloadGroup(ctx context.Context, opts ...client.ListOption) (*v1beta10.WorkloadGroupList, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListWorkloadGroup", varargs...)
+	ret0, _ := ret[0].(*v1beta10.WorkloadGroupList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListWorkloadGroup indicates an expected call of ListWorkloadGroup.
+func (mr *MockWorkloadGroupClientMockRecorder) ListWorkloadGroup(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupClient)(nil).ListWorkloadGroup), varargs...)
+}
+
+// PatchWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupClient) PatchWorkloadGroup(ctx context.Context, obj *v1beta10.WorkloadGroup, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchWorkloadGroup", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchWorkloadGroup indicates an expected call of PatchWorkloadGroup.
+func (mr *MockWorkloadGroupClientMockRecorder) PatchWorkloadGroup(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupClient)(nil).PatchWorkloadGroup), varargs...)
+}
+
+// PatchWorkloadGroupStatus mocks base method.
+func (m *MockWorkloadGroupClient) PatchWorkloadGroupStatus(ctx context.Context, obj *v1beta10.WorkloadGroup, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchWorkloadGroupStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchWorkloadGroupStatus indicates an expected call of PatchWorkloadGroupStatus.
+func (mr *MockWorkloadGroupClientMockRecorder) PatchWorkloadGroupStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchWorkloadGroupStatus", reflect.TypeOf((*MockWorkloadGroupClient)(nil).PatchWorkloadGroupStatus), varargs...)
+}
+
+// UpdateWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupClient) UpdateWorkloadGroup(ctx context.Context, obj *v1beta10.WorkloadGroup, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateWorkloadGroup", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateWorkloadGroup indicates an expected call of UpdateWorkloadGroup.
+func (mr *MockWorkloadGroupClientMockRecorder) UpdateWorkloadGroup(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupClient)(nil).UpdateWorkloadGroup), varargs...)
+}
+
+// UpdateWorkloadGroupStatus mocks base method.
+func (m *MockWorkloadGroupClient) UpdateWorkloadGroupStatus(ctx context.Context, obj *v1beta10.WorkloadGroup, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateWorkloadGroupStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateWorkloadGroupStatus indicates an expected call of UpdateWorkloadGroupStatus.
+func (mr *MockWorkloadGroupClientMockRecorder) UpdateWorkloadGroupStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateWorkloadGroupStatus", reflect.TypeOf((*MockWorkloadGroupClient)(nil).UpdateWorkloadGroupStatus), varargs...)
+}
+
+// UpsertWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupClient) UpsertWorkloadGroup(ctx context.Context, obj *v1beta10.WorkloadGroup, transitionFuncs ...v1beta1.WorkloadGroupTransitionFunction) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range transitionFuncs {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpsertWorkloadGroup", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertWorkloadGroup indicates an expected call of UpsertWorkloadGroup.
+func (mr *MockWorkloadGroupClientMockRecorder) UpsertWorkloadGroup(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupClient)(nil).UpsertWorkloadGroup), varargs...)
+}
+
+// MockMulticlusterWorkloadGroupClient is a mock of MulticlusterWorkloadGroupClient interface.
+type MockMulticlusterWorkloadGroupClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterWorkloadGroupClientMockRecorder
+}
+
+// MockMulticlusterWorkloadGroupClientMockRecorder is the mock recorder for MockMulticlusterWorkloadGroupClient.
+type MockMulticlusterWorkloadGroupClientMockRecorder struct {
+	mock *MockMulticlusterWorkloadGroupClient
+}
+
+// NewMockMulticlusterWorkloadGroupClient creates a new mock instance.
+func NewMockMulticlusterWorkloadGroupClient(ctrl *gomock.Controller) *MockMulticlusterWorkloadGroupClient {
+	mock := &MockMulticlusterWorkloadGroupClient{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterWorkloadGroupClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterWorkloadGroupClient) EXPECT() *MockMulticlusterWorkloadGroupClientMockRecorder {
+	return m.recorder
+}
+
+// Cluster mocks base method.
+func (m *MockMulticlusterWorkloadGroupClient) Cluster(cluster string) (v1beta1.WorkloadGroupClient, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Cluster", cluster)
+	ret0, _ := ret[0].(v1beta1.WorkloadGroupClient)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Cluster indicates an expected call of Cluster.
+func (mr *MockMulticlusterWorkloadGroupClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterWorkloadGroupClient)(nil).Cluster), cluster)
 }
 
 // MockVirtualServiceReader is a mock of VirtualServiceReader interface.

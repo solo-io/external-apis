@@ -36,6 +36,9 @@ func istioGroups() []model.Group {
 					Kind: "WorkloadEntry",
 				},
 				{
+					Kind: "WorkloadGroup",
+				},
+				{
 					Kind: "VirtualService",
 				},
 				{
