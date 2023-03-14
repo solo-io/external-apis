@@ -498,6 +498,127 @@ func (mr *MockWorkloadEntryEventWatcherMockRecorder) AddEventHandler(ctx, h inte
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockWorkloadEntryEventWatcher)(nil).AddEventHandler), varargs...)
 }
 
+// MockWorkloadGroupEventHandler is a mock of WorkloadGroupEventHandler interface.
+type MockWorkloadGroupEventHandler struct {
+	ctrl     *gomock.Controller
+	recorder *MockWorkloadGroupEventHandlerMockRecorder
+}
+
+// MockWorkloadGroupEventHandlerMockRecorder is the mock recorder for MockWorkloadGroupEventHandler.
+type MockWorkloadGroupEventHandlerMockRecorder struct {
+	mock *MockWorkloadGroupEventHandler
+}
+
+// NewMockWorkloadGroupEventHandler creates a new mock instance.
+func NewMockWorkloadGroupEventHandler(ctrl *gomock.Controller) *MockWorkloadGroupEventHandler {
+	mock := &MockWorkloadGroupEventHandler{ctrl: ctrl}
+	mock.recorder = &MockWorkloadGroupEventHandlerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockWorkloadGroupEventHandler) EXPECT() *MockWorkloadGroupEventHandlerMockRecorder {
+	return m.recorder
+}
+
+// CreateWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupEventHandler) CreateWorkloadGroup(obj *v1beta1.WorkloadGroup) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateWorkloadGroup", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateWorkloadGroup indicates an expected call of CreateWorkloadGroup.
+func (mr *MockWorkloadGroupEventHandlerMockRecorder) CreateWorkloadGroup(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupEventHandler)(nil).CreateWorkloadGroup), obj)
+}
+
+// DeleteWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupEventHandler) DeleteWorkloadGroup(obj *v1beta1.WorkloadGroup) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteWorkloadGroup", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteWorkloadGroup indicates an expected call of DeleteWorkloadGroup.
+func (mr *MockWorkloadGroupEventHandlerMockRecorder) DeleteWorkloadGroup(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupEventHandler)(nil).DeleteWorkloadGroup), obj)
+}
+
+// GenericWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupEventHandler) GenericWorkloadGroup(obj *v1beta1.WorkloadGroup) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GenericWorkloadGroup", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// GenericWorkloadGroup indicates an expected call of GenericWorkloadGroup.
+func (mr *MockWorkloadGroupEventHandlerMockRecorder) GenericWorkloadGroup(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupEventHandler)(nil).GenericWorkloadGroup), obj)
+}
+
+// UpdateWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupEventHandler) UpdateWorkloadGroup(old, new *v1beta1.WorkloadGroup) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateWorkloadGroup", old, new)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateWorkloadGroup indicates an expected call of UpdateWorkloadGroup.
+func (mr *MockWorkloadGroupEventHandlerMockRecorder) UpdateWorkloadGroup(old, new interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupEventHandler)(nil).UpdateWorkloadGroup), old, new)
+}
+
+// MockWorkloadGroupEventWatcher is a mock of WorkloadGroupEventWatcher interface.
+type MockWorkloadGroupEventWatcher struct {
+	ctrl     *gomock.Controller
+	recorder *MockWorkloadGroupEventWatcherMockRecorder
+}
+
+// MockWorkloadGroupEventWatcherMockRecorder is the mock recorder for MockWorkloadGroupEventWatcher.
+type MockWorkloadGroupEventWatcherMockRecorder struct {
+	mock *MockWorkloadGroupEventWatcher
+}
+
+// NewMockWorkloadGroupEventWatcher creates a new mock instance.
+func NewMockWorkloadGroupEventWatcher(ctrl *gomock.Controller) *MockWorkloadGroupEventWatcher {
+	mock := &MockWorkloadGroupEventWatcher{ctrl: ctrl}
+	mock.recorder = &MockWorkloadGroupEventWatcherMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockWorkloadGroupEventWatcher) EXPECT() *MockWorkloadGroupEventWatcherMockRecorder {
+	return m.recorder
+}
+
+// AddEventHandler mocks base method.
+func (m *MockWorkloadGroupEventWatcher) AddEventHandler(ctx context.Context, h controller.WorkloadGroupEventHandler, predicates ...predicate.Predicate) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, h}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "AddEventHandler", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AddEventHandler indicates an expected call of AddEventHandler.
+func (mr *MockWorkloadGroupEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, h}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockWorkloadGroupEventWatcher)(nil).AddEventHandler), varargs...)
+}
+
 // MockVirtualServiceEventHandler is a mock of VirtualServiceEventHandler interface.
 type MockVirtualServiceEventHandler struct {
 	ctrl     *gomock.Controller

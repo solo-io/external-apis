@@ -747,6 +747,189 @@ func (mr *MockWorkloadEntryReconcileLoopMockRecorder) RunWorkloadEntryReconciler
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunWorkloadEntryReconciler", reflect.TypeOf((*MockWorkloadEntryReconcileLoop)(nil).RunWorkloadEntryReconciler), varargs...)
 }
 
+// MockWorkloadGroupReconciler is a mock of WorkloadGroupReconciler interface.
+type MockWorkloadGroupReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockWorkloadGroupReconcilerMockRecorder
+}
+
+// MockWorkloadGroupReconcilerMockRecorder is the mock recorder for MockWorkloadGroupReconciler.
+type MockWorkloadGroupReconcilerMockRecorder struct {
+	mock *MockWorkloadGroupReconciler
+}
+
+// NewMockWorkloadGroupReconciler creates a new mock instance.
+func NewMockWorkloadGroupReconciler(ctrl *gomock.Controller) *MockWorkloadGroupReconciler {
+	mock := &MockWorkloadGroupReconciler{ctrl: ctrl}
+	mock.recorder = &MockWorkloadGroupReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockWorkloadGroupReconciler) EXPECT() *MockWorkloadGroupReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupReconciler) ReconcileWorkloadGroup(obj *v1beta1.WorkloadGroup) (reconcile.Result, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileWorkloadGroup", obj)
+	ret0, _ := ret[0].(reconcile.Result)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReconcileWorkloadGroup indicates an expected call of ReconcileWorkloadGroup.
+func (mr *MockWorkloadGroupReconcilerMockRecorder) ReconcileWorkloadGroup(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupReconciler)(nil).ReconcileWorkloadGroup), obj)
+}
+
+// MockWorkloadGroupDeletionReconciler is a mock of WorkloadGroupDeletionReconciler interface.
+type MockWorkloadGroupDeletionReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockWorkloadGroupDeletionReconcilerMockRecorder
+}
+
+// MockWorkloadGroupDeletionReconcilerMockRecorder is the mock recorder for MockWorkloadGroupDeletionReconciler.
+type MockWorkloadGroupDeletionReconcilerMockRecorder struct {
+	mock *MockWorkloadGroupDeletionReconciler
+}
+
+// NewMockWorkloadGroupDeletionReconciler creates a new mock instance.
+func NewMockWorkloadGroupDeletionReconciler(ctrl *gomock.Controller) *MockWorkloadGroupDeletionReconciler {
+	mock := &MockWorkloadGroupDeletionReconciler{ctrl: ctrl}
+	mock.recorder = &MockWorkloadGroupDeletionReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockWorkloadGroupDeletionReconciler) EXPECT() *MockWorkloadGroupDeletionReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileWorkloadGroupDeletion mocks base method.
+func (m *MockWorkloadGroupDeletionReconciler) ReconcileWorkloadGroupDeletion(req reconcile.Request) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileWorkloadGroupDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ReconcileWorkloadGroupDeletion indicates an expected call of ReconcileWorkloadGroupDeletion.
+func (mr *MockWorkloadGroupDeletionReconcilerMockRecorder) ReconcileWorkloadGroupDeletion(req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileWorkloadGroupDeletion", reflect.TypeOf((*MockWorkloadGroupDeletionReconciler)(nil).ReconcileWorkloadGroupDeletion), req)
+}
+
+// MockWorkloadGroupFinalizer is a mock of WorkloadGroupFinalizer interface.
+type MockWorkloadGroupFinalizer struct {
+	ctrl     *gomock.Controller
+	recorder *MockWorkloadGroupFinalizerMockRecorder
+}
+
+// MockWorkloadGroupFinalizerMockRecorder is the mock recorder for MockWorkloadGroupFinalizer.
+type MockWorkloadGroupFinalizerMockRecorder struct {
+	mock *MockWorkloadGroupFinalizer
+}
+
+// NewMockWorkloadGroupFinalizer creates a new mock instance.
+func NewMockWorkloadGroupFinalizer(ctrl *gomock.Controller) *MockWorkloadGroupFinalizer {
+	mock := &MockWorkloadGroupFinalizer{ctrl: ctrl}
+	mock.recorder = &MockWorkloadGroupFinalizerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockWorkloadGroupFinalizer) EXPECT() *MockWorkloadGroupFinalizerMockRecorder {
+	return m.recorder
+}
+
+// FinalizeWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupFinalizer) FinalizeWorkloadGroup(obj *v1beta1.WorkloadGroup) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FinalizeWorkloadGroup", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// FinalizeWorkloadGroup indicates an expected call of FinalizeWorkloadGroup.
+func (mr *MockWorkloadGroupFinalizerMockRecorder) FinalizeWorkloadGroup(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FinalizeWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupFinalizer)(nil).FinalizeWorkloadGroup), obj)
+}
+
+// ReconcileWorkloadGroup mocks base method.
+func (m *MockWorkloadGroupFinalizer) ReconcileWorkloadGroup(obj *v1beta1.WorkloadGroup) (reconcile.Result, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileWorkloadGroup", obj)
+	ret0, _ := ret[0].(reconcile.Result)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReconcileWorkloadGroup indicates an expected call of ReconcileWorkloadGroup.
+func (mr *MockWorkloadGroupFinalizerMockRecorder) ReconcileWorkloadGroup(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileWorkloadGroup", reflect.TypeOf((*MockWorkloadGroupFinalizer)(nil).ReconcileWorkloadGroup), obj)
+}
+
+// WorkloadGroupFinalizerName mocks base method.
+func (m *MockWorkloadGroupFinalizer) WorkloadGroupFinalizerName() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "WorkloadGroupFinalizerName")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// WorkloadGroupFinalizerName indicates an expected call of WorkloadGroupFinalizerName.
+func (mr *MockWorkloadGroupFinalizerMockRecorder) WorkloadGroupFinalizerName() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WorkloadGroupFinalizerName", reflect.TypeOf((*MockWorkloadGroupFinalizer)(nil).WorkloadGroupFinalizerName))
+}
+
+// MockWorkloadGroupReconcileLoop is a mock of WorkloadGroupReconcileLoop interface.
+type MockWorkloadGroupReconcileLoop struct {
+	ctrl     *gomock.Controller
+	recorder *MockWorkloadGroupReconcileLoopMockRecorder
+}
+
+// MockWorkloadGroupReconcileLoopMockRecorder is the mock recorder for MockWorkloadGroupReconcileLoop.
+type MockWorkloadGroupReconcileLoopMockRecorder struct {
+	mock *MockWorkloadGroupReconcileLoop
+}
+
+// NewMockWorkloadGroupReconcileLoop creates a new mock instance.
+func NewMockWorkloadGroupReconcileLoop(ctrl *gomock.Controller) *MockWorkloadGroupReconcileLoop {
+	mock := &MockWorkloadGroupReconcileLoop{ctrl: ctrl}
+	mock.recorder = &MockWorkloadGroupReconcileLoopMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockWorkloadGroupReconcileLoop) EXPECT() *MockWorkloadGroupReconcileLoopMockRecorder {
+	return m.recorder
+}
+
+// RunWorkloadGroupReconciler mocks base method.
+func (m *MockWorkloadGroupReconcileLoop) RunWorkloadGroupReconciler(ctx context.Context, rec controller.WorkloadGroupReconciler, predicates ...predicate.Predicate) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, rec}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "RunWorkloadGroupReconciler", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// RunWorkloadGroupReconciler indicates an expected call of RunWorkloadGroupReconciler.
+func (mr *MockWorkloadGroupReconcileLoopMockRecorder) RunWorkloadGroupReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, rec}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunWorkloadGroupReconciler", reflect.TypeOf((*MockWorkloadGroupReconcileLoop)(nil).RunWorkloadGroupReconciler), varargs...)
+}
+
 // MockVirtualServiceReconciler is a mock of VirtualServiceReconciler interface.
 type MockVirtualServiceReconciler struct {
 	ctrl     *gomock.Controller
