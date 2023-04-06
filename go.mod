@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/aws/aws-app-mesh-controller-for-k8s v1.1.1
-	github.com/cilium/cilium v1.11.5
+	github.com/cilium/cilium v1.11.0-rc0
 	github.com/golang/mock v1.6.0
 	github.com/pkg/errors v0.9.1
 	github.com/rotisserie/eris v0.1.1
@@ -17,7 +17,10 @@ require (
 	k8s.io/apimachinery v0.26.0
 	k8s.io/client-go v0.26.0
 	sigs.k8s.io/controller-runtime v0.13.1
+	sigs.k8s.io/gateway-api v0.5.1-0.20220921185115-ee7a83814203
 )
+
+replace sigs.k8s.io/gateway-api => github.com/istio/gateway-api v0.0.0-20221006194514-510afb48c902
 
 require (
 	github.com/BurntSushi/toml v1.0.0 // indirect
