@@ -308,7 +308,7 @@ func (m *MockCiliumNetworkPolicyStatusWriter) EXPECT() *MockCiliumNetworkPolicyS
 }
 
 // PatchCiliumNetworkPolicyStatus mocks base method.
-func (m *MockCiliumNetworkPolicyStatusWriter) PatchCiliumNetworkPolicyStatus(ctx context.Context, obj *v2.CiliumNetworkPolicy, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockCiliumNetworkPolicyStatusWriter) PatchCiliumNetworkPolicyStatus(ctx context.Context, obj *v2.CiliumNetworkPolicy, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -327,7 +327,7 @@ func (mr *MockCiliumNetworkPolicyStatusWriterMockRecorder) PatchCiliumNetworkPol
 }
 
 // UpdateCiliumNetworkPolicyStatus mocks base method.
-func (m *MockCiliumNetworkPolicyStatusWriter) UpdateCiliumNetworkPolicyStatus(ctx context.Context, obj *v2.CiliumNetworkPolicy, opts ...client.UpdateOption) error {
+func (m *MockCiliumNetworkPolicyStatusWriter) UpdateCiliumNetworkPolicyStatus(ctx context.Context, obj *v2.CiliumNetworkPolicy, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
@@ -480,7 +480,7 @@ func (mr *MockCiliumNetworkPolicyClientMockRecorder) PatchCiliumNetworkPolicy(ct
 }
 
 // PatchCiliumNetworkPolicyStatus mocks base method.
-func (m *MockCiliumNetworkPolicyClient) PatchCiliumNetworkPolicyStatus(ctx context.Context, obj *v2.CiliumNetworkPolicy, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockCiliumNetworkPolicyClient) PatchCiliumNetworkPolicyStatus(ctx context.Context, obj *v2.CiliumNetworkPolicy, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -518,7 +518,7 @@ func (mr *MockCiliumNetworkPolicyClientMockRecorder) UpdateCiliumNetworkPolicy(c
 }
 
 // UpdateCiliumNetworkPolicyStatus mocks base method.
-func (m *MockCiliumNetworkPolicyClient) UpdateCiliumNetworkPolicyStatus(ctx context.Context, obj *v2.CiliumNetworkPolicy, opts ...client.UpdateOption) error {
+func (m *MockCiliumNetworkPolicyClient) UpdateCiliumNetworkPolicyStatus(ctx context.Context, obj *v2.CiliumNetworkPolicy, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {

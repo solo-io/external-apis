@@ -151,10 +151,10 @@ type DestinationRuleWriter interface {
 type DestinationRuleStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given DestinationRule object.
-	UpdateDestinationRuleStatus(ctx context.Context, obj *networking_istio_io_v1beta1.DestinationRule, opts ...client.UpdateOption) error
+	UpdateDestinationRuleStatus(ctx context.Context, obj *networking_istio_io_v1beta1.DestinationRule, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given DestinationRule object's subresource.
-	PatchDestinationRuleStatus(ctx context.Context, obj *networking_istio_io_v1beta1.DestinationRule, patch client.Patch, opts ...client.PatchOption) error
+	PatchDestinationRuleStatus(ctx context.Context, obj *networking_istio_io_v1beta1.DestinationRule, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on DestinationRules.
@@ -225,11 +225,11 @@ func (c *destinationRuleClient) UpsertDestinationRule(ctx context.Context, obj *
 	return err
 }
 
-func (c *destinationRuleClient) UpdateDestinationRuleStatus(ctx context.Context, obj *networking_istio_io_v1beta1.DestinationRule, opts ...client.UpdateOption) error {
+func (c *destinationRuleClient) UpdateDestinationRuleStatus(ctx context.Context, obj *networking_istio_io_v1beta1.DestinationRule, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *destinationRuleClient) PatchDestinationRuleStatus(ctx context.Context, obj *networking_istio_io_v1beta1.DestinationRule, patch client.Patch, opts ...client.PatchOption) error {
+func (c *destinationRuleClient) PatchDestinationRuleStatus(ctx context.Context, obj *networking_istio_io_v1beta1.DestinationRule, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
@@ -293,10 +293,10 @@ type GatewayWriter interface {
 type GatewayStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given Gateway object.
-	UpdateGatewayStatus(ctx context.Context, obj *networking_istio_io_v1beta1.Gateway, opts ...client.UpdateOption) error
+	UpdateGatewayStatus(ctx context.Context, obj *networking_istio_io_v1beta1.Gateway, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given Gateway object's subresource.
-	PatchGatewayStatus(ctx context.Context, obj *networking_istio_io_v1beta1.Gateway, patch client.Patch, opts ...client.PatchOption) error
+	PatchGatewayStatus(ctx context.Context, obj *networking_istio_io_v1beta1.Gateway, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on Gateways.
@@ -367,11 +367,11 @@ func (c *gatewayClient) UpsertGateway(ctx context.Context, obj *networking_istio
 	return err
 }
 
-func (c *gatewayClient) UpdateGatewayStatus(ctx context.Context, obj *networking_istio_io_v1beta1.Gateway, opts ...client.UpdateOption) error {
+func (c *gatewayClient) UpdateGatewayStatus(ctx context.Context, obj *networking_istio_io_v1beta1.Gateway, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *gatewayClient) PatchGatewayStatus(ctx context.Context, obj *networking_istio_io_v1beta1.Gateway, patch client.Patch, opts ...client.PatchOption) error {
+func (c *gatewayClient) PatchGatewayStatus(ctx context.Context, obj *networking_istio_io_v1beta1.Gateway, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
@@ -435,10 +435,10 @@ type ServiceEntryWriter interface {
 type ServiceEntryStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given ServiceEntry object.
-	UpdateServiceEntryStatus(ctx context.Context, obj *networking_istio_io_v1beta1.ServiceEntry, opts ...client.UpdateOption) error
+	UpdateServiceEntryStatus(ctx context.Context, obj *networking_istio_io_v1beta1.ServiceEntry, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given ServiceEntry object's subresource.
-	PatchServiceEntryStatus(ctx context.Context, obj *networking_istio_io_v1beta1.ServiceEntry, patch client.Patch, opts ...client.PatchOption) error
+	PatchServiceEntryStatus(ctx context.Context, obj *networking_istio_io_v1beta1.ServiceEntry, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on ServiceEntrys.
@@ -509,11 +509,11 @@ func (c *serviceEntryClient) UpsertServiceEntry(ctx context.Context, obj *networ
 	return err
 }
 
-func (c *serviceEntryClient) UpdateServiceEntryStatus(ctx context.Context, obj *networking_istio_io_v1beta1.ServiceEntry, opts ...client.UpdateOption) error {
+func (c *serviceEntryClient) UpdateServiceEntryStatus(ctx context.Context, obj *networking_istio_io_v1beta1.ServiceEntry, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *serviceEntryClient) PatchServiceEntryStatus(ctx context.Context, obj *networking_istio_io_v1beta1.ServiceEntry, patch client.Patch, opts ...client.PatchOption) error {
+func (c *serviceEntryClient) PatchServiceEntryStatus(ctx context.Context, obj *networking_istio_io_v1beta1.ServiceEntry, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
@@ -577,10 +577,10 @@ type WorkloadEntryWriter interface {
 type WorkloadEntryStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given WorkloadEntry object.
-	UpdateWorkloadEntryStatus(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadEntry, opts ...client.UpdateOption) error
+	UpdateWorkloadEntryStatus(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadEntry, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given WorkloadEntry object's subresource.
-	PatchWorkloadEntryStatus(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadEntry, patch client.Patch, opts ...client.PatchOption) error
+	PatchWorkloadEntryStatus(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadEntry, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on WorkloadEntrys.
@@ -651,11 +651,11 @@ func (c *workloadEntryClient) UpsertWorkloadEntry(ctx context.Context, obj *netw
 	return err
 }
 
-func (c *workloadEntryClient) UpdateWorkloadEntryStatus(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadEntry, opts ...client.UpdateOption) error {
+func (c *workloadEntryClient) UpdateWorkloadEntryStatus(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadEntry, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *workloadEntryClient) PatchWorkloadEntryStatus(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadEntry, patch client.Patch, opts ...client.PatchOption) error {
+func (c *workloadEntryClient) PatchWorkloadEntryStatus(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadEntry, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
@@ -719,10 +719,10 @@ type WorkloadGroupWriter interface {
 type WorkloadGroupStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given WorkloadGroup object.
-	UpdateWorkloadGroupStatus(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadGroup, opts ...client.UpdateOption) error
+	UpdateWorkloadGroupStatus(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadGroup, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given WorkloadGroup object's subresource.
-	PatchWorkloadGroupStatus(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadGroup, patch client.Patch, opts ...client.PatchOption) error
+	PatchWorkloadGroupStatus(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadGroup, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on WorkloadGroups.
@@ -793,11 +793,11 @@ func (c *workloadGroupClient) UpsertWorkloadGroup(ctx context.Context, obj *netw
 	return err
 }
 
-func (c *workloadGroupClient) UpdateWorkloadGroupStatus(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadGroup, opts ...client.UpdateOption) error {
+func (c *workloadGroupClient) UpdateWorkloadGroupStatus(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadGroup, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *workloadGroupClient) PatchWorkloadGroupStatus(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadGroup, patch client.Patch, opts ...client.PatchOption) error {
+func (c *workloadGroupClient) PatchWorkloadGroupStatus(ctx context.Context, obj *networking_istio_io_v1beta1.WorkloadGroup, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
@@ -861,10 +861,10 @@ type VirtualServiceWriter interface {
 type VirtualServiceStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given VirtualService object.
-	UpdateVirtualServiceStatus(ctx context.Context, obj *networking_istio_io_v1beta1.VirtualService, opts ...client.UpdateOption) error
+	UpdateVirtualServiceStatus(ctx context.Context, obj *networking_istio_io_v1beta1.VirtualService, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given VirtualService object's subresource.
-	PatchVirtualServiceStatus(ctx context.Context, obj *networking_istio_io_v1beta1.VirtualService, patch client.Patch, opts ...client.PatchOption) error
+	PatchVirtualServiceStatus(ctx context.Context, obj *networking_istio_io_v1beta1.VirtualService, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on VirtualServices.
@@ -935,11 +935,11 @@ func (c *virtualServiceClient) UpsertVirtualService(ctx context.Context, obj *ne
 	return err
 }
 
-func (c *virtualServiceClient) UpdateVirtualServiceStatus(ctx context.Context, obj *networking_istio_io_v1beta1.VirtualService, opts ...client.UpdateOption) error {
+func (c *virtualServiceClient) UpdateVirtualServiceStatus(ctx context.Context, obj *networking_istio_io_v1beta1.VirtualService, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *virtualServiceClient) PatchVirtualServiceStatus(ctx context.Context, obj *networking_istio_io_v1beta1.VirtualService, patch client.Patch, opts ...client.PatchOption) error {
+func (c *virtualServiceClient) PatchVirtualServiceStatus(ctx context.Context, obj *networking_istio_io_v1beta1.VirtualService, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
@@ -1003,10 +1003,10 @@ type SidecarWriter interface {
 type SidecarStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given Sidecar object.
-	UpdateSidecarStatus(ctx context.Context, obj *networking_istio_io_v1beta1.Sidecar, opts ...client.UpdateOption) error
+	UpdateSidecarStatus(ctx context.Context, obj *networking_istio_io_v1beta1.Sidecar, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given Sidecar object's subresource.
-	PatchSidecarStatus(ctx context.Context, obj *networking_istio_io_v1beta1.Sidecar, patch client.Patch, opts ...client.PatchOption) error
+	PatchSidecarStatus(ctx context.Context, obj *networking_istio_io_v1beta1.Sidecar, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on Sidecars.
@@ -1077,11 +1077,11 @@ func (c *sidecarClient) UpsertSidecar(ctx context.Context, obj *networking_istio
 	return err
 }
 
-func (c *sidecarClient) UpdateSidecarStatus(ctx context.Context, obj *networking_istio_io_v1beta1.Sidecar, opts ...client.UpdateOption) error {
+func (c *sidecarClient) UpdateSidecarStatus(ctx context.Context, obj *networking_istio_io_v1beta1.Sidecar, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *sidecarClient) PatchSidecarStatus(ctx context.Context, obj *networking_istio_io_v1beta1.Sidecar, patch client.Patch, opts ...client.PatchOption) error {
+func (c *sidecarClient) PatchSidecarStatus(ctx context.Context, obj *networking_istio_io_v1beta1.Sidecar, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 

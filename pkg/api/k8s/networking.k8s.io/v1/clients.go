@@ -109,10 +109,10 @@ type NetworkPolicyWriter interface {
 type NetworkPolicyStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given NetworkPolicy object.
-	UpdateNetworkPolicyStatus(ctx context.Context, obj *networking_k8s_io_v1.NetworkPolicy, opts ...client.UpdateOption) error
+	UpdateNetworkPolicyStatus(ctx context.Context, obj *networking_k8s_io_v1.NetworkPolicy, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given NetworkPolicy object's subresource.
-	PatchNetworkPolicyStatus(ctx context.Context, obj *networking_k8s_io_v1.NetworkPolicy, patch client.Patch, opts ...client.PatchOption) error
+	PatchNetworkPolicyStatus(ctx context.Context, obj *networking_k8s_io_v1.NetworkPolicy, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on NetworkPolicys.
@@ -183,11 +183,11 @@ func (c *networkPolicyClient) UpsertNetworkPolicy(ctx context.Context, obj *netw
 	return err
 }
 
-func (c *networkPolicyClient) UpdateNetworkPolicyStatus(ctx context.Context, obj *networking_k8s_io_v1.NetworkPolicy, opts ...client.UpdateOption) error {
+func (c *networkPolicyClient) UpdateNetworkPolicyStatus(ctx context.Context, obj *networking_k8s_io_v1.NetworkPolicy, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *networkPolicyClient) PatchNetworkPolicyStatus(ctx context.Context, obj *networking_k8s_io_v1.NetworkPolicy, patch client.Patch, opts ...client.PatchOption) error {
+func (c *networkPolicyClient) PatchNetworkPolicyStatus(ctx context.Context, obj *networking_k8s_io_v1.NetworkPolicy, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 

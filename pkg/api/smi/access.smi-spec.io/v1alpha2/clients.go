@@ -109,10 +109,10 @@ type TrafficTargetWriter interface {
 type TrafficTargetStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given TrafficTarget object.
-	UpdateTrafficTargetStatus(ctx context.Context, obj *access_smi_spec_io_v1alpha2.TrafficTarget, opts ...client.UpdateOption) error
+	UpdateTrafficTargetStatus(ctx context.Context, obj *access_smi_spec_io_v1alpha2.TrafficTarget, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given TrafficTarget object's subresource.
-	PatchTrafficTargetStatus(ctx context.Context, obj *access_smi_spec_io_v1alpha2.TrafficTarget, patch client.Patch, opts ...client.PatchOption) error
+	PatchTrafficTargetStatus(ctx context.Context, obj *access_smi_spec_io_v1alpha2.TrafficTarget, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on TrafficTargets.
@@ -183,11 +183,11 @@ func (c *trafficTargetClient) UpsertTrafficTarget(ctx context.Context, obj *acce
 	return err
 }
 
-func (c *trafficTargetClient) UpdateTrafficTargetStatus(ctx context.Context, obj *access_smi_spec_io_v1alpha2.TrafficTarget, opts ...client.UpdateOption) error {
+func (c *trafficTargetClient) UpdateTrafficTargetStatus(ctx context.Context, obj *access_smi_spec_io_v1alpha2.TrafficTarget, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *trafficTargetClient) PatchTrafficTargetStatus(ctx context.Context, obj *access_smi_spec_io_v1alpha2.TrafficTarget, patch client.Patch, opts ...client.PatchOption) error {
+func (c *trafficTargetClient) PatchTrafficTargetStatus(ctx context.Context, obj *access_smi_spec_io_v1alpha2.TrafficTarget, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 

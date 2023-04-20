@@ -308,7 +308,7 @@ func (m *MockTrafficTargetStatusWriter) EXPECT() *MockTrafficTargetStatusWriterM
 }
 
 // PatchTrafficTargetStatus mocks base method.
-func (m *MockTrafficTargetStatusWriter) PatchTrafficTargetStatus(ctx context.Context, obj *v1alpha2.TrafficTarget, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockTrafficTargetStatusWriter) PatchTrafficTargetStatus(ctx context.Context, obj *v1alpha2.TrafficTarget, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -327,7 +327,7 @@ func (mr *MockTrafficTargetStatusWriterMockRecorder) PatchTrafficTargetStatus(ct
 }
 
 // UpdateTrafficTargetStatus mocks base method.
-func (m *MockTrafficTargetStatusWriter) UpdateTrafficTargetStatus(ctx context.Context, obj *v1alpha2.TrafficTarget, opts ...client.UpdateOption) error {
+func (m *MockTrafficTargetStatusWriter) UpdateTrafficTargetStatus(ctx context.Context, obj *v1alpha2.TrafficTarget, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
@@ -480,7 +480,7 @@ func (mr *MockTrafficTargetClientMockRecorder) PatchTrafficTarget(ctx, obj, patc
 }
 
 // PatchTrafficTargetStatus mocks base method.
-func (m *MockTrafficTargetClient) PatchTrafficTargetStatus(ctx context.Context, obj *v1alpha2.TrafficTarget, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockTrafficTargetClient) PatchTrafficTargetStatus(ctx context.Context, obj *v1alpha2.TrafficTarget, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -518,7 +518,7 @@ func (mr *MockTrafficTargetClientMockRecorder) UpdateTrafficTarget(ctx, obj inte
 }
 
 // UpdateTrafficTargetStatus mocks base method.
-func (m *MockTrafficTargetClient) UpdateTrafficTargetStatus(ctx context.Context, obj *v1alpha2.TrafficTarget, opts ...client.UpdateOption) error {
+func (m *MockTrafficTargetClient) UpdateTrafficTargetStatus(ctx context.Context, obj *v1alpha2.TrafficTarget, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {

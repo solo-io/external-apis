@@ -130,10 +130,10 @@ type DeploymentWriter interface {
 type DeploymentStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given Deployment object.
-	UpdateDeploymentStatus(ctx context.Context, obj *apps_v1.Deployment, opts ...client.UpdateOption) error
+	UpdateDeploymentStatus(ctx context.Context, obj *apps_v1.Deployment, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given Deployment object's subresource.
-	PatchDeploymentStatus(ctx context.Context, obj *apps_v1.Deployment, patch client.Patch, opts ...client.PatchOption) error
+	PatchDeploymentStatus(ctx context.Context, obj *apps_v1.Deployment, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on Deployments.
@@ -204,11 +204,11 @@ func (c *deploymentClient) UpsertDeployment(ctx context.Context, obj *apps_v1.De
 	return err
 }
 
-func (c *deploymentClient) UpdateDeploymentStatus(ctx context.Context, obj *apps_v1.Deployment, opts ...client.UpdateOption) error {
+func (c *deploymentClient) UpdateDeploymentStatus(ctx context.Context, obj *apps_v1.Deployment, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *deploymentClient) PatchDeploymentStatus(ctx context.Context, obj *apps_v1.Deployment, patch client.Patch, opts ...client.PatchOption) error {
+func (c *deploymentClient) PatchDeploymentStatus(ctx context.Context, obj *apps_v1.Deployment, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
@@ -272,10 +272,10 @@ type ReplicaSetWriter interface {
 type ReplicaSetStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given ReplicaSet object.
-	UpdateReplicaSetStatus(ctx context.Context, obj *apps_v1.ReplicaSet, opts ...client.UpdateOption) error
+	UpdateReplicaSetStatus(ctx context.Context, obj *apps_v1.ReplicaSet, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given ReplicaSet object's subresource.
-	PatchReplicaSetStatus(ctx context.Context, obj *apps_v1.ReplicaSet, patch client.Patch, opts ...client.PatchOption) error
+	PatchReplicaSetStatus(ctx context.Context, obj *apps_v1.ReplicaSet, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on ReplicaSets.
@@ -346,11 +346,11 @@ func (c *replicaSetClient) UpsertReplicaSet(ctx context.Context, obj *apps_v1.Re
 	return err
 }
 
-func (c *replicaSetClient) UpdateReplicaSetStatus(ctx context.Context, obj *apps_v1.ReplicaSet, opts ...client.UpdateOption) error {
+func (c *replicaSetClient) UpdateReplicaSetStatus(ctx context.Context, obj *apps_v1.ReplicaSet, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *replicaSetClient) PatchReplicaSetStatus(ctx context.Context, obj *apps_v1.ReplicaSet, patch client.Patch, opts ...client.PatchOption) error {
+func (c *replicaSetClient) PatchReplicaSetStatus(ctx context.Context, obj *apps_v1.ReplicaSet, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
@@ -414,10 +414,10 @@ type DaemonSetWriter interface {
 type DaemonSetStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given DaemonSet object.
-	UpdateDaemonSetStatus(ctx context.Context, obj *apps_v1.DaemonSet, opts ...client.UpdateOption) error
+	UpdateDaemonSetStatus(ctx context.Context, obj *apps_v1.DaemonSet, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given DaemonSet object's subresource.
-	PatchDaemonSetStatus(ctx context.Context, obj *apps_v1.DaemonSet, patch client.Patch, opts ...client.PatchOption) error
+	PatchDaemonSetStatus(ctx context.Context, obj *apps_v1.DaemonSet, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on DaemonSets.
@@ -488,11 +488,11 @@ func (c *daemonSetClient) UpsertDaemonSet(ctx context.Context, obj *apps_v1.Daem
 	return err
 }
 
-func (c *daemonSetClient) UpdateDaemonSetStatus(ctx context.Context, obj *apps_v1.DaemonSet, opts ...client.UpdateOption) error {
+func (c *daemonSetClient) UpdateDaemonSetStatus(ctx context.Context, obj *apps_v1.DaemonSet, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *daemonSetClient) PatchDaemonSetStatus(ctx context.Context, obj *apps_v1.DaemonSet, patch client.Patch, opts ...client.PatchOption) error {
+func (c *daemonSetClient) PatchDaemonSetStatus(ctx context.Context, obj *apps_v1.DaemonSet, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
@@ -556,10 +556,10 @@ type StatefulSetWriter interface {
 type StatefulSetStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given StatefulSet object.
-	UpdateStatefulSetStatus(ctx context.Context, obj *apps_v1.StatefulSet, opts ...client.UpdateOption) error
+	UpdateStatefulSetStatus(ctx context.Context, obj *apps_v1.StatefulSet, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given StatefulSet object's subresource.
-	PatchStatefulSetStatus(ctx context.Context, obj *apps_v1.StatefulSet, patch client.Patch, opts ...client.PatchOption) error
+	PatchStatefulSetStatus(ctx context.Context, obj *apps_v1.StatefulSet, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on StatefulSets.
@@ -630,11 +630,11 @@ func (c *statefulSetClient) UpsertStatefulSet(ctx context.Context, obj *apps_v1.
 	return err
 }
 
-func (c *statefulSetClient) UpdateStatefulSetStatus(ctx context.Context, obj *apps_v1.StatefulSet, opts ...client.UpdateOption) error {
+func (c *statefulSetClient) UpdateStatefulSetStatus(ctx context.Context, obj *apps_v1.StatefulSet, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *statefulSetClient) PatchStatefulSetStatus(ctx context.Context, obj *apps_v1.StatefulSet, patch client.Patch, opts ...client.PatchOption) error {
+func (c *statefulSetClient) PatchStatefulSetStatus(ctx context.Context, obj *apps_v1.StatefulSet, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 

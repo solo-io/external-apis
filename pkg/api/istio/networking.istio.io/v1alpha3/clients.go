@@ -109,10 +109,10 @@ type EnvoyFilterWriter interface {
 type EnvoyFilterStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given EnvoyFilter object.
-	UpdateEnvoyFilterStatus(ctx context.Context, obj *networking_istio_io_v1alpha3.EnvoyFilter, opts ...client.UpdateOption) error
+	UpdateEnvoyFilterStatus(ctx context.Context, obj *networking_istio_io_v1alpha3.EnvoyFilter, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given EnvoyFilter object's subresource.
-	PatchEnvoyFilterStatus(ctx context.Context, obj *networking_istio_io_v1alpha3.EnvoyFilter, patch client.Patch, opts ...client.PatchOption) error
+	PatchEnvoyFilterStatus(ctx context.Context, obj *networking_istio_io_v1alpha3.EnvoyFilter, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on EnvoyFilters.
@@ -183,11 +183,11 @@ func (c *envoyFilterClient) UpsertEnvoyFilter(ctx context.Context, obj *networki
 	return err
 }
 
-func (c *envoyFilterClient) UpdateEnvoyFilterStatus(ctx context.Context, obj *networking_istio_io_v1alpha3.EnvoyFilter, opts ...client.UpdateOption) error {
+func (c *envoyFilterClient) UpdateEnvoyFilterStatus(ctx context.Context, obj *networking_istio_io_v1alpha3.EnvoyFilter, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *envoyFilterClient) PatchEnvoyFilterStatus(ctx context.Context, obj *networking_istio_io_v1alpha3.EnvoyFilter, patch client.Patch, opts ...client.PatchOption) error {
+func (c *envoyFilterClient) PatchEnvoyFilterStatus(ctx context.Context, obj *networking_istio_io_v1alpha3.EnvoyFilter, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 

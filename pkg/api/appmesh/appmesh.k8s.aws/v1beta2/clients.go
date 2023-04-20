@@ -144,10 +144,10 @@ type MeshWriter interface {
 type MeshStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given Mesh object.
-	UpdateMeshStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.Mesh, opts ...client.UpdateOption) error
+	UpdateMeshStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.Mesh, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given Mesh object's subresource.
-	PatchMeshStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.Mesh, patch client.Patch, opts ...client.PatchOption) error
+	PatchMeshStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.Mesh, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on Meshs.
@@ -218,11 +218,11 @@ func (c *meshClient) UpsertMesh(ctx context.Context, obj *appmesh_k8s_aws_v1beta
 	return err
 }
 
-func (c *meshClient) UpdateMeshStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.Mesh, opts ...client.UpdateOption) error {
+func (c *meshClient) UpdateMeshStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.Mesh, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *meshClient) PatchMeshStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.Mesh, patch client.Patch, opts ...client.PatchOption) error {
+func (c *meshClient) PatchMeshStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.Mesh, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
@@ -286,10 +286,10 @@ type VirtualServiceWriter interface {
 type VirtualServiceStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given VirtualService object.
-	UpdateVirtualServiceStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualService, opts ...client.UpdateOption) error
+	UpdateVirtualServiceStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualService, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given VirtualService object's subresource.
-	PatchVirtualServiceStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualService, patch client.Patch, opts ...client.PatchOption) error
+	PatchVirtualServiceStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualService, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on VirtualServices.
@@ -360,11 +360,11 @@ func (c *virtualServiceClient) UpsertVirtualService(ctx context.Context, obj *ap
 	return err
 }
 
-func (c *virtualServiceClient) UpdateVirtualServiceStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualService, opts ...client.UpdateOption) error {
+func (c *virtualServiceClient) UpdateVirtualServiceStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualService, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *virtualServiceClient) PatchVirtualServiceStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualService, patch client.Patch, opts ...client.PatchOption) error {
+func (c *virtualServiceClient) PatchVirtualServiceStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualService, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
@@ -428,10 +428,10 @@ type VirtualNodeWriter interface {
 type VirtualNodeStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given VirtualNode object.
-	UpdateVirtualNodeStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualNode, opts ...client.UpdateOption) error
+	UpdateVirtualNodeStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualNode, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given VirtualNode object's subresource.
-	PatchVirtualNodeStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualNode, patch client.Patch, opts ...client.PatchOption) error
+	PatchVirtualNodeStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualNode, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on VirtualNodes.
@@ -502,11 +502,11 @@ func (c *virtualNodeClient) UpsertVirtualNode(ctx context.Context, obj *appmesh_
 	return err
 }
 
-func (c *virtualNodeClient) UpdateVirtualNodeStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualNode, opts ...client.UpdateOption) error {
+func (c *virtualNodeClient) UpdateVirtualNodeStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualNode, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *virtualNodeClient) PatchVirtualNodeStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualNode, patch client.Patch, opts ...client.PatchOption) error {
+func (c *virtualNodeClient) PatchVirtualNodeStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualNode, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
@@ -570,10 +570,10 @@ type VirtualRouterWriter interface {
 type VirtualRouterStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given VirtualRouter object.
-	UpdateVirtualRouterStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualRouter, opts ...client.UpdateOption) error
+	UpdateVirtualRouterStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualRouter, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given VirtualRouter object's subresource.
-	PatchVirtualRouterStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualRouter, patch client.Patch, opts ...client.PatchOption) error
+	PatchVirtualRouterStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualRouter, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on VirtualRouters.
@@ -644,11 +644,11 @@ func (c *virtualRouterClient) UpsertVirtualRouter(ctx context.Context, obj *appm
 	return err
 }
 
-func (c *virtualRouterClient) UpdateVirtualRouterStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualRouter, opts ...client.UpdateOption) error {
+func (c *virtualRouterClient) UpdateVirtualRouterStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualRouter, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *virtualRouterClient) PatchVirtualRouterStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualRouter, patch client.Patch, opts ...client.PatchOption) error {
+func (c *virtualRouterClient) PatchVirtualRouterStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualRouter, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
@@ -712,10 +712,10 @@ type VirtualGatewayWriter interface {
 type VirtualGatewayStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given VirtualGateway object.
-	UpdateVirtualGatewayStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualGateway, opts ...client.UpdateOption) error
+	UpdateVirtualGatewayStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualGateway, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given VirtualGateway object's subresource.
-	PatchVirtualGatewayStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualGateway, patch client.Patch, opts ...client.PatchOption) error
+	PatchVirtualGatewayStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualGateway, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on VirtualGateways.
@@ -786,11 +786,11 @@ func (c *virtualGatewayClient) UpsertVirtualGateway(ctx context.Context, obj *ap
 	return err
 }
 
-func (c *virtualGatewayClient) UpdateVirtualGatewayStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualGateway, opts ...client.UpdateOption) error {
+func (c *virtualGatewayClient) UpdateVirtualGatewayStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualGateway, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *virtualGatewayClient) PatchVirtualGatewayStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualGateway, patch client.Patch, opts ...client.PatchOption) error {
+func (c *virtualGatewayClient) PatchVirtualGatewayStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.VirtualGateway, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
@@ -854,10 +854,10 @@ type GatewayRouteWriter interface {
 type GatewayRouteStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given GatewayRoute object.
-	UpdateGatewayRouteStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.GatewayRoute, opts ...client.UpdateOption) error
+	UpdateGatewayRouteStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.GatewayRoute, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given GatewayRoute object's subresource.
-	PatchGatewayRouteStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.GatewayRoute, patch client.Patch, opts ...client.PatchOption) error
+	PatchGatewayRouteStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.GatewayRoute, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on GatewayRoutes.
@@ -928,11 +928,11 @@ func (c *gatewayRouteClient) UpsertGatewayRoute(ctx context.Context, obj *appmes
 	return err
 }
 
-func (c *gatewayRouteClient) UpdateGatewayRouteStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.GatewayRoute, opts ...client.UpdateOption) error {
+func (c *gatewayRouteClient) UpdateGatewayRouteStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.GatewayRoute, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *gatewayRouteClient) PatchGatewayRouteStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.GatewayRoute, patch client.Patch, opts ...client.PatchOption) error {
+func (c *gatewayRouteClient) PatchGatewayRouteStatus(ctx context.Context, obj *appmesh_k8s_aws_v1beta2.GatewayRoute, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
