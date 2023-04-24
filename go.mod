@@ -9,7 +9,6 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/rotisserie/eris v0.1.1
 	github.com/servicemeshinterface/smi-sdk-go v0.4.1
-	github.com/solo-io/skv2 v0.29.3-0.20230322181416-98c3ab6b87b6
 	istio.io/client-go v1.17.1
 	istio.io/istio v0.0.0-20221208171804-952b2e8bc4b0
 	k8s.io/api v0.26.4
@@ -110,9 +109,10 @@ require (
 	github.com/shopspring/decimal v1.2.0 // indirect
 	github.com/sirupsen/logrus v1.8.1 // indirect
 	github.com/solo-io/anyvendor v0.0.4 // indirect
-	github.com/solo-io/cue v0.4.6 // indirect
+	github.com/solo-io/cue v0.4.7 // indirect
 	github.com/solo-io/go-utils v0.21.4 // indirect
 	github.com/solo-io/protoc-gen-ext v0.0.18 // indirect
+	github.com/solo-io/skv2 v0.29.7-0.20230421193338-ff4b71e3a12f // indirect
 	github.com/spf13/afero v1.8.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.0 // indirect
