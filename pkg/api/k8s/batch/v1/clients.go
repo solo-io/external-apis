@@ -109,10 +109,10 @@ type JobWriter interface {
 type JobStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given Job object.
-	UpdateJobStatus(ctx context.Context, obj *batch_v1.Job, opts ...client.UpdateOption) error
+	UpdateJobStatus(ctx context.Context, obj *batch_v1.Job, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given Job object's subresource.
-	PatchJobStatus(ctx context.Context, obj *batch_v1.Job, patch client.Patch, opts ...client.PatchOption) error
+	PatchJobStatus(ctx context.Context, obj *batch_v1.Job, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on Jobs.
@@ -183,11 +183,11 @@ func (c *jobClient) UpsertJob(ctx context.Context, obj *batch_v1.Job, transition
 	return err
 }
 
-func (c *jobClient) UpdateJobStatus(ctx context.Context, obj *batch_v1.Job, opts ...client.UpdateOption) error {
+func (c *jobClient) UpdateJobStatus(ctx context.Context, obj *batch_v1.Job, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *jobClient) PatchJobStatus(ctx context.Context, obj *batch_v1.Job, patch client.Patch, opts ...client.PatchOption) error {
+func (c *jobClient) PatchJobStatus(ctx context.Context, obj *batch_v1.Job, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 

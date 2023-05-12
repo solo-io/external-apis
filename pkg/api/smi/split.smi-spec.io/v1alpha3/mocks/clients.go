@@ -308,7 +308,7 @@ func (m *MockTrafficSplitStatusWriter) EXPECT() *MockTrafficSplitStatusWriterMoc
 }
 
 // PatchTrafficSplitStatus mocks base method.
-func (m *MockTrafficSplitStatusWriter) PatchTrafficSplitStatus(ctx context.Context, obj *v1alpha3.TrafficSplit, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockTrafficSplitStatusWriter) PatchTrafficSplitStatus(ctx context.Context, obj *v1alpha3.TrafficSplit, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -327,7 +327,7 @@ func (mr *MockTrafficSplitStatusWriterMockRecorder) PatchTrafficSplitStatus(ctx,
 }
 
 // UpdateTrafficSplitStatus mocks base method.
-func (m *MockTrafficSplitStatusWriter) UpdateTrafficSplitStatus(ctx context.Context, obj *v1alpha3.TrafficSplit, opts ...client.UpdateOption) error {
+func (m *MockTrafficSplitStatusWriter) UpdateTrafficSplitStatus(ctx context.Context, obj *v1alpha3.TrafficSplit, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
@@ -480,7 +480,7 @@ func (mr *MockTrafficSplitClientMockRecorder) PatchTrafficSplit(ctx, obj, patch 
 }
 
 // PatchTrafficSplitStatus mocks base method.
-func (m *MockTrafficSplitClient) PatchTrafficSplitStatus(ctx context.Context, obj *v1alpha3.TrafficSplit, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockTrafficSplitClient) PatchTrafficSplitStatus(ctx context.Context, obj *v1alpha3.TrafficSplit, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -518,7 +518,7 @@ func (mr *MockTrafficSplitClientMockRecorder) UpdateTrafficSplit(ctx, obj interf
 }
 
 // UpdateTrafficSplitStatus mocks base method.
-func (m *MockTrafficSplitClient) UpdateTrafficSplitStatus(ctx context.Context, obj *v1alpha3.TrafficSplit, opts ...client.UpdateOption) error {
+func (m *MockTrafficSplitClient) UpdateTrafficSplitStatus(ctx context.Context, obj *v1alpha3.TrafficSplit, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {

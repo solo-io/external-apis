@@ -109,10 +109,10 @@ type HTTPRouteGroupWriter interface {
 type HTTPRouteGroupStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given HTTPRouteGroup object.
-	UpdateHTTPRouteGroupStatus(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, opts ...client.UpdateOption) error
+	UpdateHTTPRouteGroupStatus(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given HTTPRouteGroup object's subresource.
-	PatchHTTPRouteGroupStatus(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, patch client.Patch, opts ...client.PatchOption) error
+	PatchHTTPRouteGroupStatus(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on HTTPRouteGroups.
@@ -183,11 +183,11 @@ func (c *hTTPRouteGroupClient) UpsertHTTPRouteGroup(ctx context.Context, obj *sp
 	return err
 }
 
-func (c *hTTPRouteGroupClient) UpdateHTTPRouteGroupStatus(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, opts ...client.UpdateOption) error {
+func (c *hTTPRouteGroupClient) UpdateHTTPRouteGroupStatus(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *hTTPRouteGroupClient) PatchHTTPRouteGroupStatus(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, patch client.Patch, opts ...client.PatchOption) error {
+func (c *hTTPRouteGroupClient) PatchHTTPRouteGroupStatus(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 

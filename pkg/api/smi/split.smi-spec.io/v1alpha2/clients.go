@@ -109,10 +109,10 @@ type TrafficSplitWriter interface {
 type TrafficSplitStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given TrafficSplit object.
-	UpdateTrafficSplitStatus(ctx context.Context, obj *split_smi_spec_io_v1alpha2.TrafficSplit, opts ...client.UpdateOption) error
+	UpdateTrafficSplitStatus(ctx context.Context, obj *split_smi_spec_io_v1alpha2.TrafficSplit, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given TrafficSplit object's subresource.
-	PatchTrafficSplitStatus(ctx context.Context, obj *split_smi_spec_io_v1alpha2.TrafficSplit, patch client.Patch, opts ...client.PatchOption) error
+	PatchTrafficSplitStatus(ctx context.Context, obj *split_smi_spec_io_v1alpha2.TrafficSplit, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on TrafficSplits.
@@ -183,11 +183,11 @@ func (c *trafficSplitClient) UpsertTrafficSplit(ctx context.Context, obj *split_
 	return err
 }
 
-func (c *trafficSplitClient) UpdateTrafficSplitStatus(ctx context.Context, obj *split_smi_spec_io_v1alpha2.TrafficSplit, opts ...client.UpdateOption) error {
+func (c *trafficSplitClient) UpdateTrafficSplitStatus(ctx context.Context, obj *split_smi_spec_io_v1alpha2.TrafficSplit, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *trafficSplitClient) PatchTrafficSplitStatus(ctx context.Context, obj *split_smi_spec_io_v1alpha2.TrafficSplit, patch client.Patch, opts ...client.PatchOption) error {
+func (c *trafficSplitClient) PatchTrafficSplitStatus(ctx context.Context, obj *split_smi_spec_io_v1alpha2.TrafficSplit, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 

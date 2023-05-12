@@ -308,7 +308,7 @@ func (m *MockNetworkPolicyStatusWriter) EXPECT() *MockNetworkPolicyStatusWriterM
 }
 
 // PatchNetworkPolicyStatus mocks base method.
-func (m *MockNetworkPolicyStatusWriter) PatchNetworkPolicyStatus(ctx context.Context, obj *v10.NetworkPolicy, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockNetworkPolicyStatusWriter) PatchNetworkPolicyStatus(ctx context.Context, obj *v10.NetworkPolicy, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -327,7 +327,7 @@ func (mr *MockNetworkPolicyStatusWriterMockRecorder) PatchNetworkPolicyStatus(ct
 }
 
 // UpdateNetworkPolicyStatus mocks base method.
-func (m *MockNetworkPolicyStatusWriter) UpdateNetworkPolicyStatus(ctx context.Context, obj *v10.NetworkPolicy, opts ...client.UpdateOption) error {
+func (m *MockNetworkPolicyStatusWriter) UpdateNetworkPolicyStatus(ctx context.Context, obj *v10.NetworkPolicy, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
@@ -480,7 +480,7 @@ func (mr *MockNetworkPolicyClientMockRecorder) PatchNetworkPolicy(ctx, obj, patc
 }
 
 // PatchNetworkPolicyStatus mocks base method.
-func (m *MockNetworkPolicyClient) PatchNetworkPolicyStatus(ctx context.Context, obj *v10.NetworkPolicy, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockNetworkPolicyClient) PatchNetworkPolicyStatus(ctx context.Context, obj *v10.NetworkPolicy, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -518,7 +518,7 @@ func (mr *MockNetworkPolicyClientMockRecorder) UpdateNetworkPolicy(ctx, obj inte
 }
 
 // UpdateNetworkPolicyStatus mocks base method.
-func (m *MockNetworkPolicyClient) UpdateNetworkPolicyStatus(ctx context.Context, obj *v10.NetworkPolicy, opts ...client.UpdateOption) error {
+func (m *MockNetworkPolicyClient) UpdateNetworkPolicyStatus(ctx context.Context, obj *v10.NetworkPolicy, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
