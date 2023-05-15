@@ -8,12 +8,12 @@ jobs:
     name: Generate Code
     runs-on: ubuntu-22.04
     steps:
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v3
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
         go-version-file: "go.mod"
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v3
     - name: Generate Code
       run: |
         export PATH=$PATH:/home/runner/go/bin/ && ./ci/check-code-gen.sh
