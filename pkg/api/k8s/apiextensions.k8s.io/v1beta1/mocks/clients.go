@@ -308,7 +308,7 @@ func (m *MockCustomResourceDefinitionStatusWriter) EXPECT() *MockCustomResourceD
 }
 
 // PatchCustomResourceDefinitionStatus mocks base method.
-func (m *MockCustomResourceDefinitionStatusWriter) PatchCustomResourceDefinitionStatus(ctx context.Context, obj *v1beta10.CustomResourceDefinition, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockCustomResourceDefinitionStatusWriter) PatchCustomResourceDefinitionStatus(ctx context.Context, obj *v1beta10.CustomResourceDefinition, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -327,7 +327,7 @@ func (mr *MockCustomResourceDefinitionStatusWriterMockRecorder) PatchCustomResou
 }
 
 // UpdateCustomResourceDefinitionStatus mocks base method.
-func (m *MockCustomResourceDefinitionStatusWriter) UpdateCustomResourceDefinitionStatus(ctx context.Context, obj *v1beta10.CustomResourceDefinition, opts ...client.UpdateOption) error {
+func (m *MockCustomResourceDefinitionStatusWriter) UpdateCustomResourceDefinitionStatus(ctx context.Context, obj *v1beta10.CustomResourceDefinition, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
@@ -480,7 +480,7 @@ func (mr *MockCustomResourceDefinitionClientMockRecorder) PatchCustomResourceDef
 }
 
 // PatchCustomResourceDefinitionStatus mocks base method.
-func (m *MockCustomResourceDefinitionClient) PatchCustomResourceDefinitionStatus(ctx context.Context, obj *v1beta10.CustomResourceDefinition, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockCustomResourceDefinitionClient) PatchCustomResourceDefinitionStatus(ctx context.Context, obj *v1beta10.CustomResourceDefinition, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -518,7 +518,7 @@ func (mr *MockCustomResourceDefinitionClientMockRecorder) UpdateCustomResourceDe
 }
 
 // UpdateCustomResourceDefinitionStatus mocks base method.
-func (m *MockCustomResourceDefinitionClient) UpdateCustomResourceDefinitionStatus(ctx context.Context, obj *v1beta10.CustomResourceDefinition, opts ...client.UpdateOption) error {
+func (m *MockCustomResourceDefinitionClient) UpdateCustomResourceDefinitionStatus(ctx context.Context, obj *v1beta10.CustomResourceDefinition, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {

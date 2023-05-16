@@ -85,6 +85,7 @@ func (s *jobSet) List(filterResource ...func(*batch_v1.Job) bool) []*batch_v1.Jo
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*batch_v1.Job))
 		})
@@ -104,6 +105,7 @@ func (s *jobSet) UnsortedList(filterResource ...func(*batch_v1.Job) bool) []*bat
 	}
 	var genericFilters []func(ezkube.ResourceId) bool
 	for _, filter := range filterResource {
+		filter := filter
 		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
 			return filter(obj.(*batch_v1.Job))
 		})

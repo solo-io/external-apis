@@ -308,7 +308,7 @@ func (m *MockValidatingWebhookConfigurationStatusWriter) EXPECT() *MockValidatin
 }
 
 // PatchValidatingWebhookConfigurationStatus mocks base method.
-func (m *MockValidatingWebhookConfigurationStatusWriter) PatchValidatingWebhookConfigurationStatus(ctx context.Context, obj *v10.ValidatingWebhookConfiguration, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockValidatingWebhookConfigurationStatusWriter) PatchValidatingWebhookConfigurationStatus(ctx context.Context, obj *v10.ValidatingWebhookConfiguration, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -327,7 +327,7 @@ func (mr *MockValidatingWebhookConfigurationStatusWriterMockRecorder) PatchValid
 }
 
 // UpdateValidatingWebhookConfigurationStatus mocks base method.
-func (m *MockValidatingWebhookConfigurationStatusWriter) UpdateValidatingWebhookConfigurationStatus(ctx context.Context, obj *v10.ValidatingWebhookConfiguration, opts ...client.UpdateOption) error {
+func (m *MockValidatingWebhookConfigurationStatusWriter) UpdateValidatingWebhookConfigurationStatus(ctx context.Context, obj *v10.ValidatingWebhookConfiguration, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
@@ -480,7 +480,7 @@ func (mr *MockValidatingWebhookConfigurationClientMockRecorder) PatchValidatingW
 }
 
 // PatchValidatingWebhookConfigurationStatus mocks base method.
-func (m *MockValidatingWebhookConfigurationClient) PatchValidatingWebhookConfigurationStatus(ctx context.Context, obj *v10.ValidatingWebhookConfiguration, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockValidatingWebhookConfigurationClient) PatchValidatingWebhookConfigurationStatus(ctx context.Context, obj *v10.ValidatingWebhookConfiguration, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -518,7 +518,7 @@ func (mr *MockValidatingWebhookConfigurationClientMockRecorder) UpdateValidating
 }
 
 // UpdateValidatingWebhookConfigurationStatus mocks base method.
-func (m *MockValidatingWebhookConfigurationClient) UpdateValidatingWebhookConfigurationStatus(ctx context.Context, obj *v10.ValidatingWebhookConfiguration, opts ...client.UpdateOption) error {
+func (m *MockValidatingWebhookConfigurationClient) UpdateValidatingWebhookConfigurationStatus(ctx context.Context, obj *v10.ValidatingWebhookConfiguration, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
