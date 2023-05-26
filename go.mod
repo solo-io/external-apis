@@ -17,6 +17,7 @@ require (
 	k8s.io/apimachinery v0.26.4
 	k8s.io/client-go v0.26.4
 	sigs.k8s.io/controller-runtime v0.14.6
+	sigs.k8s.io/gateway-api v0.5.1-0.20220921185115-ee7a83814203
 )
 
 require (
