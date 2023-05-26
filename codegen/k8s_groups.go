@@ -11,6 +11,8 @@ import (
 	rbacv1 "k8s.io/api/rbac/v1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apiextensionsv1beta1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	gatewayv1beta1 "sigs.k8s.io/gateway-api/apis/v1beta1"
 )
 
 const (
@@ -166,6 +168,21 @@ func k8sGroups() []model.Group {
 				},
 			},
 			CustomTypesImportPath: "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1",
+			ApiRoot:               k8sApiRoot,
+		},
+		{
+			GroupVersion: schema.GroupVersion{
+				Group:   gatewayv1beta1.GroupName,
+				Version: gatewayv1beta1.GroupVersion.Version,
+			},
+			Module: "sigs.k8s.io/gateway-api",
+			Resources: []model.Resource{
+				{
+					Kind:          "Gateway",
+					ClusterScoped: true,
+				},
+			},
+			CustomTypesImportPath: "sigs.k8s.io/gateway-api/apis/v1beta1",
 			ApiRoot:               k8sApiRoot,
 		},
 	}
