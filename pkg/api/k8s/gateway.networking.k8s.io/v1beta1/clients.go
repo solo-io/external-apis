@@ -109,10 +109,10 @@ type GatewayWriter interface {
 type GatewayStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given Gateway object.
-	UpdateGatewayStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.Gateway, opts ...client.UpdateOption) error
+	UpdateGatewayStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.Gateway, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given Gateway object's subresource.
-	PatchGatewayStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.Gateway, patch client.Patch, opts ...client.PatchOption) error
+	PatchGatewayStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.Gateway, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on Gateways.
@@ -185,11 +185,11 @@ func (c *gatewayClient) UpsertGateway(ctx context.Context, obj *gateway_networki
 	return err
 }
 
-func (c *gatewayClient) UpdateGatewayStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.Gateway, opts ...client.UpdateOption) error {
+func (c *gatewayClient) UpdateGatewayStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.Gateway, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *gatewayClient) PatchGatewayStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.Gateway, patch client.Patch, opts ...client.PatchOption) error {
+func (c *gatewayClient) PatchGatewayStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.Gateway, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 

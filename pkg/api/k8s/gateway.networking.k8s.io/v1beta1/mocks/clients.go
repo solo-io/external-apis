@@ -308,7 +308,7 @@ func (m *MockGatewayStatusWriter) EXPECT() *MockGatewayStatusWriterMockRecorder 
 }
 
 // PatchGatewayStatus mocks base method.
-func (m *MockGatewayStatusWriter) PatchGatewayStatus(ctx context.Context, obj *v1beta10.Gateway, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockGatewayStatusWriter) PatchGatewayStatus(ctx context.Context, obj *v1beta10.Gateway, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -327,7 +327,7 @@ func (mr *MockGatewayStatusWriterMockRecorder) PatchGatewayStatus(ctx, obj, patc
 }
 
 // UpdateGatewayStatus mocks base method.
-func (m *MockGatewayStatusWriter) UpdateGatewayStatus(ctx context.Context, obj *v1beta10.Gateway, opts ...client.UpdateOption) error {
+func (m *MockGatewayStatusWriter) UpdateGatewayStatus(ctx context.Context, obj *v1beta10.Gateway, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
@@ -480,7 +480,7 @@ func (mr *MockGatewayClientMockRecorder) PatchGateway(ctx, obj, patch interface{
 }
 
 // PatchGatewayStatus mocks base method.
-func (m *MockGatewayClient) PatchGatewayStatus(ctx context.Context, obj *v1beta10.Gateway, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockGatewayClient) PatchGatewayStatus(ctx context.Context, obj *v1beta10.Gateway, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -518,7 +518,7 @@ func (mr *MockGatewayClientMockRecorder) UpdateGateway(ctx, obj interface{}, opt
 }
 
 // UpdateGatewayStatus mocks base method.
-func (m *MockGatewayClient) UpdateGatewayStatus(ctx context.Context, obj *v1beta10.Gateway, opts ...client.UpdateOption) error {
+func (m *MockGatewayClient) UpdateGatewayStatus(ctx context.Context, obj *v1beta10.Gateway, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
