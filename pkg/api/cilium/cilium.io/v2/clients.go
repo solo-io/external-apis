@@ -109,10 +109,10 @@ type CiliumNetworkPolicyWriter interface {
 type CiliumNetworkPolicyStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given CiliumNetworkPolicy object.
-	UpdateCiliumNetworkPolicyStatus(ctx context.Context, obj *cilium_io_v2.CiliumNetworkPolicy, opts ...client.UpdateOption) error
+	UpdateCiliumNetworkPolicyStatus(ctx context.Context, obj *cilium_io_v2.CiliumNetworkPolicy, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given CiliumNetworkPolicy object's subresource.
-	PatchCiliumNetworkPolicyStatus(ctx context.Context, obj *cilium_io_v2.CiliumNetworkPolicy, patch client.Patch, opts ...client.PatchOption) error
+	PatchCiliumNetworkPolicyStatus(ctx context.Context, obj *cilium_io_v2.CiliumNetworkPolicy, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on CiliumNetworkPolicys.
@@ -183,11 +183,11 @@ func (c *ciliumNetworkPolicyClient) UpsertCiliumNetworkPolicy(ctx context.Contex
 	return err
 }
 
-func (c *ciliumNetworkPolicyClient) UpdateCiliumNetworkPolicyStatus(ctx context.Context, obj *cilium_io_v2.CiliumNetworkPolicy, opts ...client.UpdateOption) error {
+func (c *ciliumNetworkPolicyClient) UpdateCiliumNetworkPolicyStatus(ctx context.Context, obj *cilium_io_v2.CiliumNetworkPolicy, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *ciliumNetworkPolicyClient) PatchCiliumNetworkPolicyStatus(ctx context.Context, obj *cilium_io_v2.CiliumNetworkPolicy, patch client.Patch, opts ...client.PatchOption) error {
+func (c *ciliumNetworkPolicyClient) PatchCiliumNetworkPolicyStatus(ctx context.Context, obj *cilium_io_v2.CiliumNetworkPolicy, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 

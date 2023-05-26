@@ -322,7 +322,7 @@ func (m *MockAuthorizationPolicyStatusWriter) EXPECT() *MockAuthorizationPolicyS
 }
 
 // PatchAuthorizationPolicyStatus mocks base method.
-func (m *MockAuthorizationPolicyStatusWriter) PatchAuthorizationPolicyStatus(ctx context.Context, obj *v1beta10.AuthorizationPolicy, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockAuthorizationPolicyStatusWriter) PatchAuthorizationPolicyStatus(ctx context.Context, obj *v1beta10.AuthorizationPolicy, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -341,7 +341,7 @@ func (mr *MockAuthorizationPolicyStatusWriterMockRecorder) PatchAuthorizationPol
 }
 
 // UpdateAuthorizationPolicyStatus mocks base method.
-func (m *MockAuthorizationPolicyStatusWriter) UpdateAuthorizationPolicyStatus(ctx context.Context, obj *v1beta10.AuthorizationPolicy, opts ...client.UpdateOption) error {
+func (m *MockAuthorizationPolicyStatusWriter) UpdateAuthorizationPolicyStatus(ctx context.Context, obj *v1beta10.AuthorizationPolicy, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
@@ -494,7 +494,7 @@ func (mr *MockAuthorizationPolicyClientMockRecorder) PatchAuthorizationPolicy(ct
 }
 
 // PatchAuthorizationPolicyStatus mocks base method.
-func (m *MockAuthorizationPolicyClient) PatchAuthorizationPolicyStatus(ctx context.Context, obj *v1beta10.AuthorizationPolicy, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockAuthorizationPolicyClient) PatchAuthorizationPolicyStatus(ctx context.Context, obj *v1beta10.AuthorizationPolicy, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -532,7 +532,7 @@ func (mr *MockAuthorizationPolicyClientMockRecorder) UpdateAuthorizationPolicy(c
 }
 
 // UpdateAuthorizationPolicyStatus mocks base method.
-func (m *MockAuthorizationPolicyClient) UpdateAuthorizationPolicyStatus(ctx context.Context, obj *v1beta10.AuthorizationPolicy, opts ...client.UpdateOption) error {
+func (m *MockAuthorizationPolicyClient) UpdateAuthorizationPolicyStatus(ctx context.Context, obj *v1beta10.AuthorizationPolicy, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
@@ -826,7 +826,7 @@ func (m *MockPeerAuthenticationStatusWriter) EXPECT() *MockPeerAuthenticationSta
 }
 
 // PatchPeerAuthenticationStatus mocks base method.
-func (m *MockPeerAuthenticationStatusWriter) PatchPeerAuthenticationStatus(ctx context.Context, obj *v1beta10.PeerAuthentication, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockPeerAuthenticationStatusWriter) PatchPeerAuthenticationStatus(ctx context.Context, obj *v1beta10.PeerAuthentication, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -845,7 +845,7 @@ func (mr *MockPeerAuthenticationStatusWriterMockRecorder) PatchPeerAuthenticatio
 }
 
 // UpdatePeerAuthenticationStatus mocks base method.
-func (m *MockPeerAuthenticationStatusWriter) UpdatePeerAuthenticationStatus(ctx context.Context, obj *v1beta10.PeerAuthentication, opts ...client.UpdateOption) error {
+func (m *MockPeerAuthenticationStatusWriter) UpdatePeerAuthenticationStatus(ctx context.Context, obj *v1beta10.PeerAuthentication, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
@@ -998,7 +998,7 @@ func (mr *MockPeerAuthenticationClientMockRecorder) PatchPeerAuthentication(ctx,
 }
 
 // PatchPeerAuthenticationStatus mocks base method.
-func (m *MockPeerAuthenticationClient) PatchPeerAuthenticationStatus(ctx context.Context, obj *v1beta10.PeerAuthentication, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockPeerAuthenticationClient) PatchPeerAuthenticationStatus(ctx context.Context, obj *v1beta10.PeerAuthentication, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -1036,7 +1036,7 @@ func (mr *MockPeerAuthenticationClientMockRecorder) UpdatePeerAuthentication(ctx
 }
 
 // UpdatePeerAuthenticationStatus mocks base method.
-func (m *MockPeerAuthenticationClient) UpdatePeerAuthenticationStatus(ctx context.Context, obj *v1beta10.PeerAuthentication, opts ...client.UpdateOption) error {
+func (m *MockPeerAuthenticationClient) UpdatePeerAuthenticationStatus(ctx context.Context, obj *v1beta10.PeerAuthentication, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {

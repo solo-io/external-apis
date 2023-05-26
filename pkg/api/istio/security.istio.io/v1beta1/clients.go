@@ -116,10 +116,10 @@ type AuthorizationPolicyWriter interface {
 type AuthorizationPolicyStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given AuthorizationPolicy object.
-	UpdateAuthorizationPolicyStatus(ctx context.Context, obj *security_istio_io_v1beta1.AuthorizationPolicy, opts ...client.UpdateOption) error
+	UpdateAuthorizationPolicyStatus(ctx context.Context, obj *security_istio_io_v1beta1.AuthorizationPolicy, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given AuthorizationPolicy object's subresource.
-	PatchAuthorizationPolicyStatus(ctx context.Context, obj *security_istio_io_v1beta1.AuthorizationPolicy, patch client.Patch, opts ...client.PatchOption) error
+	PatchAuthorizationPolicyStatus(ctx context.Context, obj *security_istio_io_v1beta1.AuthorizationPolicy, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on AuthorizationPolicys.
@@ -190,11 +190,11 @@ func (c *authorizationPolicyClient) UpsertAuthorizationPolicy(ctx context.Contex
 	return err
 }
 
-func (c *authorizationPolicyClient) UpdateAuthorizationPolicyStatus(ctx context.Context, obj *security_istio_io_v1beta1.AuthorizationPolicy, opts ...client.UpdateOption) error {
+func (c *authorizationPolicyClient) UpdateAuthorizationPolicyStatus(ctx context.Context, obj *security_istio_io_v1beta1.AuthorizationPolicy, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *authorizationPolicyClient) PatchAuthorizationPolicyStatus(ctx context.Context, obj *security_istio_io_v1beta1.AuthorizationPolicy, patch client.Patch, opts ...client.PatchOption) error {
+func (c *authorizationPolicyClient) PatchAuthorizationPolicyStatus(ctx context.Context, obj *security_istio_io_v1beta1.AuthorizationPolicy, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
@@ -258,10 +258,10 @@ type PeerAuthenticationWriter interface {
 type PeerAuthenticationStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given PeerAuthentication object.
-	UpdatePeerAuthenticationStatus(ctx context.Context, obj *security_istio_io_v1beta1.PeerAuthentication, opts ...client.UpdateOption) error
+	UpdatePeerAuthenticationStatus(ctx context.Context, obj *security_istio_io_v1beta1.PeerAuthentication, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given PeerAuthentication object's subresource.
-	PatchPeerAuthenticationStatus(ctx context.Context, obj *security_istio_io_v1beta1.PeerAuthentication, patch client.Patch, opts ...client.PatchOption) error
+	PatchPeerAuthenticationStatus(ctx context.Context, obj *security_istio_io_v1beta1.PeerAuthentication, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on PeerAuthentications.
@@ -332,11 +332,11 @@ func (c *peerAuthenticationClient) UpsertPeerAuthentication(ctx context.Context,
 	return err
 }
 
-func (c *peerAuthenticationClient) UpdatePeerAuthenticationStatus(ctx context.Context, obj *security_istio_io_v1beta1.PeerAuthentication, opts ...client.UpdateOption) error {
+func (c *peerAuthenticationClient) UpdatePeerAuthenticationStatus(ctx context.Context, obj *security_istio_io_v1beta1.PeerAuthentication, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *peerAuthenticationClient) PatchPeerAuthenticationStatus(ctx context.Context, obj *security_istio_io_v1beta1.PeerAuthentication, patch client.Patch, opts ...client.PatchOption) error {
+func (c *peerAuthenticationClient) PatchPeerAuthenticationStatus(ctx context.Context, obj *security_istio_io_v1beta1.PeerAuthentication, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 

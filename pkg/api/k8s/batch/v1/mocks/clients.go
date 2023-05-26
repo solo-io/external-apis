@@ -308,7 +308,7 @@ func (m *MockJobStatusWriter) EXPECT() *MockJobStatusWriterMockRecorder {
 }
 
 // PatchJobStatus mocks base method.
-func (m *MockJobStatusWriter) PatchJobStatus(ctx context.Context, obj *v10.Job, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockJobStatusWriter) PatchJobStatus(ctx context.Context, obj *v10.Job, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -327,7 +327,7 @@ func (mr *MockJobStatusWriterMockRecorder) PatchJobStatus(ctx, obj, patch interf
 }
 
 // UpdateJobStatus mocks base method.
-func (m *MockJobStatusWriter) UpdateJobStatus(ctx context.Context, obj *v10.Job, opts ...client.UpdateOption) error {
+func (m *MockJobStatusWriter) UpdateJobStatus(ctx context.Context, obj *v10.Job, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
@@ -480,7 +480,7 @@ func (mr *MockJobClientMockRecorder) PatchJob(ctx, obj, patch interface{}, opts 
 }
 
 // PatchJobStatus mocks base method.
-func (m *MockJobClient) PatchJobStatus(ctx context.Context, obj *v10.Job, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockJobClient) PatchJobStatus(ctx context.Context, obj *v10.Job, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -518,7 +518,7 @@ func (mr *MockJobClientMockRecorder) UpdateJob(ctx, obj interface{}, opts ...int
 }
 
 // UpdateJobStatus mocks base method.
-func (m *MockJobClient) UpdateJobStatus(ctx context.Context, obj *v10.Job, opts ...client.UpdateOption) error {
+func (m *MockJobClient) UpdateJobStatus(ctx context.Context, obj *v10.Job, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {

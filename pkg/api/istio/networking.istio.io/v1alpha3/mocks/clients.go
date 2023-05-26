@@ -308,7 +308,7 @@ func (m *MockEnvoyFilterStatusWriter) EXPECT() *MockEnvoyFilterStatusWriterMockR
 }
 
 // PatchEnvoyFilterStatus mocks base method.
-func (m *MockEnvoyFilterStatusWriter) PatchEnvoyFilterStatus(ctx context.Context, obj *v1alpha30.EnvoyFilter, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockEnvoyFilterStatusWriter) PatchEnvoyFilterStatus(ctx context.Context, obj *v1alpha30.EnvoyFilter, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -327,7 +327,7 @@ func (mr *MockEnvoyFilterStatusWriterMockRecorder) PatchEnvoyFilterStatus(ctx, o
 }
 
 // UpdateEnvoyFilterStatus mocks base method.
-func (m *MockEnvoyFilterStatusWriter) UpdateEnvoyFilterStatus(ctx context.Context, obj *v1alpha30.EnvoyFilter, opts ...client.UpdateOption) error {
+func (m *MockEnvoyFilterStatusWriter) UpdateEnvoyFilterStatus(ctx context.Context, obj *v1alpha30.EnvoyFilter, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
@@ -480,7 +480,7 @@ func (mr *MockEnvoyFilterClientMockRecorder) PatchEnvoyFilter(ctx, obj, patch in
 }
 
 // PatchEnvoyFilterStatus mocks base method.
-func (m *MockEnvoyFilterClient) PatchEnvoyFilterStatus(ctx context.Context, obj *v1alpha30.EnvoyFilter, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockEnvoyFilterClient) PatchEnvoyFilterStatus(ctx context.Context, obj *v1alpha30.EnvoyFilter, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -518,7 +518,7 @@ func (mr *MockEnvoyFilterClientMockRecorder) UpdateEnvoyFilter(ctx, obj interfac
 }
 
 // UpdateEnvoyFilterStatus mocks base method.
-func (m *MockEnvoyFilterClient) UpdateEnvoyFilterStatus(ctx context.Context, obj *v1alpha30.EnvoyFilter, opts ...client.UpdateOption) error {
+func (m *MockEnvoyFilterClient) UpdateEnvoyFilterStatus(ctx context.Context, obj *v1alpha30.EnvoyFilter, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {

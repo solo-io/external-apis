@@ -308,7 +308,7 @@ func (m *MockHTTPRouteGroupStatusWriter) EXPECT() *MockHTTPRouteGroupStatusWrite
 }
 
 // PatchHTTPRouteGroupStatus mocks base method.
-func (m *MockHTTPRouteGroupStatusWriter) PatchHTTPRouteGroupStatus(ctx context.Context, obj *v1alpha3.HTTPRouteGroup, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockHTTPRouteGroupStatusWriter) PatchHTTPRouteGroupStatus(ctx context.Context, obj *v1alpha3.HTTPRouteGroup, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -327,7 +327,7 @@ func (mr *MockHTTPRouteGroupStatusWriterMockRecorder) PatchHTTPRouteGroupStatus(
 }
 
 // UpdateHTTPRouteGroupStatus mocks base method.
-func (m *MockHTTPRouteGroupStatusWriter) UpdateHTTPRouteGroupStatus(ctx context.Context, obj *v1alpha3.HTTPRouteGroup, opts ...client.UpdateOption) error {
+func (m *MockHTTPRouteGroupStatusWriter) UpdateHTTPRouteGroupStatus(ctx context.Context, obj *v1alpha3.HTTPRouteGroup, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
@@ -480,7 +480,7 @@ func (mr *MockHTTPRouteGroupClientMockRecorder) PatchHTTPRouteGroup(ctx, obj, pa
 }
 
 // PatchHTTPRouteGroupStatus mocks base method.
-func (m *MockHTTPRouteGroupClient) PatchHTTPRouteGroupStatus(ctx context.Context, obj *v1alpha3.HTTPRouteGroup, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockHTTPRouteGroupClient) PatchHTTPRouteGroupStatus(ctx context.Context, obj *v1alpha3.HTTPRouteGroup, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -518,7 +518,7 @@ func (mr *MockHTTPRouteGroupClientMockRecorder) UpdateHTTPRouteGroup(ctx, obj in
 }
 
 // UpdateHTTPRouteGroupStatus mocks base method.
-func (m *MockHTTPRouteGroupClient) UpdateHTTPRouteGroupStatus(ctx context.Context, obj *v1alpha3.HTTPRouteGroup, opts ...client.UpdateOption) error {
+func (m *MockHTTPRouteGroupClient) UpdateHTTPRouteGroupStatus(ctx context.Context, obj *v1alpha3.HTTPRouteGroup, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
