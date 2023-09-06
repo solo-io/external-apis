@@ -88,7 +88,7 @@ func (c *clientSet) HTTPRoutes() HTTPRouteClient {
 // Reader knows how to read and list Gateways.
 type GatewayReader interface {
 	// Get retrieves a Gateway for the given object key
-	GetGateway(ctx context.Context, name string) (*gateway_networking_k8s_io_v1beta1.Gateway, error)
+	GetGateway(ctx context.Context, key client.ObjectKey) (*gateway_networking_k8s_io_v1beta1.Gateway, error)
 
 	// List retrieves list of Gateways for a given namespace and list options.
 	ListGateway(ctx context.Context, opts ...client.ListOption) (*gateway_networking_k8s_io_v1beta1.GatewayList, error)
@@ -104,7 +104,7 @@ type GatewayWriter interface {
 	CreateGateway(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.Gateway, opts ...client.CreateOption) error
 
 	// Delete deletes the Gateway object.
-	DeleteGateway(ctx context.Context, name string, opts ...client.DeleteOption) error
+	DeleteGateway(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error
 
 	// Update updates the given Gateway object.
 	UpdateGateway(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.Gateway, opts ...client.UpdateOption) error
@@ -144,11 +144,8 @@ func NewGatewayClient(client client.Client) *gatewayClient {
 	return &gatewayClient{client: client}
 }
 
-func (c *gatewayClient) GetGateway(ctx context.Context, name string) (*gateway_networking_k8s_io_v1beta1.Gateway, error) {
+func (c *gatewayClient) GetGateway(ctx context.Context, key client.ObjectKey) (*gateway_networking_k8s_io_v1beta1.Gateway, error) {
 	obj := &gateway_networking_k8s_io_v1beta1.Gateway{}
-	key := client.ObjectKey{
-		Name: name,
-	}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
 	}
@@ -167,9 +164,10 @@ func (c *gatewayClient) CreateGateway(ctx context.Context, obj *gateway_networki
 	return c.client.Create(ctx, obj, opts...)
 }
 
-func (c *gatewayClient) DeleteGateway(ctx context.Context, name string, opts ...client.DeleteOption) error {
+func (c *gatewayClient) DeleteGateway(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
 	obj := &gateway_networking_k8s_io_v1beta1.Gateway{}
-	obj.SetName(name)
+	obj.SetName(key.Name)
+	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
 }
 

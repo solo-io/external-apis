@@ -141,18 +141,18 @@ func (m *MockGatewayReader) EXPECT() *MockGatewayReaderMockRecorder {
 }
 
 // GetGateway mocks base method.
-func (m *MockGatewayReader) GetGateway(ctx context.Context, name string) (*v1beta10.Gateway, error) {
+func (m *MockGatewayReader) GetGateway(ctx context.Context, key client.ObjectKey) (*v1beta10.Gateway, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetGateway", ctx, name)
+	ret := m.ctrl.Call(m, "GetGateway", ctx, key)
 	ret0, _ := ret[0].(*v1beta10.Gateway)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetGateway indicates an expected call of GetGateway.
-func (mr *MockGatewayReaderMockRecorder) GetGateway(ctx, name interface{}) *gomock.Call {
+func (mr *MockGatewayReaderMockRecorder) GetGateway(ctx, key interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetGateway", reflect.TypeOf((*MockGatewayReader)(nil).GetGateway), ctx, name)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetGateway", reflect.TypeOf((*MockGatewayReader)(nil).GetGateway), ctx, key)
 }
 
 // ListGateway mocks base method.
@@ -237,9 +237,9 @@ func (mr *MockGatewayWriterMockRecorder) DeleteAllOfGateway(ctx interface{}, opt
 }
 
 // DeleteGateway mocks base method.
-func (m *MockGatewayWriter) DeleteGateway(ctx context.Context, name string, opts ...client.DeleteOption) error {
+func (m *MockGatewayWriter) DeleteGateway(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, name}
+	varargs := []interface{}{ctx, key}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
@@ -249,9 +249,9 @@ func (m *MockGatewayWriter) DeleteGateway(ctx context.Context, name string, opts
 }
 
 // DeleteGateway indicates an expected call of DeleteGateway.
-func (mr *MockGatewayWriterMockRecorder) DeleteGateway(ctx, name interface{}, opts ...interface{}) *gomock.Call {
+func (mr *MockGatewayWriterMockRecorder) DeleteGateway(ctx, key interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, name}, opts...)
+	varargs := append([]interface{}{ctx, key}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteGateway", reflect.TypeOf((*MockGatewayWriter)(nil).DeleteGateway), varargs...)
 }
 
@@ -435,9 +435,9 @@ func (mr *MockGatewayClientMockRecorder) DeleteAllOfGateway(ctx interface{}, opt
 }
 
 // DeleteGateway mocks base method.
-func (m *MockGatewayClient) DeleteGateway(ctx context.Context, name string, opts ...client.DeleteOption) error {
+func (m *MockGatewayClient) DeleteGateway(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, name}
+	varargs := []interface{}{ctx, key}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
@@ -447,25 +447,25 @@ func (m *MockGatewayClient) DeleteGateway(ctx context.Context, name string, opts
 }
 
 // DeleteGateway indicates an expected call of DeleteGateway.
-func (mr *MockGatewayClientMockRecorder) DeleteGateway(ctx, name interface{}, opts ...interface{}) *gomock.Call {
+func (mr *MockGatewayClientMockRecorder) DeleteGateway(ctx, key interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, name}, opts...)
+	varargs := append([]interface{}{ctx, key}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteGateway", reflect.TypeOf((*MockGatewayClient)(nil).DeleteGateway), varargs...)
 }
 
 // GetGateway mocks base method.
-func (m *MockGatewayClient) GetGateway(ctx context.Context, name string) (*v1beta10.Gateway, error) {
+func (m *MockGatewayClient) GetGateway(ctx context.Context, key client.ObjectKey) (*v1beta10.Gateway, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetGateway", ctx, name)
+	ret := m.ctrl.Call(m, "GetGateway", ctx, key)
 	ret0, _ := ret[0].(*v1beta10.Gateway)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetGateway indicates an expected call of GetGateway.
-func (mr *MockGatewayClientMockRecorder) GetGateway(ctx, name interface{}) *gomock.Call {
+func (mr *MockGatewayClientMockRecorder) GetGateway(ctx, key interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetGateway", reflect.TypeOf((*MockGatewayClient)(nil).GetGateway), ctx, name)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetGateway", reflect.TypeOf((*MockGatewayClient)(nil).GetGateway), ctx, key)
 }
 
 // ListGateway mocks base method.

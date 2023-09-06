@@ -178,8 +178,7 @@ func k8sGroups() []model.Group {
 			Module: "sigs.k8s.io/gateway-api",
 			Resources: []model.Resource{
 				{
-					Kind:          "Gateway",
-					ClusterScoped: true,
+					Kind: "Gateway",
 				},
 				{
 					Kind:          "GatewayClass",
