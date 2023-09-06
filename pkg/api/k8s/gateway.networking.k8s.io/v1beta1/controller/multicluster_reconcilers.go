@@ -88,3 +88,145 @@ func (g genericGatewayMulticlusterReconciler) Reconcile(cluster string, object e
 	}
 	return g.reconciler.ReconcileGateway(cluster, obj)
 }
+
+// Reconcile Upsert events for the GatewayClass Resource across clusters.
+// implemented by the user
+type MulticlusterGatewayClassReconciler interface {
+	ReconcileGatewayClass(clusterName string, obj *gateway_networking_k8s_io_v1beta1.GatewayClass) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the GatewayClass Resource across clusters.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type MulticlusterGatewayClassDeletionReconciler interface {
+	ReconcileGatewayClassDeletion(clusterName string, req reconcile.Request) error
+}
+
+type MulticlusterGatewayClassReconcilerFuncs struct {
+	OnReconcileGatewayClass         func(clusterName string, obj *gateway_networking_k8s_io_v1beta1.GatewayClass) (reconcile.Result, error)
+	OnReconcileGatewayClassDeletion func(clusterName string, req reconcile.Request) error
+}
+
+func (f *MulticlusterGatewayClassReconcilerFuncs) ReconcileGatewayClass(clusterName string, obj *gateway_networking_k8s_io_v1beta1.GatewayClass) (reconcile.Result, error) {
+	if f.OnReconcileGatewayClass == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcileGatewayClass(clusterName, obj)
+}
+
+func (f *MulticlusterGatewayClassReconcilerFuncs) ReconcileGatewayClassDeletion(clusterName string, req reconcile.Request) error {
+	if f.OnReconcileGatewayClassDeletion == nil {
+		return nil
+	}
+	return f.OnReconcileGatewayClassDeletion(clusterName, req)
+}
+
+type MulticlusterGatewayClassReconcileLoop interface {
+	// AddMulticlusterGatewayClassReconciler adds a MulticlusterGatewayClassReconciler to the MulticlusterGatewayClassReconcileLoop.
+	AddMulticlusterGatewayClassReconciler(ctx context.Context, rec MulticlusterGatewayClassReconciler, predicates ...predicate.Predicate)
+}
+
+type multiclusterGatewayClassReconcileLoop struct {
+	loop multicluster.Loop
+}
+
+func (m *multiclusterGatewayClassReconcileLoop) AddMulticlusterGatewayClassReconciler(ctx context.Context, rec MulticlusterGatewayClassReconciler, predicates ...predicate.Predicate) {
+	genericReconciler := genericGatewayClassMulticlusterReconciler{reconciler: rec}
+
+	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
+}
+
+func NewMulticlusterGatewayClassReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterGatewayClassReconcileLoop {
+	return &multiclusterGatewayClassReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &gateway_networking_k8s_io_v1beta1.GatewayClass{}, options)}
+}
+
+type genericGatewayClassMulticlusterReconciler struct {
+	reconciler MulticlusterGatewayClassReconciler
+}
+
+func (g genericGatewayClassMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) error {
+	if deletionReconciler, ok := g.reconciler.(MulticlusterGatewayClassDeletionReconciler); ok {
+		return deletionReconciler.ReconcileGatewayClassDeletion(cluster, req)
+	}
+	return nil
+}
+
+func (g genericGatewayClassMulticlusterReconciler) Reconcile(cluster string, object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*gateway_networking_k8s_io_v1beta1.GatewayClass)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: GatewayClass handler received event for %T", object)
+	}
+	return g.reconciler.ReconcileGatewayClass(cluster, obj)
+}
+
+// Reconcile Upsert events for the HTTPRoute Resource across clusters.
+// implemented by the user
+type MulticlusterHTTPRouteReconciler interface {
+	ReconcileHTTPRoute(clusterName string, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the HTTPRoute Resource across clusters.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type MulticlusterHTTPRouteDeletionReconciler interface {
+	ReconcileHTTPRouteDeletion(clusterName string, req reconcile.Request) error
+}
+
+type MulticlusterHTTPRouteReconcilerFuncs struct {
+	OnReconcileHTTPRoute         func(clusterName string, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute) (reconcile.Result, error)
+	OnReconcileHTTPRouteDeletion func(clusterName string, req reconcile.Request) error
+}
+
+func (f *MulticlusterHTTPRouteReconcilerFuncs) ReconcileHTTPRoute(clusterName string, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute) (reconcile.Result, error) {
+	if f.OnReconcileHTTPRoute == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcileHTTPRoute(clusterName, obj)
+}
+
+func (f *MulticlusterHTTPRouteReconcilerFuncs) ReconcileHTTPRouteDeletion(clusterName string, req reconcile.Request) error {
+	if f.OnReconcileHTTPRouteDeletion == nil {
+		return nil
+	}
+	return f.OnReconcileHTTPRouteDeletion(clusterName, req)
+}
+
+type MulticlusterHTTPRouteReconcileLoop interface {
+	// AddMulticlusterHTTPRouteReconciler adds a MulticlusterHTTPRouteReconciler to the MulticlusterHTTPRouteReconcileLoop.
+	AddMulticlusterHTTPRouteReconciler(ctx context.Context, rec MulticlusterHTTPRouteReconciler, predicates ...predicate.Predicate)
+}
+
+type multiclusterHTTPRouteReconcileLoop struct {
+	loop multicluster.Loop
+}
+
+func (m *multiclusterHTTPRouteReconcileLoop) AddMulticlusterHTTPRouteReconciler(ctx context.Context, rec MulticlusterHTTPRouteReconciler, predicates ...predicate.Predicate) {
+	genericReconciler := genericHTTPRouteMulticlusterReconciler{reconciler: rec}
+
+	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
+}
+
+func NewMulticlusterHTTPRouteReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterHTTPRouteReconcileLoop {
+	return &multiclusterHTTPRouteReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &gateway_networking_k8s_io_v1beta1.HTTPRoute{}, options)}
+}
+
+type genericHTTPRouteMulticlusterReconciler struct {
+	reconciler MulticlusterHTTPRouteReconciler
+}
+
+func (g genericHTTPRouteMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) error {
+	if deletionReconciler, ok := g.reconciler.(MulticlusterHTTPRouteDeletionReconciler); ok {
+		return deletionReconciler.ReconcileHTTPRouteDeletion(cluster, req)
+	}
+	return nil
+}
+
+func (g genericHTTPRouteMulticlusterReconciler) Reconcile(cluster string, object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*gateway_networking_k8s_io_v1beta1.HTTPRoute)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: HTTPRoute handler received event for %T", object)
+	}
+	return g.reconciler.ReconcileHTTPRoute(cluster, obj)
+}

@@ -181,6 +181,13 @@ func k8sGroups() []model.Group {
 					Kind:          "Gateway",
 					ClusterScoped: true,
 				},
+				{
+					Kind:          "GatewayClass",
+					ClusterScoped: true,
+				},
+				{
+					Kind: "HTTPRoute",
+				},
 			},
 			CustomTypesImportPath: "sigs.k8s.io/gateway-api/apis/v1beta1",
 			ApiRoot:               k8sApiRoot,

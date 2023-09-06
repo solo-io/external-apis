@@ -123,3 +123,217 @@ func (h genericGatewayHandler) Generic(object client.Object) error {
 	}
 	return h.handler.GenericGateway(obj)
 }
+
+// Handle events for the GatewayClass Resource
+// DEPRECATED: Prefer reconciler pattern.
+type GatewayClassEventHandler interface {
+	CreateGatewayClass(obj *gateway_networking_k8s_io_v1beta1.GatewayClass) error
+	UpdateGatewayClass(old, new *gateway_networking_k8s_io_v1beta1.GatewayClass) error
+	DeleteGatewayClass(obj *gateway_networking_k8s_io_v1beta1.GatewayClass) error
+	GenericGatewayClass(obj *gateway_networking_k8s_io_v1beta1.GatewayClass) error
+}
+
+type GatewayClassEventHandlerFuncs struct {
+	OnCreate  func(obj *gateway_networking_k8s_io_v1beta1.GatewayClass) error
+	OnUpdate  func(old, new *gateway_networking_k8s_io_v1beta1.GatewayClass) error
+	OnDelete  func(obj *gateway_networking_k8s_io_v1beta1.GatewayClass) error
+	OnGeneric func(obj *gateway_networking_k8s_io_v1beta1.GatewayClass) error
+}
+
+func (f *GatewayClassEventHandlerFuncs) CreateGatewayClass(obj *gateway_networking_k8s_io_v1beta1.GatewayClass) error {
+	if f.OnCreate == nil {
+		return nil
+	}
+	return f.OnCreate(obj)
+}
+
+func (f *GatewayClassEventHandlerFuncs) DeleteGatewayClass(obj *gateway_networking_k8s_io_v1beta1.GatewayClass) error {
+	if f.OnDelete == nil {
+		return nil
+	}
+	return f.OnDelete(obj)
+}
+
+func (f *GatewayClassEventHandlerFuncs) UpdateGatewayClass(objOld, objNew *gateway_networking_k8s_io_v1beta1.GatewayClass) error {
+	if f.OnUpdate == nil {
+		return nil
+	}
+	return f.OnUpdate(objOld, objNew)
+}
+
+func (f *GatewayClassEventHandlerFuncs) GenericGatewayClass(obj *gateway_networking_k8s_io_v1beta1.GatewayClass) error {
+	if f.OnGeneric == nil {
+		return nil
+	}
+	return f.OnGeneric(obj)
+}
+
+type GatewayClassEventWatcher interface {
+	AddEventHandler(ctx context.Context, h GatewayClassEventHandler, predicates ...predicate.Predicate) error
+}
+
+type gatewayClassEventWatcher struct {
+	watcher events.EventWatcher
+}
+
+func NewGatewayClassEventWatcher(name string, mgr manager.Manager) GatewayClassEventWatcher {
+	return &gatewayClassEventWatcher{
+		watcher: events.NewWatcher(name, mgr, &gateway_networking_k8s_io_v1beta1.GatewayClass{}),
+	}
+}
+
+func (c *gatewayClassEventWatcher) AddEventHandler(ctx context.Context, h GatewayClassEventHandler, predicates ...predicate.Predicate) error {
+	handler := genericGatewayClassHandler{handler: h}
+	if err := c.watcher.Watch(ctx, handler, predicates...); err != nil {
+		return err
+	}
+	return nil
+}
+
+// genericGatewayClassHandler implements a generic events.EventHandler
+type genericGatewayClassHandler struct {
+	handler GatewayClassEventHandler
+}
+
+func (h genericGatewayClassHandler) Create(object client.Object) error {
+	obj, ok := object.(*gateway_networking_k8s_io_v1beta1.GatewayClass)
+	if !ok {
+		return errors.Errorf("internal error: GatewayClass handler received event for %T", object)
+	}
+	return h.handler.CreateGatewayClass(obj)
+}
+
+func (h genericGatewayClassHandler) Delete(object client.Object) error {
+	obj, ok := object.(*gateway_networking_k8s_io_v1beta1.GatewayClass)
+	if !ok {
+		return errors.Errorf("internal error: GatewayClass handler received event for %T", object)
+	}
+	return h.handler.DeleteGatewayClass(obj)
+}
+
+func (h genericGatewayClassHandler) Update(old, new client.Object) error {
+	objOld, ok := old.(*gateway_networking_k8s_io_v1beta1.GatewayClass)
+	if !ok {
+		return errors.Errorf("internal error: GatewayClass handler received event for %T", old)
+	}
+	objNew, ok := new.(*gateway_networking_k8s_io_v1beta1.GatewayClass)
+	if !ok {
+		return errors.Errorf("internal error: GatewayClass handler received event for %T", new)
+	}
+	return h.handler.UpdateGatewayClass(objOld, objNew)
+}
+
+func (h genericGatewayClassHandler) Generic(object client.Object) error {
+	obj, ok := object.(*gateway_networking_k8s_io_v1beta1.GatewayClass)
+	if !ok {
+		return errors.Errorf("internal error: GatewayClass handler received event for %T", object)
+	}
+	return h.handler.GenericGatewayClass(obj)
+}
+
+// Handle events for the HTTPRoute Resource
+// DEPRECATED: Prefer reconciler pattern.
+type HTTPRouteEventHandler interface {
+	CreateHTTPRoute(obj *gateway_networking_k8s_io_v1beta1.HTTPRoute) error
+	UpdateHTTPRoute(old, new *gateway_networking_k8s_io_v1beta1.HTTPRoute) error
+	DeleteHTTPRoute(obj *gateway_networking_k8s_io_v1beta1.HTTPRoute) error
+	GenericHTTPRoute(obj *gateway_networking_k8s_io_v1beta1.HTTPRoute) error
+}
+
+type HTTPRouteEventHandlerFuncs struct {
+	OnCreate  func(obj *gateway_networking_k8s_io_v1beta1.HTTPRoute) error
+	OnUpdate  func(old, new *gateway_networking_k8s_io_v1beta1.HTTPRoute) error
+	OnDelete  func(obj *gateway_networking_k8s_io_v1beta1.HTTPRoute) error
+	OnGeneric func(obj *gateway_networking_k8s_io_v1beta1.HTTPRoute) error
+}
+
+func (f *HTTPRouteEventHandlerFuncs) CreateHTTPRoute(obj *gateway_networking_k8s_io_v1beta1.HTTPRoute) error {
+	if f.OnCreate == nil {
+		return nil
+	}
+	return f.OnCreate(obj)
+}
+
+func (f *HTTPRouteEventHandlerFuncs) DeleteHTTPRoute(obj *gateway_networking_k8s_io_v1beta1.HTTPRoute) error {
+	if f.OnDelete == nil {
+		return nil
+	}
+	return f.OnDelete(obj)
+}
+
+func (f *HTTPRouteEventHandlerFuncs) UpdateHTTPRoute(objOld, objNew *gateway_networking_k8s_io_v1beta1.HTTPRoute) error {
+	if f.OnUpdate == nil {
+		return nil
+	}
+	return f.OnUpdate(objOld, objNew)
+}
+
+func (f *HTTPRouteEventHandlerFuncs) GenericHTTPRoute(obj *gateway_networking_k8s_io_v1beta1.HTTPRoute) error {
+	if f.OnGeneric == nil {
+		return nil
+	}
+	return f.OnGeneric(obj)
+}
+
+type HTTPRouteEventWatcher interface {
+	AddEventHandler(ctx context.Context, h HTTPRouteEventHandler, predicates ...predicate.Predicate) error
+}
+
+type hTTPRouteEventWatcher struct {
+	watcher events.EventWatcher
+}
+
+func NewHTTPRouteEventWatcher(name string, mgr manager.Manager) HTTPRouteEventWatcher {
+	return &hTTPRouteEventWatcher{
+		watcher: events.NewWatcher(name, mgr, &gateway_networking_k8s_io_v1beta1.HTTPRoute{}),
+	}
+}
+
+func (c *hTTPRouteEventWatcher) AddEventHandler(ctx context.Context, h HTTPRouteEventHandler, predicates ...predicate.Predicate) error {
+	handler := genericHTTPRouteHandler{handler: h}
+	if err := c.watcher.Watch(ctx, handler, predicates...); err != nil {
+		return err
+	}
+	return nil
+}
+
+// genericHTTPRouteHandler implements a generic events.EventHandler
+type genericHTTPRouteHandler struct {
+	handler HTTPRouteEventHandler
+}
+
+func (h genericHTTPRouteHandler) Create(object client.Object) error {
+	obj, ok := object.(*gateway_networking_k8s_io_v1beta1.HTTPRoute)
+	if !ok {
+		return errors.Errorf("internal error: HTTPRoute handler received event for %T", object)
+	}
+	return h.handler.CreateHTTPRoute(obj)
+}
+
+func (h genericHTTPRouteHandler) Delete(object client.Object) error {
+	obj, ok := object.(*gateway_networking_k8s_io_v1beta1.HTTPRoute)
+	if !ok {
+		return errors.Errorf("internal error: HTTPRoute handler received event for %T", object)
+	}
+	return h.handler.DeleteHTTPRoute(obj)
+}
+
+func (h genericHTTPRouteHandler) Update(old, new client.Object) error {
+	objOld, ok := old.(*gateway_networking_k8s_io_v1beta1.HTTPRoute)
+	if !ok {
+		return errors.Errorf("internal error: HTTPRoute handler received event for %T", old)
+	}
+	objNew, ok := new.(*gateway_networking_k8s_io_v1beta1.HTTPRoute)
+	if !ok {
+		return errors.Errorf("internal error: HTTPRoute handler received event for %T", new)
+	}
+	return h.handler.UpdateHTTPRoute(objOld, objNew)
+}
+
+func (h genericHTTPRouteHandler) Generic(object client.Object) error {
+	obj, ok := object.(*gateway_networking_k8s_io_v1beta1.HTTPRoute)
+	if !ok {
+		return errors.Errorf("internal error: HTTPRoute handler received event for %T", object)
+	}
+	return h.handler.GenericHTTPRoute(obj)
+}
