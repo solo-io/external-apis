@@ -12,6 +12,7 @@ import (
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apiextensionsv1beta1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	gatewayv1alpha2 "sigs.k8s.io/gateway-api/apis/v1alpha2"
 	gatewayv1beta1 "sigs.k8s.io/gateway-api/apis/v1beta1"
 )
 
@@ -178,11 +179,44 @@ func k8sGroups() []model.Group {
 			Module: "sigs.k8s.io/gateway-api",
 			Resources: []model.Resource{
 				{
-					Kind:          "Gateway",
+					Kind: "Gateway",
+				},
+				{
+					Kind:          "GatewayClass",
 					ClusterScoped: true,
+				},
+				{
+					Kind: "HTTPRoute",
 				},
 			},
 			CustomTypesImportPath: "sigs.k8s.io/gateway-api/apis/v1beta1",
+			ApiRoot:               k8sApiRoot,
+		},
+		{
+			GroupVersion: schema.GroupVersion{
+				Group:   gatewayv1alpha2.GroupName,
+				Version: gatewayv1alpha2.GroupVersion.Version,
+			},
+			Module: "sigs.k8s.io/gateway-api",
+			Resources: []model.Resource{
+				{
+					// TODO: this moved to v1beta1 in later releases
+					Kind: "ReferenceGrant",
+				},
+				{
+					Kind: "GRPCRoute",
+				},
+				{
+					Kind: "TCPRoute",
+				},
+				{
+					Kind: "TLSRoute",
+				},
+				{
+					Kind: "UDPRoute",
+				},
+			},
+			CustomTypesImportPath: "sigs.k8s.io/gateway-api/apis/v1alpha2",
 			ApiRoot:               k8sApiRoot,
 		},
 	}

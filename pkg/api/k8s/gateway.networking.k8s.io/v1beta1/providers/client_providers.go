@@ -44,3 +44,59 @@ func GatewayClientFromConfigFactoryProvider() GatewayClientFromConfigFactory {
 		return clients.Gateways(), nil
 	}
 }
+
+// Provider for GatewayClassClient from Clientset
+func GatewayClassClientFromClientsetProvider(clients gateway_networking_k8s_io_v1beta1.Clientset) gateway_networking_k8s_io_v1beta1.GatewayClassClient {
+	return clients.GatewayClasses()
+}
+
+// Provider for GatewayClass Client from Client
+func GatewayClassClientProvider(client client.Client) gateway_networking_k8s_io_v1beta1.GatewayClassClient {
+	return gateway_networking_k8s_io_v1beta1.NewGatewayClassClient(client)
+}
+
+type GatewayClassClientFactory func(client client.Client) gateway_networking_k8s_io_v1beta1.GatewayClassClient
+
+func GatewayClassClientFactoryProvider() GatewayClassClientFactory {
+	return GatewayClassClientProvider
+}
+
+type GatewayClassClientFromConfigFactory func(cfg *rest.Config) (gateway_networking_k8s_io_v1beta1.GatewayClassClient, error)
+
+func GatewayClassClientFromConfigFactoryProvider() GatewayClassClientFromConfigFactory {
+	return func(cfg *rest.Config) (gateway_networking_k8s_io_v1beta1.GatewayClassClient, error) {
+		clients, err := gateway_networking_k8s_io_v1beta1.NewClientsetFromConfig(cfg)
+		if err != nil {
+			return nil, err
+		}
+		return clients.GatewayClasses(), nil
+	}
+}
+
+// Provider for HTTPRouteClient from Clientset
+func HTTPRouteClientFromClientsetProvider(clients gateway_networking_k8s_io_v1beta1.Clientset) gateway_networking_k8s_io_v1beta1.HTTPRouteClient {
+	return clients.HTTPRoutes()
+}
+
+// Provider for HTTPRoute Client from Client
+func HTTPRouteClientProvider(client client.Client) gateway_networking_k8s_io_v1beta1.HTTPRouteClient {
+	return gateway_networking_k8s_io_v1beta1.NewHTTPRouteClient(client)
+}
+
+type HTTPRouteClientFactory func(client client.Client) gateway_networking_k8s_io_v1beta1.HTTPRouteClient
+
+func HTTPRouteClientFactoryProvider() HTTPRouteClientFactory {
+	return HTTPRouteClientProvider
+}
+
+type HTTPRouteClientFromConfigFactory func(cfg *rest.Config) (gateway_networking_k8s_io_v1beta1.HTTPRouteClient, error)
+
+func HTTPRouteClientFromConfigFactoryProvider() HTTPRouteClientFromConfigFactory {
+	return func(cfg *rest.Config) (gateway_networking_k8s_io_v1beta1.HTTPRouteClient, error) {
+		clients, err := gateway_networking_k8s_io_v1beta1.NewClientsetFromConfig(cfg)
+		if err != nil {
+			return nil, err
+		}
+		return clients.HTTPRoutes(), nil
+	}
+}

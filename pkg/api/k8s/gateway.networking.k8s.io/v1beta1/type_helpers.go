@@ -9,3 +9,9 @@ import (
 
 // GatewaySlice represents a slice of *Gateway
 type GatewaySlice []*Gateway
+
+// GatewayClassSlice represents a slice of *GatewayClass
+type GatewayClassSlice []*GatewayClass
+
+// HTTPRouteSlice represents a slice of *HTTPRoute
+type HTTPRouteSlice []*HTTPRoute

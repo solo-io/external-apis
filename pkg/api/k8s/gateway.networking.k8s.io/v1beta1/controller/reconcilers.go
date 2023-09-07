@@ -133,3 +133,237 @@ func (r genericGatewayFinalizer) Finalize(object ezkube.Object) error {
 	}
 	return r.finalizingReconciler.FinalizeGateway(obj)
 }
+
+// Reconcile Upsert events for the GatewayClass Resource.
+// implemented by the user
+type GatewayClassReconciler interface {
+	ReconcileGatewayClass(obj *gateway_networking_k8s_io_v1beta1.GatewayClass) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the GatewayClass Resource.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type GatewayClassDeletionReconciler interface {
+	ReconcileGatewayClassDeletion(req reconcile.Request) error
+}
+
+type GatewayClassReconcilerFuncs struct {
+	OnReconcileGatewayClass         func(obj *gateway_networking_k8s_io_v1beta1.GatewayClass) (reconcile.Result, error)
+	OnReconcileGatewayClassDeletion func(req reconcile.Request) error
+}
+
+func (f *GatewayClassReconcilerFuncs) ReconcileGatewayClass(obj *gateway_networking_k8s_io_v1beta1.GatewayClass) (reconcile.Result, error) {
+	if f.OnReconcileGatewayClass == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcileGatewayClass(obj)
+}
+
+func (f *GatewayClassReconcilerFuncs) ReconcileGatewayClassDeletion(req reconcile.Request) error {
+	if f.OnReconcileGatewayClassDeletion == nil {
+		return nil
+	}
+	return f.OnReconcileGatewayClassDeletion(req)
+}
+
+// Reconcile and finalize the GatewayClass Resource
+// implemented by the user
+type GatewayClassFinalizer interface {
+	GatewayClassReconciler
+
+	// name of the finalizer used by this handler.
+	// finalizer names should be unique for a single task
+	GatewayClassFinalizerName() string
+
+	// finalize the object before it is deleted.
+	// Watchers created with a finalizing handler will a
+	FinalizeGatewayClass(obj *gateway_networking_k8s_io_v1beta1.GatewayClass) error
+}
+
+type GatewayClassReconcileLoop interface {
+	RunGatewayClassReconciler(ctx context.Context, rec GatewayClassReconciler, predicates ...predicate.Predicate) error
+}
+
+type gatewayClassReconcileLoop struct {
+	loop reconcile.Loop
+}
+
+func NewGatewayClassReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) GatewayClassReconcileLoop {
+	return &gatewayClassReconcileLoop{
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &gateway_networking_k8s_io_v1beta1.GatewayClass{}, options),
+	}
+}
+
+func (c *gatewayClassReconcileLoop) RunGatewayClassReconciler(ctx context.Context, reconciler GatewayClassReconciler, predicates ...predicate.Predicate) error {
+	genericReconciler := genericGatewayClassReconciler{
+		reconciler: reconciler,
+	}
+
+	var reconcilerWrapper reconcile.Reconciler
+	if finalizingReconciler, ok := reconciler.(GatewayClassFinalizer); ok {
+		reconcilerWrapper = genericGatewayClassFinalizer{
+			genericGatewayClassReconciler: genericReconciler,
+			finalizingReconciler:          finalizingReconciler,
+		}
+	} else {
+		reconcilerWrapper = genericReconciler
+	}
+	return c.loop.RunReconciler(ctx, reconcilerWrapper, predicates...)
+}
+
+// genericGatewayClassHandler implements a generic reconcile.Reconciler
+type genericGatewayClassReconciler struct {
+	reconciler GatewayClassReconciler
+}
+
+func (r genericGatewayClassReconciler) Reconcile(object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*gateway_networking_k8s_io_v1beta1.GatewayClass)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: GatewayClass handler received event for %T", object)
+	}
+	return r.reconciler.ReconcileGatewayClass(obj)
+}
+
+func (r genericGatewayClassReconciler) ReconcileDeletion(request reconcile.Request) error {
+	if deletionReconciler, ok := r.reconciler.(GatewayClassDeletionReconciler); ok {
+		return deletionReconciler.ReconcileGatewayClassDeletion(request)
+	}
+	return nil
+}
+
+// genericGatewayClassFinalizer implements a generic reconcile.FinalizingReconciler
+type genericGatewayClassFinalizer struct {
+	genericGatewayClassReconciler
+	finalizingReconciler GatewayClassFinalizer
+}
+
+func (r genericGatewayClassFinalizer) FinalizerName() string {
+	return r.finalizingReconciler.GatewayClassFinalizerName()
+}
+
+func (r genericGatewayClassFinalizer) Finalize(object ezkube.Object) error {
+	obj, ok := object.(*gateway_networking_k8s_io_v1beta1.GatewayClass)
+	if !ok {
+		return errors.Errorf("internal error: GatewayClass handler received event for %T", object)
+	}
+	return r.finalizingReconciler.FinalizeGatewayClass(obj)
+}
+
+// Reconcile Upsert events for the HTTPRoute Resource.
+// implemented by the user
+type HTTPRouteReconciler interface {
+	ReconcileHTTPRoute(obj *gateway_networking_k8s_io_v1beta1.HTTPRoute) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the HTTPRoute Resource.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type HTTPRouteDeletionReconciler interface {
+	ReconcileHTTPRouteDeletion(req reconcile.Request) error
+}
+
+type HTTPRouteReconcilerFuncs struct {
+	OnReconcileHTTPRoute         func(obj *gateway_networking_k8s_io_v1beta1.HTTPRoute) (reconcile.Result, error)
+	OnReconcileHTTPRouteDeletion func(req reconcile.Request) error
+}
+
+func (f *HTTPRouteReconcilerFuncs) ReconcileHTTPRoute(obj *gateway_networking_k8s_io_v1beta1.HTTPRoute) (reconcile.Result, error) {
+	if f.OnReconcileHTTPRoute == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcileHTTPRoute(obj)
+}
+
+func (f *HTTPRouteReconcilerFuncs) ReconcileHTTPRouteDeletion(req reconcile.Request) error {
+	if f.OnReconcileHTTPRouteDeletion == nil {
+		return nil
+	}
+	return f.OnReconcileHTTPRouteDeletion(req)
+}
+
+// Reconcile and finalize the HTTPRoute Resource
+// implemented by the user
+type HTTPRouteFinalizer interface {
+	HTTPRouteReconciler
+
+	// name of the finalizer used by this handler.
+	// finalizer names should be unique for a single task
+	HTTPRouteFinalizerName() string
+
+	// finalize the object before it is deleted.
+	// Watchers created with a finalizing handler will a
+	FinalizeHTTPRoute(obj *gateway_networking_k8s_io_v1beta1.HTTPRoute) error
+}
+
+type HTTPRouteReconcileLoop interface {
+	RunHTTPRouteReconciler(ctx context.Context, rec HTTPRouteReconciler, predicates ...predicate.Predicate) error
+}
+
+type hTTPRouteReconcileLoop struct {
+	loop reconcile.Loop
+}
+
+func NewHTTPRouteReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) HTTPRouteReconcileLoop {
+	return &hTTPRouteReconcileLoop{
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &gateway_networking_k8s_io_v1beta1.HTTPRoute{}, options),
+	}
+}
+
+func (c *hTTPRouteReconcileLoop) RunHTTPRouteReconciler(ctx context.Context, reconciler HTTPRouteReconciler, predicates ...predicate.Predicate) error {
+	genericReconciler := genericHTTPRouteReconciler{
+		reconciler: reconciler,
+	}
+
+	var reconcilerWrapper reconcile.Reconciler
+	if finalizingReconciler, ok := reconciler.(HTTPRouteFinalizer); ok {
+		reconcilerWrapper = genericHTTPRouteFinalizer{
+			genericHTTPRouteReconciler: genericReconciler,
+			finalizingReconciler:       finalizingReconciler,
+		}
+	} else {
+		reconcilerWrapper = genericReconciler
+	}
+	return c.loop.RunReconciler(ctx, reconcilerWrapper, predicates...)
+}
+
+// genericHTTPRouteHandler implements a generic reconcile.Reconciler
+type genericHTTPRouteReconciler struct {
+	reconciler HTTPRouteReconciler
+}
+
+func (r genericHTTPRouteReconciler) Reconcile(object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*gateway_networking_k8s_io_v1beta1.HTTPRoute)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: HTTPRoute handler received event for %T", object)
+	}
+	return r.reconciler.ReconcileHTTPRoute(obj)
+}
+
+func (r genericHTTPRouteReconciler) ReconcileDeletion(request reconcile.Request) error {
+	if deletionReconciler, ok := r.reconciler.(HTTPRouteDeletionReconciler); ok {
+		return deletionReconciler.ReconcileHTTPRouteDeletion(request)
+	}
+	return nil
+}
+
+// genericHTTPRouteFinalizer implements a generic reconcile.FinalizingReconciler
+type genericHTTPRouteFinalizer struct {
+	genericHTTPRouteReconciler
+	finalizingReconciler HTTPRouteFinalizer
+}
+
+func (r genericHTTPRouteFinalizer) FinalizerName() string {
+	return r.finalizingReconciler.HTTPRouteFinalizerName()
+}
+
+func (r genericHTTPRouteFinalizer) Finalize(object ezkube.Object) error {
+	obj, ok := object.(*gateway_networking_k8s_io_v1beta1.HTTPRoute)
+	if !ok {
+		return errors.Errorf("internal error: HTTPRoute handler received event for %T", object)
+	}
+	return r.finalizingReconciler.FinalizeHTTPRoute(obj)
+}
