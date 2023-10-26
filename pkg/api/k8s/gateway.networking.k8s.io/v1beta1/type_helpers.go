@@ -15,3 +15,6 @@ type GatewayClassSlice []*GatewayClass
 
 // HTTPRouteSlice represents a slice of *HTTPRoute
 type HTTPRouteSlice []*HTTPRoute
+
+// ReferenceGrantSlice represents a slice of *ReferenceGrant
+type ReferenceGrantSlice []*ReferenceGrant

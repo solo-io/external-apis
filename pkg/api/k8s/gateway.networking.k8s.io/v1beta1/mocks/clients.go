@@ -117,6 +117,20 @@ func (mr *MockClientsetMockRecorder) HTTPRoutes() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HTTPRoutes", reflect.TypeOf((*MockClientset)(nil).HTTPRoutes))
 }
 
+// ReferenceGrants mocks base method.
+func (m *MockClientset) ReferenceGrants() v1beta1.ReferenceGrantClient {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReferenceGrants")
+	ret0, _ := ret[0].(v1beta1.ReferenceGrantClient)
+	return ret0
+}
+
+// ReferenceGrants indicates an expected call of ReferenceGrants.
+func (mr *MockClientsetMockRecorder) ReferenceGrants() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReferenceGrants", reflect.TypeOf((*MockClientset)(nil).ReferenceGrants))
+}
+
 // MockGatewayReader is a mock of GatewayReader interface.
 type MockGatewayReader struct {
 	ctrl     *gomock.Controller
@@ -1627,4 +1641,508 @@ func (m *MockMulticlusterHTTPRouteClient) Cluster(cluster string) (v1beta1.HTTPR
 func (mr *MockMulticlusterHTTPRouteClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterHTTPRouteClient)(nil).Cluster), cluster)
+}
+
+// MockReferenceGrantReader is a mock of ReferenceGrantReader interface.
+type MockReferenceGrantReader struct {
+	ctrl     *gomock.Controller
+	recorder *MockReferenceGrantReaderMockRecorder
+}
+
+// MockReferenceGrantReaderMockRecorder is the mock recorder for MockReferenceGrantReader.
+type MockReferenceGrantReaderMockRecorder struct {
+	mock *MockReferenceGrantReader
+}
+
+// NewMockReferenceGrantReader creates a new mock instance.
+func NewMockReferenceGrantReader(ctrl *gomock.Controller) *MockReferenceGrantReader {
+	mock := &MockReferenceGrantReader{ctrl: ctrl}
+	mock.recorder = &MockReferenceGrantReaderMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockReferenceGrantReader) EXPECT() *MockReferenceGrantReaderMockRecorder {
+	return m.recorder
+}
+
+// GetReferenceGrant mocks base method.
+func (m *MockReferenceGrantReader) GetReferenceGrant(ctx context.Context, key client.ObjectKey) (*v1beta10.ReferenceGrant, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetReferenceGrant", ctx, key)
+	ret0, _ := ret[0].(*v1beta10.ReferenceGrant)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetReferenceGrant indicates an expected call of GetReferenceGrant.
+func (mr *MockReferenceGrantReaderMockRecorder) GetReferenceGrant(ctx, key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetReferenceGrant", reflect.TypeOf((*MockReferenceGrantReader)(nil).GetReferenceGrant), ctx, key)
+}
+
+// ListReferenceGrant mocks base method.
+func (m *MockReferenceGrantReader) ListReferenceGrant(ctx context.Context, opts ...client.ListOption) (*v1beta10.ReferenceGrantList, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListReferenceGrant", varargs...)
+	ret0, _ := ret[0].(*v1beta10.ReferenceGrantList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListReferenceGrant indicates an expected call of ListReferenceGrant.
+func (mr *MockReferenceGrantReaderMockRecorder) ListReferenceGrant(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListReferenceGrant", reflect.TypeOf((*MockReferenceGrantReader)(nil).ListReferenceGrant), varargs...)
+}
+
+// MockReferenceGrantWriter is a mock of ReferenceGrantWriter interface.
+type MockReferenceGrantWriter struct {
+	ctrl     *gomock.Controller
+	recorder *MockReferenceGrantWriterMockRecorder
+}
+
+// MockReferenceGrantWriterMockRecorder is the mock recorder for MockReferenceGrantWriter.
+type MockReferenceGrantWriterMockRecorder struct {
+	mock *MockReferenceGrantWriter
+}
+
+// NewMockReferenceGrantWriter creates a new mock instance.
+func NewMockReferenceGrantWriter(ctrl *gomock.Controller) *MockReferenceGrantWriter {
+	mock := &MockReferenceGrantWriter{ctrl: ctrl}
+	mock.recorder = &MockReferenceGrantWriterMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockReferenceGrantWriter) EXPECT() *MockReferenceGrantWriterMockRecorder {
+	return m.recorder
+}
+
+// CreateReferenceGrant mocks base method.
+func (m *MockReferenceGrantWriter) CreateReferenceGrant(ctx context.Context, obj *v1beta10.ReferenceGrant, opts ...client.CreateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateReferenceGrant", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateReferenceGrant indicates an expected call of CreateReferenceGrant.
+func (mr *MockReferenceGrantWriterMockRecorder) CreateReferenceGrant(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateReferenceGrant", reflect.TypeOf((*MockReferenceGrantWriter)(nil).CreateReferenceGrant), varargs...)
+}
+
+// DeleteAllOfReferenceGrant mocks base method.
+func (m *MockReferenceGrantWriter) DeleteAllOfReferenceGrant(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteAllOfReferenceGrant", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllOfReferenceGrant indicates an expected call of DeleteAllOfReferenceGrant.
+func (mr *MockReferenceGrantWriterMockRecorder) DeleteAllOfReferenceGrant(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfReferenceGrant", reflect.TypeOf((*MockReferenceGrantWriter)(nil).DeleteAllOfReferenceGrant), varargs...)
+}
+
+// DeleteReferenceGrant mocks base method.
+func (m *MockReferenceGrantWriter) DeleteReferenceGrant(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, key}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteReferenceGrant", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteReferenceGrant indicates an expected call of DeleteReferenceGrant.
+func (mr *MockReferenceGrantWriterMockRecorder) DeleteReferenceGrant(ctx, key interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, key}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteReferenceGrant", reflect.TypeOf((*MockReferenceGrantWriter)(nil).DeleteReferenceGrant), varargs...)
+}
+
+// PatchReferenceGrant mocks base method.
+func (m *MockReferenceGrantWriter) PatchReferenceGrant(ctx context.Context, obj *v1beta10.ReferenceGrant, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchReferenceGrant", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchReferenceGrant indicates an expected call of PatchReferenceGrant.
+func (mr *MockReferenceGrantWriterMockRecorder) PatchReferenceGrant(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchReferenceGrant", reflect.TypeOf((*MockReferenceGrantWriter)(nil).PatchReferenceGrant), varargs...)
+}
+
+// UpdateReferenceGrant mocks base method.
+func (m *MockReferenceGrantWriter) UpdateReferenceGrant(ctx context.Context, obj *v1beta10.ReferenceGrant, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateReferenceGrant", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateReferenceGrant indicates an expected call of UpdateReferenceGrant.
+func (mr *MockReferenceGrantWriterMockRecorder) UpdateReferenceGrant(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateReferenceGrant", reflect.TypeOf((*MockReferenceGrantWriter)(nil).UpdateReferenceGrant), varargs...)
+}
+
+// UpsertReferenceGrant mocks base method.
+func (m *MockReferenceGrantWriter) UpsertReferenceGrant(ctx context.Context, obj *v1beta10.ReferenceGrant, transitionFuncs ...v1beta1.ReferenceGrantTransitionFunction) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range transitionFuncs {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpsertReferenceGrant", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertReferenceGrant indicates an expected call of UpsertReferenceGrant.
+func (mr *MockReferenceGrantWriterMockRecorder) UpsertReferenceGrant(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertReferenceGrant", reflect.TypeOf((*MockReferenceGrantWriter)(nil).UpsertReferenceGrant), varargs...)
+}
+
+// MockReferenceGrantStatusWriter is a mock of ReferenceGrantStatusWriter interface.
+type MockReferenceGrantStatusWriter struct {
+	ctrl     *gomock.Controller
+	recorder *MockReferenceGrantStatusWriterMockRecorder
+}
+
+// MockReferenceGrantStatusWriterMockRecorder is the mock recorder for MockReferenceGrantStatusWriter.
+type MockReferenceGrantStatusWriterMockRecorder struct {
+	mock *MockReferenceGrantStatusWriter
+}
+
+// NewMockReferenceGrantStatusWriter creates a new mock instance.
+func NewMockReferenceGrantStatusWriter(ctrl *gomock.Controller) *MockReferenceGrantStatusWriter {
+	mock := &MockReferenceGrantStatusWriter{ctrl: ctrl}
+	mock.recorder = &MockReferenceGrantStatusWriterMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockReferenceGrantStatusWriter) EXPECT() *MockReferenceGrantStatusWriterMockRecorder {
+	return m.recorder
+}
+
+// PatchReferenceGrantStatus mocks base method.
+func (m *MockReferenceGrantStatusWriter) PatchReferenceGrantStatus(ctx context.Context, obj *v1beta10.ReferenceGrant, patch client.Patch, opts ...client.SubResourcePatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchReferenceGrantStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchReferenceGrantStatus indicates an expected call of PatchReferenceGrantStatus.
+func (mr *MockReferenceGrantStatusWriterMockRecorder) PatchReferenceGrantStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchReferenceGrantStatus", reflect.TypeOf((*MockReferenceGrantStatusWriter)(nil).PatchReferenceGrantStatus), varargs...)
+}
+
+// UpdateReferenceGrantStatus mocks base method.
+func (m *MockReferenceGrantStatusWriter) UpdateReferenceGrantStatus(ctx context.Context, obj *v1beta10.ReferenceGrant, opts ...client.SubResourceUpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateReferenceGrantStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateReferenceGrantStatus indicates an expected call of UpdateReferenceGrantStatus.
+func (mr *MockReferenceGrantStatusWriterMockRecorder) UpdateReferenceGrantStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateReferenceGrantStatus", reflect.TypeOf((*MockReferenceGrantStatusWriter)(nil).UpdateReferenceGrantStatus), varargs...)
+}
+
+// MockReferenceGrantClient is a mock of ReferenceGrantClient interface.
+type MockReferenceGrantClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockReferenceGrantClientMockRecorder
+}
+
+// MockReferenceGrantClientMockRecorder is the mock recorder for MockReferenceGrantClient.
+type MockReferenceGrantClientMockRecorder struct {
+	mock *MockReferenceGrantClient
+}
+
+// NewMockReferenceGrantClient creates a new mock instance.
+func NewMockReferenceGrantClient(ctrl *gomock.Controller) *MockReferenceGrantClient {
+	mock := &MockReferenceGrantClient{ctrl: ctrl}
+	mock.recorder = &MockReferenceGrantClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockReferenceGrantClient) EXPECT() *MockReferenceGrantClientMockRecorder {
+	return m.recorder
+}
+
+// CreateReferenceGrant mocks base method.
+func (m *MockReferenceGrantClient) CreateReferenceGrant(ctx context.Context, obj *v1beta10.ReferenceGrant, opts ...client.CreateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateReferenceGrant", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateReferenceGrant indicates an expected call of CreateReferenceGrant.
+func (mr *MockReferenceGrantClientMockRecorder) CreateReferenceGrant(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateReferenceGrant", reflect.TypeOf((*MockReferenceGrantClient)(nil).CreateReferenceGrant), varargs...)
+}
+
+// DeleteAllOfReferenceGrant mocks base method.
+func (m *MockReferenceGrantClient) DeleteAllOfReferenceGrant(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteAllOfReferenceGrant", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllOfReferenceGrant indicates an expected call of DeleteAllOfReferenceGrant.
+func (mr *MockReferenceGrantClientMockRecorder) DeleteAllOfReferenceGrant(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfReferenceGrant", reflect.TypeOf((*MockReferenceGrantClient)(nil).DeleteAllOfReferenceGrant), varargs...)
+}
+
+// DeleteReferenceGrant mocks base method.
+func (m *MockReferenceGrantClient) DeleteReferenceGrant(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, key}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteReferenceGrant", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteReferenceGrant indicates an expected call of DeleteReferenceGrant.
+func (mr *MockReferenceGrantClientMockRecorder) DeleteReferenceGrant(ctx, key interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, key}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteReferenceGrant", reflect.TypeOf((*MockReferenceGrantClient)(nil).DeleteReferenceGrant), varargs...)
+}
+
+// GetReferenceGrant mocks base method.
+func (m *MockReferenceGrantClient) GetReferenceGrant(ctx context.Context, key client.ObjectKey) (*v1beta10.ReferenceGrant, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetReferenceGrant", ctx, key)
+	ret0, _ := ret[0].(*v1beta10.ReferenceGrant)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetReferenceGrant indicates an expected call of GetReferenceGrant.
+func (mr *MockReferenceGrantClientMockRecorder) GetReferenceGrant(ctx, key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetReferenceGrant", reflect.TypeOf((*MockReferenceGrantClient)(nil).GetReferenceGrant), ctx, key)
+}
+
+// ListReferenceGrant mocks base method.
+func (m *MockReferenceGrantClient) ListReferenceGrant(ctx context.Context, opts ...client.ListOption) (*v1beta10.ReferenceGrantList, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListReferenceGrant", varargs...)
+	ret0, _ := ret[0].(*v1beta10.ReferenceGrantList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListReferenceGrant indicates an expected call of ListReferenceGrant.
+func (mr *MockReferenceGrantClientMockRecorder) ListReferenceGrant(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListReferenceGrant", reflect.TypeOf((*MockReferenceGrantClient)(nil).ListReferenceGrant), varargs...)
+}
+
+// PatchReferenceGrant mocks base method.
+func (m *MockReferenceGrantClient) PatchReferenceGrant(ctx context.Context, obj *v1beta10.ReferenceGrant, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchReferenceGrant", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchReferenceGrant indicates an expected call of PatchReferenceGrant.
+func (mr *MockReferenceGrantClientMockRecorder) PatchReferenceGrant(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchReferenceGrant", reflect.TypeOf((*MockReferenceGrantClient)(nil).PatchReferenceGrant), varargs...)
+}
+
+// PatchReferenceGrantStatus mocks base method.
+func (m *MockReferenceGrantClient) PatchReferenceGrantStatus(ctx context.Context, obj *v1beta10.ReferenceGrant, patch client.Patch, opts ...client.SubResourcePatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchReferenceGrantStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchReferenceGrantStatus indicates an expected call of PatchReferenceGrantStatus.
+func (mr *MockReferenceGrantClientMockRecorder) PatchReferenceGrantStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchReferenceGrantStatus", reflect.TypeOf((*MockReferenceGrantClient)(nil).PatchReferenceGrantStatus), varargs...)
+}
+
+// UpdateReferenceGrant mocks base method.
+func (m *MockReferenceGrantClient) UpdateReferenceGrant(ctx context.Context, obj *v1beta10.ReferenceGrant, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateReferenceGrant", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateReferenceGrant indicates an expected call of UpdateReferenceGrant.
+func (mr *MockReferenceGrantClientMockRecorder) UpdateReferenceGrant(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateReferenceGrant", reflect.TypeOf((*MockReferenceGrantClient)(nil).UpdateReferenceGrant), varargs...)
+}
+
+// UpdateReferenceGrantStatus mocks base method.
+func (m *MockReferenceGrantClient) UpdateReferenceGrantStatus(ctx context.Context, obj *v1beta10.ReferenceGrant, opts ...client.SubResourceUpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateReferenceGrantStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateReferenceGrantStatus indicates an expected call of UpdateReferenceGrantStatus.
+func (mr *MockReferenceGrantClientMockRecorder) UpdateReferenceGrantStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateReferenceGrantStatus", reflect.TypeOf((*MockReferenceGrantClient)(nil).UpdateReferenceGrantStatus), varargs...)
+}
+
+// UpsertReferenceGrant mocks base method.
+func (m *MockReferenceGrantClient) UpsertReferenceGrant(ctx context.Context, obj *v1beta10.ReferenceGrant, transitionFuncs ...v1beta1.ReferenceGrantTransitionFunction) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range transitionFuncs {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpsertReferenceGrant", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertReferenceGrant indicates an expected call of UpsertReferenceGrant.
+func (mr *MockReferenceGrantClientMockRecorder) UpsertReferenceGrant(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertReferenceGrant", reflect.TypeOf((*MockReferenceGrantClient)(nil).UpsertReferenceGrant), varargs...)
+}
+
+// MockMulticlusterReferenceGrantClient is a mock of MulticlusterReferenceGrantClient interface.
+type MockMulticlusterReferenceGrantClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterReferenceGrantClientMockRecorder
+}
+
+// MockMulticlusterReferenceGrantClientMockRecorder is the mock recorder for MockMulticlusterReferenceGrantClient.
+type MockMulticlusterReferenceGrantClientMockRecorder struct {
+	mock *MockMulticlusterReferenceGrantClient
+}
+
+// NewMockMulticlusterReferenceGrantClient creates a new mock instance.
+func NewMockMulticlusterReferenceGrantClient(ctrl *gomock.Controller) *MockMulticlusterReferenceGrantClient {
+	mock := &MockMulticlusterReferenceGrantClient{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterReferenceGrantClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterReferenceGrantClient) EXPECT() *MockMulticlusterReferenceGrantClientMockRecorder {
+	return m.recorder
+}
+
+// Cluster mocks base method.
+func (m *MockMulticlusterReferenceGrantClient) Cluster(cluster string) (v1beta1.ReferenceGrantClient, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Cluster", cluster)
+	ret0, _ := ret[0].(v1beta1.ReferenceGrantClient)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Cluster indicates an expected call of Cluster.
+func (mr *MockMulticlusterReferenceGrantClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterReferenceGrantClient)(nil).Cluster), cluster)
 }

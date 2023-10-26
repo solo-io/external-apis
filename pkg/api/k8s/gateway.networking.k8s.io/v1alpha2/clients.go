@@ -41,8 +41,6 @@ func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
 // clienset for the gateway.networking.k8s.io/v1alpha2 APIs
 type Clientset interface {
 	// clienset for the gateway.networking.k8s.io/v1alpha2/v1alpha2 APIs
-	ReferenceGrants() ReferenceGrantClient
-	// clienset for the gateway.networking.k8s.io/v1alpha2/v1alpha2 APIs
 	GRPCRoutes() GRPCRouteClient
 	// clienset for the gateway.networking.k8s.io/v1alpha2/v1alpha2 APIs
 	TCPRoutes() TCPRouteClient
@@ -75,11 +73,6 @@ func NewClientset(client client.Client) Clientset {
 }
 
 // clienset for the gateway.networking.k8s.io/v1alpha2/v1alpha2 APIs
-func (c *clientSet) ReferenceGrants() ReferenceGrantClient {
-	return NewReferenceGrantClient(c.client)
-}
-
-// clienset for the gateway.networking.k8s.io/v1alpha2/v1alpha2 APIs
 func (c *clientSet) GRPCRoutes() GRPCRouteClient {
 	return NewGRPCRouteClient(c.client)
 }
@@ -97,148 +90,6 @@ func (c *clientSet) TLSRoutes() TLSRouteClient {
 // clienset for the gateway.networking.k8s.io/v1alpha2/v1alpha2 APIs
 func (c *clientSet) UDPRoutes() UDPRouteClient {
 	return NewUDPRouteClient(c.client)
-}
-
-// Reader knows how to read and list ReferenceGrants.
-type ReferenceGrantReader interface {
-	// Get retrieves a ReferenceGrant for the given object key
-	GetReferenceGrant(ctx context.Context, key client.ObjectKey) (*gateway_networking_k8s_io_v1alpha2.ReferenceGrant, error)
-
-	// List retrieves list of ReferenceGrants for a given namespace and list options.
-	ListReferenceGrant(ctx context.Context, opts ...client.ListOption) (*gateway_networking_k8s_io_v1alpha2.ReferenceGrantList, error)
-}
-
-// ReferenceGrantTransitionFunction instructs the ReferenceGrantWriter how to transition between an existing
-// ReferenceGrant object and a desired on an Upsert
-type ReferenceGrantTransitionFunction func(existing, desired *gateway_networking_k8s_io_v1alpha2.ReferenceGrant) error
-
-// Writer knows how to create, delete, and update ReferenceGrants.
-type ReferenceGrantWriter interface {
-	// Create saves the ReferenceGrant object.
-	CreateReferenceGrant(ctx context.Context, obj *gateway_networking_k8s_io_v1alpha2.ReferenceGrant, opts ...client.CreateOption) error
-
-	// Delete deletes the ReferenceGrant object.
-	DeleteReferenceGrant(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error
-
-	// Update updates the given ReferenceGrant object.
-	UpdateReferenceGrant(ctx context.Context, obj *gateway_networking_k8s_io_v1alpha2.ReferenceGrant, opts ...client.UpdateOption) error
-
-	// Patch patches the given ReferenceGrant object.
-	PatchReferenceGrant(ctx context.Context, obj *gateway_networking_k8s_io_v1alpha2.ReferenceGrant, patch client.Patch, opts ...client.PatchOption) error
-
-	// DeleteAllOf deletes all ReferenceGrant objects matching the given options.
-	DeleteAllOfReferenceGrant(ctx context.Context, opts ...client.DeleteAllOfOption) error
-
-	// Create or Update the ReferenceGrant object.
-	UpsertReferenceGrant(ctx context.Context, obj *gateway_networking_k8s_io_v1alpha2.ReferenceGrant, transitionFuncs ...ReferenceGrantTransitionFunction) error
-}
-
-// StatusWriter knows how to update status subresource of a ReferenceGrant object.
-type ReferenceGrantStatusWriter interface {
-	// Update updates the fields corresponding to the status subresource for the
-	// given ReferenceGrant object.
-	UpdateReferenceGrantStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1alpha2.ReferenceGrant, opts ...client.SubResourceUpdateOption) error
-
-	// Patch patches the given ReferenceGrant object's subresource.
-	PatchReferenceGrantStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1alpha2.ReferenceGrant, patch client.Patch, opts ...client.SubResourcePatchOption) error
-}
-
-// Client knows how to perform CRUD operations on ReferenceGrants.
-type ReferenceGrantClient interface {
-	ReferenceGrantReader
-	ReferenceGrantWriter
-	ReferenceGrantStatusWriter
-}
-
-type referenceGrantClient struct {
-	client client.Client
-}
-
-func NewReferenceGrantClient(client client.Client) *referenceGrantClient {
-	return &referenceGrantClient{client: client}
-}
-
-func (c *referenceGrantClient) GetReferenceGrant(ctx context.Context, key client.ObjectKey) (*gateway_networking_k8s_io_v1alpha2.ReferenceGrant, error) {
-	obj := &gateway_networking_k8s_io_v1alpha2.ReferenceGrant{}
-	if err := c.client.Get(ctx, key, obj); err != nil {
-		return nil, err
-	}
-	return obj, nil
-}
-
-func (c *referenceGrantClient) ListReferenceGrant(ctx context.Context, opts ...client.ListOption) (*gateway_networking_k8s_io_v1alpha2.ReferenceGrantList, error) {
-	list := &gateway_networking_k8s_io_v1alpha2.ReferenceGrantList{}
-	if err := c.client.List(ctx, list, opts...); err != nil {
-		return nil, err
-	}
-	return list, nil
-}
-
-func (c *referenceGrantClient) CreateReferenceGrant(ctx context.Context, obj *gateway_networking_k8s_io_v1alpha2.ReferenceGrant, opts ...client.CreateOption) error {
-	return c.client.Create(ctx, obj, opts...)
-}
-
-func (c *referenceGrantClient) DeleteReferenceGrant(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	obj := &gateway_networking_k8s_io_v1alpha2.ReferenceGrant{}
-	obj.SetName(key.Name)
-	obj.SetNamespace(key.Namespace)
-	return c.client.Delete(ctx, obj, opts...)
-}
-
-func (c *referenceGrantClient) UpdateReferenceGrant(ctx context.Context, obj *gateway_networking_k8s_io_v1alpha2.ReferenceGrant, opts ...client.UpdateOption) error {
-	return c.client.Update(ctx, obj, opts...)
-}
-
-func (c *referenceGrantClient) PatchReferenceGrant(ctx context.Context, obj *gateway_networking_k8s_io_v1alpha2.ReferenceGrant, patch client.Patch, opts ...client.PatchOption) error {
-	return c.client.Patch(ctx, obj, patch, opts...)
-}
-
-func (c *referenceGrantClient) DeleteAllOfReferenceGrant(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &gateway_networking_k8s_io_v1alpha2.ReferenceGrant{}
-	return c.client.DeleteAllOf(ctx, obj, opts...)
-}
-
-func (c *referenceGrantClient) UpsertReferenceGrant(ctx context.Context, obj *gateway_networking_k8s_io_v1alpha2.ReferenceGrant, transitionFuncs ...ReferenceGrantTransitionFunction) error {
-	genericTxFunc := func(existing, desired runtime.Object) error {
-		for _, txFunc := range transitionFuncs {
-			if err := txFunc(existing.(*gateway_networking_k8s_io_v1alpha2.ReferenceGrant), desired.(*gateway_networking_k8s_io_v1alpha2.ReferenceGrant)); err != nil {
-				return err
-			}
-		}
-		return nil
-	}
-	_, err := controllerutils.Upsert(ctx, c.client, obj, genericTxFunc)
-	return err
-}
-
-func (c *referenceGrantClient) UpdateReferenceGrantStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1alpha2.ReferenceGrant, opts ...client.SubResourceUpdateOption) error {
-	return c.client.Status().Update(ctx, obj, opts...)
-}
-
-func (c *referenceGrantClient) PatchReferenceGrantStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1alpha2.ReferenceGrant, patch client.Patch, opts ...client.SubResourcePatchOption) error {
-	return c.client.Status().Patch(ctx, obj, patch, opts...)
-}
-
-// Provides ReferenceGrantClients for multiple clusters.
-type MulticlusterReferenceGrantClient interface {
-	// Cluster returns a ReferenceGrantClient for the given cluster
-	Cluster(cluster string) (ReferenceGrantClient, error)
-}
-
-type multiclusterReferenceGrantClient struct {
-	client multicluster.Client
-}
-
-func NewMulticlusterReferenceGrantClient(client multicluster.Client) MulticlusterReferenceGrantClient {
-	return &multiclusterReferenceGrantClient{client: client}
-}
-
-func (m *multiclusterReferenceGrantClient) Cluster(cluster string) (ReferenceGrantClient, error) {
-	client, err := m.client.Cluster(cluster)
-	if err != nil {
-		return nil, err
-	}
-	return NewReferenceGrantClient(client), nil
 }
 
 // Reader knows how to read and list GRPCRoutes.

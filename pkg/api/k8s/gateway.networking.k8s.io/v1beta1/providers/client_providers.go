@@ -100,3 +100,31 @@ func HTTPRouteClientFromConfigFactoryProvider() HTTPRouteClientFromConfigFactory
 		return clients.HTTPRoutes(), nil
 	}
 }
+
+// Provider for ReferenceGrantClient from Clientset
+func ReferenceGrantClientFromClientsetProvider(clients gateway_networking_k8s_io_v1beta1.Clientset) gateway_networking_k8s_io_v1beta1.ReferenceGrantClient {
+	return clients.ReferenceGrants()
+}
+
+// Provider for ReferenceGrant Client from Client
+func ReferenceGrantClientProvider(client client.Client) gateway_networking_k8s_io_v1beta1.ReferenceGrantClient {
+	return gateway_networking_k8s_io_v1beta1.NewReferenceGrantClient(client)
+}
+
+type ReferenceGrantClientFactory func(client client.Client) gateway_networking_k8s_io_v1beta1.ReferenceGrantClient
+
+func ReferenceGrantClientFactoryProvider() ReferenceGrantClientFactory {
+	return ReferenceGrantClientProvider
+}
+
+type ReferenceGrantClientFromConfigFactory func(cfg *rest.Config) (gateway_networking_k8s_io_v1beta1.ReferenceGrantClient, error)
+
+func ReferenceGrantClientFromConfigFactoryProvider() ReferenceGrantClientFromConfigFactory {
+	return func(cfg *rest.Config) (gateway_networking_k8s_io_v1beta1.ReferenceGrantClient, error) {
+		clients, err := gateway_networking_k8s_io_v1beta1.NewClientsetFromConfig(cfg)
+		if err != nil {
+			return nil, err
+		}
+		return clients.ReferenceGrants(), nil
+	}
+}

@@ -230,3 +230,74 @@ func (g genericHTTPRouteMulticlusterReconciler) Reconcile(cluster string, object
 	}
 	return g.reconciler.ReconcileHTTPRoute(cluster, obj)
 }
+
+// Reconcile Upsert events for the ReferenceGrant Resource across clusters.
+// implemented by the user
+type MulticlusterReferenceGrantReconciler interface {
+	ReconcileReferenceGrant(clusterName string, obj *gateway_networking_k8s_io_v1beta1.ReferenceGrant) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the ReferenceGrant Resource across clusters.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type MulticlusterReferenceGrantDeletionReconciler interface {
+	ReconcileReferenceGrantDeletion(clusterName string, req reconcile.Request) error
+}
+
+type MulticlusterReferenceGrantReconcilerFuncs struct {
+	OnReconcileReferenceGrant         func(clusterName string, obj *gateway_networking_k8s_io_v1beta1.ReferenceGrant) (reconcile.Result, error)
+	OnReconcileReferenceGrantDeletion func(clusterName string, req reconcile.Request) error
+}
+
+func (f *MulticlusterReferenceGrantReconcilerFuncs) ReconcileReferenceGrant(clusterName string, obj *gateway_networking_k8s_io_v1beta1.ReferenceGrant) (reconcile.Result, error) {
+	if f.OnReconcileReferenceGrant == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcileReferenceGrant(clusterName, obj)
+}
+
+func (f *MulticlusterReferenceGrantReconcilerFuncs) ReconcileReferenceGrantDeletion(clusterName string, req reconcile.Request) error {
+	if f.OnReconcileReferenceGrantDeletion == nil {
+		return nil
+	}
+	return f.OnReconcileReferenceGrantDeletion(clusterName, req)
+}
+
+type MulticlusterReferenceGrantReconcileLoop interface {
+	// AddMulticlusterReferenceGrantReconciler adds a MulticlusterReferenceGrantReconciler to the MulticlusterReferenceGrantReconcileLoop.
+	AddMulticlusterReferenceGrantReconciler(ctx context.Context, rec MulticlusterReferenceGrantReconciler, predicates ...predicate.Predicate)
+}
+
+type multiclusterReferenceGrantReconcileLoop struct {
+	loop multicluster.Loop
+}
+
+func (m *multiclusterReferenceGrantReconcileLoop) AddMulticlusterReferenceGrantReconciler(ctx context.Context, rec MulticlusterReferenceGrantReconciler, predicates ...predicate.Predicate) {
+	genericReconciler := genericReferenceGrantMulticlusterReconciler{reconciler: rec}
+
+	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
+}
+
+func NewMulticlusterReferenceGrantReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterReferenceGrantReconcileLoop {
+	return &multiclusterReferenceGrantReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &gateway_networking_k8s_io_v1beta1.ReferenceGrant{}, options)}
+}
+
+type genericReferenceGrantMulticlusterReconciler struct {
+	reconciler MulticlusterReferenceGrantReconciler
+}
+
+func (g genericReferenceGrantMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) error {
+	if deletionReconciler, ok := g.reconciler.(MulticlusterReferenceGrantDeletionReconciler); ok {
+		return deletionReconciler.ReconcileReferenceGrantDeletion(cluster, req)
+	}
+	return nil
+}
+
+func (g genericReferenceGrantMulticlusterReconciler) Reconcile(cluster string, object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*gateway_networking_k8s_io_v1beta1.ReferenceGrant)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: ReferenceGrant handler received event for %T", object)
+	}
+	return g.reconciler.ReconcileReferenceGrant(cluster, obj)
+}

@@ -188,6 +188,9 @@ func k8sGroups() []model.Group {
 				{
 					Kind: "HTTPRoute",
 				},
+				{
+					Kind: "ReferenceGrant",
+				},
 			},
 			CustomTypesImportPath: "sigs.k8s.io/gateway-api/apis/v1beta1",
 			ApiRoot:               k8sApiRoot,
@@ -199,10 +202,6 @@ func k8sGroups() []model.Group {
 			},
 			Module: "sigs.k8s.io/gateway-api",
 			Resources: []model.Resource{
-				{
-					// TODO: this moved to v1beta1 in later releases
-					Kind: "ReferenceGrant",
-				},
 				{
 					Kind: "GRPCRoute",
 				},

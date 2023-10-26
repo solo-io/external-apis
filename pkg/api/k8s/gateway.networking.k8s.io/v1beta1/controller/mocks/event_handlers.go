@@ -376,3 +376,124 @@ func (mr *MockHTTPRouteEventWatcherMockRecorder) AddEventHandler(ctx, h interfac
 	varargs := append([]interface{}{ctx, h}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockHTTPRouteEventWatcher)(nil).AddEventHandler), varargs...)
 }
+
+// MockReferenceGrantEventHandler is a mock of ReferenceGrantEventHandler interface.
+type MockReferenceGrantEventHandler struct {
+	ctrl     *gomock.Controller
+	recorder *MockReferenceGrantEventHandlerMockRecorder
+}
+
+// MockReferenceGrantEventHandlerMockRecorder is the mock recorder for MockReferenceGrantEventHandler.
+type MockReferenceGrantEventHandlerMockRecorder struct {
+	mock *MockReferenceGrantEventHandler
+}
+
+// NewMockReferenceGrantEventHandler creates a new mock instance.
+func NewMockReferenceGrantEventHandler(ctrl *gomock.Controller) *MockReferenceGrantEventHandler {
+	mock := &MockReferenceGrantEventHandler{ctrl: ctrl}
+	mock.recorder = &MockReferenceGrantEventHandlerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockReferenceGrantEventHandler) EXPECT() *MockReferenceGrantEventHandlerMockRecorder {
+	return m.recorder
+}
+
+// CreateReferenceGrant mocks base method.
+func (m *MockReferenceGrantEventHandler) CreateReferenceGrant(obj *v1beta1.ReferenceGrant) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateReferenceGrant", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateReferenceGrant indicates an expected call of CreateReferenceGrant.
+func (mr *MockReferenceGrantEventHandlerMockRecorder) CreateReferenceGrant(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateReferenceGrant", reflect.TypeOf((*MockReferenceGrantEventHandler)(nil).CreateReferenceGrant), obj)
+}
+
+// DeleteReferenceGrant mocks base method.
+func (m *MockReferenceGrantEventHandler) DeleteReferenceGrant(obj *v1beta1.ReferenceGrant) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteReferenceGrant", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteReferenceGrant indicates an expected call of DeleteReferenceGrant.
+func (mr *MockReferenceGrantEventHandlerMockRecorder) DeleteReferenceGrant(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteReferenceGrant", reflect.TypeOf((*MockReferenceGrantEventHandler)(nil).DeleteReferenceGrant), obj)
+}
+
+// GenericReferenceGrant mocks base method.
+func (m *MockReferenceGrantEventHandler) GenericReferenceGrant(obj *v1beta1.ReferenceGrant) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GenericReferenceGrant", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// GenericReferenceGrant indicates an expected call of GenericReferenceGrant.
+func (mr *MockReferenceGrantEventHandlerMockRecorder) GenericReferenceGrant(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericReferenceGrant", reflect.TypeOf((*MockReferenceGrantEventHandler)(nil).GenericReferenceGrant), obj)
+}
+
+// UpdateReferenceGrant mocks base method.
+func (m *MockReferenceGrantEventHandler) UpdateReferenceGrant(old, new *v1beta1.ReferenceGrant) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateReferenceGrant", old, new)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateReferenceGrant indicates an expected call of UpdateReferenceGrant.
+func (mr *MockReferenceGrantEventHandlerMockRecorder) UpdateReferenceGrant(old, new interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateReferenceGrant", reflect.TypeOf((*MockReferenceGrantEventHandler)(nil).UpdateReferenceGrant), old, new)
+}
+
+// MockReferenceGrantEventWatcher is a mock of ReferenceGrantEventWatcher interface.
+type MockReferenceGrantEventWatcher struct {
+	ctrl     *gomock.Controller
+	recorder *MockReferenceGrantEventWatcherMockRecorder
+}
+
+// MockReferenceGrantEventWatcherMockRecorder is the mock recorder for MockReferenceGrantEventWatcher.
+type MockReferenceGrantEventWatcherMockRecorder struct {
+	mock *MockReferenceGrantEventWatcher
+}
+
+// NewMockReferenceGrantEventWatcher creates a new mock instance.
+func NewMockReferenceGrantEventWatcher(ctrl *gomock.Controller) *MockReferenceGrantEventWatcher {
+	mock := &MockReferenceGrantEventWatcher{ctrl: ctrl}
+	mock.recorder = &MockReferenceGrantEventWatcherMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockReferenceGrantEventWatcher) EXPECT() *MockReferenceGrantEventWatcherMockRecorder {
+	return m.recorder
+}
+
+// AddEventHandler mocks base method.
+func (m *MockReferenceGrantEventWatcher) AddEventHandler(ctx context.Context, h controller.ReferenceGrantEventHandler, predicates ...predicate.Predicate) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, h}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "AddEventHandler", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AddEventHandler indicates an expected call of AddEventHandler.
+func (mr *MockReferenceGrantEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, h}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockReferenceGrantEventWatcher)(nil).AddEventHandler), varargs...)
+}

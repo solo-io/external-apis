@@ -359,3 +359,118 @@ func (mr *MockMulticlusterHTTPRouteReconcileLoopMockRecorder) AddMulticlusterHTT
 	varargs := append([]interface{}{ctx, rec}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddMulticlusterHTTPRouteReconciler", reflect.TypeOf((*MockMulticlusterHTTPRouteReconcileLoop)(nil).AddMulticlusterHTTPRouteReconciler), varargs...)
 }
+
+// MockMulticlusterReferenceGrantReconciler is a mock of MulticlusterReferenceGrantReconciler interface.
+type MockMulticlusterReferenceGrantReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterReferenceGrantReconcilerMockRecorder
+}
+
+// MockMulticlusterReferenceGrantReconcilerMockRecorder is the mock recorder for MockMulticlusterReferenceGrantReconciler.
+type MockMulticlusterReferenceGrantReconcilerMockRecorder struct {
+	mock *MockMulticlusterReferenceGrantReconciler
+}
+
+// NewMockMulticlusterReferenceGrantReconciler creates a new mock instance.
+func NewMockMulticlusterReferenceGrantReconciler(ctrl *gomock.Controller) *MockMulticlusterReferenceGrantReconciler {
+	mock := &MockMulticlusterReferenceGrantReconciler{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterReferenceGrantReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterReferenceGrantReconciler) EXPECT() *MockMulticlusterReferenceGrantReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileReferenceGrant mocks base method.
+func (m *MockMulticlusterReferenceGrantReconciler) ReconcileReferenceGrant(clusterName string, obj *v1beta1.ReferenceGrant) (reconcile.Result, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileReferenceGrant", clusterName, obj)
+	ret0, _ := ret[0].(reconcile.Result)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReconcileReferenceGrant indicates an expected call of ReconcileReferenceGrant.
+func (mr *MockMulticlusterReferenceGrantReconcilerMockRecorder) ReconcileReferenceGrant(clusterName, obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileReferenceGrant", reflect.TypeOf((*MockMulticlusterReferenceGrantReconciler)(nil).ReconcileReferenceGrant), clusterName, obj)
+}
+
+// MockMulticlusterReferenceGrantDeletionReconciler is a mock of MulticlusterReferenceGrantDeletionReconciler interface.
+type MockMulticlusterReferenceGrantDeletionReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterReferenceGrantDeletionReconcilerMockRecorder
+}
+
+// MockMulticlusterReferenceGrantDeletionReconcilerMockRecorder is the mock recorder for MockMulticlusterReferenceGrantDeletionReconciler.
+type MockMulticlusterReferenceGrantDeletionReconcilerMockRecorder struct {
+	mock *MockMulticlusterReferenceGrantDeletionReconciler
+}
+
+// NewMockMulticlusterReferenceGrantDeletionReconciler creates a new mock instance.
+func NewMockMulticlusterReferenceGrantDeletionReconciler(ctrl *gomock.Controller) *MockMulticlusterReferenceGrantDeletionReconciler {
+	mock := &MockMulticlusterReferenceGrantDeletionReconciler{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterReferenceGrantDeletionReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterReferenceGrantDeletionReconciler) EXPECT() *MockMulticlusterReferenceGrantDeletionReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileReferenceGrantDeletion mocks base method.
+func (m *MockMulticlusterReferenceGrantDeletionReconciler) ReconcileReferenceGrantDeletion(clusterName string, req reconcile.Request) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileReferenceGrantDeletion", clusterName, req)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ReconcileReferenceGrantDeletion indicates an expected call of ReconcileReferenceGrantDeletion.
+func (mr *MockMulticlusterReferenceGrantDeletionReconcilerMockRecorder) ReconcileReferenceGrantDeletion(clusterName, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileReferenceGrantDeletion", reflect.TypeOf((*MockMulticlusterReferenceGrantDeletionReconciler)(nil).ReconcileReferenceGrantDeletion), clusterName, req)
+}
+
+// MockMulticlusterReferenceGrantReconcileLoop is a mock of MulticlusterReferenceGrantReconcileLoop interface.
+type MockMulticlusterReferenceGrantReconcileLoop struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterReferenceGrantReconcileLoopMockRecorder
+}
+
+// MockMulticlusterReferenceGrantReconcileLoopMockRecorder is the mock recorder for MockMulticlusterReferenceGrantReconcileLoop.
+type MockMulticlusterReferenceGrantReconcileLoopMockRecorder struct {
+	mock *MockMulticlusterReferenceGrantReconcileLoop
+}
+
+// NewMockMulticlusterReferenceGrantReconcileLoop creates a new mock instance.
+func NewMockMulticlusterReferenceGrantReconcileLoop(ctrl *gomock.Controller) *MockMulticlusterReferenceGrantReconcileLoop {
+	mock := &MockMulticlusterReferenceGrantReconcileLoop{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterReferenceGrantReconcileLoopMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterReferenceGrantReconcileLoop) EXPECT() *MockMulticlusterReferenceGrantReconcileLoopMockRecorder {
+	return m.recorder
+}
+
+// AddMulticlusterReferenceGrantReconciler mocks base method.
+func (m *MockMulticlusterReferenceGrantReconcileLoop) AddMulticlusterReferenceGrantReconciler(ctx context.Context, rec controller.MulticlusterReferenceGrantReconciler, predicates ...predicate.Predicate) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, rec}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "AddMulticlusterReferenceGrantReconciler", varargs...)
+}
+
+// AddMulticlusterReferenceGrantReconciler indicates an expected call of AddMulticlusterReferenceGrantReconciler.
+func (mr *MockMulticlusterReferenceGrantReconcileLoopMockRecorder) AddMulticlusterReferenceGrantReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, rec}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddMulticlusterReferenceGrantReconciler", reflect.TypeOf((*MockMulticlusterReferenceGrantReconcileLoop)(nil).AddMulticlusterReferenceGrantReconciler), varargs...)
+}

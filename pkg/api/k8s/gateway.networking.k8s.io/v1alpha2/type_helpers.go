@@ -7,9 +7,6 @@ import (
 	. "sigs.k8s.io/gateway-api/apis/v1alpha2"
 )
 
-// ReferenceGrantSlice represents a slice of *ReferenceGrant
-type ReferenceGrantSlice []*ReferenceGrant
-
 // GRPCRouteSlice represents a slice of *GRPCRoute
 type GRPCRouteSlice []*GRPCRoute
 

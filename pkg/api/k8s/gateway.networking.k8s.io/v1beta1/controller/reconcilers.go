@@ -367,3 +367,120 @@ func (r genericHTTPRouteFinalizer) Finalize(object ezkube.Object) error {
 	}
 	return r.finalizingReconciler.FinalizeHTTPRoute(obj)
 }
+
+// Reconcile Upsert events for the ReferenceGrant Resource.
+// implemented by the user
+type ReferenceGrantReconciler interface {
+	ReconcileReferenceGrant(obj *gateway_networking_k8s_io_v1beta1.ReferenceGrant) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the ReferenceGrant Resource.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type ReferenceGrantDeletionReconciler interface {
+	ReconcileReferenceGrantDeletion(req reconcile.Request) error
+}
+
+type ReferenceGrantReconcilerFuncs struct {
+	OnReconcileReferenceGrant         func(obj *gateway_networking_k8s_io_v1beta1.ReferenceGrant) (reconcile.Result, error)
+	OnReconcileReferenceGrantDeletion func(req reconcile.Request) error
+}
+
+func (f *ReferenceGrantReconcilerFuncs) ReconcileReferenceGrant(obj *gateway_networking_k8s_io_v1beta1.ReferenceGrant) (reconcile.Result, error) {
+	if f.OnReconcileReferenceGrant == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcileReferenceGrant(obj)
+}
+
+func (f *ReferenceGrantReconcilerFuncs) ReconcileReferenceGrantDeletion(req reconcile.Request) error {
+	if f.OnReconcileReferenceGrantDeletion == nil {
+		return nil
+	}
+	return f.OnReconcileReferenceGrantDeletion(req)
+}
+
+// Reconcile and finalize the ReferenceGrant Resource
+// implemented by the user
+type ReferenceGrantFinalizer interface {
+	ReferenceGrantReconciler
+
+	// name of the finalizer used by this handler.
+	// finalizer names should be unique for a single task
+	ReferenceGrantFinalizerName() string
+
+	// finalize the object before it is deleted.
+	// Watchers created with a finalizing handler will a
+	FinalizeReferenceGrant(obj *gateway_networking_k8s_io_v1beta1.ReferenceGrant) error
+}
+
+type ReferenceGrantReconcileLoop interface {
+	RunReferenceGrantReconciler(ctx context.Context, rec ReferenceGrantReconciler, predicates ...predicate.Predicate) error
+}
+
+type referenceGrantReconcileLoop struct {
+	loop reconcile.Loop
+}
+
+func NewReferenceGrantReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) ReferenceGrantReconcileLoop {
+	return &referenceGrantReconcileLoop{
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &gateway_networking_k8s_io_v1beta1.ReferenceGrant{}, options),
+	}
+}
+
+func (c *referenceGrantReconcileLoop) RunReferenceGrantReconciler(ctx context.Context, reconciler ReferenceGrantReconciler, predicates ...predicate.Predicate) error {
+	genericReconciler := genericReferenceGrantReconciler{
+		reconciler: reconciler,
+	}
+
+	var reconcilerWrapper reconcile.Reconciler
+	if finalizingReconciler, ok := reconciler.(ReferenceGrantFinalizer); ok {
+		reconcilerWrapper = genericReferenceGrantFinalizer{
+			genericReferenceGrantReconciler: genericReconciler,
+			finalizingReconciler:            finalizingReconciler,
+		}
+	} else {
+		reconcilerWrapper = genericReconciler
+	}
+	return c.loop.RunReconciler(ctx, reconcilerWrapper, predicates...)
+}
+
+// genericReferenceGrantHandler implements a generic reconcile.Reconciler
+type genericReferenceGrantReconciler struct {
+	reconciler ReferenceGrantReconciler
+}
+
+func (r genericReferenceGrantReconciler) Reconcile(object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*gateway_networking_k8s_io_v1beta1.ReferenceGrant)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: ReferenceGrant handler received event for %T", object)
+	}
+	return r.reconciler.ReconcileReferenceGrant(obj)
+}
+
+func (r genericReferenceGrantReconciler) ReconcileDeletion(request reconcile.Request) error {
+	if deletionReconciler, ok := r.reconciler.(ReferenceGrantDeletionReconciler); ok {
+		return deletionReconciler.ReconcileReferenceGrantDeletion(request)
+	}
+	return nil
+}
+
+// genericReferenceGrantFinalizer implements a generic reconcile.FinalizingReconciler
+type genericReferenceGrantFinalizer struct {
+	genericReferenceGrantReconciler
+	finalizingReconciler ReferenceGrantFinalizer
+}
+
+func (r genericReferenceGrantFinalizer) FinalizerName() string {
+	return r.finalizingReconciler.ReferenceGrantFinalizerName()
+}
+
+func (r genericReferenceGrantFinalizer) Finalize(object ezkube.Object) error {
+	obj, ok := object.(*gateway_networking_k8s_io_v1beta1.ReferenceGrant)
+	if !ok {
+		return errors.Errorf("internal error: ReferenceGrant handler received event for %T", object)
+	}
+	return r.finalizingReconciler.FinalizeReferenceGrant(obj)
+}
