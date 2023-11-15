@@ -9,10 +9,10 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	controller "github.com/solo-io/external-apis/pkg/api/k8s/gateway.networking.k8s.io/v1beta1/controller"
+	controller "github.com/solo-io/external-apis/pkg/api/k8s/gateway.networking.k8s.io/v1/controller"
 	reconcile "github.com/solo-io/skv2/pkg/reconcile"
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
-	v1beta1 "sigs.k8s.io/gateway-api/apis/v1beta1"
+	v1 "sigs.k8s.io/gateway-api/apis/v1"
 )
 
 // MockGatewayReconciler is a mock of GatewayReconciler interface.
@@ -39,7 +39,7 @@ func (m *MockGatewayReconciler) EXPECT() *MockGatewayReconcilerMockRecorder {
 }
 
 // ReconcileGateway mocks base method.
-func (m *MockGatewayReconciler) ReconcileGateway(obj *v1beta1.Gateway) (reconcile.Result, error) {
+func (m *MockGatewayReconciler) ReconcileGateway(obj *v1.Gateway) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileGateway", obj)
 	ret0, _ := ret[0].(reconcile.Result)
@@ -114,7 +114,7 @@ func (m *MockGatewayFinalizer) EXPECT() *MockGatewayFinalizerMockRecorder {
 }
 
 // FinalizeGateway mocks base method.
-func (m *MockGatewayFinalizer) FinalizeGateway(obj *v1beta1.Gateway) error {
+func (m *MockGatewayFinalizer) FinalizeGateway(obj *v1.Gateway) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FinalizeGateway", obj)
 	ret0, _ := ret[0].(error)
@@ -142,7 +142,7 @@ func (mr *MockGatewayFinalizerMockRecorder) GatewayFinalizerName() *gomock.Call 
 }
 
 // ReconcileGateway mocks base method.
-func (m *MockGatewayFinalizer) ReconcileGateway(obj *v1beta1.Gateway) (reconcile.Result, error) {
+func (m *MockGatewayFinalizer) ReconcileGateway(obj *v1.Gateway) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileGateway", obj)
 	ret0, _ := ret[0].(reconcile.Result)
@@ -222,7 +222,7 @@ func (m *MockGatewayClassReconciler) EXPECT() *MockGatewayClassReconcilerMockRec
 }
 
 // ReconcileGatewayClass mocks base method.
-func (m *MockGatewayClassReconciler) ReconcileGatewayClass(obj *v1beta1.GatewayClass) (reconcile.Result, error) {
+func (m *MockGatewayClassReconciler) ReconcileGatewayClass(obj *v1.GatewayClass) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileGatewayClass", obj)
 	ret0, _ := ret[0].(reconcile.Result)
@@ -297,7 +297,7 @@ func (m *MockGatewayClassFinalizer) EXPECT() *MockGatewayClassFinalizerMockRecor
 }
 
 // FinalizeGatewayClass mocks base method.
-func (m *MockGatewayClassFinalizer) FinalizeGatewayClass(obj *v1beta1.GatewayClass) error {
+func (m *MockGatewayClassFinalizer) FinalizeGatewayClass(obj *v1.GatewayClass) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FinalizeGatewayClass", obj)
 	ret0, _ := ret[0].(error)
@@ -325,7 +325,7 @@ func (mr *MockGatewayClassFinalizerMockRecorder) GatewayClassFinalizerName() *go
 }
 
 // ReconcileGatewayClass mocks base method.
-func (m *MockGatewayClassFinalizer) ReconcileGatewayClass(obj *v1beta1.GatewayClass) (reconcile.Result, error) {
+func (m *MockGatewayClassFinalizer) ReconcileGatewayClass(obj *v1.GatewayClass) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileGatewayClass", obj)
 	ret0, _ := ret[0].(reconcile.Result)
@@ -405,7 +405,7 @@ func (m *MockHTTPRouteReconciler) EXPECT() *MockHTTPRouteReconcilerMockRecorder 
 }
 
 // ReconcileHTTPRoute mocks base method.
-func (m *MockHTTPRouteReconciler) ReconcileHTTPRoute(obj *v1beta1.HTTPRoute) (reconcile.Result, error) {
+func (m *MockHTTPRouteReconciler) ReconcileHTTPRoute(obj *v1.HTTPRoute) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileHTTPRoute", obj)
 	ret0, _ := ret[0].(reconcile.Result)
@@ -480,7 +480,7 @@ func (m *MockHTTPRouteFinalizer) EXPECT() *MockHTTPRouteFinalizerMockRecorder {
 }
 
 // FinalizeHTTPRoute mocks base method.
-func (m *MockHTTPRouteFinalizer) FinalizeHTTPRoute(obj *v1beta1.HTTPRoute) error {
+func (m *MockHTTPRouteFinalizer) FinalizeHTTPRoute(obj *v1.HTTPRoute) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FinalizeHTTPRoute", obj)
 	ret0, _ := ret[0].(error)
@@ -508,7 +508,7 @@ func (mr *MockHTTPRouteFinalizerMockRecorder) HTTPRouteFinalizerName() *gomock.C
 }
 
 // ReconcileHTTPRoute mocks base method.
-func (m *MockHTTPRouteFinalizer) ReconcileHTTPRoute(obj *v1beta1.HTTPRoute) (reconcile.Result, error) {
+func (m *MockHTTPRouteFinalizer) ReconcileHTTPRoute(obj *v1.HTTPRoute) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileHTTPRoute", obj)
 	ret0, _ := ret[0].(reconcile.Result)
@@ -562,187 +562,4 @@ func (mr *MockHTTPRouteReconcileLoopMockRecorder) RunHTTPRouteReconciler(ctx, re
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, rec}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunHTTPRouteReconciler", reflect.TypeOf((*MockHTTPRouteReconcileLoop)(nil).RunHTTPRouteReconciler), varargs...)
-}
-
-// MockReferenceGrantReconciler is a mock of ReferenceGrantReconciler interface.
-type MockReferenceGrantReconciler struct {
-	ctrl     *gomock.Controller
-	recorder *MockReferenceGrantReconcilerMockRecorder
-}
-
-// MockReferenceGrantReconcilerMockRecorder is the mock recorder for MockReferenceGrantReconciler.
-type MockReferenceGrantReconcilerMockRecorder struct {
-	mock *MockReferenceGrantReconciler
-}
-
-// NewMockReferenceGrantReconciler creates a new mock instance.
-func NewMockReferenceGrantReconciler(ctrl *gomock.Controller) *MockReferenceGrantReconciler {
-	mock := &MockReferenceGrantReconciler{ctrl: ctrl}
-	mock.recorder = &MockReferenceGrantReconcilerMockRecorder{mock}
-	return mock
-}
-
-// EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockReferenceGrantReconciler) EXPECT() *MockReferenceGrantReconcilerMockRecorder {
-	return m.recorder
-}
-
-// ReconcileReferenceGrant mocks base method.
-func (m *MockReferenceGrantReconciler) ReconcileReferenceGrant(obj *v1beta1.ReferenceGrant) (reconcile.Result, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ReconcileReferenceGrant", obj)
-	ret0, _ := ret[0].(reconcile.Result)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// ReconcileReferenceGrant indicates an expected call of ReconcileReferenceGrant.
-func (mr *MockReferenceGrantReconcilerMockRecorder) ReconcileReferenceGrant(obj interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileReferenceGrant", reflect.TypeOf((*MockReferenceGrantReconciler)(nil).ReconcileReferenceGrant), obj)
-}
-
-// MockReferenceGrantDeletionReconciler is a mock of ReferenceGrantDeletionReconciler interface.
-type MockReferenceGrantDeletionReconciler struct {
-	ctrl     *gomock.Controller
-	recorder *MockReferenceGrantDeletionReconcilerMockRecorder
-}
-
-// MockReferenceGrantDeletionReconcilerMockRecorder is the mock recorder for MockReferenceGrantDeletionReconciler.
-type MockReferenceGrantDeletionReconcilerMockRecorder struct {
-	mock *MockReferenceGrantDeletionReconciler
-}
-
-// NewMockReferenceGrantDeletionReconciler creates a new mock instance.
-func NewMockReferenceGrantDeletionReconciler(ctrl *gomock.Controller) *MockReferenceGrantDeletionReconciler {
-	mock := &MockReferenceGrantDeletionReconciler{ctrl: ctrl}
-	mock.recorder = &MockReferenceGrantDeletionReconcilerMockRecorder{mock}
-	return mock
-}
-
-// EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockReferenceGrantDeletionReconciler) EXPECT() *MockReferenceGrantDeletionReconcilerMockRecorder {
-	return m.recorder
-}
-
-// ReconcileReferenceGrantDeletion mocks base method.
-func (m *MockReferenceGrantDeletionReconciler) ReconcileReferenceGrantDeletion(req reconcile.Request) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ReconcileReferenceGrantDeletion", req)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// ReconcileReferenceGrantDeletion indicates an expected call of ReconcileReferenceGrantDeletion.
-func (mr *MockReferenceGrantDeletionReconcilerMockRecorder) ReconcileReferenceGrantDeletion(req interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileReferenceGrantDeletion", reflect.TypeOf((*MockReferenceGrantDeletionReconciler)(nil).ReconcileReferenceGrantDeletion), req)
-}
-
-// MockReferenceGrantFinalizer is a mock of ReferenceGrantFinalizer interface.
-type MockReferenceGrantFinalizer struct {
-	ctrl     *gomock.Controller
-	recorder *MockReferenceGrantFinalizerMockRecorder
-}
-
-// MockReferenceGrantFinalizerMockRecorder is the mock recorder for MockReferenceGrantFinalizer.
-type MockReferenceGrantFinalizerMockRecorder struct {
-	mock *MockReferenceGrantFinalizer
-}
-
-// NewMockReferenceGrantFinalizer creates a new mock instance.
-func NewMockReferenceGrantFinalizer(ctrl *gomock.Controller) *MockReferenceGrantFinalizer {
-	mock := &MockReferenceGrantFinalizer{ctrl: ctrl}
-	mock.recorder = &MockReferenceGrantFinalizerMockRecorder{mock}
-	return mock
-}
-
-// EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockReferenceGrantFinalizer) EXPECT() *MockReferenceGrantFinalizerMockRecorder {
-	return m.recorder
-}
-
-// FinalizeReferenceGrant mocks base method.
-func (m *MockReferenceGrantFinalizer) FinalizeReferenceGrant(obj *v1beta1.ReferenceGrant) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FinalizeReferenceGrant", obj)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// FinalizeReferenceGrant indicates an expected call of FinalizeReferenceGrant.
-func (mr *MockReferenceGrantFinalizerMockRecorder) FinalizeReferenceGrant(obj interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FinalizeReferenceGrant", reflect.TypeOf((*MockReferenceGrantFinalizer)(nil).FinalizeReferenceGrant), obj)
-}
-
-// ReconcileReferenceGrant mocks base method.
-func (m *MockReferenceGrantFinalizer) ReconcileReferenceGrant(obj *v1beta1.ReferenceGrant) (reconcile.Result, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ReconcileReferenceGrant", obj)
-	ret0, _ := ret[0].(reconcile.Result)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// ReconcileReferenceGrant indicates an expected call of ReconcileReferenceGrant.
-func (mr *MockReferenceGrantFinalizerMockRecorder) ReconcileReferenceGrant(obj interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileReferenceGrant", reflect.TypeOf((*MockReferenceGrantFinalizer)(nil).ReconcileReferenceGrant), obj)
-}
-
-// ReferenceGrantFinalizerName mocks base method.
-func (m *MockReferenceGrantFinalizer) ReferenceGrantFinalizerName() string {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ReferenceGrantFinalizerName")
-	ret0, _ := ret[0].(string)
-	return ret0
-}
-
-// ReferenceGrantFinalizerName indicates an expected call of ReferenceGrantFinalizerName.
-func (mr *MockReferenceGrantFinalizerMockRecorder) ReferenceGrantFinalizerName() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReferenceGrantFinalizerName", reflect.TypeOf((*MockReferenceGrantFinalizer)(nil).ReferenceGrantFinalizerName))
-}
-
-// MockReferenceGrantReconcileLoop is a mock of ReferenceGrantReconcileLoop interface.
-type MockReferenceGrantReconcileLoop struct {
-	ctrl     *gomock.Controller
-	recorder *MockReferenceGrantReconcileLoopMockRecorder
-}
-
-// MockReferenceGrantReconcileLoopMockRecorder is the mock recorder for MockReferenceGrantReconcileLoop.
-type MockReferenceGrantReconcileLoopMockRecorder struct {
-	mock *MockReferenceGrantReconcileLoop
-}
-
-// NewMockReferenceGrantReconcileLoop creates a new mock instance.
-func NewMockReferenceGrantReconcileLoop(ctrl *gomock.Controller) *MockReferenceGrantReconcileLoop {
-	mock := &MockReferenceGrantReconcileLoop{ctrl: ctrl}
-	mock.recorder = &MockReferenceGrantReconcileLoopMockRecorder{mock}
-	return mock
-}
-
-// EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockReferenceGrantReconcileLoop) EXPECT() *MockReferenceGrantReconcileLoopMockRecorder {
-	return m.recorder
-}
-
-// RunReferenceGrantReconciler mocks base method.
-func (m *MockReferenceGrantReconcileLoop) RunReferenceGrantReconciler(ctx context.Context, rec controller.ReferenceGrantReconciler, predicates ...predicate.Predicate) error {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, rec}
-	for _, a := range predicates {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "RunReferenceGrantReconciler", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// RunReferenceGrantReconciler indicates an expected call of RunReferenceGrantReconciler.
-func (mr *MockReferenceGrantReconcileLoopMockRecorder) RunReferenceGrantReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, rec}, predicates...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunReferenceGrantReconciler", reflect.TypeOf((*MockReferenceGrantReconcileLoop)(nil).RunReferenceGrantReconciler), varargs...)
 }

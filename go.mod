@@ -2,8 +2,6 @@ module github.com/solo-io/external-apis
 
 go 1.21
 
-toolchain go1.21.0
-
 require (
 	github.com/aws/aws-app-mesh-controller-for-k8s v1.1.1
 	github.com/cilium/cilium v1.11.5
