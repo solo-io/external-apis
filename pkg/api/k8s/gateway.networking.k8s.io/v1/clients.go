@@ -2,7 +2,7 @@
 
 //go:generate mockgen -source ./clients.go -destination mocks/clients.go
 
-package v1beta1
+package v1
 
 import (
 	"context"
@@ -13,10 +13,10 @@ import (
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	gateway_networking_k8s_io_v1beta1 "sigs.k8s.io/gateway-api/apis/v1beta1"
+	gateway_networking_k8s_io_v1 "sigs.k8s.io/gateway-api/apis/v1"
 )
 
-// MulticlusterClientset for the gateway.networking.k8s.io/v1beta1 APIs
+// MulticlusterClientset for the gateway.networking.k8s.io/v1 APIs
 type MulticlusterClientset interface {
 	// Cluster returns a Clientset for the given cluster
 	Cluster(cluster string) (Clientset, error)
@@ -38,13 +38,13 @@ func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
 	return NewClientset(client), nil
 }
 
-// clienset for the gateway.networking.k8s.io/v1beta1 APIs
+// clienset for the gateway.networking.k8s.io/v1 APIs
 type Clientset interface {
-	// clienset for the gateway.networking.k8s.io/v1beta1/v1beta1 APIs
+	// clienset for the gateway.networking.k8s.io/v1/v1 APIs
 	Gateways() GatewayClient
-	// clienset for the gateway.networking.k8s.io/v1beta1/v1beta1 APIs
+	// clienset for the gateway.networking.k8s.io/v1/v1 APIs
 	GatewayClasses() GatewayClassClient
-	// clienset for the gateway.networking.k8s.io/v1beta1/v1beta1 APIs
+	// clienset for the gateway.networking.k8s.io/v1/v1 APIs
 	HTTPRoutes() HTTPRouteClient
 }
 
@@ -54,7 +54,7 @@ type clientSet struct {
 
 func NewClientsetFromConfig(cfg *rest.Config) (Clientset, error) {
 	scheme := scheme.Scheme
-	if err := gateway_networking_k8s_io_v1beta1.SchemeBuilder.AddToScheme(scheme); err != nil {
+	if err := gateway_networking_k8s_io_v1.SchemeBuilder.AddToScheme(scheme); err != nil {
 		return nil, err
 	}
 	client, err := client.New(cfg, client.Options{
@@ -70,17 +70,17 @@ func NewClientset(client client.Client) Clientset {
 	return &clientSet{client: client}
 }
 
-// clienset for the gateway.networking.k8s.io/v1beta1/v1beta1 APIs
+// clienset for the gateway.networking.k8s.io/v1/v1 APIs
 func (c *clientSet) Gateways() GatewayClient {
 	return NewGatewayClient(c.client)
 }
 
-// clienset for the gateway.networking.k8s.io/v1beta1/v1beta1 APIs
+// clienset for the gateway.networking.k8s.io/v1/v1 APIs
 func (c *clientSet) GatewayClasses() GatewayClassClient {
 	return NewGatewayClassClient(c.client)
 }
 
-// clienset for the gateway.networking.k8s.io/v1beta1/v1beta1 APIs
+// clienset for the gateway.networking.k8s.io/v1/v1 APIs
 func (c *clientSet) HTTPRoutes() HTTPRouteClient {
 	return NewHTTPRouteClient(c.client)
 }
@@ -88,45 +88,45 @@ func (c *clientSet) HTTPRoutes() HTTPRouteClient {
 // Reader knows how to read and list Gateways.
 type GatewayReader interface {
 	// Get retrieves a Gateway for the given object key
-	GetGateway(ctx context.Context, key client.ObjectKey) (*gateway_networking_k8s_io_v1beta1.Gateway, error)
+	GetGateway(ctx context.Context, key client.ObjectKey) (*gateway_networking_k8s_io_v1.Gateway, error)
 
 	// List retrieves list of Gateways for a given namespace and list options.
-	ListGateway(ctx context.Context, opts ...client.ListOption) (*gateway_networking_k8s_io_v1beta1.GatewayList, error)
+	ListGateway(ctx context.Context, opts ...client.ListOption) (*gateway_networking_k8s_io_v1.GatewayList, error)
 }
 
 // GatewayTransitionFunction instructs the GatewayWriter how to transition between an existing
 // Gateway object and a desired on an Upsert
-type GatewayTransitionFunction func(existing, desired *gateway_networking_k8s_io_v1beta1.Gateway) error
+type GatewayTransitionFunction func(existing, desired *gateway_networking_k8s_io_v1.Gateway) error
 
 // Writer knows how to create, delete, and update Gateways.
 type GatewayWriter interface {
 	// Create saves the Gateway object.
-	CreateGateway(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.Gateway, opts ...client.CreateOption) error
+	CreateGateway(ctx context.Context, obj *gateway_networking_k8s_io_v1.Gateway, opts ...client.CreateOption) error
 
 	// Delete deletes the Gateway object.
 	DeleteGateway(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error
 
 	// Update updates the given Gateway object.
-	UpdateGateway(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.Gateway, opts ...client.UpdateOption) error
+	UpdateGateway(ctx context.Context, obj *gateway_networking_k8s_io_v1.Gateway, opts ...client.UpdateOption) error
 
 	// Patch patches the given Gateway object.
-	PatchGateway(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.Gateway, patch client.Patch, opts ...client.PatchOption) error
+	PatchGateway(ctx context.Context, obj *gateway_networking_k8s_io_v1.Gateway, patch client.Patch, opts ...client.PatchOption) error
 
 	// DeleteAllOf deletes all Gateway objects matching the given options.
 	DeleteAllOfGateway(ctx context.Context, opts ...client.DeleteAllOfOption) error
 
 	// Create or Update the Gateway object.
-	UpsertGateway(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.Gateway, transitionFuncs ...GatewayTransitionFunction) error
+	UpsertGateway(ctx context.Context, obj *gateway_networking_k8s_io_v1.Gateway, transitionFuncs ...GatewayTransitionFunction) error
 }
 
 // StatusWriter knows how to update status subresource of a Gateway object.
 type GatewayStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given Gateway object.
-	UpdateGatewayStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.Gateway, opts ...client.SubResourceUpdateOption) error
+	UpdateGatewayStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1.Gateway, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given Gateway object's subresource.
-	PatchGatewayStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.Gateway, patch client.Patch, opts ...client.SubResourcePatchOption) error
+	PatchGatewayStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1.Gateway, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on Gateways.
@@ -144,50 +144,50 @@ func NewGatewayClient(client client.Client) *gatewayClient {
 	return &gatewayClient{client: client}
 }
 
-func (c *gatewayClient) GetGateway(ctx context.Context, key client.ObjectKey) (*gateway_networking_k8s_io_v1beta1.Gateway, error) {
-	obj := &gateway_networking_k8s_io_v1beta1.Gateway{}
+func (c *gatewayClient) GetGateway(ctx context.Context, key client.ObjectKey) (*gateway_networking_k8s_io_v1.Gateway, error) {
+	obj := &gateway_networking_k8s_io_v1.Gateway{}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
 	}
 	return obj, nil
 }
 
-func (c *gatewayClient) ListGateway(ctx context.Context, opts ...client.ListOption) (*gateway_networking_k8s_io_v1beta1.GatewayList, error) {
-	list := &gateway_networking_k8s_io_v1beta1.GatewayList{}
+func (c *gatewayClient) ListGateway(ctx context.Context, opts ...client.ListOption) (*gateway_networking_k8s_io_v1.GatewayList, error) {
+	list := &gateway_networking_k8s_io_v1.GatewayList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
 	return list, nil
 }
 
-func (c *gatewayClient) CreateGateway(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.Gateway, opts ...client.CreateOption) error {
+func (c *gatewayClient) CreateGateway(ctx context.Context, obj *gateway_networking_k8s_io_v1.Gateway, opts ...client.CreateOption) error {
 	return c.client.Create(ctx, obj, opts...)
 }
 
 func (c *gatewayClient) DeleteGateway(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	obj := &gateway_networking_k8s_io_v1beta1.Gateway{}
+	obj := &gateway_networking_k8s_io_v1.Gateway{}
 	obj.SetName(key.Name)
 	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
 }
 
-func (c *gatewayClient) UpdateGateway(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.Gateway, opts ...client.UpdateOption) error {
+func (c *gatewayClient) UpdateGateway(ctx context.Context, obj *gateway_networking_k8s_io_v1.Gateway, opts ...client.UpdateOption) error {
 	return c.client.Update(ctx, obj, opts...)
 }
 
-func (c *gatewayClient) PatchGateway(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.Gateway, patch client.Patch, opts ...client.PatchOption) error {
+func (c *gatewayClient) PatchGateway(ctx context.Context, obj *gateway_networking_k8s_io_v1.Gateway, patch client.Patch, opts ...client.PatchOption) error {
 	return c.client.Patch(ctx, obj, patch, opts...)
 }
 
 func (c *gatewayClient) DeleteAllOfGateway(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &gateway_networking_k8s_io_v1beta1.Gateway{}
+	obj := &gateway_networking_k8s_io_v1.Gateway{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 
-func (c *gatewayClient) UpsertGateway(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.Gateway, transitionFuncs ...GatewayTransitionFunction) error {
+func (c *gatewayClient) UpsertGateway(ctx context.Context, obj *gateway_networking_k8s_io_v1.Gateway, transitionFuncs ...GatewayTransitionFunction) error {
 	genericTxFunc := func(existing, desired runtime.Object) error {
 		for _, txFunc := range transitionFuncs {
-			if err := txFunc(existing.(*gateway_networking_k8s_io_v1beta1.Gateway), desired.(*gateway_networking_k8s_io_v1beta1.Gateway)); err != nil {
+			if err := txFunc(existing.(*gateway_networking_k8s_io_v1.Gateway), desired.(*gateway_networking_k8s_io_v1.Gateway)); err != nil {
 				return err
 			}
 		}
@@ -197,11 +197,11 @@ func (c *gatewayClient) UpsertGateway(ctx context.Context, obj *gateway_networki
 	return err
 }
 
-func (c *gatewayClient) UpdateGatewayStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.Gateway, opts ...client.SubResourceUpdateOption) error {
+func (c *gatewayClient) UpdateGatewayStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1.Gateway, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *gatewayClient) PatchGatewayStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.Gateway, patch client.Patch, opts ...client.SubResourcePatchOption) error {
+func (c *gatewayClient) PatchGatewayStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1.Gateway, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
@@ -230,45 +230,45 @@ func (m *multiclusterGatewayClient) Cluster(cluster string) (GatewayClient, erro
 // Reader knows how to read and list GatewayClasss.
 type GatewayClassReader interface {
 	// Get retrieves a GatewayClass for the given object key
-	GetGatewayClass(ctx context.Context, name string) (*gateway_networking_k8s_io_v1beta1.GatewayClass, error)
+	GetGatewayClass(ctx context.Context, name string) (*gateway_networking_k8s_io_v1.GatewayClass, error)
 
 	// List retrieves list of GatewayClasss for a given namespace and list options.
-	ListGatewayClass(ctx context.Context, opts ...client.ListOption) (*gateway_networking_k8s_io_v1beta1.GatewayClassList, error)
+	ListGatewayClass(ctx context.Context, opts ...client.ListOption) (*gateway_networking_k8s_io_v1.GatewayClassList, error)
 }
 
 // GatewayClassTransitionFunction instructs the GatewayClassWriter how to transition between an existing
 // GatewayClass object and a desired on an Upsert
-type GatewayClassTransitionFunction func(existing, desired *gateway_networking_k8s_io_v1beta1.GatewayClass) error
+type GatewayClassTransitionFunction func(existing, desired *gateway_networking_k8s_io_v1.GatewayClass) error
 
 // Writer knows how to create, delete, and update GatewayClasss.
 type GatewayClassWriter interface {
 	// Create saves the GatewayClass object.
-	CreateGatewayClass(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.GatewayClass, opts ...client.CreateOption) error
+	CreateGatewayClass(ctx context.Context, obj *gateway_networking_k8s_io_v1.GatewayClass, opts ...client.CreateOption) error
 
 	// Delete deletes the GatewayClass object.
 	DeleteGatewayClass(ctx context.Context, name string, opts ...client.DeleteOption) error
 
 	// Update updates the given GatewayClass object.
-	UpdateGatewayClass(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.GatewayClass, opts ...client.UpdateOption) error
+	UpdateGatewayClass(ctx context.Context, obj *gateway_networking_k8s_io_v1.GatewayClass, opts ...client.UpdateOption) error
 
 	// Patch patches the given GatewayClass object.
-	PatchGatewayClass(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.GatewayClass, patch client.Patch, opts ...client.PatchOption) error
+	PatchGatewayClass(ctx context.Context, obj *gateway_networking_k8s_io_v1.GatewayClass, patch client.Patch, opts ...client.PatchOption) error
 
 	// DeleteAllOf deletes all GatewayClass objects matching the given options.
 	DeleteAllOfGatewayClass(ctx context.Context, opts ...client.DeleteAllOfOption) error
 
 	// Create or Update the GatewayClass object.
-	UpsertGatewayClass(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.GatewayClass, transitionFuncs ...GatewayClassTransitionFunction) error
+	UpsertGatewayClass(ctx context.Context, obj *gateway_networking_k8s_io_v1.GatewayClass, transitionFuncs ...GatewayClassTransitionFunction) error
 }
 
 // StatusWriter knows how to update status subresource of a GatewayClass object.
 type GatewayClassStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given GatewayClass object.
-	UpdateGatewayClassStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.GatewayClass, opts ...client.SubResourceUpdateOption) error
+	UpdateGatewayClassStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1.GatewayClass, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given GatewayClass object's subresource.
-	PatchGatewayClassStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.GatewayClass, patch client.Patch, opts ...client.SubResourcePatchOption) error
+	PatchGatewayClassStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1.GatewayClass, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on GatewayClasss.
@@ -286,8 +286,8 @@ func NewGatewayClassClient(client client.Client) *gatewayClassClient {
 	return &gatewayClassClient{client: client}
 }
 
-func (c *gatewayClassClient) GetGatewayClass(ctx context.Context, name string) (*gateway_networking_k8s_io_v1beta1.GatewayClass, error) {
-	obj := &gateway_networking_k8s_io_v1beta1.GatewayClass{}
+func (c *gatewayClassClient) GetGatewayClass(ctx context.Context, name string) (*gateway_networking_k8s_io_v1.GatewayClass, error) {
+	obj := &gateway_networking_k8s_io_v1.GatewayClass{}
 	key := client.ObjectKey{
 		Name: name,
 	}
@@ -297,41 +297,41 @@ func (c *gatewayClassClient) GetGatewayClass(ctx context.Context, name string) (
 	return obj, nil
 }
 
-func (c *gatewayClassClient) ListGatewayClass(ctx context.Context, opts ...client.ListOption) (*gateway_networking_k8s_io_v1beta1.GatewayClassList, error) {
-	list := &gateway_networking_k8s_io_v1beta1.GatewayClassList{}
+func (c *gatewayClassClient) ListGatewayClass(ctx context.Context, opts ...client.ListOption) (*gateway_networking_k8s_io_v1.GatewayClassList, error) {
+	list := &gateway_networking_k8s_io_v1.GatewayClassList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
 	return list, nil
 }
 
-func (c *gatewayClassClient) CreateGatewayClass(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.GatewayClass, opts ...client.CreateOption) error {
+func (c *gatewayClassClient) CreateGatewayClass(ctx context.Context, obj *gateway_networking_k8s_io_v1.GatewayClass, opts ...client.CreateOption) error {
 	return c.client.Create(ctx, obj, opts...)
 }
 
 func (c *gatewayClassClient) DeleteGatewayClass(ctx context.Context, name string, opts ...client.DeleteOption) error {
-	obj := &gateway_networking_k8s_io_v1beta1.GatewayClass{}
+	obj := &gateway_networking_k8s_io_v1.GatewayClass{}
 	obj.SetName(name)
 	return c.client.Delete(ctx, obj, opts...)
 }
 
-func (c *gatewayClassClient) UpdateGatewayClass(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.GatewayClass, opts ...client.UpdateOption) error {
+func (c *gatewayClassClient) UpdateGatewayClass(ctx context.Context, obj *gateway_networking_k8s_io_v1.GatewayClass, opts ...client.UpdateOption) error {
 	return c.client.Update(ctx, obj, opts...)
 }
 
-func (c *gatewayClassClient) PatchGatewayClass(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.GatewayClass, patch client.Patch, opts ...client.PatchOption) error {
+func (c *gatewayClassClient) PatchGatewayClass(ctx context.Context, obj *gateway_networking_k8s_io_v1.GatewayClass, patch client.Patch, opts ...client.PatchOption) error {
 	return c.client.Patch(ctx, obj, patch, opts...)
 }
 
 func (c *gatewayClassClient) DeleteAllOfGatewayClass(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &gateway_networking_k8s_io_v1beta1.GatewayClass{}
+	obj := &gateway_networking_k8s_io_v1.GatewayClass{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 
-func (c *gatewayClassClient) UpsertGatewayClass(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.GatewayClass, transitionFuncs ...GatewayClassTransitionFunction) error {
+func (c *gatewayClassClient) UpsertGatewayClass(ctx context.Context, obj *gateway_networking_k8s_io_v1.GatewayClass, transitionFuncs ...GatewayClassTransitionFunction) error {
 	genericTxFunc := func(existing, desired runtime.Object) error {
 		for _, txFunc := range transitionFuncs {
-			if err := txFunc(existing.(*gateway_networking_k8s_io_v1beta1.GatewayClass), desired.(*gateway_networking_k8s_io_v1beta1.GatewayClass)); err != nil {
+			if err := txFunc(existing.(*gateway_networking_k8s_io_v1.GatewayClass), desired.(*gateway_networking_k8s_io_v1.GatewayClass)); err != nil {
 				return err
 			}
 		}
@@ -341,11 +341,11 @@ func (c *gatewayClassClient) UpsertGatewayClass(ctx context.Context, obj *gatewa
 	return err
 }
 
-func (c *gatewayClassClient) UpdateGatewayClassStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.GatewayClass, opts ...client.SubResourceUpdateOption) error {
+func (c *gatewayClassClient) UpdateGatewayClassStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1.GatewayClass, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *gatewayClassClient) PatchGatewayClassStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.GatewayClass, patch client.Patch, opts ...client.SubResourcePatchOption) error {
+func (c *gatewayClassClient) PatchGatewayClassStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1.GatewayClass, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 
@@ -374,45 +374,45 @@ func (m *multiclusterGatewayClassClient) Cluster(cluster string) (GatewayClassCl
 // Reader knows how to read and list HTTPRoutes.
 type HTTPRouteReader interface {
 	// Get retrieves a HTTPRoute for the given object key
-	GetHTTPRoute(ctx context.Context, key client.ObjectKey) (*gateway_networking_k8s_io_v1beta1.HTTPRoute, error)
+	GetHTTPRoute(ctx context.Context, key client.ObjectKey) (*gateway_networking_k8s_io_v1.HTTPRoute, error)
 
 	// List retrieves list of HTTPRoutes for a given namespace and list options.
-	ListHTTPRoute(ctx context.Context, opts ...client.ListOption) (*gateway_networking_k8s_io_v1beta1.HTTPRouteList, error)
+	ListHTTPRoute(ctx context.Context, opts ...client.ListOption) (*gateway_networking_k8s_io_v1.HTTPRouteList, error)
 }
 
 // HTTPRouteTransitionFunction instructs the HTTPRouteWriter how to transition between an existing
 // HTTPRoute object and a desired on an Upsert
-type HTTPRouteTransitionFunction func(existing, desired *gateway_networking_k8s_io_v1beta1.HTTPRoute) error
+type HTTPRouteTransitionFunction func(existing, desired *gateway_networking_k8s_io_v1.HTTPRoute) error
 
 // Writer knows how to create, delete, and update HTTPRoutes.
 type HTTPRouteWriter interface {
 	// Create saves the HTTPRoute object.
-	CreateHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, opts ...client.CreateOption) error
+	CreateHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1.HTTPRoute, opts ...client.CreateOption) error
 
 	// Delete deletes the HTTPRoute object.
 	DeleteHTTPRoute(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error
 
 	// Update updates the given HTTPRoute object.
-	UpdateHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, opts ...client.UpdateOption) error
+	UpdateHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1.HTTPRoute, opts ...client.UpdateOption) error
 
 	// Patch patches the given HTTPRoute object.
-	PatchHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, patch client.Patch, opts ...client.PatchOption) error
+	PatchHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1.HTTPRoute, patch client.Patch, opts ...client.PatchOption) error
 
 	// DeleteAllOf deletes all HTTPRoute objects matching the given options.
 	DeleteAllOfHTTPRoute(ctx context.Context, opts ...client.DeleteAllOfOption) error
 
 	// Create or Update the HTTPRoute object.
-	UpsertHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, transitionFuncs ...HTTPRouteTransitionFunction) error
+	UpsertHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1.HTTPRoute, transitionFuncs ...HTTPRouteTransitionFunction) error
 }
 
 // StatusWriter knows how to update status subresource of a HTTPRoute object.
 type HTTPRouteStatusWriter interface {
 	// Update updates the fields corresponding to the status subresource for the
 	// given HTTPRoute object.
-	UpdateHTTPRouteStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, opts ...client.SubResourceUpdateOption) error
+	UpdateHTTPRouteStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1.HTTPRoute, opts ...client.SubResourceUpdateOption) error
 
 	// Patch patches the given HTTPRoute object's subresource.
-	PatchHTTPRouteStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, patch client.Patch, opts ...client.SubResourcePatchOption) error
+	PatchHTTPRouteStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1.HTTPRoute, patch client.Patch, opts ...client.SubResourcePatchOption) error
 }
 
 // Client knows how to perform CRUD operations on HTTPRoutes.
@@ -430,50 +430,50 @@ func NewHTTPRouteClient(client client.Client) *hTTPRouteClient {
 	return &hTTPRouteClient{client: client}
 }
 
-func (c *hTTPRouteClient) GetHTTPRoute(ctx context.Context, key client.ObjectKey) (*gateway_networking_k8s_io_v1beta1.HTTPRoute, error) {
-	obj := &gateway_networking_k8s_io_v1beta1.HTTPRoute{}
+func (c *hTTPRouteClient) GetHTTPRoute(ctx context.Context, key client.ObjectKey) (*gateway_networking_k8s_io_v1.HTTPRoute, error) {
+	obj := &gateway_networking_k8s_io_v1.HTTPRoute{}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
 	}
 	return obj, nil
 }
 
-func (c *hTTPRouteClient) ListHTTPRoute(ctx context.Context, opts ...client.ListOption) (*gateway_networking_k8s_io_v1beta1.HTTPRouteList, error) {
-	list := &gateway_networking_k8s_io_v1beta1.HTTPRouteList{}
+func (c *hTTPRouteClient) ListHTTPRoute(ctx context.Context, opts ...client.ListOption) (*gateway_networking_k8s_io_v1.HTTPRouteList, error) {
+	list := &gateway_networking_k8s_io_v1.HTTPRouteList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
 	}
 	return list, nil
 }
 
-func (c *hTTPRouteClient) CreateHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, opts ...client.CreateOption) error {
+func (c *hTTPRouteClient) CreateHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1.HTTPRoute, opts ...client.CreateOption) error {
 	return c.client.Create(ctx, obj, opts...)
 }
 
 func (c *hTTPRouteClient) DeleteHTTPRoute(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
-	obj := &gateway_networking_k8s_io_v1beta1.HTTPRoute{}
+	obj := &gateway_networking_k8s_io_v1.HTTPRoute{}
 	obj.SetName(key.Name)
 	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
 }
 
-func (c *hTTPRouteClient) UpdateHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, opts ...client.UpdateOption) error {
+func (c *hTTPRouteClient) UpdateHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1.HTTPRoute, opts ...client.UpdateOption) error {
 	return c.client.Update(ctx, obj, opts...)
 }
 
-func (c *hTTPRouteClient) PatchHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, patch client.Patch, opts ...client.PatchOption) error {
+func (c *hTTPRouteClient) PatchHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1.HTTPRoute, patch client.Patch, opts ...client.PatchOption) error {
 	return c.client.Patch(ctx, obj, patch, opts...)
 }
 
 func (c *hTTPRouteClient) DeleteAllOfHTTPRoute(ctx context.Context, opts ...client.DeleteAllOfOption) error {
-	obj := &gateway_networking_k8s_io_v1beta1.HTTPRoute{}
+	obj := &gateway_networking_k8s_io_v1.HTTPRoute{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 
-func (c *hTTPRouteClient) UpsertHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, transitionFuncs ...HTTPRouteTransitionFunction) error {
+func (c *hTTPRouteClient) UpsertHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1.HTTPRoute, transitionFuncs ...HTTPRouteTransitionFunction) error {
 	genericTxFunc := func(existing, desired runtime.Object) error {
 		for _, txFunc := range transitionFuncs {
-			if err := txFunc(existing.(*gateway_networking_k8s_io_v1beta1.HTTPRoute), desired.(*gateway_networking_k8s_io_v1beta1.HTTPRoute)); err != nil {
+			if err := txFunc(existing.(*gateway_networking_k8s_io_v1.HTTPRoute), desired.(*gateway_networking_k8s_io_v1.HTTPRoute)); err != nil {
 				return err
 			}
 		}
@@ -483,11 +483,11 @@ func (c *hTTPRouteClient) UpsertHTTPRoute(ctx context.Context, obj *gateway_netw
 	return err
 }
 
-func (c *hTTPRouteClient) UpdateHTTPRouteStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, opts ...client.SubResourceUpdateOption) error {
+func (c *hTTPRouteClient) UpdateHTTPRouteStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1.HTTPRoute, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *hTTPRouteClient) PatchHTTPRouteStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, patch client.Patch, opts ...client.SubResourcePatchOption) error {
+func (c *hTTPRouteClient) PatchHTTPRouteStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1.HTTPRoute, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 

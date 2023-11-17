@@ -9,9 +9,9 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	controller "github.com/solo-io/external-apis/pkg/api/k8s/gateway.networking.k8s.io/v1beta1/controller"
+	controller "github.com/solo-io/external-apis/pkg/api/k8s/gateway.networking.k8s.io/v1/controller"
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
-	v1beta1 "sigs.k8s.io/gateway-api/apis/v1beta1"
+	v1 "sigs.k8s.io/gateway-api/apis/v1"
 )
 
 // MockGatewayEventHandler is a mock of GatewayEventHandler interface.
@@ -38,7 +38,7 @@ func (m *MockGatewayEventHandler) EXPECT() *MockGatewayEventHandlerMockRecorder 
 }
 
 // CreateGateway mocks base method.
-func (m *MockGatewayEventHandler) CreateGateway(obj *v1beta1.Gateway) error {
+func (m *MockGatewayEventHandler) CreateGateway(obj *v1.Gateway) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateGateway", obj)
 	ret0, _ := ret[0].(error)
@@ -52,7 +52,7 @@ func (mr *MockGatewayEventHandlerMockRecorder) CreateGateway(obj interface{}) *g
 }
 
 // DeleteGateway mocks base method.
-func (m *MockGatewayEventHandler) DeleteGateway(obj *v1beta1.Gateway) error {
+func (m *MockGatewayEventHandler) DeleteGateway(obj *v1.Gateway) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteGateway", obj)
 	ret0, _ := ret[0].(error)
@@ -66,7 +66,7 @@ func (mr *MockGatewayEventHandlerMockRecorder) DeleteGateway(obj interface{}) *g
 }
 
 // GenericGateway mocks base method.
-func (m *MockGatewayEventHandler) GenericGateway(obj *v1beta1.Gateway) error {
+func (m *MockGatewayEventHandler) GenericGateway(obj *v1.Gateway) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GenericGateway", obj)
 	ret0, _ := ret[0].(error)
@@ -80,7 +80,7 @@ func (mr *MockGatewayEventHandlerMockRecorder) GenericGateway(obj interface{}) *
 }
 
 // UpdateGateway mocks base method.
-func (m *MockGatewayEventHandler) UpdateGateway(old, new *v1beta1.Gateway) error {
+func (m *MockGatewayEventHandler) UpdateGateway(old, new *v1.Gateway) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateGateway", old, new)
 	ret0, _ := ret[0].(error)
@@ -159,7 +159,7 @@ func (m *MockGatewayClassEventHandler) EXPECT() *MockGatewayClassEventHandlerMoc
 }
 
 // CreateGatewayClass mocks base method.
-func (m *MockGatewayClassEventHandler) CreateGatewayClass(obj *v1beta1.GatewayClass) error {
+func (m *MockGatewayClassEventHandler) CreateGatewayClass(obj *v1.GatewayClass) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateGatewayClass", obj)
 	ret0, _ := ret[0].(error)
@@ -173,7 +173,7 @@ func (mr *MockGatewayClassEventHandlerMockRecorder) CreateGatewayClass(obj inter
 }
 
 // DeleteGatewayClass mocks base method.
-func (m *MockGatewayClassEventHandler) DeleteGatewayClass(obj *v1beta1.GatewayClass) error {
+func (m *MockGatewayClassEventHandler) DeleteGatewayClass(obj *v1.GatewayClass) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteGatewayClass", obj)
 	ret0, _ := ret[0].(error)
@@ -187,7 +187,7 @@ func (mr *MockGatewayClassEventHandlerMockRecorder) DeleteGatewayClass(obj inter
 }
 
 // GenericGatewayClass mocks base method.
-func (m *MockGatewayClassEventHandler) GenericGatewayClass(obj *v1beta1.GatewayClass) error {
+func (m *MockGatewayClassEventHandler) GenericGatewayClass(obj *v1.GatewayClass) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GenericGatewayClass", obj)
 	ret0, _ := ret[0].(error)
@@ -201,7 +201,7 @@ func (mr *MockGatewayClassEventHandlerMockRecorder) GenericGatewayClass(obj inte
 }
 
 // UpdateGatewayClass mocks base method.
-func (m *MockGatewayClassEventHandler) UpdateGatewayClass(old, new *v1beta1.GatewayClass) error {
+func (m *MockGatewayClassEventHandler) UpdateGatewayClass(old, new *v1.GatewayClass) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateGatewayClass", old, new)
 	ret0, _ := ret[0].(error)
@@ -280,7 +280,7 @@ func (m *MockHTTPRouteEventHandler) EXPECT() *MockHTTPRouteEventHandlerMockRecor
 }
 
 // CreateHTTPRoute mocks base method.
-func (m *MockHTTPRouteEventHandler) CreateHTTPRoute(obj *v1beta1.HTTPRoute) error {
+func (m *MockHTTPRouteEventHandler) CreateHTTPRoute(obj *v1.HTTPRoute) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateHTTPRoute", obj)
 	ret0, _ := ret[0].(error)
@@ -294,7 +294,7 @@ func (mr *MockHTTPRouteEventHandlerMockRecorder) CreateHTTPRoute(obj interface{}
 }
 
 // DeleteHTTPRoute mocks base method.
-func (m *MockHTTPRouteEventHandler) DeleteHTTPRoute(obj *v1beta1.HTTPRoute) error {
+func (m *MockHTTPRouteEventHandler) DeleteHTTPRoute(obj *v1.HTTPRoute) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteHTTPRoute", obj)
 	ret0, _ := ret[0].(error)
@@ -308,7 +308,7 @@ func (mr *MockHTTPRouteEventHandlerMockRecorder) DeleteHTTPRoute(obj interface{}
 }
 
 // GenericHTTPRoute mocks base method.
-func (m *MockHTTPRouteEventHandler) GenericHTTPRoute(obj *v1beta1.HTTPRoute) error {
+func (m *MockHTTPRouteEventHandler) GenericHTTPRoute(obj *v1.HTTPRoute) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GenericHTTPRoute", obj)
 	ret0, _ := ret[0].(error)
@@ -322,7 +322,7 @@ func (mr *MockHTTPRouteEventHandlerMockRecorder) GenericHTTPRoute(obj interface{
 }
 
 // UpdateHTTPRoute mocks base method.
-func (m *MockHTTPRouteEventHandler) UpdateHTTPRoute(old, new *v1beta1.HTTPRoute) error {
+func (m *MockHTTPRouteEventHandler) UpdateHTTPRoute(old, new *v1.HTTPRoute) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateHTTPRoute", old, new)
 	ret0, _ := ret[0].(error)

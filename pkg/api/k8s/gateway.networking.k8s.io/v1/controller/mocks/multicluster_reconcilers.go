@@ -9,10 +9,10 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	controller "github.com/solo-io/external-apis/pkg/api/k8s/gateway.networking.k8s.io/v1beta1/controller"
+	controller "github.com/solo-io/external-apis/pkg/api/k8s/gateway.networking.k8s.io/v1/controller"
 	reconcile "github.com/solo-io/skv2/pkg/reconcile"
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
-	v1beta1 "sigs.k8s.io/gateway-api/apis/v1beta1"
+	v1 "sigs.k8s.io/gateway-api/apis/v1"
 )
 
 // MockMulticlusterGatewayReconciler is a mock of MulticlusterGatewayReconciler interface.
@@ -39,7 +39,7 @@ func (m *MockMulticlusterGatewayReconciler) EXPECT() *MockMulticlusterGatewayRec
 }
 
 // ReconcileGateway mocks base method.
-func (m *MockMulticlusterGatewayReconciler) ReconcileGateway(clusterName string, obj *v1beta1.Gateway) (reconcile.Result, error) {
+func (m *MockMulticlusterGatewayReconciler) ReconcileGateway(clusterName string, obj *v1.Gateway) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileGateway", clusterName, obj)
 	ret0, _ := ret[0].(reconcile.Result)
@@ -154,7 +154,7 @@ func (m *MockMulticlusterGatewayClassReconciler) EXPECT() *MockMulticlusterGatew
 }
 
 // ReconcileGatewayClass mocks base method.
-func (m *MockMulticlusterGatewayClassReconciler) ReconcileGatewayClass(clusterName string, obj *v1beta1.GatewayClass) (reconcile.Result, error) {
+func (m *MockMulticlusterGatewayClassReconciler) ReconcileGatewayClass(clusterName string, obj *v1.GatewayClass) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileGatewayClass", clusterName, obj)
 	ret0, _ := ret[0].(reconcile.Result)
@@ -269,7 +269,7 @@ func (m *MockMulticlusterHTTPRouteReconciler) EXPECT() *MockMulticlusterHTTPRout
 }
 
 // ReconcileHTTPRoute mocks base method.
-func (m *MockMulticlusterHTTPRouteReconciler) ReconcileHTTPRoute(clusterName string, obj *v1beta1.HTTPRoute) (reconcile.Result, error) {
+func (m *MockMulticlusterHTTPRouteReconciler) ReconcileHTTPRoute(clusterName string, obj *v1.HTTPRoute) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileHTTPRoute", clusterName, obj)
 	ret0, _ := ret[0].(reconcile.Result)
