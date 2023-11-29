@@ -12,7 +12,7 @@ import (
 	controller "github.com/solo-io/external-apis/pkg/api/k8s/gateway.networking.k8s.io/v1beta1/controller"
 	reconcile "github.com/solo-io/skv2/pkg/reconcile"
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
-	v1 "sigs.k8s.io/gateway-api/apis/v1"
+	v1beta1 "sigs.k8s.io/gateway-api/apis/v1beta1"
 )
 
 // MockGatewayReconciler is a mock of GatewayReconciler interface.
@@ -39,7 +39,7 @@ func (m *MockGatewayReconciler) EXPECT() *MockGatewayReconcilerMockRecorder {
 }
 
 // ReconcileGateway mocks base method.
-func (m *MockGatewayReconciler) ReconcileGateway(obj *v1.Gateway) (reconcile.Result, error) {
+func (m *MockGatewayReconciler) ReconcileGateway(obj *v1beta1.Gateway) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileGateway", obj)
 	ret0, _ := ret[0].(reconcile.Result)
@@ -114,7 +114,7 @@ func (m *MockGatewayFinalizer) EXPECT() *MockGatewayFinalizerMockRecorder {
 }
 
 // FinalizeGateway mocks base method.
-func (m *MockGatewayFinalizer) FinalizeGateway(obj *v1.Gateway) error {
+func (m *MockGatewayFinalizer) FinalizeGateway(obj *v1beta1.Gateway) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FinalizeGateway", obj)
 	ret0, _ := ret[0].(error)
@@ -142,7 +142,7 @@ func (mr *MockGatewayFinalizerMockRecorder) GatewayFinalizerName() *gomock.Call 
 }
 
 // ReconcileGateway mocks base method.
-func (m *MockGatewayFinalizer) ReconcileGateway(obj *v1.Gateway) (reconcile.Result, error) {
+func (m *MockGatewayFinalizer) ReconcileGateway(obj *v1beta1.Gateway) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileGateway", obj)
 	ret0, _ := ret[0].(reconcile.Result)
@@ -222,7 +222,7 @@ func (m *MockGatewayClassReconciler) EXPECT() *MockGatewayClassReconcilerMockRec
 }
 
 // ReconcileGatewayClass mocks base method.
-func (m *MockGatewayClassReconciler) ReconcileGatewayClass(obj *v1.GatewayClass) (reconcile.Result, error) {
+func (m *MockGatewayClassReconciler) ReconcileGatewayClass(obj *v1beta1.GatewayClass) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileGatewayClass", obj)
 	ret0, _ := ret[0].(reconcile.Result)
@@ -297,7 +297,7 @@ func (m *MockGatewayClassFinalizer) EXPECT() *MockGatewayClassFinalizerMockRecor
 }
 
 // FinalizeGatewayClass mocks base method.
-func (m *MockGatewayClassFinalizer) FinalizeGatewayClass(obj *v1.GatewayClass) error {
+func (m *MockGatewayClassFinalizer) FinalizeGatewayClass(obj *v1beta1.GatewayClass) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FinalizeGatewayClass", obj)
 	ret0, _ := ret[0].(error)
@@ -325,7 +325,7 @@ func (mr *MockGatewayClassFinalizerMockRecorder) GatewayClassFinalizerName() *go
 }
 
 // ReconcileGatewayClass mocks base method.
-func (m *MockGatewayClassFinalizer) ReconcileGatewayClass(obj *v1.GatewayClass) (reconcile.Result, error) {
+func (m *MockGatewayClassFinalizer) ReconcileGatewayClass(obj *v1beta1.GatewayClass) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileGatewayClass", obj)
 	ret0, _ := ret[0].(reconcile.Result)
@@ -405,7 +405,7 @@ func (m *MockHTTPRouteReconciler) EXPECT() *MockHTTPRouteReconcilerMockRecorder 
 }
 
 // ReconcileHTTPRoute mocks base method.
-func (m *MockHTTPRouteReconciler) ReconcileHTTPRoute(obj *v1.HTTPRoute) (reconcile.Result, error) {
+func (m *MockHTTPRouteReconciler) ReconcileHTTPRoute(obj *v1beta1.HTTPRoute) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileHTTPRoute", obj)
 	ret0, _ := ret[0].(reconcile.Result)
@@ -480,7 +480,7 @@ func (m *MockHTTPRouteFinalizer) EXPECT() *MockHTTPRouteFinalizerMockRecorder {
 }
 
 // FinalizeHTTPRoute mocks base method.
-func (m *MockHTTPRouteFinalizer) FinalizeHTTPRoute(obj *v1.HTTPRoute) error {
+func (m *MockHTTPRouteFinalizer) FinalizeHTTPRoute(obj *v1beta1.HTTPRoute) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FinalizeHTTPRoute", obj)
 	ret0, _ := ret[0].(error)
@@ -508,7 +508,7 @@ func (mr *MockHTTPRouteFinalizerMockRecorder) HTTPRouteFinalizerName() *gomock.C
 }
 
 // ReconcileHTTPRoute mocks base method.
-func (m *MockHTTPRouteFinalizer) ReconcileHTTPRoute(obj *v1.HTTPRoute) (reconcile.Result, error) {
+func (m *MockHTTPRouteFinalizer) ReconcileHTTPRoute(obj *v1beta1.HTTPRoute) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileHTTPRoute", obj)
 	ret0, _ := ret[0].(reconcile.Result)

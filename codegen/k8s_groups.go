@@ -188,7 +188,7 @@ func k8sGroups() []model.Group {
 					Kind: "HTTPRoute",
 				},
 			},
-			CustomTypesImportPath: "sigs.k8s.io/gateway-api/apis/v1",
+			CustomTypesImportPath: "sigs.k8s.io/gateway-api/apis/v1beta1",
 			ApiRoot:               k8sApiRoot,
 		},
 	}

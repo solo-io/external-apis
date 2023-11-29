@@ -8,7 +8,7 @@ package controller
 import (
 	"context"
 
-	gateway_networking_k8s_io_v1beta1 "sigs.k8s.io/gateway-api/apis/v1"
+	gateway_networking_k8s_io_v1beta1 "sigs.k8s.io/gateway-api/apis/v1beta1"
 
 	"github.com/pkg/errors"
 	"github.com/solo-io/skv2/pkg/events"

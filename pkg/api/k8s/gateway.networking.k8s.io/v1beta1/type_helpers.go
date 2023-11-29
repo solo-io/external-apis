@@ -4,7 +4,7 @@
 package v1beta1
 
 import (
-	. "sigs.k8s.io/gateway-api/apis/v1"
+	. "sigs.k8s.io/gateway-api/apis/v1beta1"
 )
 
 // GatewaySlice represents a slice of *Gateway

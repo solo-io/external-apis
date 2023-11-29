@@ -12,7 +12,7 @@ import (
 	sets "github.com/solo-io/skv2/contrib/pkg/sets"
 	ezkube "github.com/solo-io/skv2/pkg/ezkube"
 	sets0 "k8s.io/apimachinery/pkg/util/sets"
-	v1 "sigs.k8s.io/gateway-api/apis/v1"
+	v1beta1 "sigs.k8s.io/gateway-api/apis/v1beta1"
 )
 
 // MockGatewaySet is a mock of GatewaySet interface.
@@ -107,10 +107,10 @@ func (mr *MockGatewaySetMockRecorder) Equal(gatewaySet interface{}) *gomock.Call
 }
 
 // Find mocks base method.
-func (m *MockGatewaySet) Find(id ezkube.ResourceId) (*v1.Gateway, error) {
+func (m *MockGatewaySet) Find(id ezkube.ResourceId) (*v1beta1.Gateway, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Find", id)
-	ret0, _ := ret[0].(*v1.Gateway)
+	ret0, _ := ret[0].(*v1beta1.Gateway)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -150,7 +150,7 @@ func (mr *MockGatewaySetMockRecorder) Has(gateway interface{}) *gomock.Call {
 }
 
 // Insert mocks base method.
-func (m *MockGatewaySet) Insert(gateway ...*v1.Gateway) {
+func (m *MockGatewaySet) Insert(gateway ...*v1beta1.Gateway) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{}
 	for _, a := range gateway {
@@ -208,14 +208,14 @@ func (mr *MockGatewaySetMockRecorder) Length() *gomock.Call {
 }
 
 // List mocks base method.
-func (m *MockGatewaySet) List(filterResource ...func(*v1.Gateway) bool) []*v1.Gateway {
+func (m *MockGatewaySet) List(filterResource ...func(*v1beta1.Gateway) bool) []*v1beta1.Gateway {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{}
 	for _, a := range filterResource {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "List", varargs...)
-	ret0, _ := ret[0].([]*v1.Gateway)
+	ret0, _ := ret[0].([]*v1beta1.Gateway)
 	return ret0
 }
 
@@ -226,10 +226,10 @@ func (mr *MockGatewaySetMockRecorder) List(filterResource ...interface{}) *gomoc
 }
 
 // Map mocks base method.
-func (m *MockGatewaySet) Map() map[string]*v1.Gateway {
+func (m *MockGatewaySet) Map() map[string]*v1beta1.Gateway {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Map")
-	ret0, _ := ret[0].(map[string]*v1.Gateway)
+	ret0, _ := ret[0].(map[string]*v1beta1.Gateway)
 	return ret0
 }
 
@@ -254,14 +254,14 @@ func (mr *MockGatewaySetMockRecorder) Union(set interface{}) *gomock.Call {
 }
 
 // UnsortedList mocks base method.
-func (m *MockGatewaySet) UnsortedList(filterResource ...func(*v1.Gateway) bool) []*v1.Gateway {
+func (m *MockGatewaySet) UnsortedList(filterResource ...func(*v1beta1.Gateway) bool) []*v1beta1.Gateway {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{}
 	for _, a := range filterResource {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
-	ret0, _ := ret[0].([]*v1.Gateway)
+	ret0, _ := ret[0].([]*v1beta1.Gateway)
 	return ret0
 }
 
@@ -363,10 +363,10 @@ func (mr *MockGatewayClassSetMockRecorder) Equal(gatewayClassSet interface{}) *g
 }
 
 // Find mocks base method.
-func (m *MockGatewayClassSet) Find(id ezkube.ResourceId) (*v1.GatewayClass, error) {
+func (m *MockGatewayClassSet) Find(id ezkube.ResourceId) (*v1beta1.GatewayClass, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Find", id)
-	ret0, _ := ret[0].(*v1.GatewayClass)
+	ret0, _ := ret[0].(*v1beta1.GatewayClass)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -406,7 +406,7 @@ func (mr *MockGatewayClassSetMockRecorder) Has(gatewayClass interface{}) *gomock
 }
 
 // Insert mocks base method.
-func (m *MockGatewayClassSet) Insert(gatewayClass ...*v1.GatewayClass) {
+func (m *MockGatewayClassSet) Insert(gatewayClass ...*v1beta1.GatewayClass) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{}
 	for _, a := range gatewayClass {
@@ -464,14 +464,14 @@ func (mr *MockGatewayClassSetMockRecorder) Length() *gomock.Call {
 }
 
 // List mocks base method.
-func (m *MockGatewayClassSet) List(filterResource ...func(*v1.GatewayClass) bool) []*v1.GatewayClass {
+func (m *MockGatewayClassSet) List(filterResource ...func(*v1beta1.GatewayClass) bool) []*v1beta1.GatewayClass {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{}
 	for _, a := range filterResource {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "List", varargs...)
-	ret0, _ := ret[0].([]*v1.GatewayClass)
+	ret0, _ := ret[0].([]*v1beta1.GatewayClass)
 	return ret0
 }
 
@@ -482,10 +482,10 @@ func (mr *MockGatewayClassSetMockRecorder) List(filterResource ...interface{}) *
 }
 
 // Map mocks base method.
-func (m *MockGatewayClassSet) Map() map[string]*v1.GatewayClass {
+func (m *MockGatewayClassSet) Map() map[string]*v1beta1.GatewayClass {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Map")
-	ret0, _ := ret[0].(map[string]*v1.GatewayClass)
+	ret0, _ := ret[0].(map[string]*v1beta1.GatewayClass)
 	return ret0
 }
 
@@ -510,14 +510,14 @@ func (mr *MockGatewayClassSetMockRecorder) Union(set interface{}) *gomock.Call {
 }
 
 // UnsortedList mocks base method.
-func (m *MockGatewayClassSet) UnsortedList(filterResource ...func(*v1.GatewayClass) bool) []*v1.GatewayClass {
+func (m *MockGatewayClassSet) UnsortedList(filterResource ...func(*v1beta1.GatewayClass) bool) []*v1beta1.GatewayClass {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{}
 	for _, a := range filterResource {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
-	ret0, _ := ret[0].([]*v1.GatewayClass)
+	ret0, _ := ret[0].([]*v1beta1.GatewayClass)
 	return ret0
 }
 
@@ -619,10 +619,10 @@ func (mr *MockHTTPRouteSetMockRecorder) Equal(hTTPRouteSet interface{}) *gomock.
 }
 
 // Find mocks base method.
-func (m *MockHTTPRouteSet) Find(id ezkube.ResourceId) (*v1.HTTPRoute, error) {
+func (m *MockHTTPRouteSet) Find(id ezkube.ResourceId) (*v1beta1.HTTPRoute, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Find", id)
-	ret0, _ := ret[0].(*v1.HTTPRoute)
+	ret0, _ := ret[0].(*v1beta1.HTTPRoute)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -662,7 +662,7 @@ func (mr *MockHTTPRouteSetMockRecorder) Has(hTTPRoute interface{}) *gomock.Call 
 }
 
 // Insert mocks base method.
-func (m *MockHTTPRouteSet) Insert(hTTPRoute ...*v1.HTTPRoute) {
+func (m *MockHTTPRouteSet) Insert(hTTPRoute ...*v1beta1.HTTPRoute) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{}
 	for _, a := range hTTPRoute {
@@ -720,14 +720,14 @@ func (mr *MockHTTPRouteSetMockRecorder) Length() *gomock.Call {
 }
 
 // List mocks base method.
-func (m *MockHTTPRouteSet) List(filterResource ...func(*v1.HTTPRoute) bool) []*v1.HTTPRoute {
+func (m *MockHTTPRouteSet) List(filterResource ...func(*v1beta1.HTTPRoute) bool) []*v1beta1.HTTPRoute {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{}
 	for _, a := range filterResource {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "List", varargs...)
-	ret0, _ := ret[0].([]*v1.HTTPRoute)
+	ret0, _ := ret[0].([]*v1beta1.HTTPRoute)
 	return ret0
 }
 
@@ -738,10 +738,10 @@ func (mr *MockHTTPRouteSetMockRecorder) List(filterResource ...interface{}) *gom
 }
 
 // Map mocks base method.
-func (m *MockHTTPRouteSet) Map() map[string]*v1.HTTPRoute {
+func (m *MockHTTPRouteSet) Map() map[string]*v1beta1.HTTPRoute {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Map")
-	ret0, _ := ret[0].(map[string]*v1.HTTPRoute)
+	ret0, _ := ret[0].(map[string]*v1beta1.HTTPRoute)
 	return ret0
 }
 
@@ -766,14 +766,14 @@ func (mr *MockHTTPRouteSetMockRecorder) Union(set interface{}) *gomock.Call {
 }
 
 // UnsortedList mocks base method.
-func (m *MockHTTPRouteSet) UnsortedList(filterResource ...func(*v1.HTTPRoute) bool) []*v1.HTTPRoute {
+func (m *MockHTTPRouteSet) UnsortedList(filterResource ...func(*v1beta1.HTTPRoute) bool) []*v1beta1.HTTPRoute {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{}
 	for _, a := range filterResource {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
-	ret0, _ := ret[0].([]*v1.HTTPRoute)
+	ret0, _ := ret[0].([]*v1beta1.HTTPRoute)
 	return ret0
 }
 

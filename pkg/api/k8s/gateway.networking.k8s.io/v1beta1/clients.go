@@ -13,7 +13,7 @@ import (
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	gateway_networking_k8s_io_v1beta1 "sigs.k8s.io/gateway-api/apis/v1"
+	gateway_networking_k8s_io_v1beta1 "sigs.k8s.io/gateway-api/apis/v1beta1"
 )
 
 // MulticlusterClientset for the gateway.networking.k8s.io/v1beta1 APIs
