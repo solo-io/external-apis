@@ -17,8 +17,10 @@ type JobSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*batch_v1.Job) bool) []*batch_v1.Job
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*batch_v1.Job) bool) []*batch_v1.Job
 	// Return the Set as a map of key to resource.
 	Map() map[string]*batch_v1.Job
