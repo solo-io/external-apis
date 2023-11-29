@@ -12,7 +12,7 @@ import (
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apiextensionsv1beta1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	gatewayapiv1 "sigs.k8s.io/gateway-api/apis/v1"
+	gatewayapiv1beta1 "sigs.k8s.io/gateway-api/apis/v1beta1"
 )
 
 const (
@@ -172,8 +172,8 @@ func k8sGroups() []model.Group {
 		},
 		{
 			GroupVersion: schema.GroupVersion{
-				Group:   gatewayapiv1.GroupName,
-				Version: gatewayapiv1.GroupVersion.Version,
+				Group:   gatewayapiv1beta1.GroupName,
+				Version: gatewayapiv1beta1.GroupVersion.Version,
 			},
 			Module: "sigs.k8s.io/gateway-api",
 			Resources: []model.Resource{
@@ -188,7 +188,7 @@ func k8sGroups() []model.Group {
 					Kind: "HTTPRoute",
 				},
 			},
-			CustomTypesImportPath: "sigs.k8s.io/gateway-api/apis/v1",
+			CustomTypesImportPath: "sigs.k8s.io/gateway-api/apis/v1beta1",
 			ApiRoot:               k8sApiRoot,
 		},
 	}
