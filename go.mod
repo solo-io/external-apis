@@ -11,7 +11,7 @@ require (
 	github.com/golang/mock v1.6.0
 	github.com/pkg/errors v0.9.1
 	github.com/rotisserie/eris v0.1.1
-	github.com/solo-io/skv2 v0.35.1-0.20231128223536-65914ef14080
+	github.com/solo-io/skv2 v0.36.0
 	k8s.io/api v0.28.3
 	k8s.io/apiextensions-apiserver v0.28.3
 	k8s.io/apimachinery v0.28.3
