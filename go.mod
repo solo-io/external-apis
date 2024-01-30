@@ -151,4 +151,7 @@ require (
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )
 
+// go: istio.io/istio@v0.0.0-20231207195727-552626bd81f6 requires github.com/imdario/mergo@v1.0.0: parsing go.mod:
+//        module declares its path as: dario.cat/mergo
+//                but was required as: github.com/imdario/mergo
 replace github.com/imdario/mergo => github.com/imdario/mergo v0.3.5
