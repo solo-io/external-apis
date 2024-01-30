@@ -17,8 +17,10 @@ type SecretSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*v1.Secret) bool) []*v1.Secret
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*v1.Secret) bool) []*v1.Secret
 	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.Secret
@@ -238,8 +240,10 @@ type ServiceAccountSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*v1.ServiceAccount) bool) []*v1.ServiceAccount
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*v1.ServiceAccount) bool) []*v1.ServiceAccount
 	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.ServiceAccount
@@ -459,8 +463,10 @@ type ConfigMapSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*v1.ConfigMap) bool) []*v1.ConfigMap
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*v1.ConfigMap) bool) []*v1.ConfigMap
 	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.ConfigMap
@@ -680,8 +686,10 @@ type ServiceSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*v1.Service) bool) []*v1.Service
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*v1.Service) bool) []*v1.Service
 	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.Service
@@ -901,8 +909,10 @@ type PodSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*v1.Pod) bool) []*v1.Pod
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*v1.Pod) bool) []*v1.Pod
 	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.Pod
@@ -1122,8 +1132,10 @@ type EndpointsSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*v1.Endpoints) bool) []*v1.Endpoints
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*v1.Endpoints) bool) []*v1.Endpoints
 	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.Endpoints
@@ -1343,8 +1355,10 @@ type NamespaceSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*v1.Namespace) bool) []*v1.Namespace
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*v1.Namespace) bool) []*v1.Namespace
 	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.Namespace
@@ -1564,8 +1578,10 @@ type NodeSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*v1.Node) bool) []*v1.Node
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*v1.Node) bool) []*v1.Node
 	// Return the Set as a map of key to resource.
 	Map() map[string]*v1.Node

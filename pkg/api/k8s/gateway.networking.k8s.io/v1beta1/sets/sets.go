@@ -17,8 +17,10 @@ type GatewaySet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*gateway_networking_k8s_io_v1beta1.Gateway) bool) []*gateway_networking_k8s_io_v1beta1.Gateway
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*gateway_networking_k8s_io_v1beta1.Gateway) bool) []*gateway_networking_k8s_io_v1beta1.Gateway
 	// Return the Set as a map of key to resource.
 	Map() map[string]*gateway_networking_k8s_io_v1beta1.Gateway
@@ -238,8 +240,10 @@ type GatewayClassSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*gateway_networking_k8s_io_v1beta1.GatewayClass) bool) []*gateway_networking_k8s_io_v1beta1.GatewayClass
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*gateway_networking_k8s_io_v1beta1.GatewayClass) bool) []*gateway_networking_k8s_io_v1beta1.GatewayClass
 	// Return the Set as a map of key to resource.
 	Map() map[string]*gateway_networking_k8s_io_v1beta1.GatewayClass
@@ -459,8 +463,10 @@ type HTTPRouteSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*gateway_networking_k8s_io_v1beta1.HTTPRoute) bool) []*gateway_networking_k8s_io_v1beta1.HTTPRoute
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*gateway_networking_k8s_io_v1beta1.HTTPRoute) bool) []*gateway_networking_k8s_io_v1beta1.HTTPRoute
 	// Return the Set as a map of key to resource.
 	Map() map[string]*gateway_networking_k8s_io_v1beta1.HTTPRoute

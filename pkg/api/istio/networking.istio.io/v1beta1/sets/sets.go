@@ -17,8 +17,10 @@ type DestinationRuleSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*networking_istio_io_v1beta1.DestinationRule) bool) []*networking_istio_io_v1beta1.DestinationRule
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*networking_istio_io_v1beta1.DestinationRule) bool) []*networking_istio_io_v1beta1.DestinationRule
 	// Return the Set as a map of key to resource.
 	Map() map[string]*networking_istio_io_v1beta1.DestinationRule
@@ -238,8 +240,10 @@ type GatewaySet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*networking_istio_io_v1beta1.Gateway) bool) []*networking_istio_io_v1beta1.Gateway
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*networking_istio_io_v1beta1.Gateway) bool) []*networking_istio_io_v1beta1.Gateway
 	// Return the Set as a map of key to resource.
 	Map() map[string]*networking_istio_io_v1beta1.Gateway
@@ -459,8 +463,10 @@ type ServiceEntrySet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*networking_istio_io_v1beta1.ServiceEntry) bool) []*networking_istio_io_v1beta1.ServiceEntry
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*networking_istio_io_v1beta1.ServiceEntry) bool) []*networking_istio_io_v1beta1.ServiceEntry
 	// Return the Set as a map of key to resource.
 	Map() map[string]*networking_istio_io_v1beta1.ServiceEntry
@@ -680,8 +686,10 @@ type WorkloadEntrySet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*networking_istio_io_v1beta1.WorkloadEntry) bool) []*networking_istio_io_v1beta1.WorkloadEntry
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*networking_istio_io_v1beta1.WorkloadEntry) bool) []*networking_istio_io_v1beta1.WorkloadEntry
 	// Return the Set as a map of key to resource.
 	Map() map[string]*networking_istio_io_v1beta1.WorkloadEntry
@@ -901,8 +909,10 @@ type WorkloadGroupSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*networking_istio_io_v1beta1.WorkloadGroup) bool) []*networking_istio_io_v1beta1.WorkloadGroup
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*networking_istio_io_v1beta1.WorkloadGroup) bool) []*networking_istio_io_v1beta1.WorkloadGroup
 	// Return the Set as a map of key to resource.
 	Map() map[string]*networking_istio_io_v1beta1.WorkloadGroup
@@ -1122,8 +1132,10 @@ type VirtualServiceSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*networking_istio_io_v1beta1.VirtualService) bool) []*networking_istio_io_v1beta1.VirtualService
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*networking_istio_io_v1beta1.VirtualService) bool) []*networking_istio_io_v1beta1.VirtualService
 	// Return the Set as a map of key to resource.
 	Map() map[string]*networking_istio_io_v1beta1.VirtualService
@@ -1343,8 +1355,10 @@ type SidecarSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*networking_istio_io_v1beta1.Sidecar) bool) []*networking_istio_io_v1beta1.Sidecar
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*networking_istio_io_v1beta1.Sidecar) bool) []*networking_istio_io_v1beta1.Sidecar
 	// Return the Set as a map of key to resource.
 	Map() map[string]*networking_istio_io_v1beta1.Sidecar

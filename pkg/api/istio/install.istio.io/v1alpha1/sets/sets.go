@@ -17,8 +17,10 @@ type IstioOperatorSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*install_istio_io_v1alpha1.IstioOperator) bool) []*install_istio_io_v1alpha1.IstioOperator
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*install_istio_io_v1alpha1.IstioOperator) bool) []*install_istio_io_v1alpha1.IstioOperator
 	// Return the Set as a map of key to resource.
 	Map() map[string]*install_istio_io_v1alpha1.IstioOperator

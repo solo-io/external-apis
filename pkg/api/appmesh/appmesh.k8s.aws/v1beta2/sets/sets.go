@@ -17,8 +17,10 @@ type MeshSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*appmesh_k8s_aws_v1beta2.Mesh) bool) []*appmesh_k8s_aws_v1beta2.Mesh
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.Mesh) bool) []*appmesh_k8s_aws_v1beta2.Mesh
 	// Return the Set as a map of key to resource.
 	Map() map[string]*appmesh_k8s_aws_v1beta2.Mesh
@@ -238,8 +240,10 @@ type VirtualServiceSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualService) bool) []*appmesh_k8s_aws_v1beta2.VirtualService
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualService) bool) []*appmesh_k8s_aws_v1beta2.VirtualService
 	// Return the Set as a map of key to resource.
 	Map() map[string]*appmesh_k8s_aws_v1beta2.VirtualService
@@ -459,8 +463,10 @@ type VirtualNodeSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualNode) bool) []*appmesh_k8s_aws_v1beta2.VirtualNode
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualNode) bool) []*appmesh_k8s_aws_v1beta2.VirtualNode
 	// Return the Set as a map of key to resource.
 	Map() map[string]*appmesh_k8s_aws_v1beta2.VirtualNode
@@ -680,8 +686,10 @@ type VirtualRouterSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualRouter) bool) []*appmesh_k8s_aws_v1beta2.VirtualRouter
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualRouter) bool) []*appmesh_k8s_aws_v1beta2.VirtualRouter
 	// Return the Set as a map of key to resource.
 	Map() map[string]*appmesh_k8s_aws_v1beta2.VirtualRouter
@@ -901,8 +909,10 @@ type VirtualGatewaySet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualGateway) bool) []*appmesh_k8s_aws_v1beta2.VirtualGateway
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualGateway) bool) []*appmesh_k8s_aws_v1beta2.VirtualGateway
 	// Return the Set as a map of key to resource.
 	Map() map[string]*appmesh_k8s_aws_v1beta2.VirtualGateway
@@ -1122,8 +1132,10 @@ type GatewayRouteSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*appmesh_k8s_aws_v1beta2.GatewayRoute) bool) []*appmesh_k8s_aws_v1beta2.GatewayRoute
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.GatewayRoute) bool) []*appmesh_k8s_aws_v1beta2.GatewayRoute
 	// Return the Set as a map of key to resource.
 	Map() map[string]*appmesh_k8s_aws_v1beta2.GatewayRoute
