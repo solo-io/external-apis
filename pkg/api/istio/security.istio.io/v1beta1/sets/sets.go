@@ -17,8 +17,10 @@ type AuthorizationPolicySet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*security_istio_io_v1beta1.AuthorizationPolicy) bool) []*security_istio_io_v1beta1.AuthorizationPolicy
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*security_istio_io_v1beta1.AuthorizationPolicy) bool) []*security_istio_io_v1beta1.AuthorizationPolicy
 	// Return the Set as a map of key to resource.
 	Map() map[string]*security_istio_io_v1beta1.AuthorizationPolicy
@@ -238,8 +240,10 @@ type PeerAuthenticationSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*security_istio_io_v1beta1.PeerAuthentication) bool) []*security_istio_io_v1beta1.PeerAuthentication
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*security_istio_io_v1beta1.PeerAuthentication) bool) []*security_istio_io_v1beta1.PeerAuthentication
 	// Return the Set as a map of key to resource.
 	Map() map[string]*security_istio_io_v1beta1.PeerAuthentication

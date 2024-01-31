@@ -17,8 +17,10 @@ type NetworkPolicySet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*networking_k8s_io_v1.NetworkPolicy) bool) []*networking_k8s_io_v1.NetworkPolicy
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*networking_k8s_io_v1.NetworkPolicy) bool) []*networking_k8s_io_v1.NetworkPolicy
 	// Return the Set as a map of key to resource.
 	Map() map[string]*networking_k8s_io_v1.NetworkPolicy

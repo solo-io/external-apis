@@ -17,8 +17,10 @@ type DeploymentSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*apps_v1.Deployment) bool) []*apps_v1.Deployment
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*apps_v1.Deployment) bool) []*apps_v1.Deployment
 	// Return the Set as a map of key to resource.
 	Map() map[string]*apps_v1.Deployment
@@ -238,8 +240,10 @@ type ReplicaSetSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*apps_v1.ReplicaSet) bool) []*apps_v1.ReplicaSet
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*apps_v1.ReplicaSet) bool) []*apps_v1.ReplicaSet
 	// Return the Set as a map of key to resource.
 	Map() map[string]*apps_v1.ReplicaSet
@@ -459,8 +463,10 @@ type DaemonSetSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*apps_v1.DaemonSet) bool) []*apps_v1.DaemonSet
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*apps_v1.DaemonSet) bool) []*apps_v1.DaemonSet
 	// Return the Set as a map of key to resource.
 	Map() map[string]*apps_v1.DaemonSet
@@ -680,8 +686,10 @@ type StatefulSetSet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*apps_v1.StatefulSet) bool) []*apps_v1.StatefulSet
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*apps_v1.StatefulSet) bool) []*apps_v1.StatefulSet
 	// Return the Set as a map of key to resource.
 	Map() map[string]*apps_v1.StatefulSet

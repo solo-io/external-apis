@@ -17,8 +17,10 @@ type TelemetrySet interface {
 	// Get the set stored keys
 	Keys() sets.String
 	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	List(filterResource ...func(*telemetry_istio_io_v1alpha1.Telemetry) bool) []*telemetry_istio_io_v1alpha1.Telemetry
 	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
 	UnsortedList(filterResource ...func(*telemetry_istio_io_v1alpha1.Telemetry) bool) []*telemetry_istio_io_v1alpha1.Telemetry
 	// Return the Set as a map of key to resource.
 	Map() map[string]*telemetry_istio_io_v1alpha1.Telemetry
