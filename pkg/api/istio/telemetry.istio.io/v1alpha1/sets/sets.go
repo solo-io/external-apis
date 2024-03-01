@@ -171,7 +171,7 @@ func (s *telemetrySet) Union(set TelemetrySet) TelemetrySet {
 	if s == nil {
 		return set
 	}
-	return NewTelemetrySet(append(s.List(), set.List()...)...)
+	return &telemetryMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *telemetrySet) Difference(set TelemetrySet) TelemetrySet {
@@ -233,5 +233,177 @@ func (s *telemetrySet) Clone() TelemetrySet {
 	if s == nil {
 		return nil
 	}
-	return &telemetrySet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &telemetryMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type telemetryMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewTelemetryMergedSet(telemetryList ...*telemetry_istio_io_v1alpha1.Telemetry) TelemetrySet {
+	return &telemetryMergedSet{sets: []sksets.ResourceSet{makeGenericTelemetrySet(telemetryList)}}
+}
+
+func NewTelemetryMergedSetFromList(telemetryList *telemetry_istio_io_v1alpha1.TelemetryList) TelemetrySet {
+	list := make([]*telemetry_istio_io_v1alpha1.Telemetry, 0, len(telemetryList.Items))
+	for idx := range telemetryList.Items {
+		list = append(list, telemetryList.Items[idx])
+	}
+	return &telemetryMergedSet{sets: []sksets.ResourceSet{makeGenericTelemetrySet(list)}}
+}
+
+func (s *telemetryMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *telemetryMergedSet) List(filterResource ...func(*telemetry_istio_io_v1alpha1.Telemetry) bool) []*telemetry_istio_io_v1alpha1.Telemetry {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*telemetry_istio_io_v1alpha1.Telemetry))
+		})
+	}
+	telemetryList := []*telemetry_istio_io_v1alpha1.Telemetry{}
+	for _, set := range s.sets {
+		for _, obj := range set.List(genericFilters...) {
+			telemetryList = append(telemetryList, obj.(*telemetry_istio_io_v1alpha1.Telemetry))
+		}
+	}
+	return telemetryList
+}
+
+func (s *telemetryMergedSet) UnsortedList(filterResource ...func(*telemetry_istio_io_v1alpha1.Telemetry) bool) []*telemetry_istio_io_v1alpha1.Telemetry {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*telemetry_istio_io_v1alpha1.Telemetry))
+		})
+	}
+
+	telemetryList := []*telemetry_istio_io_v1alpha1.Telemetry{}
+	for _, set := range s.sets {
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			telemetryList = append(telemetryList, obj.(*telemetry_istio_io_v1alpha1.Telemetry))
+		}
+	}
+	return telemetryList
+}
+
+func (s *telemetryMergedSet) Map() map[string]*telemetry_istio_io_v1alpha1.Telemetry {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*telemetry_istio_io_v1alpha1.Telemetry{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*telemetry_istio_io_v1alpha1.Telemetry)
+		}
+	}
+	return newMap
+}
+
+func (s *telemetryMergedSet) Insert(
+	telemetryList ...*telemetry_istio_io_v1alpha1.Telemetry,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericTelemetrySet(telemetryList))
+	}
+	for _, obj := range telemetryList {
+		s.sets[0].Insert(obj)
+	}
+}
+
+func (s *telemetryMergedSet) Has(telemetry ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(telemetry) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *telemetryMergedSet) Equal(
+	telemetrySet TelemetrySet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *telemetryMergedSet) Delete(Telemetry ezkube.ResourceId) {
+	panic("unimplemented")
+}
+
+func (s *telemetryMergedSet) Union(set TelemetrySet) TelemetrySet {
+	return &telemetryMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *telemetryMergedSet) Difference(set TelemetrySet) TelemetrySet {
+	panic("unimplemented")
+}
+
+func (s *telemetryMergedSet) Intersection(set TelemetrySet) TelemetrySet {
+	panic("unimplemented")
+}
+
+func (s *telemetryMergedSet) Find(id ezkube.ResourceId) (*telemetry_istio_io_v1alpha1.Telemetry, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find Telemetry %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&telemetry_istio_io_v1alpha1.Telemetry{}, id)
+		if err == nil {
+			return obj.(*telemetry_istio_io_v1alpha1.Telemetry), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *telemetryMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *telemetryMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *telemetryMergedSet) Delta(newSet TelemetrySet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *telemetryMergedSet) Clone() TelemetrySet {
+	if s == nil {
+		return nil
+	}
+	return &telemetryMergedSet{sets: s.sets[:]}
 }

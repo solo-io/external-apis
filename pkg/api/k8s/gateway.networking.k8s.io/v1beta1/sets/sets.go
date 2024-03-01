@@ -171,7 +171,7 @@ func (s *gatewaySet) Union(set GatewaySet) GatewaySet {
 	if s == nil {
 		return set
 	}
-	return NewGatewaySet(append(s.List(), set.List()...)...)
+	return &gatewayMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *gatewaySet) Difference(set GatewaySet) GatewaySet {
@@ -233,7 +233,179 @@ func (s *gatewaySet) Clone() GatewaySet {
 	if s == nil {
 		return nil
 	}
-	return &gatewaySet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &gatewayMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type gatewayMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewGatewayMergedSet(gatewayList ...*gateway_networking_k8s_io_v1beta1.Gateway) GatewaySet {
+	return &gatewayMergedSet{sets: []sksets.ResourceSet{makeGenericGatewaySet(gatewayList)}}
+}
+
+func NewGatewayMergedSetFromList(gatewayList *gateway_networking_k8s_io_v1beta1.GatewayList) GatewaySet {
+	list := make([]*gateway_networking_k8s_io_v1beta1.Gateway, 0, len(gatewayList.Items))
+	for idx := range gatewayList.Items {
+		list = append(list, &gatewayList.Items[idx])
+	}
+	return &gatewayMergedSet{sets: []sksets.ResourceSet{makeGenericGatewaySet(list)}}
+}
+
+func (s *gatewayMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *gatewayMergedSet) List(filterResource ...func(*gateway_networking_k8s_io_v1beta1.Gateway) bool) []*gateway_networking_k8s_io_v1beta1.Gateway {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*gateway_networking_k8s_io_v1beta1.Gateway))
+		})
+	}
+	gatewayList := []*gateway_networking_k8s_io_v1beta1.Gateway{}
+	for _, set := range s.sets {
+		for _, obj := range set.List(genericFilters...) {
+			gatewayList = append(gatewayList, obj.(*gateway_networking_k8s_io_v1beta1.Gateway))
+		}
+	}
+	return gatewayList
+}
+
+func (s *gatewayMergedSet) UnsortedList(filterResource ...func(*gateway_networking_k8s_io_v1beta1.Gateway) bool) []*gateway_networking_k8s_io_v1beta1.Gateway {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*gateway_networking_k8s_io_v1beta1.Gateway))
+		})
+	}
+
+	gatewayList := []*gateway_networking_k8s_io_v1beta1.Gateway{}
+	for _, set := range s.sets {
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			gatewayList = append(gatewayList, obj.(*gateway_networking_k8s_io_v1beta1.Gateway))
+		}
+	}
+	return gatewayList
+}
+
+func (s *gatewayMergedSet) Map() map[string]*gateway_networking_k8s_io_v1beta1.Gateway {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*gateway_networking_k8s_io_v1beta1.Gateway{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*gateway_networking_k8s_io_v1beta1.Gateway)
+		}
+	}
+	return newMap
+}
+
+func (s *gatewayMergedSet) Insert(
+	gatewayList ...*gateway_networking_k8s_io_v1beta1.Gateway,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericGatewaySet(gatewayList))
+	}
+	for _, obj := range gatewayList {
+		s.sets[0].Insert(obj)
+	}
+}
+
+func (s *gatewayMergedSet) Has(gateway ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(gateway) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *gatewayMergedSet) Equal(
+	gatewaySet GatewaySet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *gatewayMergedSet) Delete(Gateway ezkube.ResourceId) {
+	panic("unimplemented")
+}
+
+func (s *gatewayMergedSet) Union(set GatewaySet) GatewaySet {
+	return &gatewayMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *gatewayMergedSet) Difference(set GatewaySet) GatewaySet {
+	panic("unimplemented")
+}
+
+func (s *gatewayMergedSet) Intersection(set GatewaySet) GatewaySet {
+	panic("unimplemented")
+}
+
+func (s *gatewayMergedSet) Find(id ezkube.ResourceId) (*gateway_networking_k8s_io_v1beta1.Gateway, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find Gateway %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&gateway_networking_k8s_io_v1beta1.Gateway{}, id)
+		if err == nil {
+			return obj.(*gateway_networking_k8s_io_v1beta1.Gateway), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *gatewayMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *gatewayMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *gatewayMergedSet) Delta(newSet GatewaySet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *gatewayMergedSet) Clone() GatewaySet {
+	if s == nil {
+		return nil
+	}
+	return &gatewayMergedSet{sets: s.sets[:]}
 }
 
 type GatewayClassSet interface {
@@ -394,7 +566,7 @@ func (s *gatewayClassSet) Union(set GatewayClassSet) GatewayClassSet {
 	if s == nil {
 		return set
 	}
-	return NewGatewayClassSet(append(s.List(), set.List()...)...)
+	return &gatewayClassMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *gatewayClassSet) Difference(set GatewayClassSet) GatewayClassSet {
@@ -456,7 +628,179 @@ func (s *gatewayClassSet) Clone() GatewayClassSet {
 	if s == nil {
 		return nil
 	}
-	return &gatewayClassSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &gatewayClassMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type gatewayClassMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewGatewayClassMergedSet(gatewayClassList ...*gateway_networking_k8s_io_v1beta1.GatewayClass) GatewayClassSet {
+	return &gatewayClassMergedSet{sets: []sksets.ResourceSet{makeGenericGatewayClassSet(gatewayClassList)}}
+}
+
+func NewGatewayClassMergedSetFromList(gatewayClassList *gateway_networking_k8s_io_v1beta1.GatewayClassList) GatewayClassSet {
+	list := make([]*gateway_networking_k8s_io_v1beta1.GatewayClass, 0, len(gatewayClassList.Items))
+	for idx := range gatewayClassList.Items {
+		list = append(list, &gatewayClassList.Items[idx])
+	}
+	return &gatewayClassMergedSet{sets: []sksets.ResourceSet{makeGenericGatewayClassSet(list)}}
+}
+
+func (s *gatewayClassMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *gatewayClassMergedSet) List(filterResource ...func(*gateway_networking_k8s_io_v1beta1.GatewayClass) bool) []*gateway_networking_k8s_io_v1beta1.GatewayClass {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*gateway_networking_k8s_io_v1beta1.GatewayClass))
+		})
+	}
+	gatewayClassList := []*gateway_networking_k8s_io_v1beta1.GatewayClass{}
+	for _, set := range s.sets {
+		for _, obj := range set.List(genericFilters...) {
+			gatewayClassList = append(gatewayClassList, obj.(*gateway_networking_k8s_io_v1beta1.GatewayClass))
+		}
+	}
+	return gatewayClassList
+}
+
+func (s *gatewayClassMergedSet) UnsortedList(filterResource ...func(*gateway_networking_k8s_io_v1beta1.GatewayClass) bool) []*gateway_networking_k8s_io_v1beta1.GatewayClass {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*gateway_networking_k8s_io_v1beta1.GatewayClass))
+		})
+	}
+
+	gatewayClassList := []*gateway_networking_k8s_io_v1beta1.GatewayClass{}
+	for _, set := range s.sets {
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			gatewayClassList = append(gatewayClassList, obj.(*gateway_networking_k8s_io_v1beta1.GatewayClass))
+		}
+	}
+	return gatewayClassList
+}
+
+func (s *gatewayClassMergedSet) Map() map[string]*gateway_networking_k8s_io_v1beta1.GatewayClass {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*gateway_networking_k8s_io_v1beta1.GatewayClass{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*gateway_networking_k8s_io_v1beta1.GatewayClass)
+		}
+	}
+	return newMap
+}
+
+func (s *gatewayClassMergedSet) Insert(
+	gatewayClassList ...*gateway_networking_k8s_io_v1beta1.GatewayClass,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericGatewayClassSet(gatewayClassList))
+	}
+	for _, obj := range gatewayClassList {
+		s.sets[0].Insert(obj)
+	}
+}
+
+func (s *gatewayClassMergedSet) Has(gatewayClass ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(gatewayClass) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *gatewayClassMergedSet) Equal(
+	gatewayClassSet GatewayClassSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *gatewayClassMergedSet) Delete(GatewayClass ezkube.ResourceId) {
+	panic("unimplemented")
+}
+
+func (s *gatewayClassMergedSet) Union(set GatewayClassSet) GatewayClassSet {
+	return &gatewayClassMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *gatewayClassMergedSet) Difference(set GatewayClassSet) GatewayClassSet {
+	panic("unimplemented")
+}
+
+func (s *gatewayClassMergedSet) Intersection(set GatewayClassSet) GatewayClassSet {
+	panic("unimplemented")
+}
+
+func (s *gatewayClassMergedSet) Find(id ezkube.ResourceId) (*gateway_networking_k8s_io_v1beta1.GatewayClass, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find GatewayClass %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&gateway_networking_k8s_io_v1beta1.GatewayClass{}, id)
+		if err == nil {
+			return obj.(*gateway_networking_k8s_io_v1beta1.GatewayClass), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *gatewayClassMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *gatewayClassMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *gatewayClassMergedSet) Delta(newSet GatewayClassSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *gatewayClassMergedSet) Clone() GatewayClassSet {
+	if s == nil {
+		return nil
+	}
+	return &gatewayClassMergedSet{sets: s.sets[:]}
 }
 
 type HTTPRouteSet interface {
@@ -617,7 +961,7 @@ func (s *hTTPRouteSet) Union(set HTTPRouteSet) HTTPRouteSet {
 	if s == nil {
 		return set
 	}
-	return NewHTTPRouteSet(append(s.List(), set.List()...)...)
+	return &hTTPRouteMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *hTTPRouteSet) Difference(set HTTPRouteSet) HTTPRouteSet {
@@ -679,5 +1023,177 @@ func (s *hTTPRouteSet) Clone() HTTPRouteSet {
 	if s == nil {
 		return nil
 	}
-	return &hTTPRouteSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &hTTPRouteMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type hTTPRouteMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewHTTPRouteMergedSet(hTTPRouteList ...*gateway_networking_k8s_io_v1beta1.HTTPRoute) HTTPRouteSet {
+	return &hTTPRouteMergedSet{sets: []sksets.ResourceSet{makeGenericHTTPRouteSet(hTTPRouteList)}}
+}
+
+func NewHTTPRouteMergedSetFromList(hTTPRouteList *gateway_networking_k8s_io_v1beta1.HTTPRouteList) HTTPRouteSet {
+	list := make([]*gateway_networking_k8s_io_v1beta1.HTTPRoute, 0, len(hTTPRouteList.Items))
+	for idx := range hTTPRouteList.Items {
+		list = append(list, &hTTPRouteList.Items[idx])
+	}
+	return &hTTPRouteMergedSet{sets: []sksets.ResourceSet{makeGenericHTTPRouteSet(list)}}
+}
+
+func (s *hTTPRouteMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *hTTPRouteMergedSet) List(filterResource ...func(*gateway_networking_k8s_io_v1beta1.HTTPRoute) bool) []*gateway_networking_k8s_io_v1beta1.HTTPRoute {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*gateway_networking_k8s_io_v1beta1.HTTPRoute))
+		})
+	}
+	hTTPRouteList := []*gateway_networking_k8s_io_v1beta1.HTTPRoute{}
+	for _, set := range s.sets {
+		for _, obj := range set.List(genericFilters...) {
+			hTTPRouteList = append(hTTPRouteList, obj.(*gateway_networking_k8s_io_v1beta1.HTTPRoute))
+		}
+	}
+	return hTTPRouteList
+}
+
+func (s *hTTPRouteMergedSet) UnsortedList(filterResource ...func(*gateway_networking_k8s_io_v1beta1.HTTPRoute) bool) []*gateway_networking_k8s_io_v1beta1.HTTPRoute {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*gateway_networking_k8s_io_v1beta1.HTTPRoute))
+		})
+	}
+
+	hTTPRouteList := []*gateway_networking_k8s_io_v1beta1.HTTPRoute{}
+	for _, set := range s.sets {
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			hTTPRouteList = append(hTTPRouteList, obj.(*gateway_networking_k8s_io_v1beta1.HTTPRoute))
+		}
+	}
+	return hTTPRouteList
+}
+
+func (s *hTTPRouteMergedSet) Map() map[string]*gateway_networking_k8s_io_v1beta1.HTTPRoute {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*gateway_networking_k8s_io_v1beta1.HTTPRoute{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*gateway_networking_k8s_io_v1beta1.HTTPRoute)
+		}
+	}
+	return newMap
+}
+
+func (s *hTTPRouteMergedSet) Insert(
+	hTTPRouteList ...*gateway_networking_k8s_io_v1beta1.HTTPRoute,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericHTTPRouteSet(hTTPRouteList))
+	}
+	for _, obj := range hTTPRouteList {
+		s.sets[0].Insert(obj)
+	}
+}
+
+func (s *hTTPRouteMergedSet) Has(hTTPRoute ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(hTTPRoute) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *hTTPRouteMergedSet) Equal(
+	hTTPRouteSet HTTPRouteSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *hTTPRouteMergedSet) Delete(HTTPRoute ezkube.ResourceId) {
+	panic("unimplemented")
+}
+
+func (s *hTTPRouteMergedSet) Union(set HTTPRouteSet) HTTPRouteSet {
+	return &hTTPRouteMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *hTTPRouteMergedSet) Difference(set HTTPRouteSet) HTTPRouteSet {
+	panic("unimplemented")
+}
+
+func (s *hTTPRouteMergedSet) Intersection(set HTTPRouteSet) HTTPRouteSet {
+	panic("unimplemented")
+}
+
+func (s *hTTPRouteMergedSet) Find(id ezkube.ResourceId) (*gateway_networking_k8s_io_v1beta1.HTTPRoute, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find HTTPRoute %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&gateway_networking_k8s_io_v1beta1.HTTPRoute{}, id)
+		if err == nil {
+			return obj.(*gateway_networking_k8s_io_v1beta1.HTTPRoute), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *hTTPRouteMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *hTTPRouteMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *hTTPRouteMergedSet) Delta(newSet HTTPRouteSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *hTTPRouteMergedSet) Clone() HTTPRouteSet {
+	if s == nil {
+		return nil
+	}
+	return &hTTPRouteMergedSet{sets: s.sets[:]}
 }

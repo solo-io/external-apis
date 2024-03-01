@@ -171,7 +171,7 @@ func (s *deploymentSet) Union(set DeploymentSet) DeploymentSet {
 	if s == nil {
 		return set
 	}
-	return NewDeploymentSet(append(s.List(), set.List()...)...)
+	return &deploymentMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *deploymentSet) Difference(set DeploymentSet) DeploymentSet {
@@ -233,7 +233,179 @@ func (s *deploymentSet) Clone() DeploymentSet {
 	if s == nil {
 		return nil
 	}
-	return &deploymentSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &deploymentMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type deploymentMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewDeploymentMergedSet(deploymentList ...*apps_v1.Deployment) DeploymentSet {
+	return &deploymentMergedSet{sets: []sksets.ResourceSet{makeGenericDeploymentSet(deploymentList)}}
+}
+
+func NewDeploymentMergedSetFromList(deploymentList *apps_v1.DeploymentList) DeploymentSet {
+	list := make([]*apps_v1.Deployment, 0, len(deploymentList.Items))
+	for idx := range deploymentList.Items {
+		list = append(list, &deploymentList.Items[idx])
+	}
+	return &deploymentMergedSet{sets: []sksets.ResourceSet{makeGenericDeploymentSet(list)}}
+}
+
+func (s *deploymentMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *deploymentMergedSet) List(filterResource ...func(*apps_v1.Deployment) bool) []*apps_v1.Deployment {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*apps_v1.Deployment))
+		})
+	}
+	deploymentList := []*apps_v1.Deployment{}
+	for _, set := range s.sets {
+		for _, obj := range set.List(genericFilters...) {
+			deploymentList = append(deploymentList, obj.(*apps_v1.Deployment))
+		}
+	}
+	return deploymentList
+}
+
+func (s *deploymentMergedSet) UnsortedList(filterResource ...func(*apps_v1.Deployment) bool) []*apps_v1.Deployment {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*apps_v1.Deployment))
+		})
+	}
+
+	deploymentList := []*apps_v1.Deployment{}
+	for _, set := range s.sets {
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			deploymentList = append(deploymentList, obj.(*apps_v1.Deployment))
+		}
+	}
+	return deploymentList
+}
+
+func (s *deploymentMergedSet) Map() map[string]*apps_v1.Deployment {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*apps_v1.Deployment{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*apps_v1.Deployment)
+		}
+	}
+	return newMap
+}
+
+func (s *deploymentMergedSet) Insert(
+	deploymentList ...*apps_v1.Deployment,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericDeploymentSet(deploymentList))
+	}
+	for _, obj := range deploymentList {
+		s.sets[0].Insert(obj)
+	}
+}
+
+func (s *deploymentMergedSet) Has(deployment ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(deployment) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *deploymentMergedSet) Equal(
+	deploymentSet DeploymentSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *deploymentMergedSet) Delete(Deployment ezkube.ResourceId) {
+	panic("unimplemented")
+}
+
+func (s *deploymentMergedSet) Union(set DeploymentSet) DeploymentSet {
+	return &deploymentMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *deploymentMergedSet) Difference(set DeploymentSet) DeploymentSet {
+	panic("unimplemented")
+}
+
+func (s *deploymentMergedSet) Intersection(set DeploymentSet) DeploymentSet {
+	panic("unimplemented")
+}
+
+func (s *deploymentMergedSet) Find(id ezkube.ResourceId) (*apps_v1.Deployment, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find Deployment %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&apps_v1.Deployment{}, id)
+		if err == nil {
+			return obj.(*apps_v1.Deployment), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *deploymentMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *deploymentMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *deploymentMergedSet) Delta(newSet DeploymentSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *deploymentMergedSet) Clone() DeploymentSet {
+	if s == nil {
+		return nil
+	}
+	return &deploymentMergedSet{sets: s.sets[:]}
 }
 
 type ReplicaSetSet interface {
@@ -394,7 +566,7 @@ func (s *replicaSetSet) Union(set ReplicaSetSet) ReplicaSetSet {
 	if s == nil {
 		return set
 	}
-	return NewReplicaSetSet(append(s.List(), set.List()...)...)
+	return &replicaSetMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *replicaSetSet) Difference(set ReplicaSetSet) ReplicaSetSet {
@@ -456,7 +628,179 @@ func (s *replicaSetSet) Clone() ReplicaSetSet {
 	if s == nil {
 		return nil
 	}
-	return &replicaSetSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &replicaSetMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type replicaSetMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewReplicaSetMergedSet(replicaSetList ...*apps_v1.ReplicaSet) ReplicaSetSet {
+	return &replicaSetMergedSet{sets: []sksets.ResourceSet{makeGenericReplicaSetSet(replicaSetList)}}
+}
+
+func NewReplicaSetMergedSetFromList(replicaSetList *apps_v1.ReplicaSetList) ReplicaSetSet {
+	list := make([]*apps_v1.ReplicaSet, 0, len(replicaSetList.Items))
+	for idx := range replicaSetList.Items {
+		list = append(list, &replicaSetList.Items[idx])
+	}
+	return &replicaSetMergedSet{sets: []sksets.ResourceSet{makeGenericReplicaSetSet(list)}}
+}
+
+func (s *replicaSetMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *replicaSetMergedSet) List(filterResource ...func(*apps_v1.ReplicaSet) bool) []*apps_v1.ReplicaSet {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*apps_v1.ReplicaSet))
+		})
+	}
+	replicaSetList := []*apps_v1.ReplicaSet{}
+	for _, set := range s.sets {
+		for _, obj := range set.List(genericFilters...) {
+			replicaSetList = append(replicaSetList, obj.(*apps_v1.ReplicaSet))
+		}
+	}
+	return replicaSetList
+}
+
+func (s *replicaSetMergedSet) UnsortedList(filterResource ...func(*apps_v1.ReplicaSet) bool) []*apps_v1.ReplicaSet {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*apps_v1.ReplicaSet))
+		})
+	}
+
+	replicaSetList := []*apps_v1.ReplicaSet{}
+	for _, set := range s.sets {
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			replicaSetList = append(replicaSetList, obj.(*apps_v1.ReplicaSet))
+		}
+	}
+	return replicaSetList
+}
+
+func (s *replicaSetMergedSet) Map() map[string]*apps_v1.ReplicaSet {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*apps_v1.ReplicaSet{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*apps_v1.ReplicaSet)
+		}
+	}
+	return newMap
+}
+
+func (s *replicaSetMergedSet) Insert(
+	replicaSetList ...*apps_v1.ReplicaSet,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericReplicaSetSet(replicaSetList))
+	}
+	for _, obj := range replicaSetList {
+		s.sets[0].Insert(obj)
+	}
+}
+
+func (s *replicaSetMergedSet) Has(replicaSet ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(replicaSet) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *replicaSetMergedSet) Equal(
+	replicaSetSet ReplicaSetSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *replicaSetMergedSet) Delete(ReplicaSet ezkube.ResourceId) {
+	panic("unimplemented")
+}
+
+func (s *replicaSetMergedSet) Union(set ReplicaSetSet) ReplicaSetSet {
+	return &replicaSetMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *replicaSetMergedSet) Difference(set ReplicaSetSet) ReplicaSetSet {
+	panic("unimplemented")
+}
+
+func (s *replicaSetMergedSet) Intersection(set ReplicaSetSet) ReplicaSetSet {
+	panic("unimplemented")
+}
+
+func (s *replicaSetMergedSet) Find(id ezkube.ResourceId) (*apps_v1.ReplicaSet, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find ReplicaSet %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&apps_v1.ReplicaSet{}, id)
+		if err == nil {
+			return obj.(*apps_v1.ReplicaSet), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *replicaSetMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *replicaSetMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *replicaSetMergedSet) Delta(newSet ReplicaSetSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *replicaSetMergedSet) Clone() ReplicaSetSet {
+	if s == nil {
+		return nil
+	}
+	return &replicaSetMergedSet{sets: s.sets[:]}
 }
 
 type DaemonSetSet interface {
@@ -617,7 +961,7 @@ func (s *daemonSetSet) Union(set DaemonSetSet) DaemonSetSet {
 	if s == nil {
 		return set
 	}
-	return NewDaemonSetSet(append(s.List(), set.List()...)...)
+	return &daemonSetMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *daemonSetSet) Difference(set DaemonSetSet) DaemonSetSet {
@@ -679,7 +1023,179 @@ func (s *daemonSetSet) Clone() DaemonSetSet {
 	if s == nil {
 		return nil
 	}
-	return &daemonSetSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &daemonSetMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type daemonSetMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewDaemonSetMergedSet(daemonSetList ...*apps_v1.DaemonSet) DaemonSetSet {
+	return &daemonSetMergedSet{sets: []sksets.ResourceSet{makeGenericDaemonSetSet(daemonSetList)}}
+}
+
+func NewDaemonSetMergedSetFromList(daemonSetList *apps_v1.DaemonSetList) DaemonSetSet {
+	list := make([]*apps_v1.DaemonSet, 0, len(daemonSetList.Items))
+	for idx := range daemonSetList.Items {
+		list = append(list, &daemonSetList.Items[idx])
+	}
+	return &daemonSetMergedSet{sets: []sksets.ResourceSet{makeGenericDaemonSetSet(list)}}
+}
+
+func (s *daemonSetMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *daemonSetMergedSet) List(filterResource ...func(*apps_v1.DaemonSet) bool) []*apps_v1.DaemonSet {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*apps_v1.DaemonSet))
+		})
+	}
+	daemonSetList := []*apps_v1.DaemonSet{}
+	for _, set := range s.sets {
+		for _, obj := range set.List(genericFilters...) {
+			daemonSetList = append(daemonSetList, obj.(*apps_v1.DaemonSet))
+		}
+	}
+	return daemonSetList
+}
+
+func (s *daemonSetMergedSet) UnsortedList(filterResource ...func(*apps_v1.DaemonSet) bool) []*apps_v1.DaemonSet {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*apps_v1.DaemonSet))
+		})
+	}
+
+	daemonSetList := []*apps_v1.DaemonSet{}
+	for _, set := range s.sets {
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			daemonSetList = append(daemonSetList, obj.(*apps_v1.DaemonSet))
+		}
+	}
+	return daemonSetList
+}
+
+func (s *daemonSetMergedSet) Map() map[string]*apps_v1.DaemonSet {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*apps_v1.DaemonSet{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*apps_v1.DaemonSet)
+		}
+	}
+	return newMap
+}
+
+func (s *daemonSetMergedSet) Insert(
+	daemonSetList ...*apps_v1.DaemonSet,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericDaemonSetSet(daemonSetList))
+	}
+	for _, obj := range daemonSetList {
+		s.sets[0].Insert(obj)
+	}
+}
+
+func (s *daemonSetMergedSet) Has(daemonSet ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(daemonSet) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *daemonSetMergedSet) Equal(
+	daemonSetSet DaemonSetSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *daemonSetMergedSet) Delete(DaemonSet ezkube.ResourceId) {
+	panic("unimplemented")
+}
+
+func (s *daemonSetMergedSet) Union(set DaemonSetSet) DaemonSetSet {
+	return &daemonSetMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *daemonSetMergedSet) Difference(set DaemonSetSet) DaemonSetSet {
+	panic("unimplemented")
+}
+
+func (s *daemonSetMergedSet) Intersection(set DaemonSetSet) DaemonSetSet {
+	panic("unimplemented")
+}
+
+func (s *daemonSetMergedSet) Find(id ezkube.ResourceId) (*apps_v1.DaemonSet, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find DaemonSet %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&apps_v1.DaemonSet{}, id)
+		if err == nil {
+			return obj.(*apps_v1.DaemonSet), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *daemonSetMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *daemonSetMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *daemonSetMergedSet) Delta(newSet DaemonSetSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *daemonSetMergedSet) Clone() DaemonSetSet {
+	if s == nil {
+		return nil
+	}
+	return &daemonSetMergedSet{sets: s.sets[:]}
 }
 
 type StatefulSetSet interface {
@@ -840,7 +1356,7 @@ func (s *statefulSetSet) Union(set StatefulSetSet) StatefulSetSet {
 	if s == nil {
 		return set
 	}
-	return NewStatefulSetSet(append(s.List(), set.List()...)...)
+	return &statefulSetMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *statefulSetSet) Difference(set StatefulSetSet) StatefulSetSet {
@@ -902,5 +1418,177 @@ func (s *statefulSetSet) Clone() StatefulSetSet {
 	if s == nil {
 		return nil
 	}
-	return &statefulSetSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &statefulSetMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type statefulSetMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewStatefulSetMergedSet(statefulSetList ...*apps_v1.StatefulSet) StatefulSetSet {
+	return &statefulSetMergedSet{sets: []sksets.ResourceSet{makeGenericStatefulSetSet(statefulSetList)}}
+}
+
+func NewStatefulSetMergedSetFromList(statefulSetList *apps_v1.StatefulSetList) StatefulSetSet {
+	list := make([]*apps_v1.StatefulSet, 0, len(statefulSetList.Items))
+	for idx := range statefulSetList.Items {
+		list = append(list, &statefulSetList.Items[idx])
+	}
+	return &statefulSetMergedSet{sets: []sksets.ResourceSet{makeGenericStatefulSetSet(list)}}
+}
+
+func (s *statefulSetMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *statefulSetMergedSet) List(filterResource ...func(*apps_v1.StatefulSet) bool) []*apps_v1.StatefulSet {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*apps_v1.StatefulSet))
+		})
+	}
+	statefulSetList := []*apps_v1.StatefulSet{}
+	for _, set := range s.sets {
+		for _, obj := range set.List(genericFilters...) {
+			statefulSetList = append(statefulSetList, obj.(*apps_v1.StatefulSet))
+		}
+	}
+	return statefulSetList
+}
+
+func (s *statefulSetMergedSet) UnsortedList(filterResource ...func(*apps_v1.StatefulSet) bool) []*apps_v1.StatefulSet {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*apps_v1.StatefulSet))
+		})
+	}
+
+	statefulSetList := []*apps_v1.StatefulSet{}
+	for _, set := range s.sets {
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			statefulSetList = append(statefulSetList, obj.(*apps_v1.StatefulSet))
+		}
+	}
+	return statefulSetList
+}
+
+func (s *statefulSetMergedSet) Map() map[string]*apps_v1.StatefulSet {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*apps_v1.StatefulSet{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*apps_v1.StatefulSet)
+		}
+	}
+	return newMap
+}
+
+func (s *statefulSetMergedSet) Insert(
+	statefulSetList ...*apps_v1.StatefulSet,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericStatefulSetSet(statefulSetList))
+	}
+	for _, obj := range statefulSetList {
+		s.sets[0].Insert(obj)
+	}
+}
+
+func (s *statefulSetMergedSet) Has(statefulSet ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(statefulSet) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *statefulSetMergedSet) Equal(
+	statefulSetSet StatefulSetSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *statefulSetMergedSet) Delete(StatefulSet ezkube.ResourceId) {
+	panic("unimplemented")
+}
+
+func (s *statefulSetMergedSet) Union(set StatefulSetSet) StatefulSetSet {
+	return &statefulSetMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *statefulSetMergedSet) Difference(set StatefulSetSet) StatefulSetSet {
+	panic("unimplemented")
+}
+
+func (s *statefulSetMergedSet) Intersection(set StatefulSetSet) StatefulSetSet {
+	panic("unimplemented")
+}
+
+func (s *statefulSetMergedSet) Find(id ezkube.ResourceId) (*apps_v1.StatefulSet, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find StatefulSet %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&apps_v1.StatefulSet{}, id)
+		if err == nil {
+			return obj.(*apps_v1.StatefulSet), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *statefulSetMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *statefulSetMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *statefulSetMergedSet) Delta(newSet StatefulSetSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *statefulSetMergedSet) Clone() StatefulSetSet {
+	if s == nil {
+		return nil
+	}
+	return &statefulSetMergedSet{sets: s.sets[:]}
 }

@@ -171,7 +171,7 @@ func (s *meshSet) Union(set MeshSet) MeshSet {
 	if s == nil {
 		return set
 	}
-	return NewMeshSet(append(s.List(), set.List()...)...)
+	return &meshMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *meshSet) Difference(set MeshSet) MeshSet {
@@ -233,7 +233,179 @@ func (s *meshSet) Clone() MeshSet {
 	if s == nil {
 		return nil
 	}
-	return &meshSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &meshMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type meshMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewMeshMergedSet(meshList ...*appmesh_k8s_aws_v1beta2.Mesh) MeshSet {
+	return &meshMergedSet{sets: []sksets.ResourceSet{makeGenericMeshSet(meshList)}}
+}
+
+func NewMeshMergedSetFromList(meshList *appmesh_k8s_aws_v1beta2.MeshList) MeshSet {
+	list := make([]*appmesh_k8s_aws_v1beta2.Mesh, 0, len(meshList.Items))
+	for idx := range meshList.Items {
+		list = append(list, &meshList.Items[idx])
+	}
+	return &meshMergedSet{sets: []sksets.ResourceSet{makeGenericMeshSet(list)}}
+}
+
+func (s *meshMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *meshMergedSet) List(filterResource ...func(*appmesh_k8s_aws_v1beta2.Mesh) bool) []*appmesh_k8s_aws_v1beta2.Mesh {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*appmesh_k8s_aws_v1beta2.Mesh))
+		})
+	}
+	meshList := []*appmesh_k8s_aws_v1beta2.Mesh{}
+	for _, set := range s.sets {
+		for _, obj := range set.List(genericFilters...) {
+			meshList = append(meshList, obj.(*appmesh_k8s_aws_v1beta2.Mesh))
+		}
+	}
+	return meshList
+}
+
+func (s *meshMergedSet) UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.Mesh) bool) []*appmesh_k8s_aws_v1beta2.Mesh {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*appmesh_k8s_aws_v1beta2.Mesh))
+		})
+	}
+
+	meshList := []*appmesh_k8s_aws_v1beta2.Mesh{}
+	for _, set := range s.sets {
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			meshList = append(meshList, obj.(*appmesh_k8s_aws_v1beta2.Mesh))
+		}
+	}
+	return meshList
+}
+
+func (s *meshMergedSet) Map() map[string]*appmesh_k8s_aws_v1beta2.Mesh {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*appmesh_k8s_aws_v1beta2.Mesh{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*appmesh_k8s_aws_v1beta2.Mesh)
+		}
+	}
+	return newMap
+}
+
+func (s *meshMergedSet) Insert(
+	meshList ...*appmesh_k8s_aws_v1beta2.Mesh,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericMeshSet(meshList))
+	}
+	for _, obj := range meshList {
+		s.sets[0].Insert(obj)
+	}
+}
+
+func (s *meshMergedSet) Has(mesh ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(mesh) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *meshMergedSet) Equal(
+	meshSet MeshSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *meshMergedSet) Delete(Mesh ezkube.ResourceId) {
+	panic("unimplemented")
+}
+
+func (s *meshMergedSet) Union(set MeshSet) MeshSet {
+	return &meshMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *meshMergedSet) Difference(set MeshSet) MeshSet {
+	panic("unimplemented")
+}
+
+func (s *meshMergedSet) Intersection(set MeshSet) MeshSet {
+	panic("unimplemented")
+}
+
+func (s *meshMergedSet) Find(id ezkube.ResourceId) (*appmesh_k8s_aws_v1beta2.Mesh, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find Mesh %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&appmesh_k8s_aws_v1beta2.Mesh{}, id)
+		if err == nil {
+			return obj.(*appmesh_k8s_aws_v1beta2.Mesh), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *meshMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *meshMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *meshMergedSet) Delta(newSet MeshSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *meshMergedSet) Clone() MeshSet {
+	if s == nil {
+		return nil
+	}
+	return &meshMergedSet{sets: s.sets[:]}
 }
 
 type VirtualServiceSet interface {
@@ -394,7 +566,7 @@ func (s *virtualServiceSet) Union(set VirtualServiceSet) VirtualServiceSet {
 	if s == nil {
 		return set
 	}
-	return NewVirtualServiceSet(append(s.List(), set.List()...)...)
+	return &virtualServiceMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *virtualServiceSet) Difference(set VirtualServiceSet) VirtualServiceSet {
@@ -456,7 +628,179 @@ func (s *virtualServiceSet) Clone() VirtualServiceSet {
 	if s == nil {
 		return nil
 	}
-	return &virtualServiceSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &virtualServiceMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type virtualServiceMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewVirtualServiceMergedSet(virtualServiceList ...*appmesh_k8s_aws_v1beta2.VirtualService) VirtualServiceSet {
+	return &virtualServiceMergedSet{sets: []sksets.ResourceSet{makeGenericVirtualServiceSet(virtualServiceList)}}
+}
+
+func NewVirtualServiceMergedSetFromList(virtualServiceList *appmesh_k8s_aws_v1beta2.VirtualServiceList) VirtualServiceSet {
+	list := make([]*appmesh_k8s_aws_v1beta2.VirtualService, 0, len(virtualServiceList.Items))
+	for idx := range virtualServiceList.Items {
+		list = append(list, &virtualServiceList.Items[idx])
+	}
+	return &virtualServiceMergedSet{sets: []sksets.ResourceSet{makeGenericVirtualServiceSet(list)}}
+}
+
+func (s *virtualServiceMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *virtualServiceMergedSet) List(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualService) bool) []*appmesh_k8s_aws_v1beta2.VirtualService {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualService))
+		})
+	}
+	virtualServiceList := []*appmesh_k8s_aws_v1beta2.VirtualService{}
+	for _, set := range s.sets {
+		for _, obj := range set.List(genericFilters...) {
+			virtualServiceList = append(virtualServiceList, obj.(*appmesh_k8s_aws_v1beta2.VirtualService))
+		}
+	}
+	return virtualServiceList
+}
+
+func (s *virtualServiceMergedSet) UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualService) bool) []*appmesh_k8s_aws_v1beta2.VirtualService {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualService))
+		})
+	}
+
+	virtualServiceList := []*appmesh_k8s_aws_v1beta2.VirtualService{}
+	for _, set := range s.sets {
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			virtualServiceList = append(virtualServiceList, obj.(*appmesh_k8s_aws_v1beta2.VirtualService))
+		}
+	}
+	return virtualServiceList
+}
+
+func (s *virtualServiceMergedSet) Map() map[string]*appmesh_k8s_aws_v1beta2.VirtualService {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*appmesh_k8s_aws_v1beta2.VirtualService{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*appmesh_k8s_aws_v1beta2.VirtualService)
+		}
+	}
+	return newMap
+}
+
+func (s *virtualServiceMergedSet) Insert(
+	virtualServiceList ...*appmesh_k8s_aws_v1beta2.VirtualService,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericVirtualServiceSet(virtualServiceList))
+	}
+	for _, obj := range virtualServiceList {
+		s.sets[0].Insert(obj)
+	}
+}
+
+func (s *virtualServiceMergedSet) Has(virtualService ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(virtualService) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *virtualServiceMergedSet) Equal(
+	virtualServiceSet VirtualServiceSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *virtualServiceMergedSet) Delete(VirtualService ezkube.ResourceId) {
+	panic("unimplemented")
+}
+
+func (s *virtualServiceMergedSet) Union(set VirtualServiceSet) VirtualServiceSet {
+	return &virtualServiceMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *virtualServiceMergedSet) Difference(set VirtualServiceSet) VirtualServiceSet {
+	panic("unimplemented")
+}
+
+func (s *virtualServiceMergedSet) Intersection(set VirtualServiceSet) VirtualServiceSet {
+	panic("unimplemented")
+}
+
+func (s *virtualServiceMergedSet) Find(id ezkube.ResourceId) (*appmesh_k8s_aws_v1beta2.VirtualService, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find VirtualService %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&appmesh_k8s_aws_v1beta2.VirtualService{}, id)
+		if err == nil {
+			return obj.(*appmesh_k8s_aws_v1beta2.VirtualService), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *virtualServiceMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *virtualServiceMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *virtualServiceMergedSet) Delta(newSet VirtualServiceSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *virtualServiceMergedSet) Clone() VirtualServiceSet {
+	if s == nil {
+		return nil
+	}
+	return &virtualServiceMergedSet{sets: s.sets[:]}
 }
 
 type VirtualNodeSet interface {
@@ -617,7 +961,7 @@ func (s *virtualNodeSet) Union(set VirtualNodeSet) VirtualNodeSet {
 	if s == nil {
 		return set
 	}
-	return NewVirtualNodeSet(append(s.List(), set.List()...)...)
+	return &virtualNodeMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *virtualNodeSet) Difference(set VirtualNodeSet) VirtualNodeSet {
@@ -679,7 +1023,179 @@ func (s *virtualNodeSet) Clone() VirtualNodeSet {
 	if s == nil {
 		return nil
 	}
-	return &virtualNodeSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &virtualNodeMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type virtualNodeMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewVirtualNodeMergedSet(virtualNodeList ...*appmesh_k8s_aws_v1beta2.VirtualNode) VirtualNodeSet {
+	return &virtualNodeMergedSet{sets: []sksets.ResourceSet{makeGenericVirtualNodeSet(virtualNodeList)}}
+}
+
+func NewVirtualNodeMergedSetFromList(virtualNodeList *appmesh_k8s_aws_v1beta2.VirtualNodeList) VirtualNodeSet {
+	list := make([]*appmesh_k8s_aws_v1beta2.VirtualNode, 0, len(virtualNodeList.Items))
+	for idx := range virtualNodeList.Items {
+		list = append(list, &virtualNodeList.Items[idx])
+	}
+	return &virtualNodeMergedSet{sets: []sksets.ResourceSet{makeGenericVirtualNodeSet(list)}}
+}
+
+func (s *virtualNodeMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *virtualNodeMergedSet) List(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualNode) bool) []*appmesh_k8s_aws_v1beta2.VirtualNode {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualNode))
+		})
+	}
+	virtualNodeList := []*appmesh_k8s_aws_v1beta2.VirtualNode{}
+	for _, set := range s.sets {
+		for _, obj := range set.List(genericFilters...) {
+			virtualNodeList = append(virtualNodeList, obj.(*appmesh_k8s_aws_v1beta2.VirtualNode))
+		}
+	}
+	return virtualNodeList
+}
+
+func (s *virtualNodeMergedSet) UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualNode) bool) []*appmesh_k8s_aws_v1beta2.VirtualNode {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualNode))
+		})
+	}
+
+	virtualNodeList := []*appmesh_k8s_aws_v1beta2.VirtualNode{}
+	for _, set := range s.sets {
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			virtualNodeList = append(virtualNodeList, obj.(*appmesh_k8s_aws_v1beta2.VirtualNode))
+		}
+	}
+	return virtualNodeList
+}
+
+func (s *virtualNodeMergedSet) Map() map[string]*appmesh_k8s_aws_v1beta2.VirtualNode {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*appmesh_k8s_aws_v1beta2.VirtualNode{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*appmesh_k8s_aws_v1beta2.VirtualNode)
+		}
+	}
+	return newMap
+}
+
+func (s *virtualNodeMergedSet) Insert(
+	virtualNodeList ...*appmesh_k8s_aws_v1beta2.VirtualNode,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericVirtualNodeSet(virtualNodeList))
+	}
+	for _, obj := range virtualNodeList {
+		s.sets[0].Insert(obj)
+	}
+}
+
+func (s *virtualNodeMergedSet) Has(virtualNode ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(virtualNode) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *virtualNodeMergedSet) Equal(
+	virtualNodeSet VirtualNodeSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *virtualNodeMergedSet) Delete(VirtualNode ezkube.ResourceId) {
+	panic("unimplemented")
+}
+
+func (s *virtualNodeMergedSet) Union(set VirtualNodeSet) VirtualNodeSet {
+	return &virtualNodeMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *virtualNodeMergedSet) Difference(set VirtualNodeSet) VirtualNodeSet {
+	panic("unimplemented")
+}
+
+func (s *virtualNodeMergedSet) Intersection(set VirtualNodeSet) VirtualNodeSet {
+	panic("unimplemented")
+}
+
+func (s *virtualNodeMergedSet) Find(id ezkube.ResourceId) (*appmesh_k8s_aws_v1beta2.VirtualNode, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find VirtualNode %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&appmesh_k8s_aws_v1beta2.VirtualNode{}, id)
+		if err == nil {
+			return obj.(*appmesh_k8s_aws_v1beta2.VirtualNode), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *virtualNodeMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *virtualNodeMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *virtualNodeMergedSet) Delta(newSet VirtualNodeSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *virtualNodeMergedSet) Clone() VirtualNodeSet {
+	if s == nil {
+		return nil
+	}
+	return &virtualNodeMergedSet{sets: s.sets[:]}
 }
 
 type VirtualRouterSet interface {
@@ -840,7 +1356,7 @@ func (s *virtualRouterSet) Union(set VirtualRouterSet) VirtualRouterSet {
 	if s == nil {
 		return set
 	}
-	return NewVirtualRouterSet(append(s.List(), set.List()...)...)
+	return &virtualRouterMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *virtualRouterSet) Difference(set VirtualRouterSet) VirtualRouterSet {
@@ -902,7 +1418,179 @@ func (s *virtualRouterSet) Clone() VirtualRouterSet {
 	if s == nil {
 		return nil
 	}
-	return &virtualRouterSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &virtualRouterMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type virtualRouterMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewVirtualRouterMergedSet(virtualRouterList ...*appmesh_k8s_aws_v1beta2.VirtualRouter) VirtualRouterSet {
+	return &virtualRouterMergedSet{sets: []sksets.ResourceSet{makeGenericVirtualRouterSet(virtualRouterList)}}
+}
+
+func NewVirtualRouterMergedSetFromList(virtualRouterList *appmesh_k8s_aws_v1beta2.VirtualRouterList) VirtualRouterSet {
+	list := make([]*appmesh_k8s_aws_v1beta2.VirtualRouter, 0, len(virtualRouterList.Items))
+	for idx := range virtualRouterList.Items {
+		list = append(list, &virtualRouterList.Items[idx])
+	}
+	return &virtualRouterMergedSet{sets: []sksets.ResourceSet{makeGenericVirtualRouterSet(list)}}
+}
+
+func (s *virtualRouterMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *virtualRouterMergedSet) List(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualRouter) bool) []*appmesh_k8s_aws_v1beta2.VirtualRouter {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualRouter))
+		})
+	}
+	virtualRouterList := []*appmesh_k8s_aws_v1beta2.VirtualRouter{}
+	for _, set := range s.sets {
+		for _, obj := range set.List(genericFilters...) {
+			virtualRouterList = append(virtualRouterList, obj.(*appmesh_k8s_aws_v1beta2.VirtualRouter))
+		}
+	}
+	return virtualRouterList
+}
+
+func (s *virtualRouterMergedSet) UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualRouter) bool) []*appmesh_k8s_aws_v1beta2.VirtualRouter {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualRouter))
+		})
+	}
+
+	virtualRouterList := []*appmesh_k8s_aws_v1beta2.VirtualRouter{}
+	for _, set := range s.sets {
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			virtualRouterList = append(virtualRouterList, obj.(*appmesh_k8s_aws_v1beta2.VirtualRouter))
+		}
+	}
+	return virtualRouterList
+}
+
+func (s *virtualRouterMergedSet) Map() map[string]*appmesh_k8s_aws_v1beta2.VirtualRouter {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*appmesh_k8s_aws_v1beta2.VirtualRouter{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*appmesh_k8s_aws_v1beta2.VirtualRouter)
+		}
+	}
+	return newMap
+}
+
+func (s *virtualRouterMergedSet) Insert(
+	virtualRouterList ...*appmesh_k8s_aws_v1beta2.VirtualRouter,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericVirtualRouterSet(virtualRouterList))
+	}
+	for _, obj := range virtualRouterList {
+		s.sets[0].Insert(obj)
+	}
+}
+
+func (s *virtualRouterMergedSet) Has(virtualRouter ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(virtualRouter) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *virtualRouterMergedSet) Equal(
+	virtualRouterSet VirtualRouterSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *virtualRouterMergedSet) Delete(VirtualRouter ezkube.ResourceId) {
+	panic("unimplemented")
+}
+
+func (s *virtualRouterMergedSet) Union(set VirtualRouterSet) VirtualRouterSet {
+	return &virtualRouterMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *virtualRouterMergedSet) Difference(set VirtualRouterSet) VirtualRouterSet {
+	panic("unimplemented")
+}
+
+func (s *virtualRouterMergedSet) Intersection(set VirtualRouterSet) VirtualRouterSet {
+	panic("unimplemented")
+}
+
+func (s *virtualRouterMergedSet) Find(id ezkube.ResourceId) (*appmesh_k8s_aws_v1beta2.VirtualRouter, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find VirtualRouter %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&appmesh_k8s_aws_v1beta2.VirtualRouter{}, id)
+		if err == nil {
+			return obj.(*appmesh_k8s_aws_v1beta2.VirtualRouter), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *virtualRouterMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *virtualRouterMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *virtualRouterMergedSet) Delta(newSet VirtualRouterSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *virtualRouterMergedSet) Clone() VirtualRouterSet {
+	if s == nil {
+		return nil
+	}
+	return &virtualRouterMergedSet{sets: s.sets[:]}
 }
 
 type VirtualGatewaySet interface {
@@ -1063,7 +1751,7 @@ func (s *virtualGatewaySet) Union(set VirtualGatewaySet) VirtualGatewaySet {
 	if s == nil {
 		return set
 	}
-	return NewVirtualGatewaySet(append(s.List(), set.List()...)...)
+	return &virtualGatewayMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *virtualGatewaySet) Difference(set VirtualGatewaySet) VirtualGatewaySet {
@@ -1125,7 +1813,179 @@ func (s *virtualGatewaySet) Clone() VirtualGatewaySet {
 	if s == nil {
 		return nil
 	}
-	return &virtualGatewaySet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &virtualGatewayMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type virtualGatewayMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewVirtualGatewayMergedSet(virtualGatewayList ...*appmesh_k8s_aws_v1beta2.VirtualGateway) VirtualGatewaySet {
+	return &virtualGatewayMergedSet{sets: []sksets.ResourceSet{makeGenericVirtualGatewaySet(virtualGatewayList)}}
+}
+
+func NewVirtualGatewayMergedSetFromList(virtualGatewayList *appmesh_k8s_aws_v1beta2.VirtualGatewayList) VirtualGatewaySet {
+	list := make([]*appmesh_k8s_aws_v1beta2.VirtualGateway, 0, len(virtualGatewayList.Items))
+	for idx := range virtualGatewayList.Items {
+		list = append(list, &virtualGatewayList.Items[idx])
+	}
+	return &virtualGatewayMergedSet{sets: []sksets.ResourceSet{makeGenericVirtualGatewaySet(list)}}
+}
+
+func (s *virtualGatewayMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *virtualGatewayMergedSet) List(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualGateway) bool) []*appmesh_k8s_aws_v1beta2.VirtualGateway {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualGateway))
+		})
+	}
+	virtualGatewayList := []*appmesh_k8s_aws_v1beta2.VirtualGateway{}
+	for _, set := range s.sets {
+		for _, obj := range set.List(genericFilters...) {
+			virtualGatewayList = append(virtualGatewayList, obj.(*appmesh_k8s_aws_v1beta2.VirtualGateway))
+		}
+	}
+	return virtualGatewayList
+}
+
+func (s *virtualGatewayMergedSet) UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.VirtualGateway) bool) []*appmesh_k8s_aws_v1beta2.VirtualGateway {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualGateway))
+		})
+	}
+
+	virtualGatewayList := []*appmesh_k8s_aws_v1beta2.VirtualGateway{}
+	for _, set := range s.sets {
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			virtualGatewayList = append(virtualGatewayList, obj.(*appmesh_k8s_aws_v1beta2.VirtualGateway))
+		}
+	}
+	return virtualGatewayList
+}
+
+func (s *virtualGatewayMergedSet) Map() map[string]*appmesh_k8s_aws_v1beta2.VirtualGateway {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*appmesh_k8s_aws_v1beta2.VirtualGateway{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*appmesh_k8s_aws_v1beta2.VirtualGateway)
+		}
+	}
+	return newMap
+}
+
+func (s *virtualGatewayMergedSet) Insert(
+	virtualGatewayList ...*appmesh_k8s_aws_v1beta2.VirtualGateway,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericVirtualGatewaySet(virtualGatewayList))
+	}
+	for _, obj := range virtualGatewayList {
+		s.sets[0].Insert(obj)
+	}
+}
+
+func (s *virtualGatewayMergedSet) Has(virtualGateway ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(virtualGateway) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *virtualGatewayMergedSet) Equal(
+	virtualGatewaySet VirtualGatewaySet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *virtualGatewayMergedSet) Delete(VirtualGateway ezkube.ResourceId) {
+	panic("unimplemented")
+}
+
+func (s *virtualGatewayMergedSet) Union(set VirtualGatewaySet) VirtualGatewaySet {
+	return &virtualGatewayMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *virtualGatewayMergedSet) Difference(set VirtualGatewaySet) VirtualGatewaySet {
+	panic("unimplemented")
+}
+
+func (s *virtualGatewayMergedSet) Intersection(set VirtualGatewaySet) VirtualGatewaySet {
+	panic("unimplemented")
+}
+
+func (s *virtualGatewayMergedSet) Find(id ezkube.ResourceId) (*appmesh_k8s_aws_v1beta2.VirtualGateway, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find VirtualGateway %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&appmesh_k8s_aws_v1beta2.VirtualGateway{}, id)
+		if err == nil {
+			return obj.(*appmesh_k8s_aws_v1beta2.VirtualGateway), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *virtualGatewayMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *virtualGatewayMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *virtualGatewayMergedSet) Delta(newSet VirtualGatewaySet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *virtualGatewayMergedSet) Clone() VirtualGatewaySet {
+	if s == nil {
+		return nil
+	}
+	return &virtualGatewayMergedSet{sets: s.sets[:]}
 }
 
 type GatewayRouteSet interface {
@@ -1286,7 +2146,7 @@ func (s *gatewayRouteSet) Union(set GatewayRouteSet) GatewayRouteSet {
 	if s == nil {
 		return set
 	}
-	return NewGatewayRouteSet(append(s.List(), set.List()...)...)
+	return &gatewayRouteMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *gatewayRouteSet) Difference(set GatewayRouteSet) GatewayRouteSet {
@@ -1348,5 +2208,177 @@ func (s *gatewayRouteSet) Clone() GatewayRouteSet {
 	if s == nil {
 		return nil
 	}
-	return &gatewayRouteSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &gatewayRouteMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type gatewayRouteMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewGatewayRouteMergedSet(gatewayRouteList ...*appmesh_k8s_aws_v1beta2.GatewayRoute) GatewayRouteSet {
+	return &gatewayRouteMergedSet{sets: []sksets.ResourceSet{makeGenericGatewayRouteSet(gatewayRouteList)}}
+}
+
+func NewGatewayRouteMergedSetFromList(gatewayRouteList *appmesh_k8s_aws_v1beta2.GatewayRouteList) GatewayRouteSet {
+	list := make([]*appmesh_k8s_aws_v1beta2.GatewayRoute, 0, len(gatewayRouteList.Items))
+	for idx := range gatewayRouteList.Items {
+		list = append(list, &gatewayRouteList.Items[idx])
+	}
+	return &gatewayRouteMergedSet{sets: []sksets.ResourceSet{makeGenericGatewayRouteSet(list)}}
+}
+
+func (s *gatewayRouteMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *gatewayRouteMergedSet) List(filterResource ...func(*appmesh_k8s_aws_v1beta2.GatewayRoute) bool) []*appmesh_k8s_aws_v1beta2.GatewayRoute {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*appmesh_k8s_aws_v1beta2.GatewayRoute))
+		})
+	}
+	gatewayRouteList := []*appmesh_k8s_aws_v1beta2.GatewayRoute{}
+	for _, set := range s.sets {
+		for _, obj := range set.List(genericFilters...) {
+			gatewayRouteList = append(gatewayRouteList, obj.(*appmesh_k8s_aws_v1beta2.GatewayRoute))
+		}
+	}
+	return gatewayRouteList
+}
+
+func (s *gatewayRouteMergedSet) UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1beta2.GatewayRoute) bool) []*appmesh_k8s_aws_v1beta2.GatewayRoute {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*appmesh_k8s_aws_v1beta2.GatewayRoute))
+		})
+	}
+
+	gatewayRouteList := []*appmesh_k8s_aws_v1beta2.GatewayRoute{}
+	for _, set := range s.sets {
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			gatewayRouteList = append(gatewayRouteList, obj.(*appmesh_k8s_aws_v1beta2.GatewayRoute))
+		}
+	}
+	return gatewayRouteList
+}
+
+func (s *gatewayRouteMergedSet) Map() map[string]*appmesh_k8s_aws_v1beta2.GatewayRoute {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*appmesh_k8s_aws_v1beta2.GatewayRoute{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*appmesh_k8s_aws_v1beta2.GatewayRoute)
+		}
+	}
+	return newMap
+}
+
+func (s *gatewayRouteMergedSet) Insert(
+	gatewayRouteList ...*appmesh_k8s_aws_v1beta2.GatewayRoute,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericGatewayRouteSet(gatewayRouteList))
+	}
+	for _, obj := range gatewayRouteList {
+		s.sets[0].Insert(obj)
+	}
+}
+
+func (s *gatewayRouteMergedSet) Has(gatewayRoute ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(gatewayRoute) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *gatewayRouteMergedSet) Equal(
+	gatewayRouteSet GatewayRouteSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *gatewayRouteMergedSet) Delete(GatewayRoute ezkube.ResourceId) {
+	panic("unimplemented")
+}
+
+func (s *gatewayRouteMergedSet) Union(set GatewayRouteSet) GatewayRouteSet {
+	return &gatewayRouteMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *gatewayRouteMergedSet) Difference(set GatewayRouteSet) GatewayRouteSet {
+	panic("unimplemented")
+}
+
+func (s *gatewayRouteMergedSet) Intersection(set GatewayRouteSet) GatewayRouteSet {
+	panic("unimplemented")
+}
+
+func (s *gatewayRouteMergedSet) Find(id ezkube.ResourceId) (*appmesh_k8s_aws_v1beta2.GatewayRoute, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find GatewayRoute %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&appmesh_k8s_aws_v1beta2.GatewayRoute{}, id)
+		if err == nil {
+			return obj.(*appmesh_k8s_aws_v1beta2.GatewayRoute), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *gatewayRouteMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *gatewayRouteMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *gatewayRouteMergedSet) Delta(newSet GatewayRouteSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *gatewayRouteMergedSet) Clone() GatewayRouteSet {
+	if s == nil {
+		return nil
+	}
+	return &gatewayRouteMergedSet{sets: s.sets[:]}
 }

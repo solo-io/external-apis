@@ -171,7 +171,7 @@ func (s *ciliumNetworkPolicySet) Union(set CiliumNetworkPolicySet) CiliumNetwork
 	if s == nil {
 		return set
 	}
-	return NewCiliumNetworkPolicySet(append(s.List(), set.List()...)...)
+	return &ciliumNetworkPolicyMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *ciliumNetworkPolicySet) Difference(set CiliumNetworkPolicySet) CiliumNetworkPolicySet {
@@ -233,5 +233,177 @@ func (s *ciliumNetworkPolicySet) Clone() CiliumNetworkPolicySet {
 	if s == nil {
 		return nil
 	}
-	return &ciliumNetworkPolicySet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &ciliumNetworkPolicyMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type ciliumNetworkPolicyMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewCiliumNetworkPolicyMergedSet(ciliumNetworkPolicyList ...*cilium_io_v2.CiliumNetworkPolicy) CiliumNetworkPolicySet {
+	return &ciliumNetworkPolicyMergedSet{sets: []sksets.ResourceSet{makeGenericCiliumNetworkPolicySet(ciliumNetworkPolicyList)}}
+}
+
+func NewCiliumNetworkPolicyMergedSetFromList(ciliumNetworkPolicyList *cilium_io_v2.CiliumNetworkPolicyList) CiliumNetworkPolicySet {
+	list := make([]*cilium_io_v2.CiliumNetworkPolicy, 0, len(ciliumNetworkPolicyList.Items))
+	for idx := range ciliumNetworkPolicyList.Items {
+		list = append(list, &ciliumNetworkPolicyList.Items[idx])
+	}
+	return &ciliumNetworkPolicyMergedSet{sets: []sksets.ResourceSet{makeGenericCiliumNetworkPolicySet(list)}}
+}
+
+func (s *ciliumNetworkPolicyMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *ciliumNetworkPolicyMergedSet) List(filterResource ...func(*cilium_io_v2.CiliumNetworkPolicy) bool) []*cilium_io_v2.CiliumNetworkPolicy {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*cilium_io_v2.CiliumNetworkPolicy))
+		})
+	}
+	ciliumNetworkPolicyList := []*cilium_io_v2.CiliumNetworkPolicy{}
+	for _, set := range s.sets {
+		for _, obj := range set.List(genericFilters...) {
+			ciliumNetworkPolicyList = append(ciliumNetworkPolicyList, obj.(*cilium_io_v2.CiliumNetworkPolicy))
+		}
+	}
+	return ciliumNetworkPolicyList
+}
+
+func (s *ciliumNetworkPolicyMergedSet) UnsortedList(filterResource ...func(*cilium_io_v2.CiliumNetworkPolicy) bool) []*cilium_io_v2.CiliumNetworkPolicy {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*cilium_io_v2.CiliumNetworkPolicy))
+		})
+	}
+
+	ciliumNetworkPolicyList := []*cilium_io_v2.CiliumNetworkPolicy{}
+	for _, set := range s.sets {
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			ciliumNetworkPolicyList = append(ciliumNetworkPolicyList, obj.(*cilium_io_v2.CiliumNetworkPolicy))
+		}
+	}
+	return ciliumNetworkPolicyList
+}
+
+func (s *ciliumNetworkPolicyMergedSet) Map() map[string]*cilium_io_v2.CiliumNetworkPolicy {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*cilium_io_v2.CiliumNetworkPolicy{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*cilium_io_v2.CiliumNetworkPolicy)
+		}
+	}
+	return newMap
+}
+
+func (s *ciliumNetworkPolicyMergedSet) Insert(
+	ciliumNetworkPolicyList ...*cilium_io_v2.CiliumNetworkPolicy,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericCiliumNetworkPolicySet(ciliumNetworkPolicyList))
+	}
+	for _, obj := range ciliumNetworkPolicyList {
+		s.sets[0].Insert(obj)
+	}
+}
+
+func (s *ciliumNetworkPolicyMergedSet) Has(ciliumNetworkPolicy ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(ciliumNetworkPolicy) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *ciliumNetworkPolicyMergedSet) Equal(
+	ciliumNetworkPolicySet CiliumNetworkPolicySet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *ciliumNetworkPolicyMergedSet) Delete(CiliumNetworkPolicy ezkube.ResourceId) {
+	panic("unimplemented")
+}
+
+func (s *ciliumNetworkPolicyMergedSet) Union(set CiliumNetworkPolicySet) CiliumNetworkPolicySet {
+	return &ciliumNetworkPolicyMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *ciliumNetworkPolicyMergedSet) Difference(set CiliumNetworkPolicySet) CiliumNetworkPolicySet {
+	panic("unimplemented")
+}
+
+func (s *ciliumNetworkPolicyMergedSet) Intersection(set CiliumNetworkPolicySet) CiliumNetworkPolicySet {
+	panic("unimplemented")
+}
+
+func (s *ciliumNetworkPolicyMergedSet) Find(id ezkube.ResourceId) (*cilium_io_v2.CiliumNetworkPolicy, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find CiliumNetworkPolicy %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&cilium_io_v2.CiliumNetworkPolicy{}, id)
+		if err == nil {
+			return obj.(*cilium_io_v2.CiliumNetworkPolicy), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *ciliumNetworkPolicyMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *ciliumNetworkPolicyMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *ciliumNetworkPolicyMergedSet) Delta(newSet CiliumNetworkPolicySet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *ciliumNetworkPolicyMergedSet) Clone() CiliumNetworkPolicySet {
+	if s == nil {
+		return nil
+	}
+	return &ciliumNetworkPolicyMergedSet{sets: s.sets[:]}
 }

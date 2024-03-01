@@ -171,7 +171,7 @@ func (s *hTTPRouteGroupSet) Union(set HTTPRouteGroupSet) HTTPRouteGroupSet {
 	if s == nil {
 		return set
 	}
-	return NewHTTPRouteGroupSet(append(s.List(), set.List()...)...)
+	return &hTTPRouteGroupMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *hTTPRouteGroupSet) Difference(set HTTPRouteGroupSet) HTTPRouteGroupSet {
@@ -233,5 +233,177 @@ func (s *hTTPRouteGroupSet) Clone() HTTPRouteGroupSet {
 	if s == nil {
 		return nil
 	}
-	return &hTTPRouteGroupSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &hTTPRouteGroupMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type hTTPRouteGroupMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewHTTPRouteGroupMergedSet(hTTPRouteGroupList ...*specs_smi_spec_io_v1alpha3.HTTPRouteGroup) HTTPRouteGroupSet {
+	return &hTTPRouteGroupMergedSet{sets: []sksets.ResourceSet{makeGenericHTTPRouteGroupSet(hTTPRouteGroupList)}}
+}
+
+func NewHTTPRouteGroupMergedSetFromList(hTTPRouteGroupList *specs_smi_spec_io_v1alpha3.HTTPRouteGroupList) HTTPRouteGroupSet {
+	list := make([]*specs_smi_spec_io_v1alpha3.HTTPRouteGroup, 0, len(hTTPRouteGroupList.Items))
+	for idx := range hTTPRouteGroupList.Items {
+		list = append(list, &hTTPRouteGroupList.Items[idx])
+	}
+	return &hTTPRouteGroupMergedSet{sets: []sksets.ResourceSet{makeGenericHTTPRouteGroupSet(list)}}
+}
+
+func (s *hTTPRouteGroupMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *hTTPRouteGroupMergedSet) List(filterResource ...func(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup) bool) []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
+		})
+	}
+	hTTPRouteGroupList := []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}
+	for _, set := range s.sets {
+		for _, obj := range set.List(genericFilters...) {
+			hTTPRouteGroupList = append(hTTPRouteGroupList, obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
+		}
+	}
+	return hTTPRouteGroupList
+}
+
+func (s *hTTPRouteGroupMergedSet) UnsortedList(filterResource ...func(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup) bool) []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
+		})
+	}
+
+	hTTPRouteGroupList := []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}
+	for _, set := range s.sets {
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			hTTPRouteGroupList = append(hTTPRouteGroupList, obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
+		}
+	}
+	return hTTPRouteGroupList
+}
+
+func (s *hTTPRouteGroupMergedSet) Map() map[string]*specs_smi_spec_io_v1alpha3.HTTPRouteGroup {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup)
+		}
+	}
+	return newMap
+}
+
+func (s *hTTPRouteGroupMergedSet) Insert(
+	hTTPRouteGroupList ...*specs_smi_spec_io_v1alpha3.HTTPRouteGroup,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericHTTPRouteGroupSet(hTTPRouteGroupList))
+	}
+	for _, obj := range hTTPRouteGroupList {
+		s.sets[0].Insert(obj)
+	}
+}
+
+func (s *hTTPRouteGroupMergedSet) Has(hTTPRouteGroup ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(hTTPRouteGroup) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *hTTPRouteGroupMergedSet) Equal(
+	hTTPRouteGroupSet HTTPRouteGroupSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *hTTPRouteGroupMergedSet) Delete(HTTPRouteGroup ezkube.ResourceId) {
+	panic("unimplemented")
+}
+
+func (s *hTTPRouteGroupMergedSet) Union(set HTTPRouteGroupSet) HTTPRouteGroupSet {
+	return &hTTPRouteGroupMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *hTTPRouteGroupMergedSet) Difference(set HTTPRouteGroupSet) HTTPRouteGroupSet {
+	panic("unimplemented")
+}
+
+func (s *hTTPRouteGroupMergedSet) Intersection(set HTTPRouteGroupSet) HTTPRouteGroupSet {
+	panic("unimplemented")
+}
+
+func (s *hTTPRouteGroupMergedSet) Find(id ezkube.ResourceId) (*specs_smi_spec_io_v1alpha3.HTTPRouteGroup, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find HTTPRouteGroup %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}, id)
+		if err == nil {
+			return obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *hTTPRouteGroupMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *hTTPRouteGroupMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *hTTPRouteGroupMergedSet) Delta(newSet HTTPRouteGroupSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *hTTPRouteGroupMergedSet) Clone() HTTPRouteGroupSet {
+	if s == nil {
+		return nil
+	}
+	return &hTTPRouteGroupMergedSet{sets: s.sets[:]}
 }

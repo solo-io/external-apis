@@ -171,7 +171,7 @@ func (s *authorizationPolicySet) Union(set AuthorizationPolicySet) Authorization
 	if s == nil {
 		return set
 	}
-	return NewAuthorizationPolicySet(append(s.List(), set.List()...)...)
+	return &authorizationPolicyMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *authorizationPolicySet) Difference(set AuthorizationPolicySet) AuthorizationPolicySet {
@@ -233,7 +233,179 @@ func (s *authorizationPolicySet) Clone() AuthorizationPolicySet {
 	if s == nil {
 		return nil
 	}
-	return &authorizationPolicySet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &authorizationPolicyMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type authorizationPolicyMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewAuthorizationPolicyMergedSet(authorizationPolicyList ...*security_istio_io_v1beta1.AuthorizationPolicy) AuthorizationPolicySet {
+	return &authorizationPolicyMergedSet{sets: []sksets.ResourceSet{makeGenericAuthorizationPolicySet(authorizationPolicyList)}}
+}
+
+func NewAuthorizationPolicyMergedSetFromList(authorizationPolicyList *security_istio_io_v1beta1.AuthorizationPolicyList) AuthorizationPolicySet {
+	list := make([]*security_istio_io_v1beta1.AuthorizationPolicy, 0, len(authorizationPolicyList.Items))
+	for idx := range authorizationPolicyList.Items {
+		list = append(list, authorizationPolicyList.Items[idx])
+	}
+	return &authorizationPolicyMergedSet{sets: []sksets.ResourceSet{makeGenericAuthorizationPolicySet(list)}}
+}
+
+func (s *authorizationPolicyMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *authorizationPolicyMergedSet) List(filterResource ...func(*security_istio_io_v1beta1.AuthorizationPolicy) bool) []*security_istio_io_v1beta1.AuthorizationPolicy {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*security_istio_io_v1beta1.AuthorizationPolicy))
+		})
+	}
+	authorizationPolicyList := []*security_istio_io_v1beta1.AuthorizationPolicy{}
+	for _, set := range s.sets {
+		for _, obj := range set.List(genericFilters...) {
+			authorizationPolicyList = append(authorizationPolicyList, obj.(*security_istio_io_v1beta1.AuthorizationPolicy))
+		}
+	}
+	return authorizationPolicyList
+}
+
+func (s *authorizationPolicyMergedSet) UnsortedList(filterResource ...func(*security_istio_io_v1beta1.AuthorizationPolicy) bool) []*security_istio_io_v1beta1.AuthorizationPolicy {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*security_istio_io_v1beta1.AuthorizationPolicy))
+		})
+	}
+
+	authorizationPolicyList := []*security_istio_io_v1beta1.AuthorizationPolicy{}
+	for _, set := range s.sets {
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			authorizationPolicyList = append(authorizationPolicyList, obj.(*security_istio_io_v1beta1.AuthorizationPolicy))
+		}
+	}
+	return authorizationPolicyList
+}
+
+func (s *authorizationPolicyMergedSet) Map() map[string]*security_istio_io_v1beta1.AuthorizationPolicy {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*security_istio_io_v1beta1.AuthorizationPolicy{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*security_istio_io_v1beta1.AuthorizationPolicy)
+		}
+	}
+	return newMap
+}
+
+func (s *authorizationPolicyMergedSet) Insert(
+	authorizationPolicyList ...*security_istio_io_v1beta1.AuthorizationPolicy,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericAuthorizationPolicySet(authorizationPolicyList))
+	}
+	for _, obj := range authorizationPolicyList {
+		s.sets[0].Insert(obj)
+	}
+}
+
+func (s *authorizationPolicyMergedSet) Has(authorizationPolicy ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(authorizationPolicy) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *authorizationPolicyMergedSet) Equal(
+	authorizationPolicySet AuthorizationPolicySet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *authorizationPolicyMergedSet) Delete(AuthorizationPolicy ezkube.ResourceId) {
+	panic("unimplemented")
+}
+
+func (s *authorizationPolicyMergedSet) Union(set AuthorizationPolicySet) AuthorizationPolicySet {
+	return &authorizationPolicyMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *authorizationPolicyMergedSet) Difference(set AuthorizationPolicySet) AuthorizationPolicySet {
+	panic("unimplemented")
+}
+
+func (s *authorizationPolicyMergedSet) Intersection(set AuthorizationPolicySet) AuthorizationPolicySet {
+	panic("unimplemented")
+}
+
+func (s *authorizationPolicyMergedSet) Find(id ezkube.ResourceId) (*security_istio_io_v1beta1.AuthorizationPolicy, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find AuthorizationPolicy %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&security_istio_io_v1beta1.AuthorizationPolicy{}, id)
+		if err == nil {
+			return obj.(*security_istio_io_v1beta1.AuthorizationPolicy), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *authorizationPolicyMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *authorizationPolicyMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *authorizationPolicyMergedSet) Delta(newSet AuthorizationPolicySet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *authorizationPolicyMergedSet) Clone() AuthorizationPolicySet {
+	if s == nil {
+		return nil
+	}
+	return &authorizationPolicyMergedSet{sets: s.sets[:]}
 }
 
 type PeerAuthenticationSet interface {
@@ -394,7 +566,7 @@ func (s *peerAuthenticationSet) Union(set PeerAuthenticationSet) PeerAuthenticat
 	if s == nil {
 		return set
 	}
-	return NewPeerAuthenticationSet(append(s.List(), set.List()...)...)
+	return &peerAuthenticationMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *peerAuthenticationSet) Difference(set PeerAuthenticationSet) PeerAuthenticationSet {
@@ -456,5 +628,177 @@ func (s *peerAuthenticationSet) Clone() PeerAuthenticationSet {
 	if s == nil {
 		return nil
 	}
-	return &peerAuthenticationSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &peerAuthenticationMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type peerAuthenticationMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewPeerAuthenticationMergedSet(peerAuthenticationList ...*security_istio_io_v1beta1.PeerAuthentication) PeerAuthenticationSet {
+	return &peerAuthenticationMergedSet{sets: []sksets.ResourceSet{makeGenericPeerAuthenticationSet(peerAuthenticationList)}}
+}
+
+func NewPeerAuthenticationMergedSetFromList(peerAuthenticationList *security_istio_io_v1beta1.PeerAuthenticationList) PeerAuthenticationSet {
+	list := make([]*security_istio_io_v1beta1.PeerAuthentication, 0, len(peerAuthenticationList.Items))
+	for idx := range peerAuthenticationList.Items {
+		list = append(list, peerAuthenticationList.Items[idx])
+	}
+	return &peerAuthenticationMergedSet{sets: []sksets.ResourceSet{makeGenericPeerAuthenticationSet(list)}}
+}
+
+func (s *peerAuthenticationMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *peerAuthenticationMergedSet) List(filterResource ...func(*security_istio_io_v1beta1.PeerAuthentication) bool) []*security_istio_io_v1beta1.PeerAuthentication {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*security_istio_io_v1beta1.PeerAuthentication))
+		})
+	}
+	peerAuthenticationList := []*security_istio_io_v1beta1.PeerAuthentication{}
+	for _, set := range s.sets {
+		for _, obj := range set.List(genericFilters...) {
+			peerAuthenticationList = append(peerAuthenticationList, obj.(*security_istio_io_v1beta1.PeerAuthentication))
+		}
+	}
+	return peerAuthenticationList
+}
+
+func (s *peerAuthenticationMergedSet) UnsortedList(filterResource ...func(*security_istio_io_v1beta1.PeerAuthentication) bool) []*security_istio_io_v1beta1.PeerAuthentication {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*security_istio_io_v1beta1.PeerAuthentication))
+		})
+	}
+
+	peerAuthenticationList := []*security_istio_io_v1beta1.PeerAuthentication{}
+	for _, set := range s.sets {
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			peerAuthenticationList = append(peerAuthenticationList, obj.(*security_istio_io_v1beta1.PeerAuthentication))
+		}
+	}
+	return peerAuthenticationList
+}
+
+func (s *peerAuthenticationMergedSet) Map() map[string]*security_istio_io_v1beta1.PeerAuthentication {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*security_istio_io_v1beta1.PeerAuthentication{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*security_istio_io_v1beta1.PeerAuthentication)
+		}
+	}
+	return newMap
+}
+
+func (s *peerAuthenticationMergedSet) Insert(
+	peerAuthenticationList ...*security_istio_io_v1beta1.PeerAuthentication,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericPeerAuthenticationSet(peerAuthenticationList))
+	}
+	for _, obj := range peerAuthenticationList {
+		s.sets[0].Insert(obj)
+	}
+}
+
+func (s *peerAuthenticationMergedSet) Has(peerAuthentication ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(peerAuthentication) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *peerAuthenticationMergedSet) Equal(
+	peerAuthenticationSet PeerAuthenticationSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *peerAuthenticationMergedSet) Delete(PeerAuthentication ezkube.ResourceId) {
+	panic("unimplemented")
+}
+
+func (s *peerAuthenticationMergedSet) Union(set PeerAuthenticationSet) PeerAuthenticationSet {
+	return &peerAuthenticationMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *peerAuthenticationMergedSet) Difference(set PeerAuthenticationSet) PeerAuthenticationSet {
+	panic("unimplemented")
+}
+
+func (s *peerAuthenticationMergedSet) Intersection(set PeerAuthenticationSet) PeerAuthenticationSet {
+	panic("unimplemented")
+}
+
+func (s *peerAuthenticationMergedSet) Find(id ezkube.ResourceId) (*security_istio_io_v1beta1.PeerAuthentication, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find PeerAuthentication %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&security_istio_io_v1beta1.PeerAuthentication{}, id)
+		if err == nil {
+			return obj.(*security_istio_io_v1beta1.PeerAuthentication), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *peerAuthenticationMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *peerAuthenticationMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *peerAuthenticationMergedSet) Delta(newSet PeerAuthenticationSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *peerAuthenticationMergedSet) Clone() PeerAuthenticationSet {
+	if s == nil {
+		return nil
+	}
+	return &peerAuthenticationMergedSet{sets: s.sets[:]}
 }

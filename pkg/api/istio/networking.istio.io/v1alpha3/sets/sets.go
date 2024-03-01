@@ -171,7 +171,7 @@ func (s *envoyFilterSet) Union(set EnvoyFilterSet) EnvoyFilterSet {
 	if s == nil {
 		return set
 	}
-	return NewEnvoyFilterSet(append(s.List(), set.List()...)...)
+	return &envoyFilterMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *envoyFilterSet) Difference(set EnvoyFilterSet) EnvoyFilterSet {
@@ -233,5 +233,177 @@ func (s *envoyFilterSet) Clone() EnvoyFilterSet {
 	if s == nil {
 		return nil
 	}
-	return &envoyFilterSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &envoyFilterMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type envoyFilterMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewEnvoyFilterMergedSet(envoyFilterList ...*networking_istio_io_v1alpha3.EnvoyFilter) EnvoyFilterSet {
+	return &envoyFilterMergedSet{sets: []sksets.ResourceSet{makeGenericEnvoyFilterSet(envoyFilterList)}}
+}
+
+func NewEnvoyFilterMergedSetFromList(envoyFilterList *networking_istio_io_v1alpha3.EnvoyFilterList) EnvoyFilterSet {
+	list := make([]*networking_istio_io_v1alpha3.EnvoyFilter, 0, len(envoyFilterList.Items))
+	for idx := range envoyFilterList.Items {
+		list = append(list, envoyFilterList.Items[idx])
+	}
+	return &envoyFilterMergedSet{sets: []sksets.ResourceSet{makeGenericEnvoyFilterSet(list)}}
+}
+
+func (s *envoyFilterMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *envoyFilterMergedSet) List(filterResource ...func(*networking_istio_io_v1alpha3.EnvoyFilter) bool) []*networking_istio_io_v1alpha3.EnvoyFilter {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1alpha3.EnvoyFilter))
+		})
+	}
+	envoyFilterList := []*networking_istio_io_v1alpha3.EnvoyFilter{}
+	for _, set := range s.sets {
+		for _, obj := range set.List(genericFilters...) {
+			envoyFilterList = append(envoyFilterList, obj.(*networking_istio_io_v1alpha3.EnvoyFilter))
+		}
+	}
+	return envoyFilterList
+}
+
+func (s *envoyFilterMergedSet) UnsortedList(filterResource ...func(*networking_istio_io_v1alpha3.EnvoyFilter) bool) []*networking_istio_io_v1alpha3.EnvoyFilter {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1alpha3.EnvoyFilter))
+		})
+	}
+
+	envoyFilterList := []*networking_istio_io_v1alpha3.EnvoyFilter{}
+	for _, set := range s.sets {
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			envoyFilterList = append(envoyFilterList, obj.(*networking_istio_io_v1alpha3.EnvoyFilter))
+		}
+	}
+	return envoyFilterList
+}
+
+func (s *envoyFilterMergedSet) Map() map[string]*networking_istio_io_v1alpha3.EnvoyFilter {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*networking_istio_io_v1alpha3.EnvoyFilter{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*networking_istio_io_v1alpha3.EnvoyFilter)
+		}
+	}
+	return newMap
+}
+
+func (s *envoyFilterMergedSet) Insert(
+	envoyFilterList ...*networking_istio_io_v1alpha3.EnvoyFilter,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericEnvoyFilterSet(envoyFilterList))
+	}
+	for _, obj := range envoyFilterList {
+		s.sets[0].Insert(obj)
+	}
+}
+
+func (s *envoyFilterMergedSet) Has(envoyFilter ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(envoyFilter) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *envoyFilterMergedSet) Equal(
+	envoyFilterSet EnvoyFilterSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *envoyFilterMergedSet) Delete(EnvoyFilter ezkube.ResourceId) {
+	panic("unimplemented")
+}
+
+func (s *envoyFilterMergedSet) Union(set EnvoyFilterSet) EnvoyFilterSet {
+	return &envoyFilterMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *envoyFilterMergedSet) Difference(set EnvoyFilterSet) EnvoyFilterSet {
+	panic("unimplemented")
+}
+
+func (s *envoyFilterMergedSet) Intersection(set EnvoyFilterSet) EnvoyFilterSet {
+	panic("unimplemented")
+}
+
+func (s *envoyFilterMergedSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.EnvoyFilter, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find EnvoyFilter %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&networking_istio_io_v1alpha3.EnvoyFilter{}, id)
+		if err == nil {
+			return obj.(*networking_istio_io_v1alpha3.EnvoyFilter), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *envoyFilterMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *envoyFilterMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *envoyFilterMergedSet) Delta(newSet EnvoyFilterSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *envoyFilterMergedSet) Clone() EnvoyFilterSet {
+	if s == nil {
+		return nil
+	}
+	return &envoyFilterMergedSet{sets: s.sets[:]}
 }
