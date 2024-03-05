@@ -459,6 +459,229 @@ func (s *gatewaySet) Clone() GatewaySet {
 	return &gatewaySet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
 }
 
+type ProxyConfigSet interface {
+	// Get the set stored keys
+	Keys() sets.String
+	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
+	List(filterResource ...func(*networking_istio_io_v1beta1.ProxyConfig) bool) []*networking_istio_io_v1beta1.ProxyConfig
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
+	UnsortedList(filterResource ...func(*networking_istio_io_v1beta1.ProxyConfig) bool) []*networking_istio_io_v1beta1.ProxyConfig
+	// Return the Set as a map of key to resource.
+	Map() map[string]*networking_istio_io_v1beta1.ProxyConfig
+	// Insert a resource into the set.
+	Insert(proxyConfig ...*networking_istio_io_v1beta1.ProxyConfig)
+	// Compare the equality of the keys in two sets (not the resources themselves)
+	Equal(proxyConfigSet ProxyConfigSet) bool
+	// Check if the set contains a key matching the resource (not the resource itself)
+	Has(proxyConfig ezkube.ResourceId) bool
+	// Delete the key matching the resource
+	Delete(proxyConfig ezkube.ResourceId)
+	// Return the union with the provided set
+	Union(set ProxyConfigSet) ProxyConfigSet
+	// Return the difference with the provided set
+	Difference(set ProxyConfigSet) ProxyConfigSet
+	// Return the intersection with the provided set
+	Intersection(set ProxyConfigSet) ProxyConfigSet
+	// Find the resource with the given ID
+	Find(id ezkube.ResourceId) (*networking_istio_io_v1beta1.ProxyConfig, error)
+	// Get the length of the set
+	Length() int
+	// returns the generic implementation of the set
+	Generic() sksets.ResourceSet
+	// returns the delta between this and and another ProxyConfigSet
+	Delta(newSet ProxyConfigSet) sksets.ResourceDelta
+	// Create a deep copy of the current ProxyConfigSet
+	Clone() ProxyConfigSet
+}
+
+func makeGenericProxyConfigSet(proxyConfigList []*networking_istio_io_v1beta1.ProxyConfig) sksets.ResourceSet {
+	var genericResources []ezkube.ResourceId
+	for _, obj := range proxyConfigList {
+		genericResources = append(genericResources, obj)
+	}
+	return sksets.NewResourceSet(genericResources...)
+}
+
+type proxyConfigSet struct {
+	set sksets.ResourceSet
+}
+
+func NewProxyConfigSet(proxyConfigList ...*networking_istio_io_v1beta1.ProxyConfig) ProxyConfigSet {
+	return &proxyConfigSet{set: makeGenericProxyConfigSet(proxyConfigList)}
+}
+
+func NewProxyConfigSetFromList(proxyConfigList *networking_istio_io_v1beta1.ProxyConfigList) ProxyConfigSet {
+	list := make([]*networking_istio_io_v1beta1.ProxyConfig, 0, len(proxyConfigList.Items))
+	for idx := range proxyConfigList.Items {
+		list = append(list, proxyConfigList.Items[idx])
+	}
+	return &proxyConfigSet{set: makeGenericProxyConfigSet(list)}
+}
+
+func (s *proxyConfigSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	return s.Generic().Keys()
+}
+
+func (s *proxyConfigSet) List(filterResource ...func(*networking_istio_io_v1beta1.ProxyConfig) bool) []*networking_istio_io_v1beta1.ProxyConfig {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1beta1.ProxyConfig))
+		})
+	}
+
+	objs := s.Generic().List(genericFilters...)
+	proxyConfigList := make([]*networking_istio_io_v1beta1.ProxyConfig, 0, len(objs))
+	for _, obj := range objs {
+		proxyConfigList = append(proxyConfigList, obj.(*networking_istio_io_v1beta1.ProxyConfig))
+	}
+	return proxyConfigList
+}
+
+func (s *proxyConfigSet) UnsortedList(filterResource ...func(*networking_istio_io_v1beta1.ProxyConfig) bool) []*networking_istio_io_v1beta1.ProxyConfig {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1beta1.ProxyConfig))
+		})
+	}
+
+	var proxyConfigList []*networking_istio_io_v1beta1.ProxyConfig
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
+		proxyConfigList = append(proxyConfigList, obj.(*networking_istio_io_v1beta1.ProxyConfig))
+	}
+	return proxyConfigList
+}
+
+func (s *proxyConfigSet) Map() map[string]*networking_istio_io_v1beta1.ProxyConfig {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*networking_istio_io_v1beta1.ProxyConfig{}
+	for k, v := range s.Generic().Map() {
+		newMap[k] = v.(*networking_istio_io_v1beta1.ProxyConfig)
+	}
+	return newMap
+}
+
+func (s *proxyConfigSet) Insert(
+	proxyConfigList ...*networking_istio_io_v1beta1.ProxyConfig,
+) {
+	if s == nil {
+		panic("cannot insert into nil set")
+	}
+
+	for _, obj := range proxyConfigList {
+		s.Generic().Insert(obj)
+	}
+}
+
+func (s *proxyConfigSet) Has(proxyConfig ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	return s.Generic().Has(proxyConfig)
+}
+
+func (s *proxyConfigSet) Equal(
+	proxyConfigSet ProxyConfigSet,
+) bool {
+	if s == nil {
+		return proxyConfigSet == nil
+	}
+	return s.Generic().Equal(proxyConfigSet.Generic())
+}
+
+func (s *proxyConfigSet) Delete(ProxyConfig ezkube.ResourceId) {
+	if s == nil {
+		return
+	}
+	s.Generic().Delete(ProxyConfig)
+}
+
+func (s *proxyConfigSet) Union(set ProxyConfigSet) ProxyConfigSet {
+	if s == nil {
+		return set
+	}
+	return NewProxyConfigSet(append(s.List(), set.List()...)...)
+}
+
+func (s *proxyConfigSet) Difference(set ProxyConfigSet) ProxyConfigSet {
+	if s == nil {
+		return set
+	}
+	newSet := s.Generic().Difference(set.Generic())
+	return &proxyConfigSet{set: newSet}
+}
+
+func (s *proxyConfigSet) Intersection(set ProxyConfigSet) ProxyConfigSet {
+	if s == nil {
+		return nil
+	}
+	newSet := s.Generic().Intersection(set.Generic())
+	var proxyConfigList []*networking_istio_io_v1beta1.ProxyConfig
+	for _, obj := range newSet.List() {
+		proxyConfigList = append(proxyConfigList, obj.(*networking_istio_io_v1beta1.ProxyConfig))
+	}
+	return NewProxyConfigSet(proxyConfigList...)
+}
+
+func (s *proxyConfigSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1beta1.ProxyConfig, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find ProxyConfig %v", sksets.Key(id))
+	}
+	obj, err := s.Generic().Find(&networking_istio_io_v1beta1.ProxyConfig{}, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return obj.(*networking_istio_io_v1beta1.ProxyConfig), nil
+}
+
+func (s *proxyConfigSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	return s.Generic().Length()
+}
+
+func (s *proxyConfigSet) Generic() sksets.ResourceSet {
+	if s == nil {
+		return nil
+	}
+	return s.set
+}
+
+func (s *proxyConfigSet) Delta(newSet ProxyConfigSet) sksets.ResourceDelta {
+	if s == nil {
+		return sksets.ResourceDelta{
+			Inserted: newSet.Generic(),
+		}
+	}
+	return s.Generic().Delta(newSet.Generic())
+}
+
+func (s *proxyConfigSet) Clone() ProxyConfigSet {
+	if s == nil {
+		return nil
+	}
+	return &proxyConfigSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}
+
 type ServiceEntrySet interface {
 	// Get the set stored keys
 	Keys() sets.String

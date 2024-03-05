@@ -381,6 +381,189 @@ func (mr *MockGatewayReconcileLoopMockRecorder) RunGatewayReconciler(ctx, rec in
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunGatewayReconciler", reflect.TypeOf((*MockGatewayReconcileLoop)(nil).RunGatewayReconciler), varargs...)
 }
 
+// MockProxyConfigReconciler is a mock of ProxyConfigReconciler interface.
+type MockProxyConfigReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockProxyConfigReconcilerMockRecorder
+}
+
+// MockProxyConfigReconcilerMockRecorder is the mock recorder for MockProxyConfigReconciler.
+type MockProxyConfigReconcilerMockRecorder struct {
+	mock *MockProxyConfigReconciler
+}
+
+// NewMockProxyConfigReconciler creates a new mock instance.
+func NewMockProxyConfigReconciler(ctrl *gomock.Controller) *MockProxyConfigReconciler {
+	mock := &MockProxyConfigReconciler{ctrl: ctrl}
+	mock.recorder = &MockProxyConfigReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockProxyConfigReconciler) EXPECT() *MockProxyConfigReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileProxyConfig mocks base method.
+func (m *MockProxyConfigReconciler) ReconcileProxyConfig(obj *v1beta1.ProxyConfig) (reconcile.Result, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileProxyConfig", obj)
+	ret0, _ := ret[0].(reconcile.Result)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReconcileProxyConfig indicates an expected call of ReconcileProxyConfig.
+func (mr *MockProxyConfigReconcilerMockRecorder) ReconcileProxyConfig(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileProxyConfig", reflect.TypeOf((*MockProxyConfigReconciler)(nil).ReconcileProxyConfig), obj)
+}
+
+// MockProxyConfigDeletionReconciler is a mock of ProxyConfigDeletionReconciler interface.
+type MockProxyConfigDeletionReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockProxyConfigDeletionReconcilerMockRecorder
+}
+
+// MockProxyConfigDeletionReconcilerMockRecorder is the mock recorder for MockProxyConfigDeletionReconciler.
+type MockProxyConfigDeletionReconcilerMockRecorder struct {
+	mock *MockProxyConfigDeletionReconciler
+}
+
+// NewMockProxyConfigDeletionReconciler creates a new mock instance.
+func NewMockProxyConfigDeletionReconciler(ctrl *gomock.Controller) *MockProxyConfigDeletionReconciler {
+	mock := &MockProxyConfigDeletionReconciler{ctrl: ctrl}
+	mock.recorder = &MockProxyConfigDeletionReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockProxyConfigDeletionReconciler) EXPECT() *MockProxyConfigDeletionReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileProxyConfigDeletion mocks base method.
+func (m *MockProxyConfigDeletionReconciler) ReconcileProxyConfigDeletion(req reconcile.Request) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileProxyConfigDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ReconcileProxyConfigDeletion indicates an expected call of ReconcileProxyConfigDeletion.
+func (mr *MockProxyConfigDeletionReconcilerMockRecorder) ReconcileProxyConfigDeletion(req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileProxyConfigDeletion", reflect.TypeOf((*MockProxyConfigDeletionReconciler)(nil).ReconcileProxyConfigDeletion), req)
+}
+
+// MockProxyConfigFinalizer is a mock of ProxyConfigFinalizer interface.
+type MockProxyConfigFinalizer struct {
+	ctrl     *gomock.Controller
+	recorder *MockProxyConfigFinalizerMockRecorder
+}
+
+// MockProxyConfigFinalizerMockRecorder is the mock recorder for MockProxyConfigFinalizer.
+type MockProxyConfigFinalizerMockRecorder struct {
+	mock *MockProxyConfigFinalizer
+}
+
+// NewMockProxyConfigFinalizer creates a new mock instance.
+func NewMockProxyConfigFinalizer(ctrl *gomock.Controller) *MockProxyConfigFinalizer {
+	mock := &MockProxyConfigFinalizer{ctrl: ctrl}
+	mock.recorder = &MockProxyConfigFinalizerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockProxyConfigFinalizer) EXPECT() *MockProxyConfigFinalizerMockRecorder {
+	return m.recorder
+}
+
+// FinalizeProxyConfig mocks base method.
+func (m *MockProxyConfigFinalizer) FinalizeProxyConfig(obj *v1beta1.ProxyConfig) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FinalizeProxyConfig", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// FinalizeProxyConfig indicates an expected call of FinalizeProxyConfig.
+func (mr *MockProxyConfigFinalizerMockRecorder) FinalizeProxyConfig(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FinalizeProxyConfig", reflect.TypeOf((*MockProxyConfigFinalizer)(nil).FinalizeProxyConfig), obj)
+}
+
+// ProxyConfigFinalizerName mocks base method.
+func (m *MockProxyConfigFinalizer) ProxyConfigFinalizerName() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ProxyConfigFinalizerName")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// ProxyConfigFinalizerName indicates an expected call of ProxyConfigFinalizerName.
+func (mr *MockProxyConfigFinalizerMockRecorder) ProxyConfigFinalizerName() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ProxyConfigFinalizerName", reflect.TypeOf((*MockProxyConfigFinalizer)(nil).ProxyConfigFinalizerName))
+}
+
+// ReconcileProxyConfig mocks base method.
+func (m *MockProxyConfigFinalizer) ReconcileProxyConfig(obj *v1beta1.ProxyConfig) (reconcile.Result, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileProxyConfig", obj)
+	ret0, _ := ret[0].(reconcile.Result)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReconcileProxyConfig indicates an expected call of ReconcileProxyConfig.
+func (mr *MockProxyConfigFinalizerMockRecorder) ReconcileProxyConfig(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileProxyConfig", reflect.TypeOf((*MockProxyConfigFinalizer)(nil).ReconcileProxyConfig), obj)
+}
+
+// MockProxyConfigReconcileLoop is a mock of ProxyConfigReconcileLoop interface.
+type MockProxyConfigReconcileLoop struct {
+	ctrl     *gomock.Controller
+	recorder *MockProxyConfigReconcileLoopMockRecorder
+}
+
+// MockProxyConfigReconcileLoopMockRecorder is the mock recorder for MockProxyConfigReconcileLoop.
+type MockProxyConfigReconcileLoopMockRecorder struct {
+	mock *MockProxyConfigReconcileLoop
+}
+
+// NewMockProxyConfigReconcileLoop creates a new mock instance.
+func NewMockProxyConfigReconcileLoop(ctrl *gomock.Controller) *MockProxyConfigReconcileLoop {
+	mock := &MockProxyConfigReconcileLoop{ctrl: ctrl}
+	mock.recorder = &MockProxyConfigReconcileLoopMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockProxyConfigReconcileLoop) EXPECT() *MockProxyConfigReconcileLoopMockRecorder {
+	return m.recorder
+}
+
+// RunProxyConfigReconciler mocks base method.
+func (m *MockProxyConfigReconcileLoop) RunProxyConfigReconciler(ctx context.Context, rec controller.ProxyConfigReconciler, predicates ...predicate.Predicate) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, rec}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "RunProxyConfigReconciler", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// RunProxyConfigReconciler indicates an expected call of RunProxyConfigReconciler.
+func (mr *MockProxyConfigReconcileLoopMockRecorder) RunProxyConfigReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, rec}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunProxyConfigReconciler", reflect.TypeOf((*MockProxyConfigReconcileLoop)(nil).RunProxyConfigReconciler), varargs...)
+}
+
 // MockServiceEntryReconciler is a mock of ServiceEntryReconciler interface.
 type MockServiceEntryReconciler struct {
 	ctrl     *gomock.Controller

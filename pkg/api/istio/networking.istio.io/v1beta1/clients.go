@@ -45,6 +45,8 @@ type Clientset interface {
 	// clienset for the networking.istio.io/v1beta1/v1beta1 APIs
 	Gateways() GatewayClient
 	// clienset for the networking.istio.io/v1beta1/v1beta1 APIs
+	ProxyConfigs() ProxyConfigClient
+	// clienset for the networking.istio.io/v1beta1/v1beta1 APIs
 	ServiceEntries() ServiceEntryClient
 	// clienset for the networking.istio.io/v1beta1/v1beta1 APIs
 	WorkloadEntries() WorkloadEntryClient
@@ -86,6 +88,11 @@ func (c *clientSet) DestinationRules() DestinationRuleClient {
 // clienset for the networking.istio.io/v1beta1/v1beta1 APIs
 func (c *clientSet) Gateways() GatewayClient {
 	return NewGatewayClient(c.client)
+}
+
+// clienset for the networking.istio.io/v1beta1/v1beta1 APIs
+func (c *clientSet) ProxyConfigs() ProxyConfigClient {
+	return NewProxyConfigClient(c.client)
 }
 
 // clienset for the networking.istio.io/v1beta1/v1beta1 APIs
@@ -395,6 +402,148 @@ func (m *multiclusterGatewayClient) Cluster(cluster string) (GatewayClient, erro
 		return nil, err
 	}
 	return NewGatewayClient(client), nil
+}
+
+// Reader knows how to read and list ProxyConfigs.
+type ProxyConfigReader interface {
+	// Get retrieves a ProxyConfig for the given object key
+	GetProxyConfig(ctx context.Context, key client.ObjectKey) (*networking_istio_io_v1beta1.ProxyConfig, error)
+
+	// List retrieves list of ProxyConfigs for a given namespace and list options.
+	ListProxyConfig(ctx context.Context, opts ...client.ListOption) (*networking_istio_io_v1beta1.ProxyConfigList, error)
+}
+
+// ProxyConfigTransitionFunction instructs the ProxyConfigWriter how to transition between an existing
+// ProxyConfig object and a desired on an Upsert
+type ProxyConfigTransitionFunction func(existing, desired *networking_istio_io_v1beta1.ProxyConfig) error
+
+// Writer knows how to create, delete, and update ProxyConfigs.
+type ProxyConfigWriter interface {
+	// Create saves the ProxyConfig object.
+	CreateProxyConfig(ctx context.Context, obj *networking_istio_io_v1beta1.ProxyConfig, opts ...client.CreateOption) error
+
+	// Delete deletes the ProxyConfig object.
+	DeleteProxyConfig(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error
+
+	// Update updates the given ProxyConfig object.
+	UpdateProxyConfig(ctx context.Context, obj *networking_istio_io_v1beta1.ProxyConfig, opts ...client.UpdateOption) error
+
+	// Patch patches the given ProxyConfig object.
+	PatchProxyConfig(ctx context.Context, obj *networking_istio_io_v1beta1.ProxyConfig, patch client.Patch, opts ...client.PatchOption) error
+
+	// DeleteAllOf deletes all ProxyConfig objects matching the given options.
+	DeleteAllOfProxyConfig(ctx context.Context, opts ...client.DeleteAllOfOption) error
+
+	// Create or Update the ProxyConfig object.
+	UpsertProxyConfig(ctx context.Context, obj *networking_istio_io_v1beta1.ProxyConfig, transitionFuncs ...ProxyConfigTransitionFunction) error
+}
+
+// StatusWriter knows how to update status subresource of a ProxyConfig object.
+type ProxyConfigStatusWriter interface {
+	// Update updates the fields corresponding to the status subresource for the
+	// given ProxyConfig object.
+	UpdateProxyConfigStatus(ctx context.Context, obj *networking_istio_io_v1beta1.ProxyConfig, opts ...client.SubResourceUpdateOption) error
+
+	// Patch patches the given ProxyConfig object's subresource.
+	PatchProxyConfigStatus(ctx context.Context, obj *networking_istio_io_v1beta1.ProxyConfig, patch client.Patch, opts ...client.SubResourcePatchOption) error
+}
+
+// Client knows how to perform CRUD operations on ProxyConfigs.
+type ProxyConfigClient interface {
+	ProxyConfigReader
+	ProxyConfigWriter
+	ProxyConfigStatusWriter
+}
+
+type proxyConfigClient struct {
+	client client.Client
+}
+
+func NewProxyConfigClient(client client.Client) *proxyConfigClient {
+	return &proxyConfigClient{client: client}
+}
+
+func (c *proxyConfigClient) GetProxyConfig(ctx context.Context, key client.ObjectKey) (*networking_istio_io_v1beta1.ProxyConfig, error) {
+	obj := &networking_istio_io_v1beta1.ProxyConfig{}
+	if err := c.client.Get(ctx, key, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+func (c *proxyConfigClient) ListProxyConfig(ctx context.Context, opts ...client.ListOption) (*networking_istio_io_v1beta1.ProxyConfigList, error) {
+	list := &networking_istio_io_v1beta1.ProxyConfigList{}
+	if err := c.client.List(ctx, list, opts...); err != nil {
+		return nil, err
+	}
+	return list, nil
+}
+
+func (c *proxyConfigClient) CreateProxyConfig(ctx context.Context, obj *networking_istio_io_v1beta1.ProxyConfig, opts ...client.CreateOption) error {
+	return c.client.Create(ctx, obj, opts...)
+}
+
+func (c *proxyConfigClient) DeleteProxyConfig(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	obj := &networking_istio_io_v1beta1.ProxyConfig{}
+	obj.SetName(key.Name)
+	obj.SetNamespace(key.Namespace)
+	return c.client.Delete(ctx, obj, opts...)
+}
+
+func (c *proxyConfigClient) UpdateProxyConfig(ctx context.Context, obj *networking_istio_io_v1beta1.ProxyConfig, opts ...client.UpdateOption) error {
+	return c.client.Update(ctx, obj, opts...)
+}
+
+func (c *proxyConfigClient) PatchProxyConfig(ctx context.Context, obj *networking_istio_io_v1beta1.ProxyConfig, patch client.Patch, opts ...client.PatchOption) error {
+	return c.client.Patch(ctx, obj, patch, opts...)
+}
+
+func (c *proxyConfigClient) DeleteAllOfProxyConfig(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	obj := &networking_istio_io_v1beta1.ProxyConfig{}
+	return c.client.DeleteAllOf(ctx, obj, opts...)
+}
+
+func (c *proxyConfigClient) UpsertProxyConfig(ctx context.Context, obj *networking_istio_io_v1beta1.ProxyConfig, transitionFuncs ...ProxyConfigTransitionFunction) error {
+	genericTxFunc := func(existing, desired runtime.Object) error {
+		for _, txFunc := range transitionFuncs {
+			if err := txFunc(existing.(*networking_istio_io_v1beta1.ProxyConfig), desired.(*networking_istio_io_v1beta1.ProxyConfig)); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+	_, err := controllerutils.Upsert(ctx, c.client, obj, genericTxFunc)
+	return err
+}
+
+func (c *proxyConfigClient) UpdateProxyConfigStatus(ctx context.Context, obj *networking_istio_io_v1beta1.ProxyConfig, opts ...client.SubResourceUpdateOption) error {
+	return c.client.Status().Update(ctx, obj, opts...)
+}
+
+func (c *proxyConfigClient) PatchProxyConfigStatus(ctx context.Context, obj *networking_istio_io_v1beta1.ProxyConfig, patch client.Patch, opts ...client.SubResourcePatchOption) error {
+	return c.client.Status().Patch(ctx, obj, patch, opts...)
+}
+
+// Provides ProxyConfigClients for multiple clusters.
+type MulticlusterProxyConfigClient interface {
+	// Cluster returns a ProxyConfigClient for the given cluster
+	Cluster(cluster string) (ProxyConfigClient, error)
+}
+
+type multiclusterProxyConfigClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterProxyConfigClient(client multicluster.Client) MulticlusterProxyConfigClient {
+	return &multiclusterProxyConfigClient{client: client}
+}
+
+func (m *multiclusterProxyConfigClient) Cluster(cluster string) (ProxyConfigClient, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewProxyConfigClient(client), nil
 }
 
 // Reader knows how to read and list ServiceEntrys.

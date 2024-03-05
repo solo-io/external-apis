@@ -256,6 +256,127 @@ func (mr *MockGatewayEventWatcherMockRecorder) AddEventHandler(ctx, h interface{
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockGatewayEventWatcher)(nil).AddEventHandler), varargs...)
 }
 
+// MockProxyConfigEventHandler is a mock of ProxyConfigEventHandler interface.
+type MockProxyConfigEventHandler struct {
+	ctrl     *gomock.Controller
+	recorder *MockProxyConfigEventHandlerMockRecorder
+}
+
+// MockProxyConfigEventHandlerMockRecorder is the mock recorder for MockProxyConfigEventHandler.
+type MockProxyConfigEventHandlerMockRecorder struct {
+	mock *MockProxyConfigEventHandler
+}
+
+// NewMockProxyConfigEventHandler creates a new mock instance.
+func NewMockProxyConfigEventHandler(ctrl *gomock.Controller) *MockProxyConfigEventHandler {
+	mock := &MockProxyConfigEventHandler{ctrl: ctrl}
+	mock.recorder = &MockProxyConfigEventHandlerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockProxyConfigEventHandler) EXPECT() *MockProxyConfigEventHandlerMockRecorder {
+	return m.recorder
+}
+
+// CreateProxyConfig mocks base method.
+func (m *MockProxyConfigEventHandler) CreateProxyConfig(obj *v1beta1.ProxyConfig) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateProxyConfig", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateProxyConfig indicates an expected call of CreateProxyConfig.
+func (mr *MockProxyConfigEventHandlerMockRecorder) CreateProxyConfig(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateProxyConfig", reflect.TypeOf((*MockProxyConfigEventHandler)(nil).CreateProxyConfig), obj)
+}
+
+// DeleteProxyConfig mocks base method.
+func (m *MockProxyConfigEventHandler) DeleteProxyConfig(obj *v1beta1.ProxyConfig) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteProxyConfig", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteProxyConfig indicates an expected call of DeleteProxyConfig.
+func (mr *MockProxyConfigEventHandlerMockRecorder) DeleteProxyConfig(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteProxyConfig", reflect.TypeOf((*MockProxyConfigEventHandler)(nil).DeleteProxyConfig), obj)
+}
+
+// GenericProxyConfig mocks base method.
+func (m *MockProxyConfigEventHandler) GenericProxyConfig(obj *v1beta1.ProxyConfig) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GenericProxyConfig", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// GenericProxyConfig indicates an expected call of GenericProxyConfig.
+func (mr *MockProxyConfigEventHandlerMockRecorder) GenericProxyConfig(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericProxyConfig", reflect.TypeOf((*MockProxyConfigEventHandler)(nil).GenericProxyConfig), obj)
+}
+
+// UpdateProxyConfig mocks base method.
+func (m *MockProxyConfigEventHandler) UpdateProxyConfig(old, new *v1beta1.ProxyConfig) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateProxyConfig", old, new)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateProxyConfig indicates an expected call of UpdateProxyConfig.
+func (mr *MockProxyConfigEventHandlerMockRecorder) UpdateProxyConfig(old, new interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateProxyConfig", reflect.TypeOf((*MockProxyConfigEventHandler)(nil).UpdateProxyConfig), old, new)
+}
+
+// MockProxyConfigEventWatcher is a mock of ProxyConfigEventWatcher interface.
+type MockProxyConfigEventWatcher struct {
+	ctrl     *gomock.Controller
+	recorder *MockProxyConfigEventWatcherMockRecorder
+}
+
+// MockProxyConfigEventWatcherMockRecorder is the mock recorder for MockProxyConfigEventWatcher.
+type MockProxyConfigEventWatcherMockRecorder struct {
+	mock *MockProxyConfigEventWatcher
+}
+
+// NewMockProxyConfigEventWatcher creates a new mock instance.
+func NewMockProxyConfigEventWatcher(ctrl *gomock.Controller) *MockProxyConfigEventWatcher {
+	mock := &MockProxyConfigEventWatcher{ctrl: ctrl}
+	mock.recorder = &MockProxyConfigEventWatcherMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockProxyConfigEventWatcher) EXPECT() *MockProxyConfigEventWatcherMockRecorder {
+	return m.recorder
+}
+
+// AddEventHandler mocks base method.
+func (m *MockProxyConfigEventWatcher) AddEventHandler(ctx context.Context, h controller.ProxyConfigEventHandler, predicates ...predicate.Predicate) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, h}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "AddEventHandler", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AddEventHandler indicates an expected call of AddEventHandler.
+func (mr *MockProxyConfigEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, h}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockProxyConfigEventWatcher)(nil).AddEventHandler), varargs...)
+}
+
 // MockServiceEntryEventHandler is a mock of ServiceEntryEventHandler interface.
 type MockServiceEntryEventHandler struct {
 	ctrl     *gomock.Controller

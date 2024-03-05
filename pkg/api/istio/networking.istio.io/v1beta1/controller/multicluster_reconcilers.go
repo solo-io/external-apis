@@ -160,6 +160,77 @@ func (g genericGatewayMulticlusterReconciler) Reconcile(cluster string, object e
 	return g.reconciler.ReconcileGateway(cluster, obj)
 }
 
+// Reconcile Upsert events for the ProxyConfig Resource across clusters.
+// implemented by the user
+type MulticlusterProxyConfigReconciler interface {
+	ReconcileProxyConfig(clusterName string, obj *networking_istio_io_v1beta1.ProxyConfig) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the ProxyConfig Resource across clusters.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type MulticlusterProxyConfigDeletionReconciler interface {
+	ReconcileProxyConfigDeletion(clusterName string, req reconcile.Request) error
+}
+
+type MulticlusterProxyConfigReconcilerFuncs struct {
+	OnReconcileProxyConfig         func(clusterName string, obj *networking_istio_io_v1beta1.ProxyConfig) (reconcile.Result, error)
+	OnReconcileProxyConfigDeletion func(clusterName string, req reconcile.Request) error
+}
+
+func (f *MulticlusterProxyConfigReconcilerFuncs) ReconcileProxyConfig(clusterName string, obj *networking_istio_io_v1beta1.ProxyConfig) (reconcile.Result, error) {
+	if f.OnReconcileProxyConfig == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcileProxyConfig(clusterName, obj)
+}
+
+func (f *MulticlusterProxyConfigReconcilerFuncs) ReconcileProxyConfigDeletion(clusterName string, req reconcile.Request) error {
+	if f.OnReconcileProxyConfigDeletion == nil {
+		return nil
+	}
+	return f.OnReconcileProxyConfigDeletion(clusterName, req)
+}
+
+type MulticlusterProxyConfigReconcileLoop interface {
+	// AddMulticlusterProxyConfigReconciler adds a MulticlusterProxyConfigReconciler to the MulticlusterProxyConfigReconcileLoop.
+	AddMulticlusterProxyConfigReconciler(ctx context.Context, rec MulticlusterProxyConfigReconciler, predicates ...predicate.Predicate)
+}
+
+type multiclusterProxyConfigReconcileLoop struct {
+	loop multicluster.Loop
+}
+
+func (m *multiclusterProxyConfigReconcileLoop) AddMulticlusterProxyConfigReconciler(ctx context.Context, rec MulticlusterProxyConfigReconciler, predicates ...predicate.Predicate) {
+	genericReconciler := genericProxyConfigMulticlusterReconciler{reconciler: rec}
+
+	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
+}
+
+func NewMulticlusterProxyConfigReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterProxyConfigReconcileLoop {
+	return &multiclusterProxyConfigReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &networking_istio_io_v1beta1.ProxyConfig{}, options)}
+}
+
+type genericProxyConfigMulticlusterReconciler struct {
+	reconciler MulticlusterProxyConfigReconciler
+}
+
+func (g genericProxyConfigMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) error {
+	if deletionReconciler, ok := g.reconciler.(MulticlusterProxyConfigDeletionReconciler); ok {
+		return deletionReconciler.ReconcileProxyConfigDeletion(cluster, req)
+	}
+	return nil
+}
+
+func (g genericProxyConfigMulticlusterReconciler) Reconcile(cluster string, object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*networking_istio_io_v1beta1.ProxyConfig)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: ProxyConfig handler received event for %T", object)
+	}
+	return g.reconciler.ReconcileProxyConfig(cluster, obj)
+}
+
 // Reconcile Upsert events for the ServiceEntry Resource across clusters.
 // implemented by the user
 type MulticlusterServiceEntryReconciler interface {

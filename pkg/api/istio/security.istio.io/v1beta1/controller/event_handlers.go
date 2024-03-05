@@ -230,3 +230,110 @@ func (h genericPeerAuthenticationHandler) Generic(object client.Object) error {
 	}
 	return h.handler.GenericPeerAuthentication(obj)
 }
+
+// Handle events for the RequestAuthentication Resource
+// DEPRECATED: Prefer reconciler pattern.
+type RequestAuthenticationEventHandler interface {
+	CreateRequestAuthentication(obj *security_istio_io_v1beta1.RequestAuthentication) error
+	UpdateRequestAuthentication(old, new *security_istio_io_v1beta1.RequestAuthentication) error
+	DeleteRequestAuthentication(obj *security_istio_io_v1beta1.RequestAuthentication) error
+	GenericRequestAuthentication(obj *security_istio_io_v1beta1.RequestAuthentication) error
+}
+
+type RequestAuthenticationEventHandlerFuncs struct {
+	OnCreate  func(obj *security_istio_io_v1beta1.RequestAuthentication) error
+	OnUpdate  func(old, new *security_istio_io_v1beta1.RequestAuthentication) error
+	OnDelete  func(obj *security_istio_io_v1beta1.RequestAuthentication) error
+	OnGeneric func(obj *security_istio_io_v1beta1.RequestAuthentication) error
+}
+
+func (f *RequestAuthenticationEventHandlerFuncs) CreateRequestAuthentication(obj *security_istio_io_v1beta1.RequestAuthentication) error {
+	if f.OnCreate == nil {
+		return nil
+	}
+	return f.OnCreate(obj)
+}
+
+func (f *RequestAuthenticationEventHandlerFuncs) DeleteRequestAuthentication(obj *security_istio_io_v1beta1.RequestAuthentication) error {
+	if f.OnDelete == nil {
+		return nil
+	}
+	return f.OnDelete(obj)
+}
+
+func (f *RequestAuthenticationEventHandlerFuncs) UpdateRequestAuthentication(objOld, objNew *security_istio_io_v1beta1.RequestAuthentication) error {
+	if f.OnUpdate == nil {
+		return nil
+	}
+	return f.OnUpdate(objOld, objNew)
+}
+
+func (f *RequestAuthenticationEventHandlerFuncs) GenericRequestAuthentication(obj *security_istio_io_v1beta1.RequestAuthentication) error {
+	if f.OnGeneric == nil {
+		return nil
+	}
+	return f.OnGeneric(obj)
+}
+
+type RequestAuthenticationEventWatcher interface {
+	AddEventHandler(ctx context.Context, h RequestAuthenticationEventHandler, predicates ...predicate.Predicate) error
+}
+
+type requestAuthenticationEventWatcher struct {
+	watcher events.EventWatcher
+}
+
+func NewRequestAuthenticationEventWatcher(name string, mgr manager.Manager) RequestAuthenticationEventWatcher {
+	return &requestAuthenticationEventWatcher{
+		watcher: events.NewWatcher(name, mgr, &security_istio_io_v1beta1.RequestAuthentication{}),
+	}
+}
+
+func (c *requestAuthenticationEventWatcher) AddEventHandler(ctx context.Context, h RequestAuthenticationEventHandler, predicates ...predicate.Predicate) error {
+	handler := genericRequestAuthenticationHandler{handler: h}
+	if err := c.watcher.Watch(ctx, handler, predicates...); err != nil {
+		return err
+	}
+	return nil
+}
+
+// genericRequestAuthenticationHandler implements a generic events.EventHandler
+type genericRequestAuthenticationHandler struct {
+	handler RequestAuthenticationEventHandler
+}
+
+func (h genericRequestAuthenticationHandler) Create(object client.Object) error {
+	obj, ok := object.(*security_istio_io_v1beta1.RequestAuthentication)
+	if !ok {
+		return errors.Errorf("internal error: RequestAuthentication handler received event for %T", object)
+	}
+	return h.handler.CreateRequestAuthentication(obj)
+}
+
+func (h genericRequestAuthenticationHandler) Delete(object client.Object) error {
+	obj, ok := object.(*security_istio_io_v1beta1.RequestAuthentication)
+	if !ok {
+		return errors.Errorf("internal error: RequestAuthentication handler received event for %T", object)
+	}
+	return h.handler.DeleteRequestAuthentication(obj)
+}
+
+func (h genericRequestAuthenticationHandler) Update(old, new client.Object) error {
+	objOld, ok := old.(*security_istio_io_v1beta1.RequestAuthentication)
+	if !ok {
+		return errors.Errorf("internal error: RequestAuthentication handler received event for %T", old)
+	}
+	objNew, ok := new.(*security_istio_io_v1beta1.RequestAuthentication)
+	if !ok {
+		return errors.Errorf("internal error: RequestAuthentication handler received event for %T", new)
+	}
+	return h.handler.UpdateRequestAuthentication(objOld, objNew)
+}
+
+func (h genericRequestAuthenticationHandler) Generic(object client.Object) error {
+	obj, ok := object.(*security_istio_io_v1beta1.RequestAuthentication)
+	if !ok {
+		return errors.Errorf("internal error: RequestAuthentication handler received event for %T", object)
+	}
+	return h.handler.GenericRequestAuthentication(obj)
+}

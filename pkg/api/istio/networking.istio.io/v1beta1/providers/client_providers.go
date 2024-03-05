@@ -73,6 +73,34 @@ func GatewayClientFromConfigFactoryProvider() GatewayClientFromConfigFactory {
 	}
 }
 
+// Provider for ProxyConfigClient from Clientset
+func ProxyConfigClientFromClientsetProvider(clients networking_istio_io_v1beta1.Clientset) networking_istio_io_v1beta1.ProxyConfigClient {
+	return clients.ProxyConfigs()
+}
+
+// Provider for ProxyConfig Client from Client
+func ProxyConfigClientProvider(client client.Client) networking_istio_io_v1beta1.ProxyConfigClient {
+	return networking_istio_io_v1beta1.NewProxyConfigClient(client)
+}
+
+type ProxyConfigClientFactory func(client client.Client) networking_istio_io_v1beta1.ProxyConfigClient
+
+func ProxyConfigClientFactoryProvider() ProxyConfigClientFactory {
+	return ProxyConfigClientProvider
+}
+
+type ProxyConfigClientFromConfigFactory func(cfg *rest.Config) (networking_istio_io_v1beta1.ProxyConfigClient, error)
+
+func ProxyConfigClientFromConfigFactoryProvider() ProxyConfigClientFromConfigFactory {
+	return func(cfg *rest.Config) (networking_istio_io_v1beta1.ProxyConfigClient, error) {
+		clients, err := networking_istio_io_v1beta1.NewClientsetFromConfig(cfg)
+		if err != nil {
+			return nil, err
+		}
+		return clients.ProxyConfigs(), nil
+	}
+}
+
 // Provider for ServiceEntryClient from Clientset
 func ServiceEntryClientFromClientsetProvider(clients networking_istio_io_v1beta1.Clientset) networking_istio_io_v1beta1.ServiceEntryClient {
 	return clients.ServiceEntries()

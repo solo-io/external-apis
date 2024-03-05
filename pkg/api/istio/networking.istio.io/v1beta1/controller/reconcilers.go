@@ -251,6 +251,123 @@ func (r genericGatewayFinalizer) Finalize(object ezkube.Object) error {
 	return r.finalizingReconciler.FinalizeGateway(obj)
 }
 
+// Reconcile Upsert events for the ProxyConfig Resource.
+// implemented by the user
+type ProxyConfigReconciler interface {
+	ReconcileProxyConfig(obj *networking_istio_io_v1beta1.ProxyConfig) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the ProxyConfig Resource.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type ProxyConfigDeletionReconciler interface {
+	ReconcileProxyConfigDeletion(req reconcile.Request) error
+}
+
+type ProxyConfigReconcilerFuncs struct {
+	OnReconcileProxyConfig         func(obj *networking_istio_io_v1beta1.ProxyConfig) (reconcile.Result, error)
+	OnReconcileProxyConfigDeletion func(req reconcile.Request) error
+}
+
+func (f *ProxyConfigReconcilerFuncs) ReconcileProxyConfig(obj *networking_istio_io_v1beta1.ProxyConfig) (reconcile.Result, error) {
+	if f.OnReconcileProxyConfig == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcileProxyConfig(obj)
+}
+
+func (f *ProxyConfigReconcilerFuncs) ReconcileProxyConfigDeletion(req reconcile.Request) error {
+	if f.OnReconcileProxyConfigDeletion == nil {
+		return nil
+	}
+	return f.OnReconcileProxyConfigDeletion(req)
+}
+
+// Reconcile and finalize the ProxyConfig Resource
+// implemented by the user
+type ProxyConfigFinalizer interface {
+	ProxyConfigReconciler
+
+	// name of the finalizer used by this handler.
+	// finalizer names should be unique for a single task
+	ProxyConfigFinalizerName() string
+
+	// finalize the object before it is deleted.
+	// Watchers created with a finalizing handler will a
+	FinalizeProxyConfig(obj *networking_istio_io_v1beta1.ProxyConfig) error
+}
+
+type ProxyConfigReconcileLoop interface {
+	RunProxyConfigReconciler(ctx context.Context, rec ProxyConfigReconciler, predicates ...predicate.Predicate) error
+}
+
+type proxyConfigReconcileLoop struct {
+	loop reconcile.Loop
+}
+
+func NewProxyConfigReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) ProxyConfigReconcileLoop {
+	return &proxyConfigReconcileLoop{
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &networking_istio_io_v1beta1.ProxyConfig{}, options),
+	}
+}
+
+func (c *proxyConfigReconcileLoop) RunProxyConfigReconciler(ctx context.Context, reconciler ProxyConfigReconciler, predicates ...predicate.Predicate) error {
+	genericReconciler := genericProxyConfigReconciler{
+		reconciler: reconciler,
+	}
+
+	var reconcilerWrapper reconcile.Reconciler
+	if finalizingReconciler, ok := reconciler.(ProxyConfigFinalizer); ok {
+		reconcilerWrapper = genericProxyConfigFinalizer{
+			genericProxyConfigReconciler: genericReconciler,
+			finalizingReconciler:         finalizingReconciler,
+		}
+	} else {
+		reconcilerWrapper = genericReconciler
+	}
+	return c.loop.RunReconciler(ctx, reconcilerWrapper, predicates...)
+}
+
+// genericProxyConfigHandler implements a generic reconcile.Reconciler
+type genericProxyConfigReconciler struct {
+	reconciler ProxyConfigReconciler
+}
+
+func (r genericProxyConfigReconciler) Reconcile(object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*networking_istio_io_v1beta1.ProxyConfig)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: ProxyConfig handler received event for %T", object)
+	}
+	return r.reconciler.ReconcileProxyConfig(obj)
+}
+
+func (r genericProxyConfigReconciler) ReconcileDeletion(request reconcile.Request) error {
+	if deletionReconciler, ok := r.reconciler.(ProxyConfigDeletionReconciler); ok {
+		return deletionReconciler.ReconcileProxyConfigDeletion(request)
+	}
+	return nil
+}
+
+// genericProxyConfigFinalizer implements a generic reconcile.FinalizingReconciler
+type genericProxyConfigFinalizer struct {
+	genericProxyConfigReconciler
+	finalizingReconciler ProxyConfigFinalizer
+}
+
+func (r genericProxyConfigFinalizer) FinalizerName() string {
+	return r.finalizingReconciler.ProxyConfigFinalizerName()
+}
+
+func (r genericProxyConfigFinalizer) Finalize(object ezkube.Object) error {
+	obj, ok := object.(*networking_istio_io_v1beta1.ProxyConfig)
+	if !ok {
+		return errors.Errorf("internal error: ProxyConfig handler received event for %T", object)
+	}
+	return r.finalizingReconciler.FinalizeProxyConfig(obj)
+}
+
 // Reconcile Upsert events for the ServiceEntry Resource.
 // implemented by the user
 type ServiceEntryReconciler interface {

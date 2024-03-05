@@ -245,6 +245,121 @@ func (mr *MockMulticlusterGatewayReconcileLoopMockRecorder) AddMulticlusterGatew
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddMulticlusterGatewayReconciler", reflect.TypeOf((*MockMulticlusterGatewayReconcileLoop)(nil).AddMulticlusterGatewayReconciler), varargs...)
 }
 
+// MockMulticlusterProxyConfigReconciler is a mock of MulticlusterProxyConfigReconciler interface.
+type MockMulticlusterProxyConfigReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterProxyConfigReconcilerMockRecorder
+}
+
+// MockMulticlusterProxyConfigReconcilerMockRecorder is the mock recorder for MockMulticlusterProxyConfigReconciler.
+type MockMulticlusterProxyConfigReconcilerMockRecorder struct {
+	mock *MockMulticlusterProxyConfigReconciler
+}
+
+// NewMockMulticlusterProxyConfigReconciler creates a new mock instance.
+func NewMockMulticlusterProxyConfigReconciler(ctrl *gomock.Controller) *MockMulticlusterProxyConfigReconciler {
+	mock := &MockMulticlusterProxyConfigReconciler{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterProxyConfigReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterProxyConfigReconciler) EXPECT() *MockMulticlusterProxyConfigReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileProxyConfig mocks base method.
+func (m *MockMulticlusterProxyConfigReconciler) ReconcileProxyConfig(clusterName string, obj *v1beta1.ProxyConfig) (reconcile.Result, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileProxyConfig", clusterName, obj)
+	ret0, _ := ret[0].(reconcile.Result)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReconcileProxyConfig indicates an expected call of ReconcileProxyConfig.
+func (mr *MockMulticlusterProxyConfigReconcilerMockRecorder) ReconcileProxyConfig(clusterName, obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileProxyConfig", reflect.TypeOf((*MockMulticlusterProxyConfigReconciler)(nil).ReconcileProxyConfig), clusterName, obj)
+}
+
+// MockMulticlusterProxyConfigDeletionReconciler is a mock of MulticlusterProxyConfigDeletionReconciler interface.
+type MockMulticlusterProxyConfigDeletionReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterProxyConfigDeletionReconcilerMockRecorder
+}
+
+// MockMulticlusterProxyConfigDeletionReconcilerMockRecorder is the mock recorder for MockMulticlusterProxyConfigDeletionReconciler.
+type MockMulticlusterProxyConfigDeletionReconcilerMockRecorder struct {
+	mock *MockMulticlusterProxyConfigDeletionReconciler
+}
+
+// NewMockMulticlusterProxyConfigDeletionReconciler creates a new mock instance.
+func NewMockMulticlusterProxyConfigDeletionReconciler(ctrl *gomock.Controller) *MockMulticlusterProxyConfigDeletionReconciler {
+	mock := &MockMulticlusterProxyConfigDeletionReconciler{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterProxyConfigDeletionReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterProxyConfigDeletionReconciler) EXPECT() *MockMulticlusterProxyConfigDeletionReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileProxyConfigDeletion mocks base method.
+func (m *MockMulticlusterProxyConfigDeletionReconciler) ReconcileProxyConfigDeletion(clusterName string, req reconcile.Request) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileProxyConfigDeletion", clusterName, req)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ReconcileProxyConfigDeletion indicates an expected call of ReconcileProxyConfigDeletion.
+func (mr *MockMulticlusterProxyConfigDeletionReconcilerMockRecorder) ReconcileProxyConfigDeletion(clusterName, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileProxyConfigDeletion", reflect.TypeOf((*MockMulticlusterProxyConfigDeletionReconciler)(nil).ReconcileProxyConfigDeletion), clusterName, req)
+}
+
+// MockMulticlusterProxyConfigReconcileLoop is a mock of MulticlusterProxyConfigReconcileLoop interface.
+type MockMulticlusterProxyConfigReconcileLoop struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterProxyConfigReconcileLoopMockRecorder
+}
+
+// MockMulticlusterProxyConfigReconcileLoopMockRecorder is the mock recorder for MockMulticlusterProxyConfigReconcileLoop.
+type MockMulticlusterProxyConfigReconcileLoopMockRecorder struct {
+	mock *MockMulticlusterProxyConfigReconcileLoop
+}
+
+// NewMockMulticlusterProxyConfigReconcileLoop creates a new mock instance.
+func NewMockMulticlusterProxyConfigReconcileLoop(ctrl *gomock.Controller) *MockMulticlusterProxyConfigReconcileLoop {
+	mock := &MockMulticlusterProxyConfigReconcileLoop{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterProxyConfigReconcileLoopMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterProxyConfigReconcileLoop) EXPECT() *MockMulticlusterProxyConfigReconcileLoopMockRecorder {
+	return m.recorder
+}
+
+// AddMulticlusterProxyConfigReconciler mocks base method.
+func (m *MockMulticlusterProxyConfigReconcileLoop) AddMulticlusterProxyConfigReconciler(ctx context.Context, rec controller.MulticlusterProxyConfigReconciler, predicates ...predicate.Predicate) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, rec}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "AddMulticlusterProxyConfigReconciler", varargs...)
+}
+
+// AddMulticlusterProxyConfigReconciler indicates an expected call of AddMulticlusterProxyConfigReconciler.
+func (mr *MockMulticlusterProxyConfigReconcileLoopMockRecorder) AddMulticlusterProxyConfigReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, rec}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddMulticlusterProxyConfigReconciler", reflect.TypeOf((*MockMulticlusterProxyConfigReconcileLoop)(nil).AddMulticlusterProxyConfigReconciler), varargs...)
+}
+
 // MockMulticlusterServiceEntryReconciler is a mock of MulticlusterServiceEntryReconciler interface.
 type MockMulticlusterServiceEntryReconciler struct {
 	ctrl     *gomock.Controller

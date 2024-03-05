@@ -458,3 +458,226 @@ func (s *peerAuthenticationSet) Clone() PeerAuthenticationSet {
 	}
 	return &peerAuthenticationSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
 }
+
+type RequestAuthenticationSet interface {
+	// Get the set stored keys
+	Keys() sets.String
+	// List of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
+	List(filterResource ...func(*security_istio_io_v1beta1.RequestAuthentication) bool) []*security_istio_io_v1beta1.RequestAuthentication
+	// Unsorted list of resources stored in the set. Pass an optional filter function to filter on the list.
+	// The filter function should return false to keep the resource, true to drop it.
+	UnsortedList(filterResource ...func(*security_istio_io_v1beta1.RequestAuthentication) bool) []*security_istio_io_v1beta1.RequestAuthentication
+	// Return the Set as a map of key to resource.
+	Map() map[string]*security_istio_io_v1beta1.RequestAuthentication
+	// Insert a resource into the set.
+	Insert(requestAuthentication ...*security_istio_io_v1beta1.RequestAuthentication)
+	// Compare the equality of the keys in two sets (not the resources themselves)
+	Equal(requestAuthenticationSet RequestAuthenticationSet) bool
+	// Check if the set contains a key matching the resource (not the resource itself)
+	Has(requestAuthentication ezkube.ResourceId) bool
+	// Delete the key matching the resource
+	Delete(requestAuthentication ezkube.ResourceId)
+	// Return the union with the provided set
+	Union(set RequestAuthenticationSet) RequestAuthenticationSet
+	// Return the difference with the provided set
+	Difference(set RequestAuthenticationSet) RequestAuthenticationSet
+	// Return the intersection with the provided set
+	Intersection(set RequestAuthenticationSet) RequestAuthenticationSet
+	// Find the resource with the given ID
+	Find(id ezkube.ResourceId) (*security_istio_io_v1beta1.RequestAuthentication, error)
+	// Get the length of the set
+	Length() int
+	// returns the generic implementation of the set
+	Generic() sksets.ResourceSet
+	// returns the delta between this and and another RequestAuthenticationSet
+	Delta(newSet RequestAuthenticationSet) sksets.ResourceDelta
+	// Create a deep copy of the current RequestAuthenticationSet
+	Clone() RequestAuthenticationSet
+}
+
+func makeGenericRequestAuthenticationSet(requestAuthenticationList []*security_istio_io_v1beta1.RequestAuthentication) sksets.ResourceSet {
+	var genericResources []ezkube.ResourceId
+	for _, obj := range requestAuthenticationList {
+		genericResources = append(genericResources, obj)
+	}
+	return sksets.NewResourceSet(genericResources...)
+}
+
+type requestAuthenticationSet struct {
+	set sksets.ResourceSet
+}
+
+func NewRequestAuthenticationSet(requestAuthenticationList ...*security_istio_io_v1beta1.RequestAuthentication) RequestAuthenticationSet {
+	return &requestAuthenticationSet{set: makeGenericRequestAuthenticationSet(requestAuthenticationList)}
+}
+
+func NewRequestAuthenticationSetFromList(requestAuthenticationList *security_istio_io_v1beta1.RequestAuthenticationList) RequestAuthenticationSet {
+	list := make([]*security_istio_io_v1beta1.RequestAuthentication, 0, len(requestAuthenticationList.Items))
+	for idx := range requestAuthenticationList.Items {
+		list = append(list, requestAuthenticationList.Items[idx])
+	}
+	return &requestAuthenticationSet{set: makeGenericRequestAuthenticationSet(list)}
+}
+
+func (s *requestAuthenticationSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	return s.Generic().Keys()
+}
+
+func (s *requestAuthenticationSet) List(filterResource ...func(*security_istio_io_v1beta1.RequestAuthentication) bool) []*security_istio_io_v1beta1.RequestAuthentication {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*security_istio_io_v1beta1.RequestAuthentication))
+		})
+	}
+
+	objs := s.Generic().List(genericFilters...)
+	requestAuthenticationList := make([]*security_istio_io_v1beta1.RequestAuthentication, 0, len(objs))
+	for _, obj := range objs {
+		requestAuthenticationList = append(requestAuthenticationList, obj.(*security_istio_io_v1beta1.RequestAuthentication))
+	}
+	return requestAuthenticationList
+}
+
+func (s *requestAuthenticationSet) UnsortedList(filterResource ...func(*security_istio_io_v1beta1.RequestAuthentication) bool) []*security_istio_io_v1beta1.RequestAuthentication {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*security_istio_io_v1beta1.RequestAuthentication))
+		})
+	}
+
+	var requestAuthenticationList []*security_istio_io_v1beta1.RequestAuthentication
+	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
+		requestAuthenticationList = append(requestAuthenticationList, obj.(*security_istio_io_v1beta1.RequestAuthentication))
+	}
+	return requestAuthenticationList
+}
+
+func (s *requestAuthenticationSet) Map() map[string]*security_istio_io_v1beta1.RequestAuthentication {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*security_istio_io_v1beta1.RequestAuthentication{}
+	for k, v := range s.Generic().Map() {
+		newMap[k] = v.(*security_istio_io_v1beta1.RequestAuthentication)
+	}
+	return newMap
+}
+
+func (s *requestAuthenticationSet) Insert(
+	requestAuthenticationList ...*security_istio_io_v1beta1.RequestAuthentication,
+) {
+	if s == nil {
+		panic("cannot insert into nil set")
+	}
+
+	for _, obj := range requestAuthenticationList {
+		s.Generic().Insert(obj)
+	}
+}
+
+func (s *requestAuthenticationSet) Has(requestAuthentication ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	return s.Generic().Has(requestAuthentication)
+}
+
+func (s *requestAuthenticationSet) Equal(
+	requestAuthenticationSet RequestAuthenticationSet,
+) bool {
+	if s == nil {
+		return requestAuthenticationSet == nil
+	}
+	return s.Generic().Equal(requestAuthenticationSet.Generic())
+}
+
+func (s *requestAuthenticationSet) Delete(RequestAuthentication ezkube.ResourceId) {
+	if s == nil {
+		return
+	}
+	s.Generic().Delete(RequestAuthentication)
+}
+
+func (s *requestAuthenticationSet) Union(set RequestAuthenticationSet) RequestAuthenticationSet {
+	if s == nil {
+		return set
+	}
+	return NewRequestAuthenticationSet(append(s.List(), set.List()...)...)
+}
+
+func (s *requestAuthenticationSet) Difference(set RequestAuthenticationSet) RequestAuthenticationSet {
+	if s == nil {
+		return set
+	}
+	newSet := s.Generic().Difference(set.Generic())
+	return &requestAuthenticationSet{set: newSet}
+}
+
+func (s *requestAuthenticationSet) Intersection(set RequestAuthenticationSet) RequestAuthenticationSet {
+	if s == nil {
+		return nil
+	}
+	newSet := s.Generic().Intersection(set.Generic())
+	var requestAuthenticationList []*security_istio_io_v1beta1.RequestAuthentication
+	for _, obj := range newSet.List() {
+		requestAuthenticationList = append(requestAuthenticationList, obj.(*security_istio_io_v1beta1.RequestAuthentication))
+	}
+	return NewRequestAuthenticationSet(requestAuthenticationList...)
+}
+
+func (s *requestAuthenticationSet) Find(id ezkube.ResourceId) (*security_istio_io_v1beta1.RequestAuthentication, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find RequestAuthentication %v", sksets.Key(id))
+	}
+	obj, err := s.Generic().Find(&security_istio_io_v1beta1.RequestAuthentication{}, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return obj.(*security_istio_io_v1beta1.RequestAuthentication), nil
+}
+
+func (s *requestAuthenticationSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	return s.Generic().Length()
+}
+
+func (s *requestAuthenticationSet) Generic() sksets.ResourceSet {
+	if s == nil {
+		return nil
+	}
+	return s.set
+}
+
+func (s *requestAuthenticationSet) Delta(newSet RequestAuthenticationSet) sksets.ResourceDelta {
+	if s == nil {
+		return sksets.ResourceDelta{
+			Inserted: newSet.Generic(),
+		}
+	}
+	return s.Generic().Delta(newSet.Generic())
+}
+
+func (s *requestAuthenticationSet) Clone() RequestAuthenticationSet {
+	if s == nil {
+		return nil
+	}
+	return &requestAuthenticationSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+}

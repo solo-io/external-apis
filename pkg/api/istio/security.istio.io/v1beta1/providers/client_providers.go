@@ -72,3 +72,31 @@ func PeerAuthenticationClientFromConfigFactoryProvider() PeerAuthenticationClien
 		return clients.PeerAuthentications(), nil
 	}
 }
+
+// Provider for RequestAuthenticationClient from Clientset
+func RequestAuthenticationClientFromClientsetProvider(clients security_istio_io_v1beta1.Clientset) security_istio_io_v1beta1.RequestAuthenticationClient {
+	return clients.RequestAuthentications()
+}
+
+// Provider for RequestAuthentication Client from Client
+func RequestAuthenticationClientProvider(client client.Client) security_istio_io_v1beta1.RequestAuthenticationClient {
+	return security_istio_io_v1beta1.NewRequestAuthenticationClient(client)
+}
+
+type RequestAuthenticationClientFactory func(client client.Client) security_istio_io_v1beta1.RequestAuthenticationClient
+
+func RequestAuthenticationClientFactoryProvider() RequestAuthenticationClientFactory {
+	return RequestAuthenticationClientProvider
+}
+
+type RequestAuthenticationClientFromConfigFactory func(cfg *rest.Config) (security_istio_io_v1beta1.RequestAuthenticationClient, error)
+
+func RequestAuthenticationClientFromConfigFactoryProvider() RequestAuthenticationClientFromConfigFactory {
+	return func(cfg *rest.Config) (security_istio_io_v1beta1.RequestAuthenticationClient, error) {
+		clients, err := security_istio_io_v1beta1.NewClientsetFromConfig(cfg)
+		if err != nil {
+			return nil, err
+		}
+		return clients.RequestAuthentications(), nil
+	}
+}
