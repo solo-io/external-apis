@@ -231,6 +231,113 @@ func (h genericGatewayHandler) Generic(object client.Object) error {
 	return h.handler.GenericGateway(obj)
 }
 
+// Handle events for the ProxyConfig Resource
+// DEPRECATED: Prefer reconciler pattern.
+type ProxyConfigEventHandler interface {
+	CreateProxyConfig(obj *networking_istio_io_v1beta1.ProxyConfig) error
+	UpdateProxyConfig(old, new *networking_istio_io_v1beta1.ProxyConfig) error
+	DeleteProxyConfig(obj *networking_istio_io_v1beta1.ProxyConfig) error
+	GenericProxyConfig(obj *networking_istio_io_v1beta1.ProxyConfig) error
+}
+
+type ProxyConfigEventHandlerFuncs struct {
+	OnCreate  func(obj *networking_istio_io_v1beta1.ProxyConfig) error
+	OnUpdate  func(old, new *networking_istio_io_v1beta1.ProxyConfig) error
+	OnDelete  func(obj *networking_istio_io_v1beta1.ProxyConfig) error
+	OnGeneric func(obj *networking_istio_io_v1beta1.ProxyConfig) error
+}
+
+func (f *ProxyConfigEventHandlerFuncs) CreateProxyConfig(obj *networking_istio_io_v1beta1.ProxyConfig) error {
+	if f.OnCreate == nil {
+		return nil
+	}
+	return f.OnCreate(obj)
+}
+
+func (f *ProxyConfigEventHandlerFuncs) DeleteProxyConfig(obj *networking_istio_io_v1beta1.ProxyConfig) error {
+	if f.OnDelete == nil {
+		return nil
+	}
+	return f.OnDelete(obj)
+}
+
+func (f *ProxyConfigEventHandlerFuncs) UpdateProxyConfig(objOld, objNew *networking_istio_io_v1beta1.ProxyConfig) error {
+	if f.OnUpdate == nil {
+		return nil
+	}
+	return f.OnUpdate(objOld, objNew)
+}
+
+func (f *ProxyConfigEventHandlerFuncs) GenericProxyConfig(obj *networking_istio_io_v1beta1.ProxyConfig) error {
+	if f.OnGeneric == nil {
+		return nil
+	}
+	return f.OnGeneric(obj)
+}
+
+type ProxyConfigEventWatcher interface {
+	AddEventHandler(ctx context.Context, h ProxyConfigEventHandler, predicates ...predicate.Predicate) error
+}
+
+type proxyConfigEventWatcher struct {
+	watcher events.EventWatcher
+}
+
+func NewProxyConfigEventWatcher(name string, mgr manager.Manager) ProxyConfigEventWatcher {
+	return &proxyConfigEventWatcher{
+		watcher: events.NewWatcher(name, mgr, &networking_istio_io_v1beta1.ProxyConfig{}),
+	}
+}
+
+func (c *proxyConfigEventWatcher) AddEventHandler(ctx context.Context, h ProxyConfigEventHandler, predicates ...predicate.Predicate) error {
+	handler := genericProxyConfigHandler{handler: h}
+	if err := c.watcher.Watch(ctx, handler, predicates...); err != nil {
+		return err
+	}
+	return nil
+}
+
+// genericProxyConfigHandler implements a generic events.EventHandler
+type genericProxyConfigHandler struct {
+	handler ProxyConfigEventHandler
+}
+
+func (h genericProxyConfigHandler) Create(object client.Object) error {
+	obj, ok := object.(*networking_istio_io_v1beta1.ProxyConfig)
+	if !ok {
+		return errors.Errorf("internal error: ProxyConfig handler received event for %T", object)
+	}
+	return h.handler.CreateProxyConfig(obj)
+}
+
+func (h genericProxyConfigHandler) Delete(object client.Object) error {
+	obj, ok := object.(*networking_istio_io_v1beta1.ProxyConfig)
+	if !ok {
+		return errors.Errorf("internal error: ProxyConfig handler received event for %T", object)
+	}
+	return h.handler.DeleteProxyConfig(obj)
+}
+
+func (h genericProxyConfigHandler) Update(old, new client.Object) error {
+	objOld, ok := old.(*networking_istio_io_v1beta1.ProxyConfig)
+	if !ok {
+		return errors.Errorf("internal error: ProxyConfig handler received event for %T", old)
+	}
+	objNew, ok := new.(*networking_istio_io_v1beta1.ProxyConfig)
+	if !ok {
+		return errors.Errorf("internal error: ProxyConfig handler received event for %T", new)
+	}
+	return h.handler.UpdateProxyConfig(objOld, objNew)
+}
+
+func (h genericProxyConfigHandler) Generic(object client.Object) error {
+	obj, ok := object.(*networking_istio_io_v1beta1.ProxyConfig)
+	if !ok {
+		return errors.Errorf("internal error: ProxyConfig handler received event for %T", object)
+	}
+	return h.handler.GenericProxyConfig(obj)
+}
+
 // Handle events for the ServiceEntry Resource
 // DEPRECATED: Prefer reconciler pattern.
 type ServiceEntryEventHandler interface {

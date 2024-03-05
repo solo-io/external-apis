@@ -12,3 +12,6 @@ type AuthorizationPolicySlice []*AuthorizationPolicy
 
 // PeerAuthenticationSlice represents a slice of *PeerAuthentication
 type PeerAuthenticationSlice []*PeerAuthentication
+
+// RequestAuthenticationSlice represents a slice of *RequestAuthentication
+type RequestAuthenticationSlice []*RequestAuthentication

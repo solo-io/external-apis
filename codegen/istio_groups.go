@@ -2,6 +2,7 @@ package codegen
 
 import (
 	"github.com/solo-io/skv2/codegen/model"
+	extensionsv1alpha1 "istio.io/client-go/pkg/apis/extensions/v1alpha1"
 	networkingv1alpha3 "istio.io/client-go/pkg/apis/networking/v1alpha3"
 	networkingv1beta1 "istio.io/client-go/pkg/apis/networking/v1beta1"
 	"istio.io/client-go/pkg/apis/security/v1beta1"
@@ -29,6 +30,9 @@ func istioGroups() []model.Group {
 				},
 				{
 					Kind: "Gateway",
+				},
+				{
+					Kind: "ProxyConfig",
 				},
 				{
 					Kind: "ServiceEntry",
@@ -72,6 +76,9 @@ func istioGroups() []model.Group {
 				{
 					Kind: "PeerAuthentication",
 				},
+				{
+					Kind: "RequestAuthentication",
+				},
 			},
 			CustomTypesImportPath: "istio.io/client-go/pkg/apis/security/v1beta1",
 			ApiRoot:               istioApiRoot,
@@ -97,6 +104,18 @@ func istioGroups() []model.Group {
 				},
 			},
 			CustomTypesImportPath: "istio.io/client-go/pkg/apis/telemetry/v1alpha1",
+			ApiRoot:               istioApiRoot,
+			PointerSlices:         true,
+		},
+		{
+			GroupVersion: extensionsv1alpha1.SchemeGroupVersion,
+			Module:       istioModule,
+			Resources: []model.Resource{
+				{
+					Kind: "WasmPlugin",
+				},
+			},
+			CustomTypesImportPath: "istio.io/client-go/pkg/apis/extensions/v1alpha1",
 			ApiRoot:               istioApiRoot,
 			PointerSlices:         true,
 		},

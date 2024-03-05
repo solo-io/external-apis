@@ -244,3 +244,118 @@ func (mr *MockMulticlusterPeerAuthenticationReconcileLoopMockRecorder) AddMultic
 	varargs := append([]interface{}{ctx, rec}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddMulticlusterPeerAuthenticationReconciler", reflect.TypeOf((*MockMulticlusterPeerAuthenticationReconcileLoop)(nil).AddMulticlusterPeerAuthenticationReconciler), varargs...)
 }
+
+// MockMulticlusterRequestAuthenticationReconciler is a mock of MulticlusterRequestAuthenticationReconciler interface.
+type MockMulticlusterRequestAuthenticationReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterRequestAuthenticationReconcilerMockRecorder
+}
+
+// MockMulticlusterRequestAuthenticationReconcilerMockRecorder is the mock recorder for MockMulticlusterRequestAuthenticationReconciler.
+type MockMulticlusterRequestAuthenticationReconcilerMockRecorder struct {
+	mock *MockMulticlusterRequestAuthenticationReconciler
+}
+
+// NewMockMulticlusterRequestAuthenticationReconciler creates a new mock instance.
+func NewMockMulticlusterRequestAuthenticationReconciler(ctrl *gomock.Controller) *MockMulticlusterRequestAuthenticationReconciler {
+	mock := &MockMulticlusterRequestAuthenticationReconciler{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterRequestAuthenticationReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterRequestAuthenticationReconciler) EXPECT() *MockMulticlusterRequestAuthenticationReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileRequestAuthentication mocks base method.
+func (m *MockMulticlusterRequestAuthenticationReconciler) ReconcileRequestAuthentication(clusterName string, obj *v1beta1.RequestAuthentication) (reconcile.Result, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileRequestAuthentication", clusterName, obj)
+	ret0, _ := ret[0].(reconcile.Result)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReconcileRequestAuthentication indicates an expected call of ReconcileRequestAuthentication.
+func (mr *MockMulticlusterRequestAuthenticationReconcilerMockRecorder) ReconcileRequestAuthentication(clusterName, obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileRequestAuthentication", reflect.TypeOf((*MockMulticlusterRequestAuthenticationReconciler)(nil).ReconcileRequestAuthentication), clusterName, obj)
+}
+
+// MockMulticlusterRequestAuthenticationDeletionReconciler is a mock of MulticlusterRequestAuthenticationDeletionReconciler interface.
+type MockMulticlusterRequestAuthenticationDeletionReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterRequestAuthenticationDeletionReconcilerMockRecorder
+}
+
+// MockMulticlusterRequestAuthenticationDeletionReconcilerMockRecorder is the mock recorder for MockMulticlusterRequestAuthenticationDeletionReconciler.
+type MockMulticlusterRequestAuthenticationDeletionReconcilerMockRecorder struct {
+	mock *MockMulticlusterRequestAuthenticationDeletionReconciler
+}
+
+// NewMockMulticlusterRequestAuthenticationDeletionReconciler creates a new mock instance.
+func NewMockMulticlusterRequestAuthenticationDeletionReconciler(ctrl *gomock.Controller) *MockMulticlusterRequestAuthenticationDeletionReconciler {
+	mock := &MockMulticlusterRequestAuthenticationDeletionReconciler{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterRequestAuthenticationDeletionReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterRequestAuthenticationDeletionReconciler) EXPECT() *MockMulticlusterRequestAuthenticationDeletionReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileRequestAuthenticationDeletion mocks base method.
+func (m *MockMulticlusterRequestAuthenticationDeletionReconciler) ReconcileRequestAuthenticationDeletion(clusterName string, req reconcile.Request) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileRequestAuthenticationDeletion", clusterName, req)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ReconcileRequestAuthenticationDeletion indicates an expected call of ReconcileRequestAuthenticationDeletion.
+func (mr *MockMulticlusterRequestAuthenticationDeletionReconcilerMockRecorder) ReconcileRequestAuthenticationDeletion(clusterName, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileRequestAuthenticationDeletion", reflect.TypeOf((*MockMulticlusterRequestAuthenticationDeletionReconciler)(nil).ReconcileRequestAuthenticationDeletion), clusterName, req)
+}
+
+// MockMulticlusterRequestAuthenticationReconcileLoop is a mock of MulticlusterRequestAuthenticationReconcileLoop interface.
+type MockMulticlusterRequestAuthenticationReconcileLoop struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterRequestAuthenticationReconcileLoopMockRecorder
+}
+
+// MockMulticlusterRequestAuthenticationReconcileLoopMockRecorder is the mock recorder for MockMulticlusterRequestAuthenticationReconcileLoop.
+type MockMulticlusterRequestAuthenticationReconcileLoopMockRecorder struct {
+	mock *MockMulticlusterRequestAuthenticationReconcileLoop
+}
+
+// NewMockMulticlusterRequestAuthenticationReconcileLoop creates a new mock instance.
+func NewMockMulticlusterRequestAuthenticationReconcileLoop(ctrl *gomock.Controller) *MockMulticlusterRequestAuthenticationReconcileLoop {
+	mock := &MockMulticlusterRequestAuthenticationReconcileLoop{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterRequestAuthenticationReconcileLoopMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterRequestAuthenticationReconcileLoop) EXPECT() *MockMulticlusterRequestAuthenticationReconcileLoopMockRecorder {
+	return m.recorder
+}
+
+// AddMulticlusterRequestAuthenticationReconciler mocks base method.
+func (m *MockMulticlusterRequestAuthenticationReconcileLoop) AddMulticlusterRequestAuthenticationReconciler(ctx context.Context, rec controller.MulticlusterRequestAuthenticationReconciler, predicates ...predicate.Predicate) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, rec}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "AddMulticlusterRequestAuthenticationReconciler", varargs...)
+}
+
+// AddMulticlusterRequestAuthenticationReconciler indicates an expected call of AddMulticlusterRequestAuthenticationReconciler.
+func (mr *MockMulticlusterRequestAuthenticationReconcileLoopMockRecorder) AddMulticlusterRequestAuthenticationReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, rec}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddMulticlusterRequestAuthenticationReconciler", reflect.TypeOf((*MockMulticlusterRequestAuthenticationReconcileLoop)(nil).AddMulticlusterRequestAuthenticationReconciler), varargs...)
+}

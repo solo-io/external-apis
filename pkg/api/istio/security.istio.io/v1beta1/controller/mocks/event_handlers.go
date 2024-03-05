@@ -255,3 +255,124 @@ func (mr *MockPeerAuthenticationEventWatcherMockRecorder) AddEventHandler(ctx, h
 	varargs := append([]interface{}{ctx, h}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockPeerAuthenticationEventWatcher)(nil).AddEventHandler), varargs...)
 }
+
+// MockRequestAuthenticationEventHandler is a mock of RequestAuthenticationEventHandler interface.
+type MockRequestAuthenticationEventHandler struct {
+	ctrl     *gomock.Controller
+	recorder *MockRequestAuthenticationEventHandlerMockRecorder
+}
+
+// MockRequestAuthenticationEventHandlerMockRecorder is the mock recorder for MockRequestAuthenticationEventHandler.
+type MockRequestAuthenticationEventHandlerMockRecorder struct {
+	mock *MockRequestAuthenticationEventHandler
+}
+
+// NewMockRequestAuthenticationEventHandler creates a new mock instance.
+func NewMockRequestAuthenticationEventHandler(ctrl *gomock.Controller) *MockRequestAuthenticationEventHandler {
+	mock := &MockRequestAuthenticationEventHandler{ctrl: ctrl}
+	mock.recorder = &MockRequestAuthenticationEventHandlerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockRequestAuthenticationEventHandler) EXPECT() *MockRequestAuthenticationEventHandlerMockRecorder {
+	return m.recorder
+}
+
+// CreateRequestAuthentication mocks base method.
+func (m *MockRequestAuthenticationEventHandler) CreateRequestAuthentication(obj *v1beta1.RequestAuthentication) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateRequestAuthentication", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateRequestAuthentication indicates an expected call of CreateRequestAuthentication.
+func (mr *MockRequestAuthenticationEventHandlerMockRecorder) CreateRequestAuthentication(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRequestAuthentication", reflect.TypeOf((*MockRequestAuthenticationEventHandler)(nil).CreateRequestAuthentication), obj)
+}
+
+// DeleteRequestAuthentication mocks base method.
+func (m *MockRequestAuthenticationEventHandler) DeleteRequestAuthentication(obj *v1beta1.RequestAuthentication) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteRequestAuthentication", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteRequestAuthentication indicates an expected call of DeleteRequestAuthentication.
+func (mr *MockRequestAuthenticationEventHandlerMockRecorder) DeleteRequestAuthentication(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteRequestAuthentication", reflect.TypeOf((*MockRequestAuthenticationEventHandler)(nil).DeleteRequestAuthentication), obj)
+}
+
+// GenericRequestAuthentication mocks base method.
+func (m *MockRequestAuthenticationEventHandler) GenericRequestAuthentication(obj *v1beta1.RequestAuthentication) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GenericRequestAuthentication", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// GenericRequestAuthentication indicates an expected call of GenericRequestAuthentication.
+func (mr *MockRequestAuthenticationEventHandlerMockRecorder) GenericRequestAuthentication(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericRequestAuthentication", reflect.TypeOf((*MockRequestAuthenticationEventHandler)(nil).GenericRequestAuthentication), obj)
+}
+
+// UpdateRequestAuthentication mocks base method.
+func (m *MockRequestAuthenticationEventHandler) UpdateRequestAuthentication(old, new *v1beta1.RequestAuthentication) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateRequestAuthentication", old, new)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateRequestAuthentication indicates an expected call of UpdateRequestAuthentication.
+func (mr *MockRequestAuthenticationEventHandlerMockRecorder) UpdateRequestAuthentication(old, new interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateRequestAuthentication", reflect.TypeOf((*MockRequestAuthenticationEventHandler)(nil).UpdateRequestAuthentication), old, new)
+}
+
+// MockRequestAuthenticationEventWatcher is a mock of RequestAuthenticationEventWatcher interface.
+type MockRequestAuthenticationEventWatcher struct {
+	ctrl     *gomock.Controller
+	recorder *MockRequestAuthenticationEventWatcherMockRecorder
+}
+
+// MockRequestAuthenticationEventWatcherMockRecorder is the mock recorder for MockRequestAuthenticationEventWatcher.
+type MockRequestAuthenticationEventWatcherMockRecorder struct {
+	mock *MockRequestAuthenticationEventWatcher
+}
+
+// NewMockRequestAuthenticationEventWatcher creates a new mock instance.
+func NewMockRequestAuthenticationEventWatcher(ctrl *gomock.Controller) *MockRequestAuthenticationEventWatcher {
+	mock := &MockRequestAuthenticationEventWatcher{ctrl: ctrl}
+	mock.recorder = &MockRequestAuthenticationEventWatcherMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockRequestAuthenticationEventWatcher) EXPECT() *MockRequestAuthenticationEventWatcherMockRecorder {
+	return m.recorder
+}
+
+// AddEventHandler mocks base method.
+func (m *MockRequestAuthenticationEventWatcher) AddEventHandler(ctx context.Context, h controller.RequestAuthenticationEventHandler, predicates ...predicate.Predicate) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, h}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "AddEventHandler", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AddEventHandler indicates an expected call of AddEventHandler.
+func (mr *MockRequestAuthenticationEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, h}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockRequestAuthenticationEventWatcher)(nil).AddEventHandler), varargs...)
+}
