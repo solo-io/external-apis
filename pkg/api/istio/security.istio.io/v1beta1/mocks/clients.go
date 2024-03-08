@@ -103,6 +103,20 @@ func (mr *MockClientsetMockRecorder) PeerAuthentications() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PeerAuthentications", reflect.TypeOf((*MockClientset)(nil).PeerAuthentications))
 }
 
+// RequestAuthentications mocks base method.
+func (m *MockClientset) RequestAuthentications() v1beta1.RequestAuthenticationClient {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RequestAuthentications")
+	ret0, _ := ret[0].(v1beta1.RequestAuthenticationClient)
+	return ret0
+}
+
+// RequestAuthentications indicates an expected call of RequestAuthentications.
+func (mr *MockClientsetMockRecorder) RequestAuthentications() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RequestAuthentications", reflect.TypeOf((*MockClientset)(nil).RequestAuthentications))
+}
+
 // MockAuthorizationPolicyReader is a mock of AuthorizationPolicyReader interface.
 type MockAuthorizationPolicyReader struct {
 	ctrl     *gomock.Controller
@@ -1109,4 +1123,508 @@ func (m *MockMulticlusterPeerAuthenticationClient) Cluster(cluster string) (v1be
 func (mr *MockMulticlusterPeerAuthenticationClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterPeerAuthenticationClient)(nil).Cluster), cluster)
+}
+
+// MockRequestAuthenticationReader is a mock of RequestAuthenticationReader interface.
+type MockRequestAuthenticationReader struct {
+	ctrl     *gomock.Controller
+	recorder *MockRequestAuthenticationReaderMockRecorder
+}
+
+// MockRequestAuthenticationReaderMockRecorder is the mock recorder for MockRequestAuthenticationReader.
+type MockRequestAuthenticationReaderMockRecorder struct {
+	mock *MockRequestAuthenticationReader
+}
+
+// NewMockRequestAuthenticationReader creates a new mock instance.
+func NewMockRequestAuthenticationReader(ctrl *gomock.Controller) *MockRequestAuthenticationReader {
+	mock := &MockRequestAuthenticationReader{ctrl: ctrl}
+	mock.recorder = &MockRequestAuthenticationReaderMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockRequestAuthenticationReader) EXPECT() *MockRequestAuthenticationReaderMockRecorder {
+	return m.recorder
+}
+
+// GetRequestAuthentication mocks base method.
+func (m *MockRequestAuthenticationReader) GetRequestAuthentication(ctx context.Context, key client.ObjectKey) (*v1beta10.RequestAuthentication, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetRequestAuthentication", ctx, key)
+	ret0, _ := ret[0].(*v1beta10.RequestAuthentication)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRequestAuthentication indicates an expected call of GetRequestAuthentication.
+func (mr *MockRequestAuthenticationReaderMockRecorder) GetRequestAuthentication(ctx, key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequestAuthentication", reflect.TypeOf((*MockRequestAuthenticationReader)(nil).GetRequestAuthentication), ctx, key)
+}
+
+// ListRequestAuthentication mocks base method.
+func (m *MockRequestAuthenticationReader) ListRequestAuthentication(ctx context.Context, opts ...client.ListOption) (*v1beta10.RequestAuthenticationList, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListRequestAuthentication", varargs...)
+	ret0, _ := ret[0].(*v1beta10.RequestAuthenticationList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListRequestAuthentication indicates an expected call of ListRequestAuthentication.
+func (mr *MockRequestAuthenticationReaderMockRecorder) ListRequestAuthentication(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListRequestAuthentication", reflect.TypeOf((*MockRequestAuthenticationReader)(nil).ListRequestAuthentication), varargs...)
+}
+
+// MockRequestAuthenticationWriter is a mock of RequestAuthenticationWriter interface.
+type MockRequestAuthenticationWriter struct {
+	ctrl     *gomock.Controller
+	recorder *MockRequestAuthenticationWriterMockRecorder
+}
+
+// MockRequestAuthenticationWriterMockRecorder is the mock recorder for MockRequestAuthenticationWriter.
+type MockRequestAuthenticationWriterMockRecorder struct {
+	mock *MockRequestAuthenticationWriter
+}
+
+// NewMockRequestAuthenticationWriter creates a new mock instance.
+func NewMockRequestAuthenticationWriter(ctrl *gomock.Controller) *MockRequestAuthenticationWriter {
+	mock := &MockRequestAuthenticationWriter{ctrl: ctrl}
+	mock.recorder = &MockRequestAuthenticationWriterMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockRequestAuthenticationWriter) EXPECT() *MockRequestAuthenticationWriterMockRecorder {
+	return m.recorder
+}
+
+// CreateRequestAuthentication mocks base method.
+func (m *MockRequestAuthenticationWriter) CreateRequestAuthentication(ctx context.Context, obj *v1beta10.RequestAuthentication, opts ...client.CreateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateRequestAuthentication", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateRequestAuthentication indicates an expected call of CreateRequestAuthentication.
+func (mr *MockRequestAuthenticationWriterMockRecorder) CreateRequestAuthentication(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRequestAuthentication", reflect.TypeOf((*MockRequestAuthenticationWriter)(nil).CreateRequestAuthentication), varargs...)
+}
+
+// DeleteAllOfRequestAuthentication mocks base method.
+func (m *MockRequestAuthenticationWriter) DeleteAllOfRequestAuthentication(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteAllOfRequestAuthentication", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllOfRequestAuthentication indicates an expected call of DeleteAllOfRequestAuthentication.
+func (mr *MockRequestAuthenticationWriterMockRecorder) DeleteAllOfRequestAuthentication(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfRequestAuthentication", reflect.TypeOf((*MockRequestAuthenticationWriter)(nil).DeleteAllOfRequestAuthentication), varargs...)
+}
+
+// DeleteRequestAuthentication mocks base method.
+func (m *MockRequestAuthenticationWriter) DeleteRequestAuthentication(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, key}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteRequestAuthentication", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteRequestAuthentication indicates an expected call of DeleteRequestAuthentication.
+func (mr *MockRequestAuthenticationWriterMockRecorder) DeleteRequestAuthentication(ctx, key interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, key}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteRequestAuthentication", reflect.TypeOf((*MockRequestAuthenticationWriter)(nil).DeleteRequestAuthentication), varargs...)
+}
+
+// PatchRequestAuthentication mocks base method.
+func (m *MockRequestAuthenticationWriter) PatchRequestAuthentication(ctx context.Context, obj *v1beta10.RequestAuthentication, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchRequestAuthentication", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchRequestAuthentication indicates an expected call of PatchRequestAuthentication.
+func (mr *MockRequestAuthenticationWriterMockRecorder) PatchRequestAuthentication(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchRequestAuthentication", reflect.TypeOf((*MockRequestAuthenticationWriter)(nil).PatchRequestAuthentication), varargs...)
+}
+
+// UpdateRequestAuthentication mocks base method.
+func (m *MockRequestAuthenticationWriter) UpdateRequestAuthentication(ctx context.Context, obj *v1beta10.RequestAuthentication, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateRequestAuthentication", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateRequestAuthentication indicates an expected call of UpdateRequestAuthentication.
+func (mr *MockRequestAuthenticationWriterMockRecorder) UpdateRequestAuthentication(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateRequestAuthentication", reflect.TypeOf((*MockRequestAuthenticationWriter)(nil).UpdateRequestAuthentication), varargs...)
+}
+
+// UpsertRequestAuthentication mocks base method.
+func (m *MockRequestAuthenticationWriter) UpsertRequestAuthentication(ctx context.Context, obj *v1beta10.RequestAuthentication, transitionFuncs ...v1beta1.RequestAuthenticationTransitionFunction) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range transitionFuncs {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpsertRequestAuthentication", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertRequestAuthentication indicates an expected call of UpsertRequestAuthentication.
+func (mr *MockRequestAuthenticationWriterMockRecorder) UpsertRequestAuthentication(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertRequestAuthentication", reflect.TypeOf((*MockRequestAuthenticationWriter)(nil).UpsertRequestAuthentication), varargs...)
+}
+
+// MockRequestAuthenticationStatusWriter is a mock of RequestAuthenticationStatusWriter interface.
+type MockRequestAuthenticationStatusWriter struct {
+	ctrl     *gomock.Controller
+	recorder *MockRequestAuthenticationStatusWriterMockRecorder
+}
+
+// MockRequestAuthenticationStatusWriterMockRecorder is the mock recorder for MockRequestAuthenticationStatusWriter.
+type MockRequestAuthenticationStatusWriterMockRecorder struct {
+	mock *MockRequestAuthenticationStatusWriter
+}
+
+// NewMockRequestAuthenticationStatusWriter creates a new mock instance.
+func NewMockRequestAuthenticationStatusWriter(ctrl *gomock.Controller) *MockRequestAuthenticationStatusWriter {
+	mock := &MockRequestAuthenticationStatusWriter{ctrl: ctrl}
+	mock.recorder = &MockRequestAuthenticationStatusWriterMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockRequestAuthenticationStatusWriter) EXPECT() *MockRequestAuthenticationStatusWriterMockRecorder {
+	return m.recorder
+}
+
+// PatchRequestAuthenticationStatus mocks base method.
+func (m *MockRequestAuthenticationStatusWriter) PatchRequestAuthenticationStatus(ctx context.Context, obj *v1beta10.RequestAuthentication, patch client.Patch, opts ...client.SubResourcePatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchRequestAuthenticationStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchRequestAuthenticationStatus indicates an expected call of PatchRequestAuthenticationStatus.
+func (mr *MockRequestAuthenticationStatusWriterMockRecorder) PatchRequestAuthenticationStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchRequestAuthenticationStatus", reflect.TypeOf((*MockRequestAuthenticationStatusWriter)(nil).PatchRequestAuthenticationStatus), varargs...)
+}
+
+// UpdateRequestAuthenticationStatus mocks base method.
+func (m *MockRequestAuthenticationStatusWriter) UpdateRequestAuthenticationStatus(ctx context.Context, obj *v1beta10.RequestAuthentication, opts ...client.SubResourceUpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateRequestAuthenticationStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateRequestAuthenticationStatus indicates an expected call of UpdateRequestAuthenticationStatus.
+func (mr *MockRequestAuthenticationStatusWriterMockRecorder) UpdateRequestAuthenticationStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateRequestAuthenticationStatus", reflect.TypeOf((*MockRequestAuthenticationStatusWriter)(nil).UpdateRequestAuthenticationStatus), varargs...)
+}
+
+// MockRequestAuthenticationClient is a mock of RequestAuthenticationClient interface.
+type MockRequestAuthenticationClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockRequestAuthenticationClientMockRecorder
+}
+
+// MockRequestAuthenticationClientMockRecorder is the mock recorder for MockRequestAuthenticationClient.
+type MockRequestAuthenticationClientMockRecorder struct {
+	mock *MockRequestAuthenticationClient
+}
+
+// NewMockRequestAuthenticationClient creates a new mock instance.
+func NewMockRequestAuthenticationClient(ctrl *gomock.Controller) *MockRequestAuthenticationClient {
+	mock := &MockRequestAuthenticationClient{ctrl: ctrl}
+	mock.recorder = &MockRequestAuthenticationClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockRequestAuthenticationClient) EXPECT() *MockRequestAuthenticationClientMockRecorder {
+	return m.recorder
+}
+
+// CreateRequestAuthentication mocks base method.
+func (m *MockRequestAuthenticationClient) CreateRequestAuthentication(ctx context.Context, obj *v1beta10.RequestAuthentication, opts ...client.CreateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateRequestAuthentication", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateRequestAuthentication indicates an expected call of CreateRequestAuthentication.
+func (mr *MockRequestAuthenticationClientMockRecorder) CreateRequestAuthentication(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRequestAuthentication", reflect.TypeOf((*MockRequestAuthenticationClient)(nil).CreateRequestAuthentication), varargs...)
+}
+
+// DeleteAllOfRequestAuthentication mocks base method.
+func (m *MockRequestAuthenticationClient) DeleteAllOfRequestAuthentication(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteAllOfRequestAuthentication", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllOfRequestAuthentication indicates an expected call of DeleteAllOfRequestAuthentication.
+func (mr *MockRequestAuthenticationClientMockRecorder) DeleteAllOfRequestAuthentication(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfRequestAuthentication", reflect.TypeOf((*MockRequestAuthenticationClient)(nil).DeleteAllOfRequestAuthentication), varargs...)
+}
+
+// DeleteRequestAuthentication mocks base method.
+func (m *MockRequestAuthenticationClient) DeleteRequestAuthentication(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, key}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteRequestAuthentication", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteRequestAuthentication indicates an expected call of DeleteRequestAuthentication.
+func (mr *MockRequestAuthenticationClientMockRecorder) DeleteRequestAuthentication(ctx, key interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, key}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteRequestAuthentication", reflect.TypeOf((*MockRequestAuthenticationClient)(nil).DeleteRequestAuthentication), varargs...)
+}
+
+// GetRequestAuthentication mocks base method.
+func (m *MockRequestAuthenticationClient) GetRequestAuthentication(ctx context.Context, key client.ObjectKey) (*v1beta10.RequestAuthentication, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetRequestAuthentication", ctx, key)
+	ret0, _ := ret[0].(*v1beta10.RequestAuthentication)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRequestAuthentication indicates an expected call of GetRequestAuthentication.
+func (mr *MockRequestAuthenticationClientMockRecorder) GetRequestAuthentication(ctx, key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequestAuthentication", reflect.TypeOf((*MockRequestAuthenticationClient)(nil).GetRequestAuthentication), ctx, key)
+}
+
+// ListRequestAuthentication mocks base method.
+func (m *MockRequestAuthenticationClient) ListRequestAuthentication(ctx context.Context, opts ...client.ListOption) (*v1beta10.RequestAuthenticationList, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListRequestAuthentication", varargs...)
+	ret0, _ := ret[0].(*v1beta10.RequestAuthenticationList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListRequestAuthentication indicates an expected call of ListRequestAuthentication.
+func (mr *MockRequestAuthenticationClientMockRecorder) ListRequestAuthentication(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListRequestAuthentication", reflect.TypeOf((*MockRequestAuthenticationClient)(nil).ListRequestAuthentication), varargs...)
+}
+
+// PatchRequestAuthentication mocks base method.
+func (m *MockRequestAuthenticationClient) PatchRequestAuthentication(ctx context.Context, obj *v1beta10.RequestAuthentication, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchRequestAuthentication", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchRequestAuthentication indicates an expected call of PatchRequestAuthentication.
+func (mr *MockRequestAuthenticationClientMockRecorder) PatchRequestAuthentication(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchRequestAuthentication", reflect.TypeOf((*MockRequestAuthenticationClient)(nil).PatchRequestAuthentication), varargs...)
+}
+
+// PatchRequestAuthenticationStatus mocks base method.
+func (m *MockRequestAuthenticationClient) PatchRequestAuthenticationStatus(ctx context.Context, obj *v1beta10.RequestAuthentication, patch client.Patch, opts ...client.SubResourcePatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchRequestAuthenticationStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchRequestAuthenticationStatus indicates an expected call of PatchRequestAuthenticationStatus.
+func (mr *MockRequestAuthenticationClientMockRecorder) PatchRequestAuthenticationStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchRequestAuthenticationStatus", reflect.TypeOf((*MockRequestAuthenticationClient)(nil).PatchRequestAuthenticationStatus), varargs...)
+}
+
+// UpdateRequestAuthentication mocks base method.
+func (m *MockRequestAuthenticationClient) UpdateRequestAuthentication(ctx context.Context, obj *v1beta10.RequestAuthentication, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateRequestAuthentication", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateRequestAuthentication indicates an expected call of UpdateRequestAuthentication.
+func (mr *MockRequestAuthenticationClientMockRecorder) UpdateRequestAuthentication(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateRequestAuthentication", reflect.TypeOf((*MockRequestAuthenticationClient)(nil).UpdateRequestAuthentication), varargs...)
+}
+
+// UpdateRequestAuthenticationStatus mocks base method.
+func (m *MockRequestAuthenticationClient) UpdateRequestAuthenticationStatus(ctx context.Context, obj *v1beta10.RequestAuthentication, opts ...client.SubResourceUpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateRequestAuthenticationStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateRequestAuthenticationStatus indicates an expected call of UpdateRequestAuthenticationStatus.
+func (mr *MockRequestAuthenticationClientMockRecorder) UpdateRequestAuthenticationStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateRequestAuthenticationStatus", reflect.TypeOf((*MockRequestAuthenticationClient)(nil).UpdateRequestAuthenticationStatus), varargs...)
+}
+
+// UpsertRequestAuthentication mocks base method.
+func (m *MockRequestAuthenticationClient) UpsertRequestAuthentication(ctx context.Context, obj *v1beta10.RequestAuthentication, transitionFuncs ...v1beta1.RequestAuthenticationTransitionFunction) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range transitionFuncs {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpsertRequestAuthentication", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertRequestAuthentication indicates an expected call of UpsertRequestAuthentication.
+func (mr *MockRequestAuthenticationClientMockRecorder) UpsertRequestAuthentication(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertRequestAuthentication", reflect.TypeOf((*MockRequestAuthenticationClient)(nil).UpsertRequestAuthentication), varargs...)
+}
+
+// MockMulticlusterRequestAuthenticationClient is a mock of MulticlusterRequestAuthenticationClient interface.
+type MockMulticlusterRequestAuthenticationClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterRequestAuthenticationClientMockRecorder
+}
+
+// MockMulticlusterRequestAuthenticationClientMockRecorder is the mock recorder for MockMulticlusterRequestAuthenticationClient.
+type MockMulticlusterRequestAuthenticationClientMockRecorder struct {
+	mock *MockMulticlusterRequestAuthenticationClient
+}
+
+// NewMockMulticlusterRequestAuthenticationClient creates a new mock instance.
+func NewMockMulticlusterRequestAuthenticationClient(ctrl *gomock.Controller) *MockMulticlusterRequestAuthenticationClient {
+	mock := &MockMulticlusterRequestAuthenticationClient{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterRequestAuthenticationClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterRequestAuthenticationClient) EXPECT() *MockMulticlusterRequestAuthenticationClientMockRecorder {
+	return m.recorder
+}
+
+// Cluster mocks base method.
+func (m *MockMulticlusterRequestAuthenticationClient) Cluster(cluster string) (v1beta1.RequestAuthenticationClient, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Cluster", cluster)
+	ret0, _ := ret[0].(v1beta1.RequestAuthenticationClient)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Cluster indicates an expected call of Cluster.
+func (mr *MockMulticlusterRequestAuthenticationClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterRequestAuthenticationClient)(nil).Cluster), cluster)
 }

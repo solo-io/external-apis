@@ -13,6 +13,9 @@ type DestinationRuleSlice []*DestinationRule
 // GatewaySlice represents a slice of *Gateway
 type GatewaySlice []*Gateway
 
+// ProxyConfigSlice represents a slice of *ProxyConfig
+type ProxyConfigSlice []*ProxyConfig
+
 // ServiceEntrySlice represents a slice of *ServiceEntry
 type ServiceEntrySlice []*ServiceEntry
 

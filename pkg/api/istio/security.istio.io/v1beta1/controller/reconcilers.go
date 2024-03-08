@@ -250,3 +250,120 @@ func (r genericPeerAuthenticationFinalizer) Finalize(object ezkube.Object) error
 	}
 	return r.finalizingReconciler.FinalizePeerAuthentication(obj)
 }
+
+// Reconcile Upsert events for the RequestAuthentication Resource.
+// implemented by the user
+type RequestAuthenticationReconciler interface {
+	ReconcileRequestAuthentication(obj *security_istio_io_v1beta1.RequestAuthentication) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the RequestAuthentication Resource.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type RequestAuthenticationDeletionReconciler interface {
+	ReconcileRequestAuthenticationDeletion(req reconcile.Request) error
+}
+
+type RequestAuthenticationReconcilerFuncs struct {
+	OnReconcileRequestAuthentication         func(obj *security_istio_io_v1beta1.RequestAuthentication) (reconcile.Result, error)
+	OnReconcileRequestAuthenticationDeletion func(req reconcile.Request) error
+}
+
+func (f *RequestAuthenticationReconcilerFuncs) ReconcileRequestAuthentication(obj *security_istio_io_v1beta1.RequestAuthentication) (reconcile.Result, error) {
+	if f.OnReconcileRequestAuthentication == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcileRequestAuthentication(obj)
+}
+
+func (f *RequestAuthenticationReconcilerFuncs) ReconcileRequestAuthenticationDeletion(req reconcile.Request) error {
+	if f.OnReconcileRequestAuthenticationDeletion == nil {
+		return nil
+	}
+	return f.OnReconcileRequestAuthenticationDeletion(req)
+}
+
+// Reconcile and finalize the RequestAuthentication Resource
+// implemented by the user
+type RequestAuthenticationFinalizer interface {
+	RequestAuthenticationReconciler
+
+	// name of the finalizer used by this handler.
+	// finalizer names should be unique for a single task
+	RequestAuthenticationFinalizerName() string
+
+	// finalize the object before it is deleted.
+	// Watchers created with a finalizing handler will a
+	FinalizeRequestAuthentication(obj *security_istio_io_v1beta1.RequestAuthentication) error
+}
+
+type RequestAuthenticationReconcileLoop interface {
+	RunRequestAuthenticationReconciler(ctx context.Context, rec RequestAuthenticationReconciler, predicates ...predicate.Predicate) error
+}
+
+type requestAuthenticationReconcileLoop struct {
+	loop reconcile.Loop
+}
+
+func NewRequestAuthenticationReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) RequestAuthenticationReconcileLoop {
+	return &requestAuthenticationReconcileLoop{
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &security_istio_io_v1beta1.RequestAuthentication{}, options),
+	}
+}
+
+func (c *requestAuthenticationReconcileLoop) RunRequestAuthenticationReconciler(ctx context.Context, reconciler RequestAuthenticationReconciler, predicates ...predicate.Predicate) error {
+	genericReconciler := genericRequestAuthenticationReconciler{
+		reconciler: reconciler,
+	}
+
+	var reconcilerWrapper reconcile.Reconciler
+	if finalizingReconciler, ok := reconciler.(RequestAuthenticationFinalizer); ok {
+		reconcilerWrapper = genericRequestAuthenticationFinalizer{
+			genericRequestAuthenticationReconciler: genericReconciler,
+			finalizingReconciler:                   finalizingReconciler,
+		}
+	} else {
+		reconcilerWrapper = genericReconciler
+	}
+	return c.loop.RunReconciler(ctx, reconcilerWrapper, predicates...)
+}
+
+// genericRequestAuthenticationHandler implements a generic reconcile.Reconciler
+type genericRequestAuthenticationReconciler struct {
+	reconciler RequestAuthenticationReconciler
+}
+
+func (r genericRequestAuthenticationReconciler) Reconcile(object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*security_istio_io_v1beta1.RequestAuthentication)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: RequestAuthentication handler received event for %T", object)
+	}
+	return r.reconciler.ReconcileRequestAuthentication(obj)
+}
+
+func (r genericRequestAuthenticationReconciler) ReconcileDeletion(request reconcile.Request) error {
+	if deletionReconciler, ok := r.reconciler.(RequestAuthenticationDeletionReconciler); ok {
+		return deletionReconciler.ReconcileRequestAuthenticationDeletion(request)
+	}
+	return nil
+}
+
+// genericRequestAuthenticationFinalizer implements a generic reconcile.FinalizingReconciler
+type genericRequestAuthenticationFinalizer struct {
+	genericRequestAuthenticationReconciler
+	finalizingReconciler RequestAuthenticationFinalizer
+}
+
+func (r genericRequestAuthenticationFinalizer) FinalizerName() string {
+	return r.finalizingReconciler.RequestAuthenticationFinalizerName()
+}
+
+func (r genericRequestAuthenticationFinalizer) Finalize(object ezkube.Object) error {
+	obj, ok := object.(*security_istio_io_v1beta1.RequestAuthentication)
+	if !ok {
+		return errors.Errorf("internal error: RequestAuthentication handler received event for %T", object)
+	}
+	return r.finalizingReconciler.FinalizeRequestAuthentication(obj)
+}

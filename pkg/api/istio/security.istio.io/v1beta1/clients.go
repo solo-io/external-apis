@@ -44,6 +44,8 @@ type Clientset interface {
 	AuthorizationPolicies() AuthorizationPolicyClient
 	// clienset for the security.istio.io/v1beta1/v1beta1 APIs
 	PeerAuthentications() PeerAuthenticationClient
+	// clienset for the security.istio.io/v1beta1/v1beta1 APIs
+	RequestAuthentications() RequestAuthenticationClient
 }
 
 type clientSet struct {
@@ -76,6 +78,11 @@ func (c *clientSet) AuthorizationPolicies() AuthorizationPolicyClient {
 // clienset for the security.istio.io/v1beta1/v1beta1 APIs
 func (c *clientSet) PeerAuthentications() PeerAuthenticationClient {
 	return NewPeerAuthenticationClient(c.client)
+}
+
+// clienset for the security.istio.io/v1beta1/v1beta1 APIs
+func (c *clientSet) RequestAuthentications() RequestAuthenticationClient {
+	return NewRequestAuthenticationClient(c.client)
 }
 
 // Reader knows how to read and list AuthorizationPolicys.
@@ -360,4 +367,146 @@ func (m *multiclusterPeerAuthenticationClient) Cluster(cluster string) (PeerAuth
 		return nil, err
 	}
 	return NewPeerAuthenticationClient(client), nil
+}
+
+// Reader knows how to read and list RequestAuthentications.
+type RequestAuthenticationReader interface {
+	// Get retrieves a RequestAuthentication for the given object key
+	GetRequestAuthentication(ctx context.Context, key client.ObjectKey) (*security_istio_io_v1beta1.RequestAuthentication, error)
+
+	// List retrieves list of RequestAuthentications for a given namespace and list options.
+	ListRequestAuthentication(ctx context.Context, opts ...client.ListOption) (*security_istio_io_v1beta1.RequestAuthenticationList, error)
+}
+
+// RequestAuthenticationTransitionFunction instructs the RequestAuthenticationWriter how to transition between an existing
+// RequestAuthentication object and a desired on an Upsert
+type RequestAuthenticationTransitionFunction func(existing, desired *security_istio_io_v1beta1.RequestAuthentication) error
+
+// Writer knows how to create, delete, and update RequestAuthentications.
+type RequestAuthenticationWriter interface {
+	// Create saves the RequestAuthentication object.
+	CreateRequestAuthentication(ctx context.Context, obj *security_istio_io_v1beta1.RequestAuthentication, opts ...client.CreateOption) error
+
+	// Delete deletes the RequestAuthentication object.
+	DeleteRequestAuthentication(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error
+
+	// Update updates the given RequestAuthentication object.
+	UpdateRequestAuthentication(ctx context.Context, obj *security_istio_io_v1beta1.RequestAuthentication, opts ...client.UpdateOption) error
+
+	// Patch patches the given RequestAuthentication object.
+	PatchRequestAuthentication(ctx context.Context, obj *security_istio_io_v1beta1.RequestAuthentication, patch client.Patch, opts ...client.PatchOption) error
+
+	// DeleteAllOf deletes all RequestAuthentication objects matching the given options.
+	DeleteAllOfRequestAuthentication(ctx context.Context, opts ...client.DeleteAllOfOption) error
+
+	// Create or Update the RequestAuthentication object.
+	UpsertRequestAuthentication(ctx context.Context, obj *security_istio_io_v1beta1.RequestAuthentication, transitionFuncs ...RequestAuthenticationTransitionFunction) error
+}
+
+// StatusWriter knows how to update status subresource of a RequestAuthentication object.
+type RequestAuthenticationStatusWriter interface {
+	// Update updates the fields corresponding to the status subresource for the
+	// given RequestAuthentication object.
+	UpdateRequestAuthenticationStatus(ctx context.Context, obj *security_istio_io_v1beta1.RequestAuthentication, opts ...client.SubResourceUpdateOption) error
+
+	// Patch patches the given RequestAuthentication object's subresource.
+	PatchRequestAuthenticationStatus(ctx context.Context, obj *security_istio_io_v1beta1.RequestAuthentication, patch client.Patch, opts ...client.SubResourcePatchOption) error
+}
+
+// Client knows how to perform CRUD operations on RequestAuthentications.
+type RequestAuthenticationClient interface {
+	RequestAuthenticationReader
+	RequestAuthenticationWriter
+	RequestAuthenticationStatusWriter
+}
+
+type requestAuthenticationClient struct {
+	client client.Client
+}
+
+func NewRequestAuthenticationClient(client client.Client) *requestAuthenticationClient {
+	return &requestAuthenticationClient{client: client}
+}
+
+func (c *requestAuthenticationClient) GetRequestAuthentication(ctx context.Context, key client.ObjectKey) (*security_istio_io_v1beta1.RequestAuthentication, error) {
+	obj := &security_istio_io_v1beta1.RequestAuthentication{}
+	if err := c.client.Get(ctx, key, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+func (c *requestAuthenticationClient) ListRequestAuthentication(ctx context.Context, opts ...client.ListOption) (*security_istio_io_v1beta1.RequestAuthenticationList, error) {
+	list := &security_istio_io_v1beta1.RequestAuthenticationList{}
+	if err := c.client.List(ctx, list, opts...); err != nil {
+		return nil, err
+	}
+	return list, nil
+}
+
+func (c *requestAuthenticationClient) CreateRequestAuthentication(ctx context.Context, obj *security_istio_io_v1beta1.RequestAuthentication, opts ...client.CreateOption) error {
+	return c.client.Create(ctx, obj, opts...)
+}
+
+func (c *requestAuthenticationClient) DeleteRequestAuthentication(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	obj := &security_istio_io_v1beta1.RequestAuthentication{}
+	obj.SetName(key.Name)
+	obj.SetNamespace(key.Namespace)
+	return c.client.Delete(ctx, obj, opts...)
+}
+
+func (c *requestAuthenticationClient) UpdateRequestAuthentication(ctx context.Context, obj *security_istio_io_v1beta1.RequestAuthentication, opts ...client.UpdateOption) error {
+	return c.client.Update(ctx, obj, opts...)
+}
+
+func (c *requestAuthenticationClient) PatchRequestAuthentication(ctx context.Context, obj *security_istio_io_v1beta1.RequestAuthentication, patch client.Patch, opts ...client.PatchOption) error {
+	return c.client.Patch(ctx, obj, patch, opts...)
+}
+
+func (c *requestAuthenticationClient) DeleteAllOfRequestAuthentication(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	obj := &security_istio_io_v1beta1.RequestAuthentication{}
+	return c.client.DeleteAllOf(ctx, obj, opts...)
+}
+
+func (c *requestAuthenticationClient) UpsertRequestAuthentication(ctx context.Context, obj *security_istio_io_v1beta1.RequestAuthentication, transitionFuncs ...RequestAuthenticationTransitionFunction) error {
+	genericTxFunc := func(existing, desired runtime.Object) error {
+		for _, txFunc := range transitionFuncs {
+			if err := txFunc(existing.(*security_istio_io_v1beta1.RequestAuthentication), desired.(*security_istio_io_v1beta1.RequestAuthentication)); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+	_, err := controllerutils.Upsert(ctx, c.client, obj, genericTxFunc)
+	return err
+}
+
+func (c *requestAuthenticationClient) UpdateRequestAuthenticationStatus(ctx context.Context, obj *security_istio_io_v1beta1.RequestAuthentication, opts ...client.SubResourceUpdateOption) error {
+	return c.client.Status().Update(ctx, obj, opts...)
+}
+
+func (c *requestAuthenticationClient) PatchRequestAuthenticationStatus(ctx context.Context, obj *security_istio_io_v1beta1.RequestAuthentication, patch client.Patch, opts ...client.SubResourcePatchOption) error {
+	return c.client.Status().Patch(ctx, obj, patch, opts...)
+}
+
+// Provides RequestAuthenticationClients for multiple clusters.
+type MulticlusterRequestAuthenticationClient interface {
+	// Cluster returns a RequestAuthenticationClient for the given cluster
+	Cluster(cluster string) (RequestAuthenticationClient, error)
+}
+
+type multiclusterRequestAuthenticationClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterRequestAuthenticationClient(client multicluster.Client) MulticlusterRequestAuthenticationClient {
+	return &multiclusterRequestAuthenticationClient{client: client}
+}
+
+func (m *multiclusterRequestAuthenticationClient) Cluster(cluster string) (RequestAuthenticationClient, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewRequestAuthenticationClient(client), nil
 }

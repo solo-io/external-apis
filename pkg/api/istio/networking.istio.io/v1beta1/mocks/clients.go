@@ -103,6 +103,20 @@ func (mr *MockClientsetMockRecorder) Gateways() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Gateways", reflect.TypeOf((*MockClientset)(nil).Gateways))
 }
 
+// ProxyConfigs mocks base method.
+func (m *MockClientset) ProxyConfigs() v1beta1.ProxyConfigClient {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ProxyConfigs")
+	ret0, _ := ret[0].(v1beta1.ProxyConfigClient)
+	return ret0
+}
+
+// ProxyConfigs indicates an expected call of ProxyConfigs.
+func (mr *MockClientsetMockRecorder) ProxyConfigs() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ProxyConfigs", reflect.TypeOf((*MockClientset)(nil).ProxyConfigs))
+}
+
 // ServiceEntries mocks base method.
 func (m *MockClientset) ServiceEntries() v1beta1.ServiceEntryClient {
 	m.ctrl.T.Helper()
@@ -1179,6 +1193,510 @@ func (m *MockMulticlusterGatewayClient) Cluster(cluster string) (v1beta1.Gateway
 func (mr *MockMulticlusterGatewayClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterGatewayClient)(nil).Cluster), cluster)
+}
+
+// MockProxyConfigReader is a mock of ProxyConfigReader interface.
+type MockProxyConfigReader struct {
+	ctrl     *gomock.Controller
+	recorder *MockProxyConfigReaderMockRecorder
+}
+
+// MockProxyConfigReaderMockRecorder is the mock recorder for MockProxyConfigReader.
+type MockProxyConfigReaderMockRecorder struct {
+	mock *MockProxyConfigReader
+}
+
+// NewMockProxyConfigReader creates a new mock instance.
+func NewMockProxyConfigReader(ctrl *gomock.Controller) *MockProxyConfigReader {
+	mock := &MockProxyConfigReader{ctrl: ctrl}
+	mock.recorder = &MockProxyConfigReaderMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockProxyConfigReader) EXPECT() *MockProxyConfigReaderMockRecorder {
+	return m.recorder
+}
+
+// GetProxyConfig mocks base method.
+func (m *MockProxyConfigReader) GetProxyConfig(ctx context.Context, key client.ObjectKey) (*v1beta10.ProxyConfig, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetProxyConfig", ctx, key)
+	ret0, _ := ret[0].(*v1beta10.ProxyConfig)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetProxyConfig indicates an expected call of GetProxyConfig.
+func (mr *MockProxyConfigReaderMockRecorder) GetProxyConfig(ctx, key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetProxyConfig", reflect.TypeOf((*MockProxyConfigReader)(nil).GetProxyConfig), ctx, key)
+}
+
+// ListProxyConfig mocks base method.
+func (m *MockProxyConfigReader) ListProxyConfig(ctx context.Context, opts ...client.ListOption) (*v1beta10.ProxyConfigList, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListProxyConfig", varargs...)
+	ret0, _ := ret[0].(*v1beta10.ProxyConfigList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListProxyConfig indicates an expected call of ListProxyConfig.
+func (mr *MockProxyConfigReaderMockRecorder) ListProxyConfig(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListProxyConfig", reflect.TypeOf((*MockProxyConfigReader)(nil).ListProxyConfig), varargs...)
+}
+
+// MockProxyConfigWriter is a mock of ProxyConfigWriter interface.
+type MockProxyConfigWriter struct {
+	ctrl     *gomock.Controller
+	recorder *MockProxyConfigWriterMockRecorder
+}
+
+// MockProxyConfigWriterMockRecorder is the mock recorder for MockProxyConfigWriter.
+type MockProxyConfigWriterMockRecorder struct {
+	mock *MockProxyConfigWriter
+}
+
+// NewMockProxyConfigWriter creates a new mock instance.
+func NewMockProxyConfigWriter(ctrl *gomock.Controller) *MockProxyConfigWriter {
+	mock := &MockProxyConfigWriter{ctrl: ctrl}
+	mock.recorder = &MockProxyConfigWriterMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockProxyConfigWriter) EXPECT() *MockProxyConfigWriterMockRecorder {
+	return m.recorder
+}
+
+// CreateProxyConfig mocks base method.
+func (m *MockProxyConfigWriter) CreateProxyConfig(ctx context.Context, obj *v1beta10.ProxyConfig, opts ...client.CreateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateProxyConfig", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateProxyConfig indicates an expected call of CreateProxyConfig.
+func (mr *MockProxyConfigWriterMockRecorder) CreateProxyConfig(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateProxyConfig", reflect.TypeOf((*MockProxyConfigWriter)(nil).CreateProxyConfig), varargs...)
+}
+
+// DeleteAllOfProxyConfig mocks base method.
+func (m *MockProxyConfigWriter) DeleteAllOfProxyConfig(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteAllOfProxyConfig", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllOfProxyConfig indicates an expected call of DeleteAllOfProxyConfig.
+func (mr *MockProxyConfigWriterMockRecorder) DeleteAllOfProxyConfig(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfProxyConfig", reflect.TypeOf((*MockProxyConfigWriter)(nil).DeleteAllOfProxyConfig), varargs...)
+}
+
+// DeleteProxyConfig mocks base method.
+func (m *MockProxyConfigWriter) DeleteProxyConfig(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, key}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteProxyConfig", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteProxyConfig indicates an expected call of DeleteProxyConfig.
+func (mr *MockProxyConfigWriterMockRecorder) DeleteProxyConfig(ctx, key interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, key}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteProxyConfig", reflect.TypeOf((*MockProxyConfigWriter)(nil).DeleteProxyConfig), varargs...)
+}
+
+// PatchProxyConfig mocks base method.
+func (m *MockProxyConfigWriter) PatchProxyConfig(ctx context.Context, obj *v1beta10.ProxyConfig, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchProxyConfig", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchProxyConfig indicates an expected call of PatchProxyConfig.
+func (mr *MockProxyConfigWriterMockRecorder) PatchProxyConfig(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchProxyConfig", reflect.TypeOf((*MockProxyConfigWriter)(nil).PatchProxyConfig), varargs...)
+}
+
+// UpdateProxyConfig mocks base method.
+func (m *MockProxyConfigWriter) UpdateProxyConfig(ctx context.Context, obj *v1beta10.ProxyConfig, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateProxyConfig", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateProxyConfig indicates an expected call of UpdateProxyConfig.
+func (mr *MockProxyConfigWriterMockRecorder) UpdateProxyConfig(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateProxyConfig", reflect.TypeOf((*MockProxyConfigWriter)(nil).UpdateProxyConfig), varargs...)
+}
+
+// UpsertProxyConfig mocks base method.
+func (m *MockProxyConfigWriter) UpsertProxyConfig(ctx context.Context, obj *v1beta10.ProxyConfig, transitionFuncs ...v1beta1.ProxyConfigTransitionFunction) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range transitionFuncs {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpsertProxyConfig", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertProxyConfig indicates an expected call of UpsertProxyConfig.
+func (mr *MockProxyConfigWriterMockRecorder) UpsertProxyConfig(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertProxyConfig", reflect.TypeOf((*MockProxyConfigWriter)(nil).UpsertProxyConfig), varargs...)
+}
+
+// MockProxyConfigStatusWriter is a mock of ProxyConfigStatusWriter interface.
+type MockProxyConfigStatusWriter struct {
+	ctrl     *gomock.Controller
+	recorder *MockProxyConfigStatusWriterMockRecorder
+}
+
+// MockProxyConfigStatusWriterMockRecorder is the mock recorder for MockProxyConfigStatusWriter.
+type MockProxyConfigStatusWriterMockRecorder struct {
+	mock *MockProxyConfigStatusWriter
+}
+
+// NewMockProxyConfigStatusWriter creates a new mock instance.
+func NewMockProxyConfigStatusWriter(ctrl *gomock.Controller) *MockProxyConfigStatusWriter {
+	mock := &MockProxyConfigStatusWriter{ctrl: ctrl}
+	mock.recorder = &MockProxyConfigStatusWriterMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockProxyConfigStatusWriter) EXPECT() *MockProxyConfigStatusWriterMockRecorder {
+	return m.recorder
+}
+
+// PatchProxyConfigStatus mocks base method.
+func (m *MockProxyConfigStatusWriter) PatchProxyConfigStatus(ctx context.Context, obj *v1beta10.ProxyConfig, patch client.Patch, opts ...client.SubResourcePatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchProxyConfigStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchProxyConfigStatus indicates an expected call of PatchProxyConfigStatus.
+func (mr *MockProxyConfigStatusWriterMockRecorder) PatchProxyConfigStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchProxyConfigStatus", reflect.TypeOf((*MockProxyConfigStatusWriter)(nil).PatchProxyConfigStatus), varargs...)
+}
+
+// UpdateProxyConfigStatus mocks base method.
+func (m *MockProxyConfigStatusWriter) UpdateProxyConfigStatus(ctx context.Context, obj *v1beta10.ProxyConfig, opts ...client.SubResourceUpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateProxyConfigStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateProxyConfigStatus indicates an expected call of UpdateProxyConfigStatus.
+func (mr *MockProxyConfigStatusWriterMockRecorder) UpdateProxyConfigStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateProxyConfigStatus", reflect.TypeOf((*MockProxyConfigStatusWriter)(nil).UpdateProxyConfigStatus), varargs...)
+}
+
+// MockProxyConfigClient is a mock of ProxyConfigClient interface.
+type MockProxyConfigClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockProxyConfigClientMockRecorder
+}
+
+// MockProxyConfigClientMockRecorder is the mock recorder for MockProxyConfigClient.
+type MockProxyConfigClientMockRecorder struct {
+	mock *MockProxyConfigClient
+}
+
+// NewMockProxyConfigClient creates a new mock instance.
+func NewMockProxyConfigClient(ctrl *gomock.Controller) *MockProxyConfigClient {
+	mock := &MockProxyConfigClient{ctrl: ctrl}
+	mock.recorder = &MockProxyConfigClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockProxyConfigClient) EXPECT() *MockProxyConfigClientMockRecorder {
+	return m.recorder
+}
+
+// CreateProxyConfig mocks base method.
+func (m *MockProxyConfigClient) CreateProxyConfig(ctx context.Context, obj *v1beta10.ProxyConfig, opts ...client.CreateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateProxyConfig", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateProxyConfig indicates an expected call of CreateProxyConfig.
+func (mr *MockProxyConfigClientMockRecorder) CreateProxyConfig(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateProxyConfig", reflect.TypeOf((*MockProxyConfigClient)(nil).CreateProxyConfig), varargs...)
+}
+
+// DeleteAllOfProxyConfig mocks base method.
+func (m *MockProxyConfigClient) DeleteAllOfProxyConfig(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteAllOfProxyConfig", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllOfProxyConfig indicates an expected call of DeleteAllOfProxyConfig.
+func (mr *MockProxyConfigClientMockRecorder) DeleteAllOfProxyConfig(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfProxyConfig", reflect.TypeOf((*MockProxyConfigClient)(nil).DeleteAllOfProxyConfig), varargs...)
+}
+
+// DeleteProxyConfig mocks base method.
+func (m *MockProxyConfigClient) DeleteProxyConfig(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, key}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteProxyConfig", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteProxyConfig indicates an expected call of DeleteProxyConfig.
+func (mr *MockProxyConfigClientMockRecorder) DeleteProxyConfig(ctx, key interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, key}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteProxyConfig", reflect.TypeOf((*MockProxyConfigClient)(nil).DeleteProxyConfig), varargs...)
+}
+
+// GetProxyConfig mocks base method.
+func (m *MockProxyConfigClient) GetProxyConfig(ctx context.Context, key client.ObjectKey) (*v1beta10.ProxyConfig, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetProxyConfig", ctx, key)
+	ret0, _ := ret[0].(*v1beta10.ProxyConfig)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetProxyConfig indicates an expected call of GetProxyConfig.
+func (mr *MockProxyConfigClientMockRecorder) GetProxyConfig(ctx, key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetProxyConfig", reflect.TypeOf((*MockProxyConfigClient)(nil).GetProxyConfig), ctx, key)
+}
+
+// ListProxyConfig mocks base method.
+func (m *MockProxyConfigClient) ListProxyConfig(ctx context.Context, opts ...client.ListOption) (*v1beta10.ProxyConfigList, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListProxyConfig", varargs...)
+	ret0, _ := ret[0].(*v1beta10.ProxyConfigList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListProxyConfig indicates an expected call of ListProxyConfig.
+func (mr *MockProxyConfigClientMockRecorder) ListProxyConfig(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListProxyConfig", reflect.TypeOf((*MockProxyConfigClient)(nil).ListProxyConfig), varargs...)
+}
+
+// PatchProxyConfig mocks base method.
+func (m *MockProxyConfigClient) PatchProxyConfig(ctx context.Context, obj *v1beta10.ProxyConfig, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchProxyConfig", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchProxyConfig indicates an expected call of PatchProxyConfig.
+func (mr *MockProxyConfigClientMockRecorder) PatchProxyConfig(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchProxyConfig", reflect.TypeOf((*MockProxyConfigClient)(nil).PatchProxyConfig), varargs...)
+}
+
+// PatchProxyConfigStatus mocks base method.
+func (m *MockProxyConfigClient) PatchProxyConfigStatus(ctx context.Context, obj *v1beta10.ProxyConfig, patch client.Patch, opts ...client.SubResourcePatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchProxyConfigStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchProxyConfigStatus indicates an expected call of PatchProxyConfigStatus.
+func (mr *MockProxyConfigClientMockRecorder) PatchProxyConfigStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchProxyConfigStatus", reflect.TypeOf((*MockProxyConfigClient)(nil).PatchProxyConfigStatus), varargs...)
+}
+
+// UpdateProxyConfig mocks base method.
+func (m *MockProxyConfigClient) UpdateProxyConfig(ctx context.Context, obj *v1beta10.ProxyConfig, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateProxyConfig", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateProxyConfig indicates an expected call of UpdateProxyConfig.
+func (mr *MockProxyConfigClientMockRecorder) UpdateProxyConfig(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateProxyConfig", reflect.TypeOf((*MockProxyConfigClient)(nil).UpdateProxyConfig), varargs...)
+}
+
+// UpdateProxyConfigStatus mocks base method.
+func (m *MockProxyConfigClient) UpdateProxyConfigStatus(ctx context.Context, obj *v1beta10.ProxyConfig, opts ...client.SubResourceUpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateProxyConfigStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateProxyConfigStatus indicates an expected call of UpdateProxyConfigStatus.
+func (mr *MockProxyConfigClientMockRecorder) UpdateProxyConfigStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateProxyConfigStatus", reflect.TypeOf((*MockProxyConfigClient)(nil).UpdateProxyConfigStatus), varargs...)
+}
+
+// UpsertProxyConfig mocks base method.
+func (m *MockProxyConfigClient) UpsertProxyConfig(ctx context.Context, obj *v1beta10.ProxyConfig, transitionFuncs ...v1beta1.ProxyConfigTransitionFunction) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range transitionFuncs {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpsertProxyConfig", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertProxyConfig indicates an expected call of UpsertProxyConfig.
+func (mr *MockProxyConfigClientMockRecorder) UpsertProxyConfig(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertProxyConfig", reflect.TypeOf((*MockProxyConfigClient)(nil).UpsertProxyConfig), varargs...)
+}
+
+// MockMulticlusterProxyConfigClient is a mock of MulticlusterProxyConfigClient interface.
+type MockMulticlusterProxyConfigClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterProxyConfigClientMockRecorder
+}
+
+// MockMulticlusterProxyConfigClientMockRecorder is the mock recorder for MockMulticlusterProxyConfigClient.
+type MockMulticlusterProxyConfigClientMockRecorder struct {
+	mock *MockMulticlusterProxyConfigClient
+}
+
+// NewMockMulticlusterProxyConfigClient creates a new mock instance.
+func NewMockMulticlusterProxyConfigClient(ctrl *gomock.Controller) *MockMulticlusterProxyConfigClient {
+	mock := &MockMulticlusterProxyConfigClient{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterProxyConfigClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterProxyConfigClient) EXPECT() *MockMulticlusterProxyConfigClientMockRecorder {
+	return m.recorder
+}
+
+// Cluster mocks base method.
+func (m *MockMulticlusterProxyConfigClient) Cluster(cluster string) (v1beta1.ProxyConfigClient, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Cluster", cluster)
+	ret0, _ := ret[0].(v1beta1.ProxyConfigClient)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Cluster indicates an expected call of Cluster.
+func (mr *MockMulticlusterProxyConfigClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterProxyConfigClient)(nil).Cluster), cluster)
 }
 
 // MockServiceEntryReader is a mock of ServiceEntryReader interface.

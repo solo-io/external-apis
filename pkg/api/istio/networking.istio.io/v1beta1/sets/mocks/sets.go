@@ -527,6 +527,262 @@ func (mr *MockGatewaySetMockRecorder) UnsortedList(filterResource ...interface{}
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockGatewaySet)(nil).UnsortedList), filterResource...)
 }
 
+// MockProxyConfigSet is a mock of ProxyConfigSet interface.
+type MockProxyConfigSet struct {
+	ctrl     *gomock.Controller
+	recorder *MockProxyConfigSetMockRecorder
+}
+
+// MockProxyConfigSetMockRecorder is the mock recorder for MockProxyConfigSet.
+type MockProxyConfigSetMockRecorder struct {
+	mock *MockProxyConfigSet
+}
+
+// NewMockProxyConfigSet creates a new mock instance.
+func NewMockProxyConfigSet(ctrl *gomock.Controller) *MockProxyConfigSet {
+	mock := &MockProxyConfigSet{ctrl: ctrl}
+	mock.recorder = &MockProxyConfigSetMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockProxyConfigSet) EXPECT() *MockProxyConfigSetMockRecorder {
+	return m.recorder
+}
+
+// Clone mocks base method.
+func (m *MockProxyConfigSet) Clone() v1beta1sets.ProxyConfigSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1beta1sets.ProxyConfigSet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone.
+func (mr *MockProxyConfigSetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockProxyConfigSet)(nil).Clone))
+}
+
+// Delete mocks base method.
+func (m *MockProxyConfigSet) Delete(proxyConfig ezkube.ResourceId) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Delete", proxyConfig)
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockProxyConfigSetMockRecorder) Delete(proxyConfig interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockProxyConfigSet)(nil).Delete), proxyConfig)
+}
+
+// Delta mocks base method.
+func (m *MockProxyConfigSet) Delta(newSet v1beta1sets.ProxyConfigSet) sets.ResourceDelta {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Delta", newSet)
+	ret0, _ := ret[0].(sets.ResourceDelta)
+	return ret0
+}
+
+// Delta indicates an expected call of Delta.
+func (mr *MockProxyConfigSetMockRecorder) Delta(newSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockProxyConfigSet)(nil).Delta), newSet)
+}
+
+// Difference mocks base method.
+func (m *MockProxyConfigSet) Difference(set v1beta1sets.ProxyConfigSet) v1beta1sets.ProxyConfigSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Difference", set)
+	ret0, _ := ret[0].(v1beta1sets.ProxyConfigSet)
+	return ret0
+}
+
+// Difference indicates an expected call of Difference.
+func (mr *MockProxyConfigSetMockRecorder) Difference(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Difference", reflect.TypeOf((*MockProxyConfigSet)(nil).Difference), set)
+}
+
+// Equal mocks base method.
+func (m *MockProxyConfigSet) Equal(proxyConfigSet v1beta1sets.ProxyConfigSet) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Equal", proxyConfigSet)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Equal indicates an expected call of Equal.
+func (mr *MockProxyConfigSetMockRecorder) Equal(proxyConfigSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Equal", reflect.TypeOf((*MockProxyConfigSet)(nil).Equal), proxyConfigSet)
+}
+
+// Find mocks base method.
+func (m *MockProxyConfigSet) Find(id ezkube.ResourceId) (*v1beta1.ProxyConfig, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1beta1.ProxyConfig)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockProxyConfigSetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockProxyConfigSet)(nil).Find), id)
+}
+
+// Generic mocks base method.
+func (m *MockProxyConfigSet) Generic() sets.ResourceSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Generic")
+	ret0, _ := ret[0].(sets.ResourceSet)
+	return ret0
+}
+
+// Generic indicates an expected call of Generic.
+func (mr *MockProxyConfigSetMockRecorder) Generic() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockProxyConfigSet)(nil).Generic))
+}
+
+// Has mocks base method.
+func (m *MockProxyConfigSet) Has(proxyConfig ezkube.ResourceId) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Has", proxyConfig)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Has indicates an expected call of Has.
+func (mr *MockProxyConfigSetMockRecorder) Has(proxyConfig interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Has", reflect.TypeOf((*MockProxyConfigSet)(nil).Has), proxyConfig)
+}
+
+// Insert mocks base method.
+func (m *MockProxyConfigSet) Insert(proxyConfig ...*v1beta1.ProxyConfig) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range proxyConfig {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "Insert", varargs...)
+}
+
+// Insert indicates an expected call of Insert.
+func (mr *MockProxyConfigSetMockRecorder) Insert(proxyConfig ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockProxyConfigSet)(nil).Insert), proxyConfig...)
+}
+
+// Intersection mocks base method.
+func (m *MockProxyConfigSet) Intersection(set v1beta1sets.ProxyConfigSet) v1beta1sets.ProxyConfigSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Intersection", set)
+	ret0, _ := ret[0].(v1beta1sets.ProxyConfigSet)
+	return ret0
+}
+
+// Intersection indicates an expected call of Intersection.
+func (mr *MockProxyConfigSetMockRecorder) Intersection(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockProxyConfigSet)(nil).Intersection), set)
+}
+
+// Keys mocks base method.
+func (m *MockProxyConfigSet) Keys() sets0.String {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Keys")
+	ret0, _ := ret[0].(sets0.String)
+	return ret0
+}
+
+// Keys indicates an expected call of Keys.
+func (mr *MockProxyConfigSetMockRecorder) Keys() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Keys", reflect.TypeOf((*MockProxyConfigSet)(nil).Keys))
+}
+
+// Length mocks base method.
+func (m *MockProxyConfigSet) Length() int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Length")
+	ret0, _ := ret[0].(int)
+	return ret0
+}
+
+// Length indicates an expected call of Length.
+func (mr *MockProxyConfigSetMockRecorder) Length() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Length", reflect.TypeOf((*MockProxyConfigSet)(nil).Length))
+}
+
+// List mocks base method.
+func (m *MockProxyConfigSet) List(filterResource ...func(*v1beta1.ProxyConfig) bool) []*v1beta1.ProxyConfig {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
+	ret0, _ := ret[0].([]*v1beta1.ProxyConfig)
+	return ret0
+}
+
+// List indicates an expected call of List.
+func (mr *MockProxyConfigSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockProxyConfigSet)(nil).List), filterResource...)
+}
+
+// Map mocks base method.
+func (m *MockProxyConfigSet) Map() map[string]*v1beta1.ProxyConfig {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Map")
+	ret0, _ := ret[0].(map[string]*v1beta1.ProxyConfig)
+	return ret0
+}
+
+// Map indicates an expected call of Map.
+func (mr *MockProxyConfigSetMockRecorder) Map() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Map", reflect.TypeOf((*MockProxyConfigSet)(nil).Map))
+}
+
+// Union mocks base method.
+func (m *MockProxyConfigSet) Union(set v1beta1sets.ProxyConfigSet) v1beta1sets.ProxyConfigSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Union", set)
+	ret0, _ := ret[0].(v1beta1sets.ProxyConfigSet)
+	return ret0
+}
+
+// Union indicates an expected call of Union.
+func (mr *MockProxyConfigSetMockRecorder) Union(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Union", reflect.TypeOf((*MockProxyConfigSet)(nil).Union), set)
+}
+
+// UnsortedList mocks base method.
+func (m *MockProxyConfigSet) UnsortedList(filterResource ...func(*v1beta1.ProxyConfig) bool) []*v1beta1.ProxyConfig {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1beta1.ProxyConfig)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList.
+func (mr *MockProxyConfigSetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockProxyConfigSet)(nil).UnsortedList), filterResource...)
+}
+
 // MockServiceEntrySet is a mock of ServiceEntrySet interface.
 type MockServiceEntrySet struct {
 	ctrl     *gomock.Controller

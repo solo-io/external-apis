@@ -526,3 +526,259 @@ func (mr *MockPeerAuthenticationSetMockRecorder) UnsortedList(filterResource ...
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockPeerAuthenticationSet)(nil).UnsortedList), filterResource...)
 }
+
+// MockRequestAuthenticationSet is a mock of RequestAuthenticationSet interface.
+type MockRequestAuthenticationSet struct {
+	ctrl     *gomock.Controller
+	recorder *MockRequestAuthenticationSetMockRecorder
+}
+
+// MockRequestAuthenticationSetMockRecorder is the mock recorder for MockRequestAuthenticationSet.
+type MockRequestAuthenticationSetMockRecorder struct {
+	mock *MockRequestAuthenticationSet
+}
+
+// NewMockRequestAuthenticationSet creates a new mock instance.
+func NewMockRequestAuthenticationSet(ctrl *gomock.Controller) *MockRequestAuthenticationSet {
+	mock := &MockRequestAuthenticationSet{ctrl: ctrl}
+	mock.recorder = &MockRequestAuthenticationSetMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockRequestAuthenticationSet) EXPECT() *MockRequestAuthenticationSetMockRecorder {
+	return m.recorder
+}
+
+// Clone mocks base method.
+func (m *MockRequestAuthenticationSet) Clone() v1beta1sets.RequestAuthenticationSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1beta1sets.RequestAuthenticationSet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone.
+func (mr *MockRequestAuthenticationSetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockRequestAuthenticationSet)(nil).Clone))
+}
+
+// Delete mocks base method.
+func (m *MockRequestAuthenticationSet) Delete(requestAuthentication ezkube.ResourceId) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Delete", requestAuthentication)
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockRequestAuthenticationSetMockRecorder) Delete(requestAuthentication interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockRequestAuthenticationSet)(nil).Delete), requestAuthentication)
+}
+
+// Delta mocks base method.
+func (m *MockRequestAuthenticationSet) Delta(newSet v1beta1sets.RequestAuthenticationSet) sets.ResourceDelta {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Delta", newSet)
+	ret0, _ := ret[0].(sets.ResourceDelta)
+	return ret0
+}
+
+// Delta indicates an expected call of Delta.
+func (mr *MockRequestAuthenticationSetMockRecorder) Delta(newSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockRequestAuthenticationSet)(nil).Delta), newSet)
+}
+
+// Difference mocks base method.
+func (m *MockRequestAuthenticationSet) Difference(set v1beta1sets.RequestAuthenticationSet) v1beta1sets.RequestAuthenticationSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Difference", set)
+	ret0, _ := ret[0].(v1beta1sets.RequestAuthenticationSet)
+	return ret0
+}
+
+// Difference indicates an expected call of Difference.
+func (mr *MockRequestAuthenticationSetMockRecorder) Difference(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Difference", reflect.TypeOf((*MockRequestAuthenticationSet)(nil).Difference), set)
+}
+
+// Equal mocks base method.
+func (m *MockRequestAuthenticationSet) Equal(requestAuthenticationSet v1beta1sets.RequestAuthenticationSet) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Equal", requestAuthenticationSet)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Equal indicates an expected call of Equal.
+func (mr *MockRequestAuthenticationSetMockRecorder) Equal(requestAuthenticationSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Equal", reflect.TypeOf((*MockRequestAuthenticationSet)(nil).Equal), requestAuthenticationSet)
+}
+
+// Find mocks base method.
+func (m *MockRequestAuthenticationSet) Find(id ezkube.ResourceId) (*v1beta1.RequestAuthentication, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1beta1.RequestAuthentication)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockRequestAuthenticationSetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockRequestAuthenticationSet)(nil).Find), id)
+}
+
+// Generic mocks base method.
+func (m *MockRequestAuthenticationSet) Generic() sets.ResourceSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Generic")
+	ret0, _ := ret[0].(sets.ResourceSet)
+	return ret0
+}
+
+// Generic indicates an expected call of Generic.
+func (mr *MockRequestAuthenticationSetMockRecorder) Generic() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockRequestAuthenticationSet)(nil).Generic))
+}
+
+// Has mocks base method.
+func (m *MockRequestAuthenticationSet) Has(requestAuthentication ezkube.ResourceId) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Has", requestAuthentication)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Has indicates an expected call of Has.
+func (mr *MockRequestAuthenticationSetMockRecorder) Has(requestAuthentication interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Has", reflect.TypeOf((*MockRequestAuthenticationSet)(nil).Has), requestAuthentication)
+}
+
+// Insert mocks base method.
+func (m *MockRequestAuthenticationSet) Insert(requestAuthentication ...*v1beta1.RequestAuthentication) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range requestAuthentication {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "Insert", varargs...)
+}
+
+// Insert indicates an expected call of Insert.
+func (mr *MockRequestAuthenticationSetMockRecorder) Insert(requestAuthentication ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockRequestAuthenticationSet)(nil).Insert), requestAuthentication...)
+}
+
+// Intersection mocks base method.
+func (m *MockRequestAuthenticationSet) Intersection(set v1beta1sets.RequestAuthenticationSet) v1beta1sets.RequestAuthenticationSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Intersection", set)
+	ret0, _ := ret[0].(v1beta1sets.RequestAuthenticationSet)
+	return ret0
+}
+
+// Intersection indicates an expected call of Intersection.
+func (mr *MockRequestAuthenticationSetMockRecorder) Intersection(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockRequestAuthenticationSet)(nil).Intersection), set)
+}
+
+// Keys mocks base method.
+func (m *MockRequestAuthenticationSet) Keys() sets0.String {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Keys")
+	ret0, _ := ret[0].(sets0.String)
+	return ret0
+}
+
+// Keys indicates an expected call of Keys.
+func (mr *MockRequestAuthenticationSetMockRecorder) Keys() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Keys", reflect.TypeOf((*MockRequestAuthenticationSet)(nil).Keys))
+}
+
+// Length mocks base method.
+func (m *MockRequestAuthenticationSet) Length() int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Length")
+	ret0, _ := ret[0].(int)
+	return ret0
+}
+
+// Length indicates an expected call of Length.
+func (mr *MockRequestAuthenticationSetMockRecorder) Length() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Length", reflect.TypeOf((*MockRequestAuthenticationSet)(nil).Length))
+}
+
+// List mocks base method.
+func (m *MockRequestAuthenticationSet) List(filterResource ...func(*v1beta1.RequestAuthentication) bool) []*v1beta1.RequestAuthentication {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
+	ret0, _ := ret[0].([]*v1beta1.RequestAuthentication)
+	return ret0
+}
+
+// List indicates an expected call of List.
+func (mr *MockRequestAuthenticationSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockRequestAuthenticationSet)(nil).List), filterResource...)
+}
+
+// Map mocks base method.
+func (m *MockRequestAuthenticationSet) Map() map[string]*v1beta1.RequestAuthentication {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Map")
+	ret0, _ := ret[0].(map[string]*v1beta1.RequestAuthentication)
+	return ret0
+}
+
+// Map indicates an expected call of Map.
+func (mr *MockRequestAuthenticationSetMockRecorder) Map() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Map", reflect.TypeOf((*MockRequestAuthenticationSet)(nil).Map))
+}
+
+// Union mocks base method.
+func (m *MockRequestAuthenticationSet) Union(set v1beta1sets.RequestAuthenticationSet) v1beta1sets.RequestAuthenticationSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Union", set)
+	ret0, _ := ret[0].(v1beta1sets.RequestAuthenticationSet)
+	return ret0
+}
+
+// Union indicates an expected call of Union.
+func (mr *MockRequestAuthenticationSetMockRecorder) Union(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Union", reflect.TypeOf((*MockRequestAuthenticationSet)(nil).Union), set)
+}
+
+// UnsortedList mocks base method.
+func (m *MockRequestAuthenticationSet) UnsortedList(filterResource ...func(*v1beta1.RequestAuthentication) bool) []*v1beta1.RequestAuthentication {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1beta1.RequestAuthentication)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList.
+func (mr *MockRequestAuthenticationSetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockRequestAuthenticationSet)(nil).UnsortedList), filterResource...)
+}
