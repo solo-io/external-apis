@@ -275,8 +275,14 @@ func (s *secretMergedSet) List(filterResource ...func(*v1.Secret) bool) []*v1.Se
 		})
 	}
 	secretList := []*v1.Secret{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			secretList = append(secretList, obj.(*v1.Secret))
 		}
 	}
@@ -294,10 +300,15 @@ func (s *secretMergedSet) UnsortedList(filterResource ...func(*v1.Secret) bool) 
 			return filter(obj.(*v1.Secret))
 		})
 	}
-
 	secretList := []*v1.Secret{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			secretList = append(secretList, obj.(*v1.Secret))
 		}
 	}
@@ -685,8 +696,14 @@ func (s *serviceAccountMergedSet) List(filterResource ...func(*v1.ServiceAccount
 		})
 	}
 	serviceAccountList := []*v1.ServiceAccount{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			serviceAccountList = append(serviceAccountList, obj.(*v1.ServiceAccount))
 		}
 	}
@@ -704,10 +721,15 @@ func (s *serviceAccountMergedSet) UnsortedList(filterResource ...func(*v1.Servic
 			return filter(obj.(*v1.ServiceAccount))
 		})
 	}
-
 	serviceAccountList := []*v1.ServiceAccount{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			serviceAccountList = append(serviceAccountList, obj.(*v1.ServiceAccount))
 		}
 	}
@@ -1095,8 +1117,14 @@ func (s *configMapMergedSet) List(filterResource ...func(*v1.ConfigMap) bool) []
 		})
 	}
 	configMapList := []*v1.ConfigMap{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			configMapList = append(configMapList, obj.(*v1.ConfigMap))
 		}
 	}
@@ -1114,10 +1142,15 @@ func (s *configMapMergedSet) UnsortedList(filterResource ...func(*v1.ConfigMap) 
 			return filter(obj.(*v1.ConfigMap))
 		})
 	}
-
 	configMapList := []*v1.ConfigMap{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			configMapList = append(configMapList, obj.(*v1.ConfigMap))
 		}
 	}
@@ -1505,8 +1538,14 @@ func (s *serviceMergedSet) List(filterResource ...func(*v1.Service) bool) []*v1.
 		})
 	}
 	serviceList := []*v1.Service{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			serviceList = append(serviceList, obj.(*v1.Service))
 		}
 	}
@@ -1524,10 +1563,15 @@ func (s *serviceMergedSet) UnsortedList(filterResource ...func(*v1.Service) bool
 			return filter(obj.(*v1.Service))
 		})
 	}
-
 	serviceList := []*v1.Service{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			serviceList = append(serviceList, obj.(*v1.Service))
 		}
 	}
@@ -1915,8 +1959,14 @@ func (s *podMergedSet) List(filterResource ...func(*v1.Pod) bool) []*v1.Pod {
 		})
 	}
 	podList := []*v1.Pod{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			podList = append(podList, obj.(*v1.Pod))
 		}
 	}
@@ -1934,10 +1984,15 @@ func (s *podMergedSet) UnsortedList(filterResource ...func(*v1.Pod) bool) []*v1.
 			return filter(obj.(*v1.Pod))
 		})
 	}
-
 	podList := []*v1.Pod{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			podList = append(podList, obj.(*v1.Pod))
 		}
 	}
@@ -2325,8 +2380,14 @@ func (s *endpointsMergedSet) List(filterResource ...func(*v1.Endpoints) bool) []
 		})
 	}
 	endpointsList := []*v1.Endpoints{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			endpointsList = append(endpointsList, obj.(*v1.Endpoints))
 		}
 	}
@@ -2344,10 +2405,15 @@ func (s *endpointsMergedSet) UnsortedList(filterResource ...func(*v1.Endpoints) 
 			return filter(obj.(*v1.Endpoints))
 		})
 	}
-
 	endpointsList := []*v1.Endpoints{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			endpointsList = append(endpointsList, obj.(*v1.Endpoints))
 		}
 	}
@@ -2735,8 +2801,14 @@ func (s *namespaceMergedSet) List(filterResource ...func(*v1.Namespace) bool) []
 		})
 	}
 	namespaceList := []*v1.Namespace{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			namespaceList = append(namespaceList, obj.(*v1.Namespace))
 		}
 	}
@@ -2754,10 +2826,15 @@ func (s *namespaceMergedSet) UnsortedList(filterResource ...func(*v1.Namespace) 
 			return filter(obj.(*v1.Namespace))
 		})
 	}
-
 	namespaceList := []*v1.Namespace{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			namespaceList = append(namespaceList, obj.(*v1.Namespace))
 		}
 	}
@@ -3145,8 +3222,14 @@ func (s *nodeMergedSet) List(filterResource ...func(*v1.Node) bool) []*v1.Node {
 		})
 	}
 	nodeList := []*v1.Node{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			nodeList = append(nodeList, obj.(*v1.Node))
 		}
 	}
@@ -3164,10 +3247,15 @@ func (s *nodeMergedSet) UnsortedList(filterResource ...func(*v1.Node) bool) []*v
 			return filter(obj.(*v1.Node))
 		})
 	}
-
 	nodeList := []*v1.Node{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			nodeList = append(nodeList, obj.(*v1.Node))
 		}
 	}

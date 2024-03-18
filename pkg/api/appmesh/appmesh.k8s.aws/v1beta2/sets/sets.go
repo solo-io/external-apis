@@ -275,8 +275,14 @@ func (s *meshMergedSet) List(filterResource ...func(*appmesh_k8s_aws_v1beta2.Mes
 		})
 	}
 	meshList := []*appmesh_k8s_aws_v1beta2.Mesh{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			meshList = append(meshList, obj.(*appmesh_k8s_aws_v1beta2.Mesh))
 		}
 	}
@@ -294,10 +300,15 @@ func (s *meshMergedSet) UnsortedList(filterResource ...func(*appmesh_k8s_aws_v1b
 			return filter(obj.(*appmesh_k8s_aws_v1beta2.Mesh))
 		})
 	}
-
 	meshList := []*appmesh_k8s_aws_v1beta2.Mesh{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			meshList = append(meshList, obj.(*appmesh_k8s_aws_v1beta2.Mesh))
 		}
 	}
@@ -685,8 +696,14 @@ func (s *virtualServiceMergedSet) List(filterResource ...func(*appmesh_k8s_aws_v
 		})
 	}
 	virtualServiceList := []*appmesh_k8s_aws_v1beta2.VirtualService{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			virtualServiceList = append(virtualServiceList, obj.(*appmesh_k8s_aws_v1beta2.VirtualService))
 		}
 	}
@@ -704,10 +721,15 @@ func (s *virtualServiceMergedSet) UnsortedList(filterResource ...func(*appmesh_k
 			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualService))
 		})
 	}
-
 	virtualServiceList := []*appmesh_k8s_aws_v1beta2.VirtualService{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			virtualServiceList = append(virtualServiceList, obj.(*appmesh_k8s_aws_v1beta2.VirtualService))
 		}
 	}
@@ -1095,8 +1117,14 @@ func (s *virtualNodeMergedSet) List(filterResource ...func(*appmesh_k8s_aws_v1be
 		})
 	}
 	virtualNodeList := []*appmesh_k8s_aws_v1beta2.VirtualNode{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			virtualNodeList = append(virtualNodeList, obj.(*appmesh_k8s_aws_v1beta2.VirtualNode))
 		}
 	}
@@ -1114,10 +1142,15 @@ func (s *virtualNodeMergedSet) UnsortedList(filterResource ...func(*appmesh_k8s_
 			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualNode))
 		})
 	}
-
 	virtualNodeList := []*appmesh_k8s_aws_v1beta2.VirtualNode{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			virtualNodeList = append(virtualNodeList, obj.(*appmesh_k8s_aws_v1beta2.VirtualNode))
 		}
 	}
@@ -1505,8 +1538,14 @@ func (s *virtualRouterMergedSet) List(filterResource ...func(*appmesh_k8s_aws_v1
 		})
 	}
 	virtualRouterList := []*appmesh_k8s_aws_v1beta2.VirtualRouter{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			virtualRouterList = append(virtualRouterList, obj.(*appmesh_k8s_aws_v1beta2.VirtualRouter))
 		}
 	}
@@ -1524,10 +1563,15 @@ func (s *virtualRouterMergedSet) UnsortedList(filterResource ...func(*appmesh_k8
 			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualRouter))
 		})
 	}
-
 	virtualRouterList := []*appmesh_k8s_aws_v1beta2.VirtualRouter{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			virtualRouterList = append(virtualRouterList, obj.(*appmesh_k8s_aws_v1beta2.VirtualRouter))
 		}
 	}
@@ -1915,8 +1959,14 @@ func (s *virtualGatewayMergedSet) List(filterResource ...func(*appmesh_k8s_aws_v
 		})
 	}
 	virtualGatewayList := []*appmesh_k8s_aws_v1beta2.VirtualGateway{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			virtualGatewayList = append(virtualGatewayList, obj.(*appmesh_k8s_aws_v1beta2.VirtualGateway))
 		}
 	}
@@ -1934,10 +1984,15 @@ func (s *virtualGatewayMergedSet) UnsortedList(filterResource ...func(*appmesh_k
 			return filter(obj.(*appmesh_k8s_aws_v1beta2.VirtualGateway))
 		})
 	}
-
 	virtualGatewayList := []*appmesh_k8s_aws_v1beta2.VirtualGateway{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			virtualGatewayList = append(virtualGatewayList, obj.(*appmesh_k8s_aws_v1beta2.VirtualGateway))
 		}
 	}
@@ -2325,8 +2380,14 @@ func (s *gatewayRouteMergedSet) List(filterResource ...func(*appmesh_k8s_aws_v1b
 		})
 	}
 	gatewayRouteList := []*appmesh_k8s_aws_v1beta2.GatewayRoute{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			gatewayRouteList = append(gatewayRouteList, obj.(*appmesh_k8s_aws_v1beta2.GatewayRoute))
 		}
 	}
@@ -2344,10 +2405,15 @@ func (s *gatewayRouteMergedSet) UnsortedList(filterResource ...func(*appmesh_k8s
 			return filter(obj.(*appmesh_k8s_aws_v1beta2.GatewayRoute))
 		})
 	}
-
 	gatewayRouteList := []*appmesh_k8s_aws_v1beta2.GatewayRoute{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			gatewayRouteList = append(gatewayRouteList, obj.(*appmesh_k8s_aws_v1beta2.GatewayRoute))
 		}
 	}

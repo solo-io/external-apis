@@ -275,8 +275,14 @@ func (s *destinationRuleMergedSet) List(filterResource ...func(*networking_istio
 		})
 	}
 	destinationRuleList := []*networking_istio_io_v1beta1.DestinationRule{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			destinationRuleList = append(destinationRuleList, obj.(*networking_istio_io_v1beta1.DestinationRule))
 		}
 	}
@@ -294,10 +300,15 @@ func (s *destinationRuleMergedSet) UnsortedList(filterResource ...func(*networki
 			return filter(obj.(*networking_istio_io_v1beta1.DestinationRule))
 		})
 	}
-
 	destinationRuleList := []*networking_istio_io_v1beta1.DestinationRule{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			destinationRuleList = append(destinationRuleList, obj.(*networking_istio_io_v1beta1.DestinationRule))
 		}
 	}
@@ -685,8 +696,14 @@ func (s *gatewayMergedSet) List(filterResource ...func(*networking_istio_io_v1be
 		})
 	}
 	gatewayList := []*networking_istio_io_v1beta1.Gateway{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			gatewayList = append(gatewayList, obj.(*networking_istio_io_v1beta1.Gateway))
 		}
 	}
@@ -704,10 +721,15 @@ func (s *gatewayMergedSet) UnsortedList(filterResource ...func(*networking_istio
 			return filter(obj.(*networking_istio_io_v1beta1.Gateway))
 		})
 	}
-
 	gatewayList := []*networking_istio_io_v1beta1.Gateway{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			gatewayList = append(gatewayList, obj.(*networking_istio_io_v1beta1.Gateway))
 		}
 	}
@@ -1095,8 +1117,14 @@ func (s *proxyConfigMergedSet) List(filterResource ...func(*networking_istio_io_
 		})
 	}
 	proxyConfigList := []*networking_istio_io_v1beta1.ProxyConfig{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			proxyConfigList = append(proxyConfigList, obj.(*networking_istio_io_v1beta1.ProxyConfig))
 		}
 	}
@@ -1114,10 +1142,15 @@ func (s *proxyConfigMergedSet) UnsortedList(filterResource ...func(*networking_i
 			return filter(obj.(*networking_istio_io_v1beta1.ProxyConfig))
 		})
 	}
-
 	proxyConfigList := []*networking_istio_io_v1beta1.ProxyConfig{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			proxyConfigList = append(proxyConfigList, obj.(*networking_istio_io_v1beta1.ProxyConfig))
 		}
 	}
@@ -1505,8 +1538,14 @@ func (s *serviceEntryMergedSet) List(filterResource ...func(*networking_istio_io
 		})
 	}
 	serviceEntryList := []*networking_istio_io_v1beta1.ServiceEntry{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			serviceEntryList = append(serviceEntryList, obj.(*networking_istio_io_v1beta1.ServiceEntry))
 		}
 	}
@@ -1524,10 +1563,15 @@ func (s *serviceEntryMergedSet) UnsortedList(filterResource ...func(*networking_
 			return filter(obj.(*networking_istio_io_v1beta1.ServiceEntry))
 		})
 	}
-
 	serviceEntryList := []*networking_istio_io_v1beta1.ServiceEntry{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			serviceEntryList = append(serviceEntryList, obj.(*networking_istio_io_v1beta1.ServiceEntry))
 		}
 	}
@@ -1915,8 +1959,14 @@ func (s *workloadEntryMergedSet) List(filterResource ...func(*networking_istio_i
 		})
 	}
 	workloadEntryList := []*networking_istio_io_v1beta1.WorkloadEntry{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			workloadEntryList = append(workloadEntryList, obj.(*networking_istio_io_v1beta1.WorkloadEntry))
 		}
 	}
@@ -1934,10 +1984,15 @@ func (s *workloadEntryMergedSet) UnsortedList(filterResource ...func(*networking
 			return filter(obj.(*networking_istio_io_v1beta1.WorkloadEntry))
 		})
 	}
-
 	workloadEntryList := []*networking_istio_io_v1beta1.WorkloadEntry{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			workloadEntryList = append(workloadEntryList, obj.(*networking_istio_io_v1beta1.WorkloadEntry))
 		}
 	}
@@ -2325,8 +2380,14 @@ func (s *workloadGroupMergedSet) List(filterResource ...func(*networking_istio_i
 		})
 	}
 	workloadGroupList := []*networking_istio_io_v1beta1.WorkloadGroup{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			workloadGroupList = append(workloadGroupList, obj.(*networking_istio_io_v1beta1.WorkloadGroup))
 		}
 	}
@@ -2344,10 +2405,15 @@ func (s *workloadGroupMergedSet) UnsortedList(filterResource ...func(*networking
 			return filter(obj.(*networking_istio_io_v1beta1.WorkloadGroup))
 		})
 	}
-
 	workloadGroupList := []*networking_istio_io_v1beta1.WorkloadGroup{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			workloadGroupList = append(workloadGroupList, obj.(*networking_istio_io_v1beta1.WorkloadGroup))
 		}
 	}
@@ -2735,8 +2801,14 @@ func (s *virtualServiceMergedSet) List(filterResource ...func(*networking_istio_
 		})
 	}
 	virtualServiceList := []*networking_istio_io_v1beta1.VirtualService{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			virtualServiceList = append(virtualServiceList, obj.(*networking_istio_io_v1beta1.VirtualService))
 		}
 	}
@@ -2754,10 +2826,15 @@ func (s *virtualServiceMergedSet) UnsortedList(filterResource ...func(*networkin
 			return filter(obj.(*networking_istio_io_v1beta1.VirtualService))
 		})
 	}
-
 	virtualServiceList := []*networking_istio_io_v1beta1.VirtualService{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			virtualServiceList = append(virtualServiceList, obj.(*networking_istio_io_v1beta1.VirtualService))
 		}
 	}
@@ -3145,8 +3222,14 @@ func (s *sidecarMergedSet) List(filterResource ...func(*networking_istio_io_v1be
 		})
 	}
 	sidecarList := []*networking_istio_io_v1beta1.Sidecar{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			sidecarList = append(sidecarList, obj.(*networking_istio_io_v1beta1.Sidecar))
 		}
 	}
@@ -3164,10 +3247,15 @@ func (s *sidecarMergedSet) UnsortedList(filterResource ...func(*networking_istio
 			return filter(obj.(*networking_istio_io_v1beta1.Sidecar))
 		})
 	}
-
 	sidecarList := []*networking_istio_io_v1beta1.Sidecar{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			sidecarList = append(sidecarList, obj.(*networking_istio_io_v1beta1.Sidecar))
 		}
 	}

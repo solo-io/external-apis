@@ -275,8 +275,14 @@ func (s *jobMergedSet) List(filterResource ...func(*batch_v1.Job) bool) []*batch
 		})
 	}
 	jobList := []*batch_v1.Job{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			jobList = append(jobList, obj.(*batch_v1.Job))
 		}
 	}
@@ -294,10 +300,15 @@ func (s *jobMergedSet) UnsortedList(filterResource ...func(*batch_v1.Job) bool) 
 			return filter(obj.(*batch_v1.Job))
 		})
 	}
-
 	jobList := []*batch_v1.Job{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			jobList = append(jobList, obj.(*batch_v1.Job))
 		}
 	}

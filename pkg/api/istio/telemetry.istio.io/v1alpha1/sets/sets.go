@@ -275,8 +275,14 @@ func (s *telemetryMergedSet) List(filterResource ...func(*telemetry_istio_io_v1a
 		})
 	}
 	telemetryList := []*telemetry_istio_io_v1alpha1.Telemetry{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			telemetryList = append(telemetryList, obj.(*telemetry_istio_io_v1alpha1.Telemetry))
 		}
 	}
@@ -294,10 +300,15 @@ func (s *telemetryMergedSet) UnsortedList(filterResource ...func(*telemetry_isti
 			return filter(obj.(*telemetry_istio_io_v1alpha1.Telemetry))
 		})
 	}
-
 	telemetryList := []*telemetry_istio_io_v1alpha1.Telemetry{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			telemetryList = append(telemetryList, obj.(*telemetry_istio_io_v1alpha1.Telemetry))
 		}
 	}

@@ -275,8 +275,14 @@ func (s *deploymentMergedSet) List(filterResource ...func(*apps_v1.Deployment) b
 		})
 	}
 	deploymentList := []*apps_v1.Deployment{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			deploymentList = append(deploymentList, obj.(*apps_v1.Deployment))
 		}
 	}
@@ -294,10 +300,15 @@ func (s *deploymentMergedSet) UnsortedList(filterResource ...func(*apps_v1.Deplo
 			return filter(obj.(*apps_v1.Deployment))
 		})
 	}
-
 	deploymentList := []*apps_v1.Deployment{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			deploymentList = append(deploymentList, obj.(*apps_v1.Deployment))
 		}
 	}
@@ -685,8 +696,14 @@ func (s *replicaSetMergedSet) List(filterResource ...func(*apps_v1.ReplicaSet) b
 		})
 	}
 	replicaSetList := []*apps_v1.ReplicaSet{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			replicaSetList = append(replicaSetList, obj.(*apps_v1.ReplicaSet))
 		}
 	}
@@ -704,10 +721,15 @@ func (s *replicaSetMergedSet) UnsortedList(filterResource ...func(*apps_v1.Repli
 			return filter(obj.(*apps_v1.ReplicaSet))
 		})
 	}
-
 	replicaSetList := []*apps_v1.ReplicaSet{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			replicaSetList = append(replicaSetList, obj.(*apps_v1.ReplicaSet))
 		}
 	}
@@ -1095,8 +1117,14 @@ func (s *daemonSetMergedSet) List(filterResource ...func(*apps_v1.DaemonSet) boo
 		})
 	}
 	daemonSetList := []*apps_v1.DaemonSet{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			daemonSetList = append(daemonSetList, obj.(*apps_v1.DaemonSet))
 		}
 	}
@@ -1114,10 +1142,15 @@ func (s *daemonSetMergedSet) UnsortedList(filterResource ...func(*apps_v1.Daemon
 			return filter(obj.(*apps_v1.DaemonSet))
 		})
 	}
-
 	daemonSetList := []*apps_v1.DaemonSet{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			daemonSetList = append(daemonSetList, obj.(*apps_v1.DaemonSet))
 		}
 	}
@@ -1505,8 +1538,14 @@ func (s *statefulSetMergedSet) List(filterResource ...func(*apps_v1.StatefulSet)
 		})
 	}
 	statefulSetList := []*apps_v1.StatefulSet{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			statefulSetList = append(statefulSetList, obj.(*apps_v1.StatefulSet))
 		}
 	}
@@ -1524,10 +1563,15 @@ func (s *statefulSetMergedSet) UnsortedList(filterResource ...func(*apps_v1.Stat
 			return filter(obj.(*apps_v1.StatefulSet))
 		})
 	}
-
 	statefulSetList := []*apps_v1.StatefulSet{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			statefulSetList = append(statefulSetList, obj.(*apps_v1.StatefulSet))
 		}
 	}

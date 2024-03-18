@@ -275,8 +275,14 @@ func (s *trafficTargetMergedSet) List(filterResource ...func(*access_smi_spec_io
 		})
 	}
 	trafficTargetList := []*access_smi_spec_io_v1alpha2.TrafficTarget{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			trafficTargetList = append(trafficTargetList, obj.(*access_smi_spec_io_v1alpha2.TrafficTarget))
 		}
 	}
@@ -294,10 +300,15 @@ func (s *trafficTargetMergedSet) UnsortedList(filterResource ...func(*access_smi
 			return filter(obj.(*access_smi_spec_io_v1alpha2.TrafficTarget))
 		})
 	}
-
 	trafficTargetList := []*access_smi_spec_io_v1alpha2.TrafficTarget{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			trafficTargetList = append(trafficTargetList, obj.(*access_smi_spec_io_v1alpha2.TrafficTarget))
 		}
 	}

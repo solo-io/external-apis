@@ -275,8 +275,14 @@ func (s *gatewayMergedSet) List(filterResource ...func(*gateway_networking_k8s_i
 		})
 	}
 	gatewayList := []*gateway_networking_k8s_io_v1beta1.Gateway{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			gatewayList = append(gatewayList, obj.(*gateway_networking_k8s_io_v1beta1.Gateway))
 		}
 	}
@@ -294,10 +300,15 @@ func (s *gatewayMergedSet) UnsortedList(filterResource ...func(*gateway_networki
 			return filter(obj.(*gateway_networking_k8s_io_v1beta1.Gateway))
 		})
 	}
-
 	gatewayList := []*gateway_networking_k8s_io_v1beta1.Gateway{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			gatewayList = append(gatewayList, obj.(*gateway_networking_k8s_io_v1beta1.Gateway))
 		}
 	}
@@ -685,8 +696,14 @@ func (s *gatewayClassMergedSet) List(filterResource ...func(*gateway_networking_
 		})
 	}
 	gatewayClassList := []*gateway_networking_k8s_io_v1beta1.GatewayClass{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			gatewayClassList = append(gatewayClassList, obj.(*gateway_networking_k8s_io_v1beta1.GatewayClass))
 		}
 	}
@@ -704,10 +721,15 @@ func (s *gatewayClassMergedSet) UnsortedList(filterResource ...func(*gateway_net
 			return filter(obj.(*gateway_networking_k8s_io_v1beta1.GatewayClass))
 		})
 	}
-
 	gatewayClassList := []*gateway_networking_k8s_io_v1beta1.GatewayClass{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			gatewayClassList = append(gatewayClassList, obj.(*gateway_networking_k8s_io_v1beta1.GatewayClass))
 		}
 	}
@@ -1095,8 +1117,14 @@ func (s *hTTPRouteMergedSet) List(filterResource ...func(*gateway_networking_k8s
 		})
 	}
 	hTTPRouteList := []*gateway_networking_k8s_io_v1beta1.HTTPRoute{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			hTTPRouteList = append(hTTPRouteList, obj.(*gateway_networking_k8s_io_v1beta1.HTTPRoute))
 		}
 	}
@@ -1114,10 +1142,15 @@ func (s *hTTPRouteMergedSet) UnsortedList(filterResource ...func(*gateway_networ
 			return filter(obj.(*gateway_networking_k8s_io_v1beta1.HTTPRoute))
 		})
 	}
-
 	hTTPRouteList := []*gateway_networking_k8s_io_v1beta1.HTTPRoute{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			hTTPRouteList = append(hTTPRouteList, obj.(*gateway_networking_k8s_io_v1beta1.HTTPRoute))
 		}
 	}

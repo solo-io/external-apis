@@ -275,8 +275,14 @@ func (s *hTTPRouteGroupMergedSet) List(filterResource ...func(*specs_smi_spec_io
 		})
 	}
 	hTTPRouteGroupList := []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			hTTPRouteGroupList = append(hTTPRouteGroupList, obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
 		}
 	}
@@ -294,10 +300,15 @@ func (s *hTTPRouteGroupMergedSet) UnsortedList(filterResource ...func(*specs_smi
 			return filter(obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
 		})
 	}
-
 	hTTPRouteGroupList := []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			hTTPRouteGroupList = append(hTTPRouteGroupList, obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
 		}
 	}

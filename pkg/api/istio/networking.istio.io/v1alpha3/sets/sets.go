@@ -275,8 +275,14 @@ func (s *envoyFilterMergedSet) List(filterResource ...func(*networking_istio_io_
 		})
 	}
 	envoyFilterList := []*networking_istio_io_v1alpha3.EnvoyFilter{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			envoyFilterList = append(envoyFilterList, obj.(*networking_istio_io_v1alpha3.EnvoyFilter))
 		}
 	}
@@ -294,10 +300,15 @@ func (s *envoyFilterMergedSet) UnsortedList(filterResource ...func(*networking_i
 			return filter(obj.(*networking_istio_io_v1alpha3.EnvoyFilter))
 		})
 	}
-
 	envoyFilterList := []*networking_istio_io_v1alpha3.EnvoyFilter{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			envoyFilterList = append(envoyFilterList, obj.(*networking_istio_io_v1alpha3.EnvoyFilter))
 		}
 	}

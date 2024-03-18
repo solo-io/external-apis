@@ -275,8 +275,14 @@ func (s *authorizationPolicyMergedSet) List(filterResource ...func(*security_ist
 		})
 	}
 	authorizationPolicyList := []*security_istio_io_v1beta1.AuthorizationPolicy{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			authorizationPolicyList = append(authorizationPolicyList, obj.(*security_istio_io_v1beta1.AuthorizationPolicy))
 		}
 	}
@@ -294,10 +300,15 @@ func (s *authorizationPolicyMergedSet) UnsortedList(filterResource ...func(*secu
 			return filter(obj.(*security_istio_io_v1beta1.AuthorizationPolicy))
 		})
 	}
-
 	authorizationPolicyList := []*security_istio_io_v1beta1.AuthorizationPolicy{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			authorizationPolicyList = append(authorizationPolicyList, obj.(*security_istio_io_v1beta1.AuthorizationPolicy))
 		}
 	}
@@ -685,8 +696,14 @@ func (s *peerAuthenticationMergedSet) List(filterResource ...func(*security_isti
 		})
 	}
 	peerAuthenticationList := []*security_istio_io_v1beta1.PeerAuthentication{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			peerAuthenticationList = append(peerAuthenticationList, obj.(*security_istio_io_v1beta1.PeerAuthentication))
 		}
 	}
@@ -704,10 +721,15 @@ func (s *peerAuthenticationMergedSet) UnsortedList(filterResource ...func(*secur
 			return filter(obj.(*security_istio_io_v1beta1.PeerAuthentication))
 		})
 	}
-
 	peerAuthenticationList := []*security_istio_io_v1beta1.PeerAuthentication{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			peerAuthenticationList = append(peerAuthenticationList, obj.(*security_istio_io_v1beta1.PeerAuthentication))
 		}
 	}
@@ -1095,8 +1117,14 @@ func (s *requestAuthenticationMergedSet) List(filterResource ...func(*security_i
 		})
 	}
 	requestAuthenticationList := []*security_istio_io_v1beta1.RequestAuthentication{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			requestAuthenticationList = append(requestAuthenticationList, obj.(*security_istio_io_v1beta1.RequestAuthentication))
 		}
 	}
@@ -1114,10 +1142,15 @@ func (s *requestAuthenticationMergedSet) UnsortedList(filterResource ...func(*se
 			return filter(obj.(*security_istio_io_v1beta1.RequestAuthentication))
 		})
 	}
-
 	requestAuthenticationList := []*security_istio_io_v1beta1.RequestAuthentication{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			requestAuthenticationList = append(requestAuthenticationList, obj.(*security_istio_io_v1beta1.RequestAuthentication))
 		}
 	}

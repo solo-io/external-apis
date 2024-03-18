@@ -275,8 +275,14 @@ func (s *trafficSplitMergedSet) List(filterResource ...func(*split_smi_spec_io_v
 		})
 	}
 	trafficSplitList := []*split_smi_spec_io_v1alpha2.TrafficSplit{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			trafficSplitList = append(trafficSplitList, obj.(*split_smi_spec_io_v1alpha2.TrafficSplit))
 		}
 	}
@@ -294,10 +300,15 @@ func (s *trafficSplitMergedSet) UnsortedList(filterResource ...func(*split_smi_s
 			return filter(obj.(*split_smi_spec_io_v1alpha2.TrafficSplit))
 		})
 	}
-
 	trafficSplitList := []*split_smi_spec_io_v1alpha2.TrafficSplit{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			trafficSplitList = append(trafficSplitList, obj.(*split_smi_spec_io_v1alpha2.TrafficSplit))
 		}
 	}

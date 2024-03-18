@@ -275,8 +275,14 @@ func (s *networkPolicyMergedSet) List(filterResource ...func(*networking_k8s_io_
 		})
 	}
 	networkPolicyList := []*networking_k8s_io_v1.NetworkPolicy{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			networkPolicyList = append(networkPolicyList, obj.(*networking_k8s_io_v1.NetworkPolicy))
 		}
 	}
@@ -294,10 +300,15 @@ func (s *networkPolicyMergedSet) UnsortedList(filterResource ...func(*networking
 			return filter(obj.(*networking_k8s_io_v1.NetworkPolicy))
 		})
 	}
-
 	networkPolicyList := []*networking_k8s_io_v1.NetworkPolicy{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			networkPolicyList = append(networkPolicyList, obj.(*networking_k8s_io_v1.NetworkPolicy))
 		}
 	}

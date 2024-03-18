@@ -275,8 +275,14 @@ func (s *ciliumNetworkPolicyMergedSet) List(filterResource ...func(*cilium_io_v2
 		})
 	}
 	ciliumNetworkPolicyList := []*cilium_io_v2.CiliumNetworkPolicy{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			ciliumNetworkPolicyList = append(ciliumNetworkPolicyList, obj.(*cilium_io_v2.CiliumNetworkPolicy))
 		}
 	}
@@ -294,10 +300,15 @@ func (s *ciliumNetworkPolicyMergedSet) UnsortedList(filterResource ...func(*cili
 			return filter(obj.(*cilium_io_v2.CiliumNetworkPolicy))
 		})
 	}
-
 	ciliumNetworkPolicyList := []*cilium_io_v2.CiliumNetworkPolicy{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			ciliumNetworkPolicyList = append(ciliumNetworkPolicyList, obj.(*cilium_io_v2.CiliumNetworkPolicy))
 		}
 	}

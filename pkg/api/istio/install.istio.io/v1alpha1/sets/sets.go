@@ -275,8 +275,14 @@ func (s *istioOperatorMergedSet) List(filterResource ...func(*install_istio_io_v
 		})
 	}
 	istioOperatorList := []*install_istio_io_v1alpha1.IstioOperator{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			istioOperatorList = append(istioOperatorList, obj.(*install_istio_io_v1alpha1.IstioOperator))
 		}
 	}
@@ -294,10 +300,15 @@ func (s *istioOperatorMergedSet) UnsortedList(filterResource ...func(*install_is
 			return filter(obj.(*install_istio_io_v1alpha1.IstioOperator))
 		})
 	}
-
 	istioOperatorList := []*install_istio_io_v1alpha1.IstioOperator{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			istioOperatorList = append(istioOperatorList, obj.(*install_istio_io_v1alpha1.IstioOperator))
 		}
 	}

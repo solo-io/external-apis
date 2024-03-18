@@ -275,8 +275,14 @@ func (s *wasmPluginMergedSet) List(filterResource ...func(*extensions_istio_io_v
 		})
 	}
 	wasmPluginList := []*extensions_istio_io_v1alpha1.WasmPlugin{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			wasmPluginList = append(wasmPluginList, obj.(*extensions_istio_io_v1alpha1.WasmPlugin))
 		}
 	}
@@ -294,10 +300,15 @@ func (s *wasmPluginMergedSet) UnsortedList(filterResource ...func(*extensions_is
 			return filter(obj.(*extensions_istio_io_v1alpha1.WasmPlugin))
 		})
 	}
-
 	wasmPluginList := []*extensions_istio_io_v1alpha1.WasmPlugin{}
-	for _, set := range s.sets {
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
 		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
 			wasmPluginList = append(wasmPluginList, obj.(*extensions_istio_io_v1alpha1.WasmPlugin))
 		}
 	}
