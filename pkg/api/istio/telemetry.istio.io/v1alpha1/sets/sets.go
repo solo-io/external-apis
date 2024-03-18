@@ -356,6 +356,9 @@ func (s *telemetryMergedSet) Delete(Telemetry ezkube.ResourceId) {
 }
 
 func (s *telemetryMergedSet) Union(set TelemetrySet) TelemetrySet {
+	if s == nil {
+		return set
+	}
 	return &telemetryMergedSet{sets: append(s.sets, set.Generic())}
 }
 

@@ -356,6 +356,9 @@ func (s *istioOperatorMergedSet) Delete(IstioOperator ezkube.ResourceId) {
 }
 
 func (s *istioOperatorMergedSet) Union(set IstioOperatorSet) IstioOperatorSet {
+	if s == nil {
+		return set
+	}
 	return &istioOperatorMergedSet{sets: append(s.sets, set.Generic())}
 }
 

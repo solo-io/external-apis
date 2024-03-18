@@ -356,6 +356,9 @@ func (s *wasmPluginMergedSet) Delete(WasmPlugin ezkube.ResourceId) {
 }
 
 func (s *wasmPluginMergedSet) Union(set WasmPluginSet) WasmPluginSet {
+	if s == nil {
+		return set
+	}
 	return &wasmPluginMergedSet{sets: append(s.sets, set.Generic())}
 }
 

@@ -356,6 +356,9 @@ func (s *deploymentMergedSet) Delete(Deployment ezkube.ResourceId) {
 }
 
 func (s *deploymentMergedSet) Union(set DeploymentSet) DeploymentSet {
+	if s == nil {
+		return set
+	}
 	return &deploymentMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -753,6 +756,9 @@ func (s *replicaSetMergedSet) Delete(ReplicaSet ezkube.ResourceId) {
 }
 
 func (s *replicaSetMergedSet) Union(set ReplicaSetSet) ReplicaSetSet {
+	if s == nil {
+		return set
+	}
 	return &replicaSetMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -1150,6 +1156,9 @@ func (s *daemonSetMergedSet) Delete(DaemonSet ezkube.ResourceId) {
 }
 
 func (s *daemonSetMergedSet) Union(set DaemonSetSet) DaemonSetSet {
+	if s == nil {
+		return set
+	}
 	return &daemonSetMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -1547,6 +1556,9 @@ func (s *statefulSetMergedSet) Delete(StatefulSet ezkube.ResourceId) {
 }
 
 func (s *statefulSetMergedSet) Union(set StatefulSetSet) StatefulSetSet {
+	if s == nil {
+		return set
+	}
 	return &statefulSetMergedSet{sets: append(s.sets, set.Generic())}
 }
 

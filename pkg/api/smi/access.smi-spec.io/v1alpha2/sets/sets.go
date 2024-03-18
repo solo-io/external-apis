@@ -356,6 +356,9 @@ func (s *trafficTargetMergedSet) Delete(TrafficTarget ezkube.ResourceId) {
 }
 
 func (s *trafficTargetMergedSet) Union(set TrafficTargetSet) TrafficTargetSet {
+	if s == nil {
+		return set
+	}
 	return &trafficTargetMergedSet{sets: append(s.sets, set.Generic())}
 }
 

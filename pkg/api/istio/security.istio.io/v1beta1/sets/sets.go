@@ -356,6 +356,9 @@ func (s *authorizationPolicyMergedSet) Delete(AuthorizationPolicy ezkube.Resourc
 }
 
 func (s *authorizationPolicyMergedSet) Union(set AuthorizationPolicySet) AuthorizationPolicySet {
+	if s == nil {
+		return set
+	}
 	return &authorizationPolicyMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -753,6 +756,9 @@ func (s *peerAuthenticationMergedSet) Delete(PeerAuthentication ezkube.ResourceI
 }
 
 func (s *peerAuthenticationMergedSet) Union(set PeerAuthenticationSet) PeerAuthenticationSet {
+	if s == nil {
+		return set
+	}
 	return &peerAuthenticationMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -1150,6 +1156,9 @@ func (s *requestAuthenticationMergedSet) Delete(RequestAuthentication ezkube.Res
 }
 
 func (s *requestAuthenticationMergedSet) Union(set RequestAuthenticationSet) RequestAuthenticationSet {
+	if s == nil {
+		return set
+	}
 	return &requestAuthenticationMergedSet{sets: append(s.sets, set.Generic())}
 }
 

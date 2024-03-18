@@ -356,6 +356,9 @@ func (s *secretMergedSet) Delete(Secret ezkube.ResourceId) {
 }
 
 func (s *secretMergedSet) Union(set SecretSet) SecretSet {
+	if s == nil {
+		return set
+	}
 	return &secretMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -753,6 +756,9 @@ func (s *serviceAccountMergedSet) Delete(ServiceAccount ezkube.ResourceId) {
 }
 
 func (s *serviceAccountMergedSet) Union(set ServiceAccountSet) ServiceAccountSet {
+	if s == nil {
+		return set
+	}
 	return &serviceAccountMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -1150,6 +1156,9 @@ func (s *configMapMergedSet) Delete(ConfigMap ezkube.ResourceId) {
 }
 
 func (s *configMapMergedSet) Union(set ConfigMapSet) ConfigMapSet {
+	if s == nil {
+		return set
+	}
 	return &configMapMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -1547,6 +1556,9 @@ func (s *serviceMergedSet) Delete(Service ezkube.ResourceId) {
 }
 
 func (s *serviceMergedSet) Union(set ServiceSet) ServiceSet {
+	if s == nil {
+		return set
+	}
 	return &serviceMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -1944,6 +1956,9 @@ func (s *podMergedSet) Delete(Pod ezkube.ResourceId) {
 }
 
 func (s *podMergedSet) Union(set PodSet) PodSet {
+	if s == nil {
+		return set
+	}
 	return &podMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -2341,6 +2356,9 @@ func (s *endpointsMergedSet) Delete(Endpoints ezkube.ResourceId) {
 }
 
 func (s *endpointsMergedSet) Union(set EndpointsSet) EndpointsSet {
+	if s == nil {
+		return set
+	}
 	return &endpointsMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -2738,6 +2756,9 @@ func (s *namespaceMergedSet) Delete(Namespace ezkube.ResourceId) {
 }
 
 func (s *namespaceMergedSet) Union(set NamespaceSet) NamespaceSet {
+	if s == nil {
+		return set
+	}
 	return &namespaceMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -3135,6 +3156,9 @@ func (s *nodeMergedSet) Delete(Node ezkube.ResourceId) {
 }
 
 func (s *nodeMergedSet) Union(set NodeSet) NodeSet {
+	if s == nil {
+		return set
+	}
 	return &nodeMergedSet{sets: append(s.sets, set.Generic())}
 }
 

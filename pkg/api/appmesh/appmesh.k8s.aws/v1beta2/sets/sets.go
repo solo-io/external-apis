@@ -356,6 +356,9 @@ func (s *meshMergedSet) Delete(Mesh ezkube.ResourceId) {
 }
 
 func (s *meshMergedSet) Union(set MeshSet) MeshSet {
+	if s == nil {
+		return set
+	}
 	return &meshMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -753,6 +756,9 @@ func (s *virtualServiceMergedSet) Delete(VirtualService ezkube.ResourceId) {
 }
 
 func (s *virtualServiceMergedSet) Union(set VirtualServiceSet) VirtualServiceSet {
+	if s == nil {
+		return set
+	}
 	return &virtualServiceMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -1150,6 +1156,9 @@ func (s *virtualNodeMergedSet) Delete(VirtualNode ezkube.ResourceId) {
 }
 
 func (s *virtualNodeMergedSet) Union(set VirtualNodeSet) VirtualNodeSet {
+	if s == nil {
+		return set
+	}
 	return &virtualNodeMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -1547,6 +1556,9 @@ func (s *virtualRouterMergedSet) Delete(VirtualRouter ezkube.ResourceId) {
 }
 
 func (s *virtualRouterMergedSet) Union(set VirtualRouterSet) VirtualRouterSet {
+	if s == nil {
+		return set
+	}
 	return &virtualRouterMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -1944,6 +1956,9 @@ func (s *virtualGatewayMergedSet) Delete(VirtualGateway ezkube.ResourceId) {
 }
 
 func (s *virtualGatewayMergedSet) Union(set VirtualGatewaySet) VirtualGatewaySet {
+	if s == nil {
+		return set
+	}
 	return &virtualGatewayMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -2341,6 +2356,9 @@ func (s *gatewayRouteMergedSet) Delete(GatewayRoute ezkube.ResourceId) {
 }
 
 func (s *gatewayRouteMergedSet) Union(set GatewayRouteSet) GatewayRouteSet {
+	if s == nil {
+		return set
+	}
 	return &gatewayRouteMergedSet{sets: append(s.sets, set.Generic())}
 }
 

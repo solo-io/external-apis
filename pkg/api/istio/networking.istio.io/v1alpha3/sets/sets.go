@@ -356,6 +356,9 @@ func (s *envoyFilterMergedSet) Delete(EnvoyFilter ezkube.ResourceId) {
 }
 
 func (s *envoyFilterMergedSet) Union(set EnvoyFilterSet) EnvoyFilterSet {
+	if s == nil {
+		return set
+	}
 	return &envoyFilterMergedSet{sets: append(s.sets, set.Generic())}
 }
 

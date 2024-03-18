@@ -356,6 +356,9 @@ func (s *jobMergedSet) Delete(Job ezkube.ResourceId) {
 }
 
 func (s *jobMergedSet) Union(set JobSet) JobSet {
+	if s == nil {
+		return set
+	}
 	return &jobMergedSet{sets: append(s.sets, set.Generic())}
 }
 

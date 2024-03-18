@@ -356,6 +356,9 @@ func (s *destinationRuleMergedSet) Delete(DestinationRule ezkube.ResourceId) {
 }
 
 func (s *destinationRuleMergedSet) Union(set DestinationRuleSet) DestinationRuleSet {
+	if s == nil {
+		return set
+	}
 	return &destinationRuleMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -753,6 +756,9 @@ func (s *gatewayMergedSet) Delete(Gateway ezkube.ResourceId) {
 }
 
 func (s *gatewayMergedSet) Union(set GatewaySet) GatewaySet {
+	if s == nil {
+		return set
+	}
 	return &gatewayMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -1150,6 +1156,9 @@ func (s *proxyConfigMergedSet) Delete(ProxyConfig ezkube.ResourceId) {
 }
 
 func (s *proxyConfigMergedSet) Union(set ProxyConfigSet) ProxyConfigSet {
+	if s == nil {
+		return set
+	}
 	return &proxyConfigMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -1547,6 +1556,9 @@ func (s *serviceEntryMergedSet) Delete(ServiceEntry ezkube.ResourceId) {
 }
 
 func (s *serviceEntryMergedSet) Union(set ServiceEntrySet) ServiceEntrySet {
+	if s == nil {
+		return set
+	}
 	return &serviceEntryMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -1944,6 +1956,9 @@ func (s *workloadEntryMergedSet) Delete(WorkloadEntry ezkube.ResourceId) {
 }
 
 func (s *workloadEntryMergedSet) Union(set WorkloadEntrySet) WorkloadEntrySet {
+	if s == nil {
+		return set
+	}
 	return &workloadEntryMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -2341,6 +2356,9 @@ func (s *workloadGroupMergedSet) Delete(WorkloadGroup ezkube.ResourceId) {
 }
 
 func (s *workloadGroupMergedSet) Union(set WorkloadGroupSet) WorkloadGroupSet {
+	if s == nil {
+		return set
+	}
 	return &workloadGroupMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -2738,6 +2756,9 @@ func (s *virtualServiceMergedSet) Delete(VirtualService ezkube.ResourceId) {
 }
 
 func (s *virtualServiceMergedSet) Union(set VirtualServiceSet) VirtualServiceSet {
+	if s == nil {
+		return set
+	}
 	return &virtualServiceMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -3135,6 +3156,9 @@ func (s *sidecarMergedSet) Delete(Sidecar ezkube.ResourceId) {
 }
 
 func (s *sidecarMergedSet) Union(set SidecarSet) SidecarSet {
+	if s == nil {
+		return set
+	}
 	return &sidecarMergedSet{sets: append(s.sets, set.Generic())}
 }
 

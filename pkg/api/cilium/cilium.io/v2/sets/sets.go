@@ -356,6 +356,9 @@ func (s *ciliumNetworkPolicyMergedSet) Delete(CiliumNetworkPolicy ezkube.Resourc
 }
 
 func (s *ciliumNetworkPolicyMergedSet) Union(set CiliumNetworkPolicySet) CiliumNetworkPolicySet {
+	if s == nil {
+		return set
+	}
 	return &ciliumNetworkPolicyMergedSet{sets: append(s.sets, set.Generic())}
 }
 

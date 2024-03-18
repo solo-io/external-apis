@@ -356,6 +356,9 @@ func (s *gatewayMergedSet) Delete(Gateway ezkube.ResourceId) {
 }
 
 func (s *gatewayMergedSet) Union(set GatewaySet) GatewaySet {
+	if s == nil {
+		return set
+	}
 	return &gatewayMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -753,6 +756,9 @@ func (s *gatewayClassMergedSet) Delete(GatewayClass ezkube.ResourceId) {
 }
 
 func (s *gatewayClassMergedSet) Union(set GatewayClassSet) GatewayClassSet {
+	if s == nil {
+		return set
+	}
 	return &gatewayClassMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -1150,6 +1156,9 @@ func (s *hTTPRouteMergedSet) Delete(HTTPRoute ezkube.ResourceId) {
 }
 
 func (s *hTTPRouteMergedSet) Union(set HTTPRouteSet) HTTPRouteSet {
+	if s == nil {
+		return set
+	}
 	return &hTTPRouteMergedSet{sets: append(s.sets, set.Generic())}
 }
 

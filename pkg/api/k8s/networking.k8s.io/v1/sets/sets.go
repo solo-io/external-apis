@@ -356,6 +356,9 @@ func (s *networkPolicyMergedSet) Delete(NetworkPolicy ezkube.ResourceId) {
 }
 
 func (s *networkPolicyMergedSet) Union(set NetworkPolicySet) NetworkPolicySet {
+	if s == nil {
+		return set
+	}
 	return &networkPolicyMergedSet{sets: append(s.sets, set.Generic())}
 }
 

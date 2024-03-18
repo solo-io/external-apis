@@ -356,6 +356,9 @@ func (s *validatingWebhookConfigurationMergedSet) Delete(ValidatingWebhookConfig
 }
 
 func (s *validatingWebhookConfigurationMergedSet) Union(set ValidatingWebhookConfigurationSet) ValidatingWebhookConfigurationSet {
+	if s == nil {
+		return set
+	}
 	return &validatingWebhookConfigurationMergedSet{sets: append(s.sets, set.Generic())}
 }
 
@@ -753,6 +756,9 @@ func (s *mutatingWebhookConfigurationMergedSet) Delete(MutatingWebhookConfigurat
 }
 
 func (s *mutatingWebhookConfigurationMergedSet) Union(set MutatingWebhookConfigurationSet) MutatingWebhookConfigurationSet {
+	if s == nil {
+		return set
+	}
 	return &mutatingWebhookConfigurationMergedSet{sets: append(s.sets, set.Generic())}
 }
 
