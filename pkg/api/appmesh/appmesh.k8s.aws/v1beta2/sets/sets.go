@@ -350,7 +350,9 @@ func (s *meshMergedSet) Equal(
 }
 
 func (s *meshMergedSet) Delete(Mesh ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(Mesh)
+	}
 }
 
 func (s *meshMergedSet) Union(set MeshSet) MeshSet {
@@ -745,7 +747,9 @@ func (s *virtualServiceMergedSet) Equal(
 }
 
 func (s *virtualServiceMergedSet) Delete(VirtualService ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(VirtualService)
+	}
 }
 
 func (s *virtualServiceMergedSet) Union(set VirtualServiceSet) VirtualServiceSet {
@@ -1140,7 +1144,9 @@ func (s *virtualNodeMergedSet) Equal(
 }
 
 func (s *virtualNodeMergedSet) Delete(VirtualNode ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(VirtualNode)
+	}
 }
 
 func (s *virtualNodeMergedSet) Union(set VirtualNodeSet) VirtualNodeSet {
@@ -1535,7 +1541,9 @@ func (s *virtualRouterMergedSet) Equal(
 }
 
 func (s *virtualRouterMergedSet) Delete(VirtualRouter ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(VirtualRouter)
+	}
 }
 
 func (s *virtualRouterMergedSet) Union(set VirtualRouterSet) VirtualRouterSet {
@@ -1930,7 +1938,9 @@ func (s *virtualGatewayMergedSet) Equal(
 }
 
 func (s *virtualGatewayMergedSet) Delete(VirtualGateway ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(VirtualGateway)
+	}
 }
 
 func (s *virtualGatewayMergedSet) Union(set VirtualGatewaySet) VirtualGatewaySet {
@@ -2325,7 +2335,9 @@ func (s *gatewayRouteMergedSet) Equal(
 }
 
 func (s *gatewayRouteMergedSet) Delete(GatewayRoute ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(GatewayRoute)
+	}
 }
 
 func (s *gatewayRouteMergedSet) Union(set GatewayRouteSet) GatewayRouteSet {

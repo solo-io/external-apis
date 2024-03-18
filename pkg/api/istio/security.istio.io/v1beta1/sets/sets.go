@@ -350,7 +350,9 @@ func (s *authorizationPolicyMergedSet) Equal(
 }
 
 func (s *authorizationPolicyMergedSet) Delete(AuthorizationPolicy ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(AuthorizationPolicy)
+	}
 }
 
 func (s *authorizationPolicyMergedSet) Union(set AuthorizationPolicySet) AuthorizationPolicySet {
@@ -745,7 +747,9 @@ func (s *peerAuthenticationMergedSet) Equal(
 }
 
 func (s *peerAuthenticationMergedSet) Delete(PeerAuthentication ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(PeerAuthentication)
+	}
 }
 
 func (s *peerAuthenticationMergedSet) Union(set PeerAuthenticationSet) PeerAuthenticationSet {
@@ -961,7 +965,7 @@ func (s *requestAuthenticationSet) Union(set RequestAuthenticationSet) RequestAu
 	if s == nil {
 		return set
 	}
-	return NewRequestAuthenticationSet(append(s.List(), set.List()...)...)
+	return &requestAuthenticationMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *requestAuthenticationSet) Difference(set RequestAuthenticationSet) RequestAuthenticationSet {
@@ -1023,5 +1027,179 @@ func (s *requestAuthenticationSet) Clone() RequestAuthenticationSet {
 	if s == nil {
 		return nil
 	}
-	return &requestAuthenticationSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &requestAuthenticationMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type requestAuthenticationMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewRequestAuthenticationMergedSet(requestAuthenticationList ...*security_istio_io_v1beta1.RequestAuthentication) RequestAuthenticationSet {
+	return &requestAuthenticationMergedSet{sets: []sksets.ResourceSet{makeGenericRequestAuthenticationSet(requestAuthenticationList)}}
+}
+
+func NewRequestAuthenticationMergedSetFromList(requestAuthenticationList *security_istio_io_v1beta1.RequestAuthenticationList) RequestAuthenticationSet {
+	list := make([]*security_istio_io_v1beta1.RequestAuthentication, 0, len(requestAuthenticationList.Items))
+	for idx := range requestAuthenticationList.Items {
+		list = append(list, requestAuthenticationList.Items[idx])
+	}
+	return &requestAuthenticationMergedSet{sets: []sksets.ResourceSet{makeGenericRequestAuthenticationSet(list)}}
+}
+
+func (s *requestAuthenticationMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *requestAuthenticationMergedSet) List(filterResource ...func(*security_istio_io_v1beta1.RequestAuthentication) bool) []*security_istio_io_v1beta1.RequestAuthentication {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*security_istio_io_v1beta1.RequestAuthentication))
+		})
+	}
+	requestAuthenticationList := []*security_istio_io_v1beta1.RequestAuthentication{}
+	for _, set := range s.sets {
+		for _, obj := range set.List(genericFilters...) {
+			requestAuthenticationList = append(requestAuthenticationList, obj.(*security_istio_io_v1beta1.RequestAuthentication))
+		}
+	}
+	return requestAuthenticationList
+}
+
+func (s *requestAuthenticationMergedSet) UnsortedList(filterResource ...func(*security_istio_io_v1beta1.RequestAuthentication) bool) []*security_istio_io_v1beta1.RequestAuthentication {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*security_istio_io_v1beta1.RequestAuthentication))
+		})
+	}
+
+	requestAuthenticationList := []*security_istio_io_v1beta1.RequestAuthentication{}
+	for _, set := range s.sets {
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			requestAuthenticationList = append(requestAuthenticationList, obj.(*security_istio_io_v1beta1.RequestAuthentication))
+		}
+	}
+	return requestAuthenticationList
+}
+
+func (s *requestAuthenticationMergedSet) Map() map[string]*security_istio_io_v1beta1.RequestAuthentication {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*security_istio_io_v1beta1.RequestAuthentication{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*security_istio_io_v1beta1.RequestAuthentication)
+		}
+	}
+	return newMap
+}
+
+func (s *requestAuthenticationMergedSet) Insert(
+	requestAuthenticationList ...*security_istio_io_v1beta1.RequestAuthentication,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericRequestAuthenticationSet(requestAuthenticationList))
+	}
+	for _, obj := range requestAuthenticationList {
+		s.sets[0].Insert(obj)
+	}
+}
+
+func (s *requestAuthenticationMergedSet) Has(requestAuthentication ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(requestAuthentication) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *requestAuthenticationMergedSet) Equal(
+	requestAuthenticationSet RequestAuthenticationSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *requestAuthenticationMergedSet) Delete(RequestAuthentication ezkube.ResourceId) {
+	for _, set := range s.sets {
+		set.Delete(RequestAuthentication)
+	}
+}
+
+func (s *requestAuthenticationMergedSet) Union(set RequestAuthenticationSet) RequestAuthenticationSet {
+	return &requestAuthenticationMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *requestAuthenticationMergedSet) Difference(set RequestAuthenticationSet) RequestAuthenticationSet {
+	panic("unimplemented")
+}
+
+func (s *requestAuthenticationMergedSet) Intersection(set RequestAuthenticationSet) RequestAuthenticationSet {
+	panic("unimplemented")
+}
+
+func (s *requestAuthenticationMergedSet) Find(id ezkube.ResourceId) (*security_istio_io_v1beta1.RequestAuthentication, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find RequestAuthentication %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&security_istio_io_v1beta1.RequestAuthentication{}, id)
+		if err == nil {
+			return obj.(*security_istio_io_v1beta1.RequestAuthentication), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *requestAuthenticationMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *requestAuthenticationMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *requestAuthenticationMergedSet) Delta(newSet RequestAuthenticationSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *requestAuthenticationMergedSet) Clone() RequestAuthenticationSet {
+	if s == nil {
+		return nil
+	}
+	return &requestAuthenticationMergedSet{sets: s.sets[:]}
 }

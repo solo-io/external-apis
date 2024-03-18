@@ -350,7 +350,9 @@ func (s *istioOperatorMergedSet) Equal(
 }
 
 func (s *istioOperatorMergedSet) Delete(IstioOperator ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(IstioOperator)
+	}
 }
 
 func (s *istioOperatorMergedSet) Union(set IstioOperatorSet) IstioOperatorSet {

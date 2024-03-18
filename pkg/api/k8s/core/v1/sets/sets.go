@@ -350,7 +350,9 @@ func (s *secretMergedSet) Equal(
 }
 
 func (s *secretMergedSet) Delete(Secret ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(Secret)
+	}
 }
 
 func (s *secretMergedSet) Union(set SecretSet) SecretSet {
@@ -745,7 +747,9 @@ func (s *serviceAccountMergedSet) Equal(
 }
 
 func (s *serviceAccountMergedSet) Delete(ServiceAccount ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(ServiceAccount)
+	}
 }
 
 func (s *serviceAccountMergedSet) Union(set ServiceAccountSet) ServiceAccountSet {
@@ -1140,7 +1144,9 @@ func (s *configMapMergedSet) Equal(
 }
 
 func (s *configMapMergedSet) Delete(ConfigMap ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(ConfigMap)
+	}
 }
 
 func (s *configMapMergedSet) Union(set ConfigMapSet) ConfigMapSet {
@@ -1535,7 +1541,9 @@ func (s *serviceMergedSet) Equal(
 }
 
 func (s *serviceMergedSet) Delete(Service ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(Service)
+	}
 }
 
 func (s *serviceMergedSet) Union(set ServiceSet) ServiceSet {
@@ -1930,7 +1938,9 @@ func (s *podMergedSet) Equal(
 }
 
 func (s *podMergedSet) Delete(Pod ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(Pod)
+	}
 }
 
 func (s *podMergedSet) Union(set PodSet) PodSet {
@@ -2325,7 +2335,9 @@ func (s *endpointsMergedSet) Equal(
 }
 
 func (s *endpointsMergedSet) Delete(Endpoints ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(Endpoints)
+	}
 }
 
 func (s *endpointsMergedSet) Union(set EndpointsSet) EndpointsSet {
@@ -2720,7 +2732,9 @@ func (s *namespaceMergedSet) Equal(
 }
 
 func (s *namespaceMergedSet) Delete(Namespace ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(Namespace)
+	}
 }
 
 func (s *namespaceMergedSet) Union(set NamespaceSet) NamespaceSet {
@@ -3115,7 +3129,9 @@ func (s *nodeMergedSet) Equal(
 }
 
 func (s *nodeMergedSet) Delete(Node ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(Node)
+	}
 }
 
 func (s *nodeMergedSet) Union(set NodeSet) NodeSet {

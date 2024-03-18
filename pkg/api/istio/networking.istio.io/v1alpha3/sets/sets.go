@@ -350,7 +350,9 @@ func (s *envoyFilterMergedSet) Equal(
 }
 
 func (s *envoyFilterMergedSet) Delete(EnvoyFilter ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(EnvoyFilter)
+	}
 }
 
 func (s *envoyFilterMergedSet) Union(set EnvoyFilterSet) EnvoyFilterSet {

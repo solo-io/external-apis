@@ -350,7 +350,9 @@ func (s *validatingWebhookConfigurationMergedSet) Equal(
 }
 
 func (s *validatingWebhookConfigurationMergedSet) Delete(ValidatingWebhookConfiguration ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(ValidatingWebhookConfiguration)
+	}
 }
 
 func (s *validatingWebhookConfigurationMergedSet) Union(set ValidatingWebhookConfigurationSet) ValidatingWebhookConfigurationSet {
@@ -745,7 +747,9 @@ func (s *mutatingWebhookConfigurationMergedSet) Equal(
 }
 
 func (s *mutatingWebhookConfigurationMergedSet) Delete(MutatingWebhookConfiguration ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(MutatingWebhookConfiguration)
+	}
 }
 
 func (s *mutatingWebhookConfigurationMergedSet) Union(set MutatingWebhookConfigurationSet) MutatingWebhookConfigurationSet {

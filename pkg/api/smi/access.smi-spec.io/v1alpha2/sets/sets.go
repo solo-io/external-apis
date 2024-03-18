@@ -350,7 +350,9 @@ func (s *trafficTargetMergedSet) Equal(
 }
 
 func (s *trafficTargetMergedSet) Delete(TrafficTarget ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(TrafficTarget)
+	}
 }
 
 func (s *trafficTargetMergedSet) Union(set TrafficTargetSet) TrafficTargetSet {

@@ -350,7 +350,9 @@ func (s *ciliumNetworkPolicyMergedSet) Equal(
 }
 
 func (s *ciliumNetworkPolicyMergedSet) Delete(CiliumNetworkPolicy ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(CiliumNetworkPolicy)
+	}
 }
 
 func (s *ciliumNetworkPolicyMergedSet) Union(set CiliumNetworkPolicySet) CiliumNetworkPolicySet {

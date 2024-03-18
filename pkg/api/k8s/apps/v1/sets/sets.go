@@ -350,7 +350,9 @@ func (s *deploymentMergedSet) Equal(
 }
 
 func (s *deploymentMergedSet) Delete(Deployment ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(Deployment)
+	}
 }
 
 func (s *deploymentMergedSet) Union(set DeploymentSet) DeploymentSet {
@@ -745,7 +747,9 @@ func (s *replicaSetMergedSet) Equal(
 }
 
 func (s *replicaSetMergedSet) Delete(ReplicaSet ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(ReplicaSet)
+	}
 }
 
 func (s *replicaSetMergedSet) Union(set ReplicaSetSet) ReplicaSetSet {
@@ -1140,7 +1144,9 @@ func (s *daemonSetMergedSet) Equal(
 }
 
 func (s *daemonSetMergedSet) Delete(DaemonSet ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(DaemonSet)
+	}
 }
 
 func (s *daemonSetMergedSet) Union(set DaemonSetSet) DaemonSetSet {
@@ -1535,7 +1541,9 @@ func (s *statefulSetMergedSet) Equal(
 }
 
 func (s *statefulSetMergedSet) Delete(StatefulSet ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(StatefulSet)
+	}
 }
 
 func (s *statefulSetMergedSet) Union(set StatefulSetSet) StatefulSetSet {

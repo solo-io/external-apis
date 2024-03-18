@@ -350,7 +350,9 @@ func (s *telemetryMergedSet) Equal(
 }
 
 func (s *telemetryMergedSet) Delete(Telemetry ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(Telemetry)
+	}
 }
 
 func (s *telemetryMergedSet) Union(set TelemetrySet) TelemetrySet {

@@ -350,7 +350,9 @@ func (s *hTTPRouteGroupMergedSet) Equal(
 }
 
 func (s *hTTPRouteGroupMergedSet) Delete(HTTPRouteGroup ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(HTTPRouteGroup)
+	}
 }
 
 func (s *hTTPRouteGroupMergedSet) Union(set HTTPRouteGroupSet) HTTPRouteGroupSet {

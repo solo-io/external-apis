@@ -350,7 +350,9 @@ func (s *gatewayMergedSet) Equal(
 }
 
 func (s *gatewayMergedSet) Delete(Gateway ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(Gateway)
+	}
 }
 
 func (s *gatewayMergedSet) Union(set GatewaySet) GatewaySet {
@@ -745,7 +747,9 @@ func (s *gatewayClassMergedSet) Equal(
 }
 
 func (s *gatewayClassMergedSet) Delete(GatewayClass ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(GatewayClass)
+	}
 }
 
 func (s *gatewayClassMergedSet) Union(set GatewayClassSet) GatewayClassSet {
@@ -1140,7 +1144,9 @@ func (s *hTTPRouteMergedSet) Equal(
 }
 
 func (s *hTTPRouteMergedSet) Delete(HTTPRoute ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(HTTPRoute)
+	}
 }
 
 func (s *hTTPRouteMergedSet) Union(set HTTPRouteSet) HTTPRouteSet {

@@ -350,7 +350,9 @@ func (s *networkPolicyMergedSet) Equal(
 }
 
 func (s *networkPolicyMergedSet) Delete(NetworkPolicy ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(NetworkPolicy)
+	}
 }
 
 func (s *networkPolicyMergedSet) Union(set NetworkPolicySet) NetworkPolicySet {

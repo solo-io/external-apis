@@ -350,7 +350,9 @@ func (s *destinationRuleMergedSet) Equal(
 }
 
 func (s *destinationRuleMergedSet) Delete(DestinationRule ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(DestinationRule)
+	}
 }
 
 func (s *destinationRuleMergedSet) Union(set DestinationRuleSet) DestinationRuleSet {
@@ -745,7 +747,9 @@ func (s *gatewayMergedSet) Equal(
 }
 
 func (s *gatewayMergedSet) Delete(Gateway ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(Gateway)
+	}
 }
 
 func (s *gatewayMergedSet) Union(set GatewaySet) GatewaySet {
@@ -961,7 +965,7 @@ func (s *proxyConfigSet) Union(set ProxyConfigSet) ProxyConfigSet {
 	if s == nil {
 		return set
 	}
-	return NewProxyConfigSet(append(s.List(), set.List()...)...)
+	return &proxyConfigMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *proxyConfigSet) Difference(set ProxyConfigSet) ProxyConfigSet {
@@ -1023,7 +1027,181 @@ func (s *proxyConfigSet) Clone() ProxyConfigSet {
 	if s == nil {
 		return nil
 	}
-	return &proxyConfigSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &proxyConfigMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type proxyConfigMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewProxyConfigMergedSet(proxyConfigList ...*networking_istio_io_v1beta1.ProxyConfig) ProxyConfigSet {
+	return &proxyConfigMergedSet{sets: []sksets.ResourceSet{makeGenericProxyConfigSet(proxyConfigList)}}
+}
+
+func NewProxyConfigMergedSetFromList(proxyConfigList *networking_istio_io_v1beta1.ProxyConfigList) ProxyConfigSet {
+	list := make([]*networking_istio_io_v1beta1.ProxyConfig, 0, len(proxyConfigList.Items))
+	for idx := range proxyConfigList.Items {
+		list = append(list, proxyConfigList.Items[idx])
+	}
+	return &proxyConfigMergedSet{sets: []sksets.ResourceSet{makeGenericProxyConfigSet(list)}}
+}
+
+func (s *proxyConfigMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *proxyConfigMergedSet) List(filterResource ...func(*networking_istio_io_v1beta1.ProxyConfig) bool) []*networking_istio_io_v1beta1.ProxyConfig {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1beta1.ProxyConfig))
+		})
+	}
+	proxyConfigList := []*networking_istio_io_v1beta1.ProxyConfig{}
+	for _, set := range s.sets {
+		for _, obj := range set.List(genericFilters...) {
+			proxyConfigList = append(proxyConfigList, obj.(*networking_istio_io_v1beta1.ProxyConfig))
+		}
+	}
+	return proxyConfigList
+}
+
+func (s *proxyConfigMergedSet) UnsortedList(filterResource ...func(*networking_istio_io_v1beta1.ProxyConfig) bool) []*networking_istio_io_v1beta1.ProxyConfig {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1beta1.ProxyConfig))
+		})
+	}
+
+	proxyConfigList := []*networking_istio_io_v1beta1.ProxyConfig{}
+	for _, set := range s.sets {
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			proxyConfigList = append(proxyConfigList, obj.(*networking_istio_io_v1beta1.ProxyConfig))
+		}
+	}
+	return proxyConfigList
+}
+
+func (s *proxyConfigMergedSet) Map() map[string]*networking_istio_io_v1beta1.ProxyConfig {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*networking_istio_io_v1beta1.ProxyConfig{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*networking_istio_io_v1beta1.ProxyConfig)
+		}
+	}
+	return newMap
+}
+
+func (s *proxyConfigMergedSet) Insert(
+	proxyConfigList ...*networking_istio_io_v1beta1.ProxyConfig,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericProxyConfigSet(proxyConfigList))
+	}
+	for _, obj := range proxyConfigList {
+		s.sets[0].Insert(obj)
+	}
+}
+
+func (s *proxyConfigMergedSet) Has(proxyConfig ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(proxyConfig) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *proxyConfigMergedSet) Equal(
+	proxyConfigSet ProxyConfigSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *proxyConfigMergedSet) Delete(ProxyConfig ezkube.ResourceId) {
+	for _, set := range s.sets {
+		set.Delete(ProxyConfig)
+	}
+}
+
+func (s *proxyConfigMergedSet) Union(set ProxyConfigSet) ProxyConfigSet {
+	return &proxyConfigMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *proxyConfigMergedSet) Difference(set ProxyConfigSet) ProxyConfigSet {
+	panic("unimplemented")
+}
+
+func (s *proxyConfigMergedSet) Intersection(set ProxyConfigSet) ProxyConfigSet {
+	panic("unimplemented")
+}
+
+func (s *proxyConfigMergedSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1beta1.ProxyConfig, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find ProxyConfig %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&networking_istio_io_v1beta1.ProxyConfig{}, id)
+		if err == nil {
+			return obj.(*networking_istio_io_v1beta1.ProxyConfig), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *proxyConfigMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *proxyConfigMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *proxyConfigMergedSet) Delta(newSet ProxyConfigSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *proxyConfigMergedSet) Clone() ProxyConfigSet {
+	if s == nil {
+		return nil
+	}
+	return &proxyConfigMergedSet{sets: s.sets[:]}
 }
 
 type ServiceEntrySet interface {
@@ -1363,7 +1541,9 @@ func (s *serviceEntryMergedSet) Equal(
 }
 
 func (s *serviceEntryMergedSet) Delete(ServiceEntry ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(ServiceEntry)
+	}
 }
 
 func (s *serviceEntryMergedSet) Union(set ServiceEntrySet) ServiceEntrySet {
@@ -1758,7 +1938,9 @@ func (s *workloadEntryMergedSet) Equal(
 }
 
 func (s *workloadEntryMergedSet) Delete(WorkloadEntry ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(WorkloadEntry)
+	}
 }
 
 func (s *workloadEntryMergedSet) Union(set WorkloadEntrySet) WorkloadEntrySet {
@@ -2153,7 +2335,9 @@ func (s *workloadGroupMergedSet) Equal(
 }
 
 func (s *workloadGroupMergedSet) Delete(WorkloadGroup ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(WorkloadGroup)
+	}
 }
 
 func (s *workloadGroupMergedSet) Union(set WorkloadGroupSet) WorkloadGroupSet {
@@ -2548,7 +2732,9 @@ func (s *virtualServiceMergedSet) Equal(
 }
 
 func (s *virtualServiceMergedSet) Delete(VirtualService ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(VirtualService)
+	}
 }
 
 func (s *virtualServiceMergedSet) Union(set VirtualServiceSet) VirtualServiceSet {
@@ -2943,7 +3129,9 @@ func (s *sidecarMergedSet) Equal(
 }
 
 func (s *sidecarMergedSet) Delete(Sidecar ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(Sidecar)
+	}
 }
 
 func (s *sidecarMergedSet) Union(set SidecarSet) SidecarSet {

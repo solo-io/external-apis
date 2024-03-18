@@ -171,7 +171,7 @@ func (s *wasmPluginSet) Union(set WasmPluginSet) WasmPluginSet {
 	if s == nil {
 		return set
 	}
-	return NewWasmPluginSet(append(s.List(), set.List()...)...)
+	return &wasmPluginMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *wasmPluginSet) Difference(set WasmPluginSet) WasmPluginSet {
@@ -233,5 +233,179 @@ func (s *wasmPluginSet) Clone() WasmPluginSet {
 	if s == nil {
 		return nil
 	}
-	return &wasmPluginSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &wasmPluginMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type wasmPluginMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewWasmPluginMergedSet(wasmPluginList ...*extensions_istio_io_v1alpha1.WasmPlugin) WasmPluginSet {
+	return &wasmPluginMergedSet{sets: []sksets.ResourceSet{makeGenericWasmPluginSet(wasmPluginList)}}
+}
+
+func NewWasmPluginMergedSetFromList(wasmPluginList *extensions_istio_io_v1alpha1.WasmPluginList) WasmPluginSet {
+	list := make([]*extensions_istio_io_v1alpha1.WasmPlugin, 0, len(wasmPluginList.Items))
+	for idx := range wasmPluginList.Items {
+		list = append(list, wasmPluginList.Items[idx])
+	}
+	return &wasmPluginMergedSet{sets: []sksets.ResourceSet{makeGenericWasmPluginSet(list)}}
+}
+
+func (s *wasmPluginMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *wasmPluginMergedSet) List(filterResource ...func(*extensions_istio_io_v1alpha1.WasmPlugin) bool) []*extensions_istio_io_v1alpha1.WasmPlugin {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*extensions_istio_io_v1alpha1.WasmPlugin))
+		})
+	}
+	wasmPluginList := []*extensions_istio_io_v1alpha1.WasmPlugin{}
+	for _, set := range s.sets {
+		for _, obj := range set.List(genericFilters...) {
+			wasmPluginList = append(wasmPluginList, obj.(*extensions_istio_io_v1alpha1.WasmPlugin))
+		}
+	}
+	return wasmPluginList
+}
+
+func (s *wasmPluginMergedSet) UnsortedList(filterResource ...func(*extensions_istio_io_v1alpha1.WasmPlugin) bool) []*extensions_istio_io_v1alpha1.WasmPlugin {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*extensions_istio_io_v1alpha1.WasmPlugin))
+		})
+	}
+
+	wasmPluginList := []*extensions_istio_io_v1alpha1.WasmPlugin{}
+	for _, set := range s.sets {
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			wasmPluginList = append(wasmPluginList, obj.(*extensions_istio_io_v1alpha1.WasmPlugin))
+		}
+	}
+	return wasmPluginList
+}
+
+func (s *wasmPluginMergedSet) Map() map[string]*extensions_istio_io_v1alpha1.WasmPlugin {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*extensions_istio_io_v1alpha1.WasmPlugin{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*extensions_istio_io_v1alpha1.WasmPlugin)
+		}
+	}
+	return newMap
+}
+
+func (s *wasmPluginMergedSet) Insert(
+	wasmPluginList ...*extensions_istio_io_v1alpha1.WasmPlugin,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericWasmPluginSet(wasmPluginList))
+	}
+	for _, obj := range wasmPluginList {
+		s.sets[0].Insert(obj)
+	}
+}
+
+func (s *wasmPluginMergedSet) Has(wasmPlugin ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(wasmPlugin) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *wasmPluginMergedSet) Equal(
+	wasmPluginSet WasmPluginSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *wasmPluginMergedSet) Delete(WasmPlugin ezkube.ResourceId) {
+	for _, set := range s.sets {
+		set.Delete(WasmPlugin)
+	}
+}
+
+func (s *wasmPluginMergedSet) Union(set WasmPluginSet) WasmPluginSet {
+	return &wasmPluginMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *wasmPluginMergedSet) Difference(set WasmPluginSet) WasmPluginSet {
+	panic("unimplemented")
+}
+
+func (s *wasmPluginMergedSet) Intersection(set WasmPluginSet) WasmPluginSet {
+	panic("unimplemented")
+}
+
+func (s *wasmPluginMergedSet) Find(id ezkube.ResourceId) (*extensions_istio_io_v1alpha1.WasmPlugin, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find WasmPlugin %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&extensions_istio_io_v1alpha1.WasmPlugin{}, id)
+		if err == nil {
+			return obj.(*extensions_istio_io_v1alpha1.WasmPlugin), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *wasmPluginMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *wasmPluginMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *wasmPluginMergedSet) Delta(newSet WasmPluginSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *wasmPluginMergedSet) Clone() WasmPluginSet {
+	if s == nil {
+		return nil
+	}
+	return &wasmPluginMergedSet{sets: s.sets[:]}
 }

@@ -350,7 +350,9 @@ func (s *jobMergedSet) Equal(
 }
 
 func (s *jobMergedSet) Delete(Job ezkube.ResourceId) {
-	panic("unimplemented")
+	for _, set := range s.sets {
+		set.Delete(Job)
+	}
 }
 
 func (s *jobMergedSet) Union(set JobSet) JobSet {
