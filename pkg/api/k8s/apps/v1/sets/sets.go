@@ -327,7 +327,17 @@ func (s *deploymentMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericDeploymentSet(deploymentList))
 	}
 	for _, obj := range deploymentList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -727,7 +737,17 @@ func (s *replicaSetMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericReplicaSetSet(replicaSetList))
 	}
 	for _, obj := range replicaSetList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -1127,7 +1147,17 @@ func (s *daemonSetMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericDaemonSetSet(daemonSetList))
 	}
 	for _, obj := range daemonSetList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -1527,7 +1557,17 @@ func (s *statefulSetMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericStatefulSetSet(statefulSetList))
 	}
 	for _, obj := range statefulSetList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 

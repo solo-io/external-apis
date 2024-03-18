@@ -327,7 +327,17 @@ func (s *envoyFilterMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericEnvoyFilterSet(envoyFilterList))
 	}
 	for _, obj := range envoyFilterList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 

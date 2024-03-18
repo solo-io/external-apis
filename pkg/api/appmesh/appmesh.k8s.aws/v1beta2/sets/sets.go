@@ -327,7 +327,17 @@ func (s *meshMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericMeshSet(meshList))
 	}
 	for _, obj := range meshList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -727,7 +737,17 @@ func (s *virtualServiceMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericVirtualServiceSet(virtualServiceList))
 	}
 	for _, obj := range virtualServiceList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -1127,7 +1147,17 @@ func (s *virtualNodeMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericVirtualNodeSet(virtualNodeList))
 	}
 	for _, obj := range virtualNodeList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -1527,7 +1557,17 @@ func (s *virtualRouterMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericVirtualRouterSet(virtualRouterList))
 	}
 	for _, obj := range virtualRouterList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -1927,7 +1967,17 @@ func (s *virtualGatewayMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericVirtualGatewaySet(virtualGatewayList))
 	}
 	for _, obj := range virtualGatewayList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -2327,7 +2377,17 @@ func (s *gatewayRouteMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericGatewayRouteSet(gatewayRouteList))
 	}
 	for _, obj := range gatewayRouteList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 

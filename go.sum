@@ -912,6 +912,8 @@ github.com/solo-io/skv2 v0.36.5-0.20240318162459-f88c63aee9fb h1:IOxIyry5JfiMdA8
 github.com/solo-io/skv2 v0.36.5-0.20240318162459-f88c63aee9fb/go.mod h1:0GKILLOrQiTKvGsf7UEFZJiDxJHrp0yKJQ6NbHzn+vY=
 github.com/solo-io/skv2 v0.36.5-0.20240318172143-5af73088862d h1:haRXHFa5tQH073ukFsCpdo9BXBj28CWN3qDtuKM4hqA=
 github.com/solo-io/skv2 v0.36.5-0.20240318172143-5af73088862d/go.mod h1:0GKILLOrQiTKvGsf7UEFZJiDxJHrp0yKJQ6NbHzn+vY=
+github.com/solo-io/skv2 v0.36.5-0.20240318182949-2e5bc7667124 h1:iZL6hE0wkBTJQ6pw4OXZYk9ech8AGULrhIA+aQ66B7o=
+github.com/solo-io/skv2 v0.36.5-0.20240318182949-2e5bc7667124/go.mod h1:0GKILLOrQiTKvGsf7UEFZJiDxJHrp0yKJQ6NbHzn+vY=
 github.com/sourcegraph/conc v0.3.0 h1:OQTbbt6P72L20UqAkXXuLOj79LfEanQ+YQFNpLA9ySo=
 github.com/sourcegraph/conc v0.3.0/go.mod h1:Sdozi7LEKbFPqYX2/J+iBAM6HpqSLTASQIKqDmF7Mt0=
 github.com/spaolacci/murmur3 v0.0.0-20180118202830-f09979ecbc72/go.mod h1:JwIasOWyU6f++ZhiEuf87xNszmSA2myDM2Kzu9HwQUA=

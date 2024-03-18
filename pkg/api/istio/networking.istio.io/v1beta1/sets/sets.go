@@ -327,7 +327,17 @@ func (s *destinationRuleMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericDestinationRuleSet(destinationRuleList))
 	}
 	for _, obj := range destinationRuleList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -727,7 +737,17 @@ func (s *gatewayMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericGatewaySet(gatewayList))
 	}
 	for _, obj := range gatewayList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -1127,7 +1147,17 @@ func (s *proxyConfigMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericProxyConfigSet(proxyConfigList))
 	}
 	for _, obj := range proxyConfigList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -1527,7 +1557,17 @@ func (s *serviceEntryMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericServiceEntrySet(serviceEntryList))
 	}
 	for _, obj := range serviceEntryList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -1927,7 +1967,17 @@ func (s *workloadEntryMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericWorkloadEntrySet(workloadEntryList))
 	}
 	for _, obj := range workloadEntryList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -2327,7 +2377,17 @@ func (s *workloadGroupMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericWorkloadGroupSet(workloadGroupList))
 	}
 	for _, obj := range workloadGroupList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -2727,7 +2787,17 @@ func (s *virtualServiceMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericVirtualServiceSet(virtualServiceList))
 	}
 	for _, obj := range virtualServiceList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -3127,7 +3197,17 @@ func (s *sidecarMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericSidecarSet(sidecarList))
 	}
 	for _, obj := range sidecarList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 

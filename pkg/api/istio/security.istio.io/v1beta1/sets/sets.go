@@ -327,7 +327,17 @@ func (s *authorizationPolicyMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericAuthorizationPolicySet(authorizationPolicyList))
 	}
 	for _, obj := range authorizationPolicyList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -727,7 +737,17 @@ func (s *peerAuthenticationMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericPeerAuthenticationSet(peerAuthenticationList))
 	}
 	for _, obj := range peerAuthenticationList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -1127,7 +1147,17 @@ func (s *requestAuthenticationMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericRequestAuthenticationSet(requestAuthenticationList))
 	}
 	for _, obj := range requestAuthenticationList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 

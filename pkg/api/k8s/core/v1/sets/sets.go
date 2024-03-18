@@ -327,7 +327,17 @@ func (s *secretMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericSecretSet(secretList))
 	}
 	for _, obj := range secretList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -727,7 +737,17 @@ func (s *serviceAccountMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericServiceAccountSet(serviceAccountList))
 	}
 	for _, obj := range serviceAccountList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -1127,7 +1147,17 @@ func (s *configMapMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericConfigMapSet(configMapList))
 	}
 	for _, obj := range configMapList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -1527,7 +1557,17 @@ func (s *serviceMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericServiceSet(serviceList))
 	}
 	for _, obj := range serviceList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -1927,7 +1967,17 @@ func (s *podMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericPodSet(podList))
 	}
 	for _, obj := range podList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -2327,7 +2377,17 @@ func (s *endpointsMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericEndpointsSet(endpointsList))
 	}
 	for _, obj := range endpointsList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -2727,7 +2787,17 @@ func (s *namespaceMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericNamespaceSet(namespaceList))
 	}
 	for _, obj := range namespaceList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -3127,7 +3197,17 @@ func (s *nodeMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericNodeSet(nodeList))
 	}
 	for _, obj := range nodeList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 

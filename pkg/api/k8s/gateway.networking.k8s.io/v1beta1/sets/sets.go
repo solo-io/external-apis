@@ -327,7 +327,17 @@ func (s *gatewayMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericGatewaySet(gatewayList))
 	}
 	for _, obj := range gatewayList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -727,7 +737,17 @@ func (s *gatewayClassMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericGatewayClassSet(gatewayClassList))
 	}
 	for _, obj := range gatewayClassList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
@@ -1127,7 +1147,17 @@ func (s *hTTPRouteMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericHTTPRouteSet(hTTPRouteList))
 	}
 	for _, obj := range hTTPRouteList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 

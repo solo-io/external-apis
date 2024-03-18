@@ -327,7 +327,17 @@ func (s *jobMergedSet) Insert(
 		s.sets = append(s.sets, makeGenericJobSet(jobList))
 	}
 	for _, obj := range jobList {
-		s.sets[0].Insert(obj)
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
 	}
 }
 
