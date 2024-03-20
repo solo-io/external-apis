@@ -11,6 +11,7 @@ import (
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"
 	"github.com/solo-io/skv2/pkg/ezkube"
 	"k8s.io/apimachinery/pkg/util/sets"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 type WasmPluginSet interface {
@@ -48,30 +49,51 @@ type WasmPluginSet interface {
 	Delta(newSet WasmPluginSet) sksets.ResourceDelta
 	// Create a deep copy of the current WasmPluginSet
 	Clone() WasmPluginSet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
 }
 
-func makeGenericWasmPluginSet(wasmPluginList []*extensions_istio_io_v1alpha1.WasmPlugin) sksets.ResourceSet {
+func makeGenericWasmPluginSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	wasmPluginList []*extensions_istio_io_v1alpha1.WasmPlugin,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range wasmPluginList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericResources...)
 }
 
 type wasmPluginSet struct {
-	set sksets.ResourceSet
+	set      sksets.ResourceSet
+	sortFunc func(toInsert, existing client.Object) bool
 }
 
-func NewWasmPluginSet(wasmPluginList ...*extensions_istio_io_v1alpha1.WasmPlugin) WasmPluginSet {
-	return &wasmPluginSet{set: makeGenericWasmPluginSet(wasmPluginList)}
+func NewWasmPluginSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	wasmPluginList ...*extensions_istio_io_v1alpha1.WasmPlugin,
+) WasmPluginSet {
+	return &wasmPluginSet{
+		set:      makeGenericWasmPluginSet(sortFunc, wasmPluginList),
+		sortFunc: sortFunc,
+	}
 }
 
-func NewWasmPluginSetFromList(wasmPluginList *extensions_istio_io_v1alpha1.WasmPluginList) WasmPluginSet {
+func NewWasmPluginSetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	wasmPluginList *extensions_istio_io_v1alpha1.WasmPluginList,
+) WasmPluginSet {
 	list := make([]*extensions_istio_io_v1alpha1.WasmPlugin, 0, len(wasmPluginList.Items))
 	for idx := range wasmPluginList.Items {
 		list = append(list, wasmPluginList.Items[idx])
 	}
-	return &wasmPluginSet{set: makeGenericWasmPluginSet(list)}
+	return &wasmPluginSet{
+		set:      makeGenericWasmPluginSet(sortFunc, list),
+		sortFunc: sortFunc,
+	}
 }
 
 func (s *wasmPluginSet) Keys() sets.String {
@@ -126,7 +148,7 @@ func (s *wasmPluginSet) Map() map[string]*extensions_istio_io_v1alpha1.WasmPlugi
 	}
 
 	newMap := map[string]*extensions_istio_io_v1alpha1.WasmPlugin{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*extensions_istio_io_v1alpha1.WasmPlugin)
 	}
 	return newMap
@@ -171,7 +193,7 @@ func (s *wasmPluginSet) Union(set WasmPluginSet) WasmPluginSet {
 	if s == nil {
 		return set
 	}
-	return NewWasmPluginSet(append(s.List(), set.List()...)...)
+	return NewWasmPluginSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
 }
 
 func (s *wasmPluginSet) Difference(set WasmPluginSet) WasmPluginSet {
@@ -191,7 +213,7 @@ func (s *wasmPluginSet) Intersection(set WasmPluginSet) WasmPluginSet {
 	for _, obj := range newSet.List() {
 		wasmPluginList = append(wasmPluginList, obj.(*extensions_istio_io_v1alpha1.WasmPlugin))
 	}
-	return NewWasmPluginSet(wasmPluginList...)
+	return NewWasmPluginSet(s.GetSortFunc(), wasmPluginList...)
 }
 
 func (s *wasmPluginSet) Find(id ezkube.ResourceId) (*extensions_istio_io_v1alpha1.WasmPlugin, error) {
@@ -233,5 +255,17 @@ func (s *wasmPluginSet) Clone() WasmPluginSet {
 	if s == nil {
 		return nil
 	}
-	return &wasmPluginSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	return &wasmPluginSet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *wasmPluginSet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
 }

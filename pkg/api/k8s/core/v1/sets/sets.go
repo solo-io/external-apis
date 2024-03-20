@@ -11,6 +11,7 @@ import (
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"
 	"github.com/solo-io/skv2/pkg/ezkube"
 	"k8s.io/apimachinery/pkg/util/sets"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 type SecretSet interface {
@@ -48,30 +49,51 @@ type SecretSet interface {
 	Delta(newSet SecretSet) sksets.ResourceDelta
 	// Create a deep copy of the current SecretSet
 	Clone() SecretSet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
 }
 
-func makeGenericSecretSet(secretList []*v1.Secret) sksets.ResourceSet {
+func makeGenericSecretSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	secretList []*v1.Secret,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range secretList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericResources...)
 }
 
 type secretSet struct {
-	set sksets.ResourceSet
+	set      sksets.ResourceSet
+	sortFunc func(toInsert, existing client.Object) bool
 }
 
-func NewSecretSet(secretList ...*v1.Secret) SecretSet {
-	return &secretSet{set: makeGenericSecretSet(secretList)}
+func NewSecretSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	secretList ...*v1.Secret,
+) SecretSet {
+	return &secretSet{
+		set:      makeGenericSecretSet(sortFunc, secretList),
+		sortFunc: sortFunc,
+	}
 }
 
-func NewSecretSetFromList(secretList *v1.SecretList) SecretSet {
+func NewSecretSetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	secretList *v1.SecretList,
+) SecretSet {
 	list := make([]*v1.Secret, 0, len(secretList.Items))
 	for idx := range secretList.Items {
 		list = append(list, &secretList.Items[idx])
 	}
-	return &secretSet{set: makeGenericSecretSet(list)}
+	return &secretSet{
+		set:      makeGenericSecretSet(sortFunc, list),
+		sortFunc: sortFunc,
+	}
 }
 
 func (s *secretSet) Keys() sets.String {
@@ -126,7 +148,7 @@ func (s *secretSet) Map() map[string]*v1.Secret {
 	}
 
 	newMap := map[string]*v1.Secret{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*v1.Secret)
 	}
 	return newMap
@@ -171,7 +193,7 @@ func (s *secretSet) Union(set SecretSet) SecretSet {
 	if s == nil {
 		return set
 	}
-	return NewSecretSet(append(s.List(), set.List()...)...)
+	return NewSecretSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
 }
 
 func (s *secretSet) Difference(set SecretSet) SecretSet {
@@ -191,7 +213,7 @@ func (s *secretSet) Intersection(set SecretSet) SecretSet {
 	for _, obj := range newSet.List() {
 		secretList = append(secretList, obj.(*v1.Secret))
 	}
-	return NewSecretSet(secretList...)
+	return NewSecretSet(s.GetSortFunc(), secretList...)
 }
 
 func (s *secretSet) Find(id ezkube.ResourceId) (*v1.Secret, error) {
@@ -233,7 +255,19 @@ func (s *secretSet) Clone() SecretSet {
 	if s == nil {
 		return nil
 	}
-	return &secretSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	return &secretSet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *secretSet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
 }
 
 type ServiceAccountSet interface {
@@ -271,30 +305,51 @@ type ServiceAccountSet interface {
 	Delta(newSet ServiceAccountSet) sksets.ResourceDelta
 	// Create a deep copy of the current ServiceAccountSet
 	Clone() ServiceAccountSet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
 }
 
-func makeGenericServiceAccountSet(serviceAccountList []*v1.ServiceAccount) sksets.ResourceSet {
+func makeGenericServiceAccountSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	serviceAccountList []*v1.ServiceAccount,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range serviceAccountList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericResources...)
 }
 
 type serviceAccountSet struct {
-	set sksets.ResourceSet
+	set      sksets.ResourceSet
+	sortFunc func(toInsert, existing client.Object) bool
 }
 
-func NewServiceAccountSet(serviceAccountList ...*v1.ServiceAccount) ServiceAccountSet {
-	return &serviceAccountSet{set: makeGenericServiceAccountSet(serviceAccountList)}
+func NewServiceAccountSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	serviceAccountList ...*v1.ServiceAccount,
+) ServiceAccountSet {
+	return &serviceAccountSet{
+		set:      makeGenericServiceAccountSet(sortFunc, serviceAccountList),
+		sortFunc: sortFunc,
+	}
 }
 
-func NewServiceAccountSetFromList(serviceAccountList *v1.ServiceAccountList) ServiceAccountSet {
+func NewServiceAccountSetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	serviceAccountList *v1.ServiceAccountList,
+) ServiceAccountSet {
 	list := make([]*v1.ServiceAccount, 0, len(serviceAccountList.Items))
 	for idx := range serviceAccountList.Items {
 		list = append(list, &serviceAccountList.Items[idx])
 	}
-	return &serviceAccountSet{set: makeGenericServiceAccountSet(list)}
+	return &serviceAccountSet{
+		set:      makeGenericServiceAccountSet(sortFunc, list),
+		sortFunc: sortFunc,
+	}
 }
 
 func (s *serviceAccountSet) Keys() sets.String {
@@ -349,7 +404,7 @@ func (s *serviceAccountSet) Map() map[string]*v1.ServiceAccount {
 	}
 
 	newMap := map[string]*v1.ServiceAccount{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*v1.ServiceAccount)
 	}
 	return newMap
@@ -394,7 +449,7 @@ func (s *serviceAccountSet) Union(set ServiceAccountSet) ServiceAccountSet {
 	if s == nil {
 		return set
 	}
-	return NewServiceAccountSet(append(s.List(), set.List()...)...)
+	return NewServiceAccountSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
 }
 
 func (s *serviceAccountSet) Difference(set ServiceAccountSet) ServiceAccountSet {
@@ -414,7 +469,7 @@ func (s *serviceAccountSet) Intersection(set ServiceAccountSet) ServiceAccountSe
 	for _, obj := range newSet.List() {
 		serviceAccountList = append(serviceAccountList, obj.(*v1.ServiceAccount))
 	}
-	return NewServiceAccountSet(serviceAccountList...)
+	return NewServiceAccountSet(s.GetSortFunc(), serviceAccountList...)
 }
 
 func (s *serviceAccountSet) Find(id ezkube.ResourceId) (*v1.ServiceAccount, error) {
@@ -456,7 +511,19 @@ func (s *serviceAccountSet) Clone() ServiceAccountSet {
 	if s == nil {
 		return nil
 	}
-	return &serviceAccountSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	return &serviceAccountSet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *serviceAccountSet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
 }
 
 type ConfigMapSet interface {
@@ -494,30 +561,51 @@ type ConfigMapSet interface {
 	Delta(newSet ConfigMapSet) sksets.ResourceDelta
 	// Create a deep copy of the current ConfigMapSet
 	Clone() ConfigMapSet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
 }
 
-func makeGenericConfigMapSet(configMapList []*v1.ConfigMap) sksets.ResourceSet {
+func makeGenericConfigMapSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	configMapList []*v1.ConfigMap,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range configMapList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericResources...)
 }
 
 type configMapSet struct {
-	set sksets.ResourceSet
+	set      sksets.ResourceSet
+	sortFunc func(toInsert, existing client.Object) bool
 }
 
-func NewConfigMapSet(configMapList ...*v1.ConfigMap) ConfigMapSet {
-	return &configMapSet{set: makeGenericConfigMapSet(configMapList)}
+func NewConfigMapSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	configMapList ...*v1.ConfigMap,
+) ConfigMapSet {
+	return &configMapSet{
+		set:      makeGenericConfigMapSet(sortFunc, configMapList),
+		sortFunc: sortFunc,
+	}
 }
 
-func NewConfigMapSetFromList(configMapList *v1.ConfigMapList) ConfigMapSet {
+func NewConfigMapSetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	configMapList *v1.ConfigMapList,
+) ConfigMapSet {
 	list := make([]*v1.ConfigMap, 0, len(configMapList.Items))
 	for idx := range configMapList.Items {
 		list = append(list, &configMapList.Items[idx])
 	}
-	return &configMapSet{set: makeGenericConfigMapSet(list)}
+	return &configMapSet{
+		set:      makeGenericConfigMapSet(sortFunc, list),
+		sortFunc: sortFunc,
+	}
 }
 
 func (s *configMapSet) Keys() sets.String {
@@ -572,7 +660,7 @@ func (s *configMapSet) Map() map[string]*v1.ConfigMap {
 	}
 
 	newMap := map[string]*v1.ConfigMap{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*v1.ConfigMap)
 	}
 	return newMap
@@ -617,7 +705,7 @@ func (s *configMapSet) Union(set ConfigMapSet) ConfigMapSet {
 	if s == nil {
 		return set
 	}
-	return NewConfigMapSet(append(s.List(), set.List()...)...)
+	return NewConfigMapSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
 }
 
 func (s *configMapSet) Difference(set ConfigMapSet) ConfigMapSet {
@@ -637,7 +725,7 @@ func (s *configMapSet) Intersection(set ConfigMapSet) ConfigMapSet {
 	for _, obj := range newSet.List() {
 		configMapList = append(configMapList, obj.(*v1.ConfigMap))
 	}
-	return NewConfigMapSet(configMapList...)
+	return NewConfigMapSet(s.GetSortFunc(), configMapList...)
 }
 
 func (s *configMapSet) Find(id ezkube.ResourceId) (*v1.ConfigMap, error) {
@@ -679,7 +767,19 @@ func (s *configMapSet) Clone() ConfigMapSet {
 	if s == nil {
 		return nil
 	}
-	return &configMapSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	return &configMapSet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *configMapSet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
 }
 
 type ServiceSet interface {
@@ -717,30 +817,51 @@ type ServiceSet interface {
 	Delta(newSet ServiceSet) sksets.ResourceDelta
 	// Create a deep copy of the current ServiceSet
 	Clone() ServiceSet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
 }
 
-func makeGenericServiceSet(serviceList []*v1.Service) sksets.ResourceSet {
+func makeGenericServiceSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	serviceList []*v1.Service,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range serviceList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericResources...)
 }
 
 type serviceSet struct {
-	set sksets.ResourceSet
+	set      sksets.ResourceSet
+	sortFunc func(toInsert, existing client.Object) bool
 }
 
-func NewServiceSet(serviceList ...*v1.Service) ServiceSet {
-	return &serviceSet{set: makeGenericServiceSet(serviceList)}
+func NewServiceSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	serviceList ...*v1.Service,
+) ServiceSet {
+	return &serviceSet{
+		set:      makeGenericServiceSet(sortFunc, serviceList),
+		sortFunc: sortFunc,
+	}
 }
 
-func NewServiceSetFromList(serviceList *v1.ServiceList) ServiceSet {
+func NewServiceSetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	serviceList *v1.ServiceList,
+) ServiceSet {
 	list := make([]*v1.Service, 0, len(serviceList.Items))
 	for idx := range serviceList.Items {
 		list = append(list, &serviceList.Items[idx])
 	}
-	return &serviceSet{set: makeGenericServiceSet(list)}
+	return &serviceSet{
+		set:      makeGenericServiceSet(sortFunc, list),
+		sortFunc: sortFunc,
+	}
 }
 
 func (s *serviceSet) Keys() sets.String {
@@ -795,7 +916,7 @@ func (s *serviceSet) Map() map[string]*v1.Service {
 	}
 
 	newMap := map[string]*v1.Service{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*v1.Service)
 	}
 	return newMap
@@ -840,7 +961,7 @@ func (s *serviceSet) Union(set ServiceSet) ServiceSet {
 	if s == nil {
 		return set
 	}
-	return NewServiceSet(append(s.List(), set.List()...)...)
+	return NewServiceSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
 }
 
 func (s *serviceSet) Difference(set ServiceSet) ServiceSet {
@@ -860,7 +981,7 @@ func (s *serviceSet) Intersection(set ServiceSet) ServiceSet {
 	for _, obj := range newSet.List() {
 		serviceList = append(serviceList, obj.(*v1.Service))
 	}
-	return NewServiceSet(serviceList...)
+	return NewServiceSet(s.GetSortFunc(), serviceList...)
 }
 
 func (s *serviceSet) Find(id ezkube.ResourceId) (*v1.Service, error) {
@@ -902,7 +1023,19 @@ func (s *serviceSet) Clone() ServiceSet {
 	if s == nil {
 		return nil
 	}
-	return &serviceSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	return &serviceSet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *serviceSet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
 }
 
 type PodSet interface {
@@ -940,30 +1073,51 @@ type PodSet interface {
 	Delta(newSet PodSet) sksets.ResourceDelta
 	// Create a deep copy of the current PodSet
 	Clone() PodSet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
 }
 
-func makeGenericPodSet(podList []*v1.Pod) sksets.ResourceSet {
+func makeGenericPodSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	podList []*v1.Pod,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range podList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericResources...)
 }
 
 type podSet struct {
-	set sksets.ResourceSet
+	set      sksets.ResourceSet
+	sortFunc func(toInsert, existing client.Object) bool
 }
 
-func NewPodSet(podList ...*v1.Pod) PodSet {
-	return &podSet{set: makeGenericPodSet(podList)}
+func NewPodSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	podList ...*v1.Pod,
+) PodSet {
+	return &podSet{
+		set:      makeGenericPodSet(sortFunc, podList),
+		sortFunc: sortFunc,
+	}
 }
 
-func NewPodSetFromList(podList *v1.PodList) PodSet {
+func NewPodSetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	podList *v1.PodList,
+) PodSet {
 	list := make([]*v1.Pod, 0, len(podList.Items))
 	for idx := range podList.Items {
 		list = append(list, &podList.Items[idx])
 	}
-	return &podSet{set: makeGenericPodSet(list)}
+	return &podSet{
+		set:      makeGenericPodSet(sortFunc, list),
+		sortFunc: sortFunc,
+	}
 }
 
 func (s *podSet) Keys() sets.String {
@@ -1018,7 +1172,7 @@ func (s *podSet) Map() map[string]*v1.Pod {
 	}
 
 	newMap := map[string]*v1.Pod{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*v1.Pod)
 	}
 	return newMap
@@ -1063,7 +1217,7 @@ func (s *podSet) Union(set PodSet) PodSet {
 	if s == nil {
 		return set
 	}
-	return NewPodSet(append(s.List(), set.List()...)...)
+	return NewPodSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
 }
 
 func (s *podSet) Difference(set PodSet) PodSet {
@@ -1083,7 +1237,7 @@ func (s *podSet) Intersection(set PodSet) PodSet {
 	for _, obj := range newSet.List() {
 		podList = append(podList, obj.(*v1.Pod))
 	}
-	return NewPodSet(podList...)
+	return NewPodSet(s.GetSortFunc(), podList...)
 }
 
 func (s *podSet) Find(id ezkube.ResourceId) (*v1.Pod, error) {
@@ -1125,7 +1279,19 @@ func (s *podSet) Clone() PodSet {
 	if s == nil {
 		return nil
 	}
-	return &podSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	return &podSet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *podSet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
 }
 
 type EndpointsSet interface {
@@ -1163,30 +1329,51 @@ type EndpointsSet interface {
 	Delta(newSet EndpointsSet) sksets.ResourceDelta
 	// Create a deep copy of the current EndpointsSet
 	Clone() EndpointsSet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
 }
 
-func makeGenericEndpointsSet(endpointsList []*v1.Endpoints) sksets.ResourceSet {
+func makeGenericEndpointsSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	endpointsList []*v1.Endpoints,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range endpointsList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericResources...)
 }
 
 type endpointsSet struct {
-	set sksets.ResourceSet
+	set      sksets.ResourceSet
+	sortFunc func(toInsert, existing client.Object) bool
 }
 
-func NewEndpointsSet(endpointsList ...*v1.Endpoints) EndpointsSet {
-	return &endpointsSet{set: makeGenericEndpointsSet(endpointsList)}
+func NewEndpointsSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	endpointsList ...*v1.Endpoints,
+) EndpointsSet {
+	return &endpointsSet{
+		set:      makeGenericEndpointsSet(sortFunc, endpointsList),
+		sortFunc: sortFunc,
+	}
 }
 
-func NewEndpointsSetFromList(endpointsList *v1.EndpointsList) EndpointsSet {
+func NewEndpointsSetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	endpointsList *v1.EndpointsList,
+) EndpointsSet {
 	list := make([]*v1.Endpoints, 0, len(endpointsList.Items))
 	for idx := range endpointsList.Items {
 		list = append(list, &endpointsList.Items[idx])
 	}
-	return &endpointsSet{set: makeGenericEndpointsSet(list)}
+	return &endpointsSet{
+		set:      makeGenericEndpointsSet(sortFunc, list),
+		sortFunc: sortFunc,
+	}
 }
 
 func (s *endpointsSet) Keys() sets.String {
@@ -1241,7 +1428,7 @@ func (s *endpointsSet) Map() map[string]*v1.Endpoints {
 	}
 
 	newMap := map[string]*v1.Endpoints{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*v1.Endpoints)
 	}
 	return newMap
@@ -1286,7 +1473,7 @@ func (s *endpointsSet) Union(set EndpointsSet) EndpointsSet {
 	if s == nil {
 		return set
 	}
-	return NewEndpointsSet(append(s.List(), set.List()...)...)
+	return NewEndpointsSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
 }
 
 func (s *endpointsSet) Difference(set EndpointsSet) EndpointsSet {
@@ -1306,7 +1493,7 @@ func (s *endpointsSet) Intersection(set EndpointsSet) EndpointsSet {
 	for _, obj := range newSet.List() {
 		endpointsList = append(endpointsList, obj.(*v1.Endpoints))
 	}
-	return NewEndpointsSet(endpointsList...)
+	return NewEndpointsSet(s.GetSortFunc(), endpointsList...)
 }
 
 func (s *endpointsSet) Find(id ezkube.ResourceId) (*v1.Endpoints, error) {
@@ -1348,7 +1535,19 @@ func (s *endpointsSet) Clone() EndpointsSet {
 	if s == nil {
 		return nil
 	}
-	return &endpointsSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	return &endpointsSet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *endpointsSet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
 }
 
 type NamespaceSet interface {
@@ -1386,30 +1585,51 @@ type NamespaceSet interface {
 	Delta(newSet NamespaceSet) sksets.ResourceDelta
 	// Create a deep copy of the current NamespaceSet
 	Clone() NamespaceSet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
 }
 
-func makeGenericNamespaceSet(namespaceList []*v1.Namespace) sksets.ResourceSet {
+func makeGenericNamespaceSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	namespaceList []*v1.Namespace,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range namespaceList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericResources...)
 }
 
 type namespaceSet struct {
-	set sksets.ResourceSet
+	set      sksets.ResourceSet
+	sortFunc func(toInsert, existing client.Object) bool
 }
 
-func NewNamespaceSet(namespaceList ...*v1.Namespace) NamespaceSet {
-	return &namespaceSet{set: makeGenericNamespaceSet(namespaceList)}
+func NewNamespaceSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	namespaceList ...*v1.Namespace,
+) NamespaceSet {
+	return &namespaceSet{
+		set:      makeGenericNamespaceSet(sortFunc, namespaceList),
+		sortFunc: sortFunc,
+	}
 }
 
-func NewNamespaceSetFromList(namespaceList *v1.NamespaceList) NamespaceSet {
+func NewNamespaceSetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	namespaceList *v1.NamespaceList,
+) NamespaceSet {
 	list := make([]*v1.Namespace, 0, len(namespaceList.Items))
 	for idx := range namespaceList.Items {
 		list = append(list, &namespaceList.Items[idx])
 	}
-	return &namespaceSet{set: makeGenericNamespaceSet(list)}
+	return &namespaceSet{
+		set:      makeGenericNamespaceSet(sortFunc, list),
+		sortFunc: sortFunc,
+	}
 }
 
 func (s *namespaceSet) Keys() sets.String {
@@ -1464,7 +1684,7 @@ func (s *namespaceSet) Map() map[string]*v1.Namespace {
 	}
 
 	newMap := map[string]*v1.Namespace{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*v1.Namespace)
 	}
 	return newMap
@@ -1509,7 +1729,7 @@ func (s *namespaceSet) Union(set NamespaceSet) NamespaceSet {
 	if s == nil {
 		return set
 	}
-	return NewNamespaceSet(append(s.List(), set.List()...)...)
+	return NewNamespaceSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
 }
 
 func (s *namespaceSet) Difference(set NamespaceSet) NamespaceSet {
@@ -1529,7 +1749,7 @@ func (s *namespaceSet) Intersection(set NamespaceSet) NamespaceSet {
 	for _, obj := range newSet.List() {
 		namespaceList = append(namespaceList, obj.(*v1.Namespace))
 	}
-	return NewNamespaceSet(namespaceList...)
+	return NewNamespaceSet(s.GetSortFunc(), namespaceList...)
 }
 
 func (s *namespaceSet) Find(id ezkube.ResourceId) (*v1.Namespace, error) {
@@ -1571,7 +1791,19 @@ func (s *namespaceSet) Clone() NamespaceSet {
 	if s == nil {
 		return nil
 	}
-	return &namespaceSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	return &namespaceSet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *namespaceSet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
 }
 
 type NodeSet interface {
@@ -1609,30 +1841,51 @@ type NodeSet interface {
 	Delta(newSet NodeSet) sksets.ResourceDelta
 	// Create a deep copy of the current NodeSet
 	Clone() NodeSet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
 }
 
-func makeGenericNodeSet(nodeList []*v1.Node) sksets.ResourceSet {
+func makeGenericNodeSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	nodeList []*v1.Node,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range nodeList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericResources...)
 }
 
 type nodeSet struct {
-	set sksets.ResourceSet
+	set      sksets.ResourceSet
+	sortFunc func(toInsert, existing client.Object) bool
 }
 
-func NewNodeSet(nodeList ...*v1.Node) NodeSet {
-	return &nodeSet{set: makeGenericNodeSet(nodeList)}
+func NewNodeSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	nodeList ...*v1.Node,
+) NodeSet {
+	return &nodeSet{
+		set:      makeGenericNodeSet(sortFunc, nodeList),
+		sortFunc: sortFunc,
+	}
 }
 
-func NewNodeSetFromList(nodeList *v1.NodeList) NodeSet {
+func NewNodeSetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	nodeList *v1.NodeList,
+) NodeSet {
 	list := make([]*v1.Node, 0, len(nodeList.Items))
 	for idx := range nodeList.Items {
 		list = append(list, &nodeList.Items[idx])
 	}
-	return &nodeSet{set: makeGenericNodeSet(list)}
+	return &nodeSet{
+		set:      makeGenericNodeSet(sortFunc, list),
+		sortFunc: sortFunc,
+	}
 }
 
 func (s *nodeSet) Keys() sets.String {
@@ -1687,7 +1940,7 @@ func (s *nodeSet) Map() map[string]*v1.Node {
 	}
 
 	newMap := map[string]*v1.Node{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*v1.Node)
 	}
 	return newMap
@@ -1732,7 +1985,7 @@ func (s *nodeSet) Union(set NodeSet) NodeSet {
 	if s == nil {
 		return set
 	}
-	return NewNodeSet(append(s.List(), set.List()...)...)
+	return NewNodeSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
 }
 
 func (s *nodeSet) Difference(set NodeSet) NodeSet {
@@ -1752,7 +2005,7 @@ func (s *nodeSet) Intersection(set NodeSet) NodeSet {
 	for _, obj := range newSet.List() {
 		nodeList = append(nodeList, obj.(*v1.Node))
 	}
-	return NewNodeSet(nodeList...)
+	return NewNodeSet(s.GetSortFunc(), nodeList...)
 }
 
 func (s *nodeSet) Find(id ezkube.ResourceId) (*v1.Node, error) {
@@ -1794,5 +2047,17 @@ func (s *nodeSet) Clone() NodeSet {
 	if s == nil {
 		return nil
 	}
-	return &nodeSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	return &nodeSet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *nodeSet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
 }

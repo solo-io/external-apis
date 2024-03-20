@@ -11,6 +11,7 @@ import (
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"
 	"github.com/solo-io/skv2/pkg/ezkube"
 	"k8s.io/apimachinery/pkg/util/sets"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 type JobSet interface {
@@ -48,30 +49,51 @@ type JobSet interface {
 	Delta(newSet JobSet) sksets.ResourceDelta
 	// Create a deep copy of the current JobSet
 	Clone() JobSet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
 }
 
-func makeGenericJobSet(jobList []*batch_v1.Job) sksets.ResourceSet {
+func makeGenericJobSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	jobList []*batch_v1.Job,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range jobList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericResources...)
 }
 
 type jobSet struct {
-	set sksets.ResourceSet
+	set      sksets.ResourceSet
+	sortFunc func(toInsert, existing client.Object) bool
 }
 
-func NewJobSet(jobList ...*batch_v1.Job) JobSet {
-	return &jobSet{set: makeGenericJobSet(jobList)}
+func NewJobSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	jobList ...*batch_v1.Job,
+) JobSet {
+	return &jobSet{
+		set:      makeGenericJobSet(sortFunc, jobList),
+		sortFunc: sortFunc,
+	}
 }
 
-func NewJobSetFromList(jobList *batch_v1.JobList) JobSet {
+func NewJobSetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	jobList *batch_v1.JobList,
+) JobSet {
 	list := make([]*batch_v1.Job, 0, len(jobList.Items))
 	for idx := range jobList.Items {
 		list = append(list, &jobList.Items[idx])
 	}
-	return &jobSet{set: makeGenericJobSet(list)}
+	return &jobSet{
+		set:      makeGenericJobSet(sortFunc, list),
+		sortFunc: sortFunc,
+	}
 }
 
 func (s *jobSet) Keys() sets.String {
@@ -126,7 +148,7 @@ func (s *jobSet) Map() map[string]*batch_v1.Job {
 	}
 
 	newMap := map[string]*batch_v1.Job{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*batch_v1.Job)
 	}
 	return newMap
@@ -171,7 +193,7 @@ func (s *jobSet) Union(set JobSet) JobSet {
 	if s == nil {
 		return set
 	}
-	return NewJobSet(append(s.List(), set.List()...)...)
+	return NewJobSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
 }
 
 func (s *jobSet) Difference(set JobSet) JobSet {
@@ -191,7 +213,7 @@ func (s *jobSet) Intersection(set JobSet) JobSet {
 	for _, obj := range newSet.List() {
 		jobList = append(jobList, obj.(*batch_v1.Job))
 	}
-	return NewJobSet(jobList...)
+	return NewJobSet(s.GetSortFunc(), jobList...)
 }
 
 func (s *jobSet) Find(id ezkube.ResourceId) (*batch_v1.Job, error) {
@@ -233,5 +255,17 @@ func (s *jobSet) Clone() JobSet {
 	if s == nil {
 		return nil
 	}
-	return &jobSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	return &jobSet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *jobSet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
 }

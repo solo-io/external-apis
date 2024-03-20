@@ -13,6 +13,7 @@ import (
 	sets "github.com/solo-io/skv2/contrib/pkg/sets"
 	ezkube "github.com/solo-io/skv2/pkg/ezkube"
 	sets0 "k8s.io/apimachinery/pkg/util/sets"
+	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // MockMeshSet is a mock of MeshSet interface.
@@ -133,6 +134,20 @@ func (m *MockMeshSet) Generic() sets.ResourceSet {
 func (mr *MockMeshSetMockRecorder) Generic() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockMeshSet)(nil).Generic))
+}
+
+// GetSortFunc mocks base method.
+func (m *MockMeshSet) GetSortFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSortFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetSortFunc indicates an expected call of GetSortFunc.
+func (mr *MockMeshSetMockRecorder) GetSortFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSortFunc", reflect.TypeOf((*MockMeshSet)(nil).GetSortFunc))
 }
 
 // Has mocks base method.
@@ -391,6 +406,20 @@ func (mr *MockVirtualServiceSetMockRecorder) Generic() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockVirtualServiceSet)(nil).Generic))
 }
 
+// GetSortFunc mocks base method.
+func (m *MockVirtualServiceSet) GetSortFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSortFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetSortFunc indicates an expected call of GetSortFunc.
+func (mr *MockVirtualServiceSetMockRecorder) GetSortFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSortFunc", reflect.TypeOf((*MockVirtualServiceSet)(nil).GetSortFunc))
+}
+
 // Has mocks base method.
 func (m *MockVirtualServiceSet) Has(virtualService ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
@@ -645,6 +674,20 @@ func (m *MockVirtualNodeSet) Generic() sets.ResourceSet {
 func (mr *MockVirtualNodeSetMockRecorder) Generic() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockVirtualNodeSet)(nil).Generic))
+}
+
+// GetSortFunc mocks base method.
+func (m *MockVirtualNodeSet) GetSortFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSortFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetSortFunc indicates an expected call of GetSortFunc.
+func (mr *MockVirtualNodeSetMockRecorder) GetSortFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSortFunc", reflect.TypeOf((*MockVirtualNodeSet)(nil).GetSortFunc))
 }
 
 // Has mocks base method.
@@ -903,6 +946,20 @@ func (mr *MockVirtualRouterSetMockRecorder) Generic() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockVirtualRouterSet)(nil).Generic))
 }
 
+// GetSortFunc mocks base method.
+func (m *MockVirtualRouterSet) GetSortFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSortFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetSortFunc indicates an expected call of GetSortFunc.
+func (mr *MockVirtualRouterSetMockRecorder) GetSortFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSortFunc", reflect.TypeOf((*MockVirtualRouterSet)(nil).GetSortFunc))
+}
+
 // Has mocks base method.
 func (m *MockVirtualRouterSet) Has(virtualRouter ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
@@ -1159,6 +1216,20 @@ func (mr *MockVirtualGatewaySetMockRecorder) Generic() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockVirtualGatewaySet)(nil).Generic))
 }
 
+// GetSortFunc mocks base method.
+func (m *MockVirtualGatewaySet) GetSortFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSortFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetSortFunc indicates an expected call of GetSortFunc.
+func (mr *MockVirtualGatewaySetMockRecorder) GetSortFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSortFunc", reflect.TypeOf((*MockVirtualGatewaySet)(nil).GetSortFunc))
+}
+
 // Has mocks base method.
 func (m *MockVirtualGatewaySet) Has(virtualGateway ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
@@ -1413,6 +1484,20 @@ func (m *MockGatewayRouteSet) Generic() sets.ResourceSet {
 func (mr *MockGatewayRouteSetMockRecorder) Generic() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockGatewayRouteSet)(nil).Generic))
+}
+
+// GetSortFunc mocks base method.
+func (m *MockGatewayRouteSet) GetSortFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSortFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetSortFunc indicates an expected call of GetSortFunc.
+func (mr *MockGatewayRouteSetMockRecorder) GetSortFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSortFunc", reflect.TypeOf((*MockGatewayRouteSet)(nil).GetSortFunc))
 }
 
 // Has mocks base method.
