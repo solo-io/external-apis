@@ -51,10 +51,13 @@ type MeshSet interface {
 	Clone() MeshSet
 	// Get the sort function used by the set
 	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
 func makeGenericMeshSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	meshList []*appmesh_k8s_aws_v1beta2.Mesh,
 ) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
@@ -64,26 +67,33 @@ func makeGenericMeshSet(
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
-	return sksets.NewResourceSet(genericSortFunc, genericResources...)
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type meshSet struct {
-	set      sksets.ResourceSet
-	sortFunc func(toInsert, existing client.Object) bool
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
 func NewMeshSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	meshList ...*appmesh_k8s_aws_v1beta2.Mesh,
 ) MeshSet {
 	return &meshSet{
-		set:      makeGenericMeshSet(sortFunc, meshList),
-		sortFunc: sortFunc,
+		set:          makeGenericMeshSet(sortFunc, equalityFunc, meshList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
 func NewMeshSetFromList(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	meshList *appmesh_k8s_aws_v1beta2.MeshList,
 ) MeshSet {
 	list := make([]*appmesh_k8s_aws_v1beta2.Mesh, 0, len(meshList.Items))
@@ -91,8 +101,9 @@ func NewMeshSetFromList(
 		list = append(list, &meshList.Items[idx])
 	}
 	return &meshSet{
-		set:      makeGenericMeshSet(sortFunc, list),
-		sortFunc: sortFunc,
+		set:          makeGenericMeshSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
@@ -193,7 +204,7 @@ func (s *meshSet) Union(set MeshSet) MeshSet {
 	if s == nil {
 		return set
 	}
-	return NewMeshSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
+	return NewMeshSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *meshSet) Difference(set MeshSet) MeshSet {
@@ -201,7 +212,11 @@ func (s *meshSet) Difference(set MeshSet) MeshSet {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &meshSet{set: newSet}
+	return &meshSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *meshSet) Intersection(set MeshSet) MeshSet {
@@ -213,7 +228,7 @@ func (s *meshSet) Intersection(set MeshSet) MeshSet {
 	for _, obj := range newSet.List() {
 		meshList = append(meshList, obj.(*appmesh_k8s_aws_v1beta2.Mesh))
 	}
-	return NewMeshSet(s.GetSortFunc(), meshList...)
+	return NewMeshSet(s.sortFunc, s.equalityFunc, meshList...)
 }
 
 func (s *meshSet) Find(id ezkube.ResourceId) (*appmesh_k8s_aws_v1beta2.Mesh, error) {
@@ -258,9 +273,13 @@ func (s *meshSet) Clone() MeshSet {
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
 	return &meshSet{
 		set: sksets.NewResourceSet(
 			genericSortFunc,
+			genericEqualityFunc,
 			s.Generic().Clone().List()...,
 		),
 	}
@@ -268,6 +287,10 @@ func (s *meshSet) Clone() MeshSet {
 
 func (s *meshSet) GetSortFunc() func(toInsert, existing client.Object) bool {
 	return s.sortFunc
+}
+
+func (s *meshSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }
 
 type VirtualServiceSet interface {
@@ -307,10 +330,13 @@ type VirtualServiceSet interface {
 	Clone() VirtualServiceSet
 	// Get the sort function used by the set
 	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
 func makeGenericVirtualServiceSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	virtualServiceList []*appmesh_k8s_aws_v1beta2.VirtualService,
 ) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
@@ -320,26 +346,33 @@ func makeGenericVirtualServiceSet(
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
-	return sksets.NewResourceSet(genericSortFunc, genericResources...)
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type virtualServiceSet struct {
-	set      sksets.ResourceSet
-	sortFunc func(toInsert, existing client.Object) bool
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
 func NewVirtualServiceSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	virtualServiceList ...*appmesh_k8s_aws_v1beta2.VirtualService,
 ) VirtualServiceSet {
 	return &virtualServiceSet{
-		set:      makeGenericVirtualServiceSet(sortFunc, virtualServiceList),
-		sortFunc: sortFunc,
+		set:          makeGenericVirtualServiceSet(sortFunc, equalityFunc, virtualServiceList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
 func NewVirtualServiceSetFromList(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	virtualServiceList *appmesh_k8s_aws_v1beta2.VirtualServiceList,
 ) VirtualServiceSet {
 	list := make([]*appmesh_k8s_aws_v1beta2.VirtualService, 0, len(virtualServiceList.Items))
@@ -347,8 +380,9 @@ func NewVirtualServiceSetFromList(
 		list = append(list, &virtualServiceList.Items[idx])
 	}
 	return &virtualServiceSet{
-		set:      makeGenericVirtualServiceSet(sortFunc, list),
-		sortFunc: sortFunc,
+		set:          makeGenericVirtualServiceSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
@@ -449,7 +483,7 @@ func (s *virtualServiceSet) Union(set VirtualServiceSet) VirtualServiceSet {
 	if s == nil {
 		return set
 	}
-	return NewVirtualServiceSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
+	return NewVirtualServiceSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *virtualServiceSet) Difference(set VirtualServiceSet) VirtualServiceSet {
@@ -457,7 +491,11 @@ func (s *virtualServiceSet) Difference(set VirtualServiceSet) VirtualServiceSet 
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &virtualServiceSet{set: newSet}
+	return &virtualServiceSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *virtualServiceSet) Intersection(set VirtualServiceSet) VirtualServiceSet {
@@ -469,7 +507,7 @@ func (s *virtualServiceSet) Intersection(set VirtualServiceSet) VirtualServiceSe
 	for _, obj := range newSet.List() {
 		virtualServiceList = append(virtualServiceList, obj.(*appmesh_k8s_aws_v1beta2.VirtualService))
 	}
-	return NewVirtualServiceSet(s.GetSortFunc(), virtualServiceList...)
+	return NewVirtualServiceSet(s.sortFunc, s.equalityFunc, virtualServiceList...)
 }
 
 func (s *virtualServiceSet) Find(id ezkube.ResourceId) (*appmesh_k8s_aws_v1beta2.VirtualService, error) {
@@ -514,9 +552,13 @@ func (s *virtualServiceSet) Clone() VirtualServiceSet {
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
 	return &virtualServiceSet{
 		set: sksets.NewResourceSet(
 			genericSortFunc,
+			genericEqualityFunc,
 			s.Generic().Clone().List()...,
 		),
 	}
@@ -524,6 +566,10 @@ func (s *virtualServiceSet) Clone() VirtualServiceSet {
 
 func (s *virtualServiceSet) GetSortFunc() func(toInsert, existing client.Object) bool {
 	return s.sortFunc
+}
+
+func (s *virtualServiceSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }
 
 type VirtualNodeSet interface {
@@ -563,10 +609,13 @@ type VirtualNodeSet interface {
 	Clone() VirtualNodeSet
 	// Get the sort function used by the set
 	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
 func makeGenericVirtualNodeSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	virtualNodeList []*appmesh_k8s_aws_v1beta2.VirtualNode,
 ) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
@@ -576,26 +625,33 @@ func makeGenericVirtualNodeSet(
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
-	return sksets.NewResourceSet(genericSortFunc, genericResources...)
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type virtualNodeSet struct {
-	set      sksets.ResourceSet
-	sortFunc func(toInsert, existing client.Object) bool
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
 func NewVirtualNodeSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	virtualNodeList ...*appmesh_k8s_aws_v1beta2.VirtualNode,
 ) VirtualNodeSet {
 	return &virtualNodeSet{
-		set:      makeGenericVirtualNodeSet(sortFunc, virtualNodeList),
-		sortFunc: sortFunc,
+		set:          makeGenericVirtualNodeSet(sortFunc, equalityFunc, virtualNodeList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
 func NewVirtualNodeSetFromList(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	virtualNodeList *appmesh_k8s_aws_v1beta2.VirtualNodeList,
 ) VirtualNodeSet {
 	list := make([]*appmesh_k8s_aws_v1beta2.VirtualNode, 0, len(virtualNodeList.Items))
@@ -603,8 +659,9 @@ func NewVirtualNodeSetFromList(
 		list = append(list, &virtualNodeList.Items[idx])
 	}
 	return &virtualNodeSet{
-		set:      makeGenericVirtualNodeSet(sortFunc, list),
-		sortFunc: sortFunc,
+		set:          makeGenericVirtualNodeSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
@@ -705,7 +762,7 @@ func (s *virtualNodeSet) Union(set VirtualNodeSet) VirtualNodeSet {
 	if s == nil {
 		return set
 	}
-	return NewVirtualNodeSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
+	return NewVirtualNodeSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *virtualNodeSet) Difference(set VirtualNodeSet) VirtualNodeSet {
@@ -713,7 +770,11 @@ func (s *virtualNodeSet) Difference(set VirtualNodeSet) VirtualNodeSet {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &virtualNodeSet{set: newSet}
+	return &virtualNodeSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *virtualNodeSet) Intersection(set VirtualNodeSet) VirtualNodeSet {
@@ -725,7 +786,7 @@ func (s *virtualNodeSet) Intersection(set VirtualNodeSet) VirtualNodeSet {
 	for _, obj := range newSet.List() {
 		virtualNodeList = append(virtualNodeList, obj.(*appmesh_k8s_aws_v1beta2.VirtualNode))
 	}
-	return NewVirtualNodeSet(s.GetSortFunc(), virtualNodeList...)
+	return NewVirtualNodeSet(s.sortFunc, s.equalityFunc, virtualNodeList...)
 }
 
 func (s *virtualNodeSet) Find(id ezkube.ResourceId) (*appmesh_k8s_aws_v1beta2.VirtualNode, error) {
@@ -770,9 +831,13 @@ func (s *virtualNodeSet) Clone() VirtualNodeSet {
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
 	return &virtualNodeSet{
 		set: sksets.NewResourceSet(
 			genericSortFunc,
+			genericEqualityFunc,
 			s.Generic().Clone().List()...,
 		),
 	}
@@ -780,6 +845,10 @@ func (s *virtualNodeSet) Clone() VirtualNodeSet {
 
 func (s *virtualNodeSet) GetSortFunc() func(toInsert, existing client.Object) bool {
 	return s.sortFunc
+}
+
+func (s *virtualNodeSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }
 
 type VirtualRouterSet interface {
@@ -819,10 +888,13 @@ type VirtualRouterSet interface {
 	Clone() VirtualRouterSet
 	// Get the sort function used by the set
 	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
 func makeGenericVirtualRouterSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	virtualRouterList []*appmesh_k8s_aws_v1beta2.VirtualRouter,
 ) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
@@ -832,26 +904,33 @@ func makeGenericVirtualRouterSet(
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
-	return sksets.NewResourceSet(genericSortFunc, genericResources...)
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type virtualRouterSet struct {
-	set      sksets.ResourceSet
-	sortFunc func(toInsert, existing client.Object) bool
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
 func NewVirtualRouterSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	virtualRouterList ...*appmesh_k8s_aws_v1beta2.VirtualRouter,
 ) VirtualRouterSet {
 	return &virtualRouterSet{
-		set:      makeGenericVirtualRouterSet(sortFunc, virtualRouterList),
-		sortFunc: sortFunc,
+		set:          makeGenericVirtualRouterSet(sortFunc, equalityFunc, virtualRouterList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
 func NewVirtualRouterSetFromList(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	virtualRouterList *appmesh_k8s_aws_v1beta2.VirtualRouterList,
 ) VirtualRouterSet {
 	list := make([]*appmesh_k8s_aws_v1beta2.VirtualRouter, 0, len(virtualRouterList.Items))
@@ -859,8 +938,9 @@ func NewVirtualRouterSetFromList(
 		list = append(list, &virtualRouterList.Items[idx])
 	}
 	return &virtualRouterSet{
-		set:      makeGenericVirtualRouterSet(sortFunc, list),
-		sortFunc: sortFunc,
+		set:          makeGenericVirtualRouterSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
@@ -961,7 +1041,7 @@ func (s *virtualRouterSet) Union(set VirtualRouterSet) VirtualRouterSet {
 	if s == nil {
 		return set
 	}
-	return NewVirtualRouterSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
+	return NewVirtualRouterSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *virtualRouterSet) Difference(set VirtualRouterSet) VirtualRouterSet {
@@ -969,7 +1049,11 @@ func (s *virtualRouterSet) Difference(set VirtualRouterSet) VirtualRouterSet {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &virtualRouterSet{set: newSet}
+	return &virtualRouterSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *virtualRouterSet) Intersection(set VirtualRouterSet) VirtualRouterSet {
@@ -981,7 +1065,7 @@ func (s *virtualRouterSet) Intersection(set VirtualRouterSet) VirtualRouterSet {
 	for _, obj := range newSet.List() {
 		virtualRouterList = append(virtualRouterList, obj.(*appmesh_k8s_aws_v1beta2.VirtualRouter))
 	}
-	return NewVirtualRouterSet(s.GetSortFunc(), virtualRouterList...)
+	return NewVirtualRouterSet(s.sortFunc, s.equalityFunc, virtualRouterList...)
 }
 
 func (s *virtualRouterSet) Find(id ezkube.ResourceId) (*appmesh_k8s_aws_v1beta2.VirtualRouter, error) {
@@ -1026,9 +1110,13 @@ func (s *virtualRouterSet) Clone() VirtualRouterSet {
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
 	return &virtualRouterSet{
 		set: sksets.NewResourceSet(
 			genericSortFunc,
+			genericEqualityFunc,
 			s.Generic().Clone().List()...,
 		),
 	}
@@ -1036,6 +1124,10 @@ func (s *virtualRouterSet) Clone() VirtualRouterSet {
 
 func (s *virtualRouterSet) GetSortFunc() func(toInsert, existing client.Object) bool {
 	return s.sortFunc
+}
+
+func (s *virtualRouterSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }
 
 type VirtualGatewaySet interface {
@@ -1075,10 +1167,13 @@ type VirtualGatewaySet interface {
 	Clone() VirtualGatewaySet
 	// Get the sort function used by the set
 	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
 func makeGenericVirtualGatewaySet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	virtualGatewayList []*appmesh_k8s_aws_v1beta2.VirtualGateway,
 ) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
@@ -1088,26 +1183,33 @@ func makeGenericVirtualGatewaySet(
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
-	return sksets.NewResourceSet(genericSortFunc, genericResources...)
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type virtualGatewaySet struct {
-	set      sksets.ResourceSet
-	sortFunc func(toInsert, existing client.Object) bool
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
 func NewVirtualGatewaySet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	virtualGatewayList ...*appmesh_k8s_aws_v1beta2.VirtualGateway,
 ) VirtualGatewaySet {
 	return &virtualGatewaySet{
-		set:      makeGenericVirtualGatewaySet(sortFunc, virtualGatewayList),
-		sortFunc: sortFunc,
+		set:          makeGenericVirtualGatewaySet(sortFunc, equalityFunc, virtualGatewayList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
 func NewVirtualGatewaySetFromList(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	virtualGatewayList *appmesh_k8s_aws_v1beta2.VirtualGatewayList,
 ) VirtualGatewaySet {
 	list := make([]*appmesh_k8s_aws_v1beta2.VirtualGateway, 0, len(virtualGatewayList.Items))
@@ -1115,8 +1217,9 @@ func NewVirtualGatewaySetFromList(
 		list = append(list, &virtualGatewayList.Items[idx])
 	}
 	return &virtualGatewaySet{
-		set:      makeGenericVirtualGatewaySet(sortFunc, list),
-		sortFunc: sortFunc,
+		set:          makeGenericVirtualGatewaySet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
@@ -1217,7 +1320,7 @@ func (s *virtualGatewaySet) Union(set VirtualGatewaySet) VirtualGatewaySet {
 	if s == nil {
 		return set
 	}
-	return NewVirtualGatewaySet(s.GetSortFunc(), append(s.List(), set.List()...)...)
+	return NewVirtualGatewaySet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *virtualGatewaySet) Difference(set VirtualGatewaySet) VirtualGatewaySet {
@@ -1225,7 +1328,11 @@ func (s *virtualGatewaySet) Difference(set VirtualGatewaySet) VirtualGatewaySet 
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &virtualGatewaySet{set: newSet}
+	return &virtualGatewaySet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *virtualGatewaySet) Intersection(set VirtualGatewaySet) VirtualGatewaySet {
@@ -1237,7 +1344,7 @@ func (s *virtualGatewaySet) Intersection(set VirtualGatewaySet) VirtualGatewaySe
 	for _, obj := range newSet.List() {
 		virtualGatewayList = append(virtualGatewayList, obj.(*appmesh_k8s_aws_v1beta2.VirtualGateway))
 	}
-	return NewVirtualGatewaySet(s.GetSortFunc(), virtualGatewayList...)
+	return NewVirtualGatewaySet(s.sortFunc, s.equalityFunc, virtualGatewayList...)
 }
 
 func (s *virtualGatewaySet) Find(id ezkube.ResourceId) (*appmesh_k8s_aws_v1beta2.VirtualGateway, error) {
@@ -1282,9 +1389,13 @@ func (s *virtualGatewaySet) Clone() VirtualGatewaySet {
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
 	return &virtualGatewaySet{
 		set: sksets.NewResourceSet(
 			genericSortFunc,
+			genericEqualityFunc,
 			s.Generic().Clone().List()...,
 		),
 	}
@@ -1292,6 +1403,10 @@ func (s *virtualGatewaySet) Clone() VirtualGatewaySet {
 
 func (s *virtualGatewaySet) GetSortFunc() func(toInsert, existing client.Object) bool {
 	return s.sortFunc
+}
+
+func (s *virtualGatewaySet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }
 
 type GatewayRouteSet interface {
@@ -1331,10 +1446,13 @@ type GatewayRouteSet interface {
 	Clone() GatewayRouteSet
 	// Get the sort function used by the set
 	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
 func makeGenericGatewayRouteSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	gatewayRouteList []*appmesh_k8s_aws_v1beta2.GatewayRoute,
 ) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
@@ -1344,26 +1462,33 @@ func makeGenericGatewayRouteSet(
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
-	return sksets.NewResourceSet(genericSortFunc, genericResources...)
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type gatewayRouteSet struct {
-	set      sksets.ResourceSet
-	sortFunc func(toInsert, existing client.Object) bool
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
 func NewGatewayRouteSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	gatewayRouteList ...*appmesh_k8s_aws_v1beta2.GatewayRoute,
 ) GatewayRouteSet {
 	return &gatewayRouteSet{
-		set:      makeGenericGatewayRouteSet(sortFunc, gatewayRouteList),
-		sortFunc: sortFunc,
+		set:          makeGenericGatewayRouteSet(sortFunc, equalityFunc, gatewayRouteList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
 func NewGatewayRouteSetFromList(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	gatewayRouteList *appmesh_k8s_aws_v1beta2.GatewayRouteList,
 ) GatewayRouteSet {
 	list := make([]*appmesh_k8s_aws_v1beta2.GatewayRoute, 0, len(gatewayRouteList.Items))
@@ -1371,8 +1496,9 @@ func NewGatewayRouteSetFromList(
 		list = append(list, &gatewayRouteList.Items[idx])
 	}
 	return &gatewayRouteSet{
-		set:      makeGenericGatewayRouteSet(sortFunc, list),
-		sortFunc: sortFunc,
+		set:          makeGenericGatewayRouteSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
@@ -1473,7 +1599,7 @@ func (s *gatewayRouteSet) Union(set GatewayRouteSet) GatewayRouteSet {
 	if s == nil {
 		return set
 	}
-	return NewGatewayRouteSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
+	return NewGatewayRouteSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *gatewayRouteSet) Difference(set GatewayRouteSet) GatewayRouteSet {
@@ -1481,7 +1607,11 @@ func (s *gatewayRouteSet) Difference(set GatewayRouteSet) GatewayRouteSet {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &gatewayRouteSet{set: newSet}
+	return &gatewayRouteSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *gatewayRouteSet) Intersection(set GatewayRouteSet) GatewayRouteSet {
@@ -1493,7 +1623,7 @@ func (s *gatewayRouteSet) Intersection(set GatewayRouteSet) GatewayRouteSet {
 	for _, obj := range newSet.List() {
 		gatewayRouteList = append(gatewayRouteList, obj.(*appmesh_k8s_aws_v1beta2.GatewayRoute))
 	}
-	return NewGatewayRouteSet(s.GetSortFunc(), gatewayRouteList...)
+	return NewGatewayRouteSet(s.sortFunc, s.equalityFunc, gatewayRouteList...)
 }
 
 func (s *gatewayRouteSet) Find(id ezkube.ResourceId) (*appmesh_k8s_aws_v1beta2.GatewayRoute, error) {
@@ -1538,9 +1668,13 @@ func (s *gatewayRouteSet) Clone() GatewayRouteSet {
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
 	return &gatewayRouteSet{
 		set: sksets.NewResourceSet(
 			genericSortFunc,
+			genericEqualityFunc,
 			s.Generic().Clone().List()...,
 		),
 	}
@@ -1548,4 +1682,8 @@ func (s *gatewayRouteSet) Clone() GatewayRouteSet {
 
 func (s *gatewayRouteSet) GetSortFunc() func(toInsert, existing client.Object) bool {
 	return s.sortFunc
+}
+
+func (s *gatewayRouteSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }

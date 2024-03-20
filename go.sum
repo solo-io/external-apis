@@ -907,8 +907,8 @@ github.com/solo-io/k8s-utils v0.0.1 h1:e2alFsqTT7GU10d6cFDX2y+86J142DrsRwy5itvvZ
 github.com/solo-io/k8s-utils v0.0.1/go.mod h1:53N9+9Gl2MwqIZJ7/ocA9gKvWt+6z7MPD2qKQix7oFE=
 github.com/solo-io/protoc-gen-ext v0.0.18 h1:zSAL8NzWpJUGYoA5IyjHiKASNyHjR0uxBQ7eQS94i3A=
 github.com/solo-io/protoc-gen-ext v0.0.18/go.mod h1:iGyCvmKmhJNXs5MgBcYFBF0om7LDnCVD2WwhOZGnqeA=
-github.com/solo-io/skv2 v0.34.12-0.20240320135511-31efd046e20b h1:m17Ra8GxJPS9gehaE8Vf40SpggO960HDbyh3doToQIM=
-github.com/solo-io/skv2 v0.34.12-0.20240320135511-31efd046e20b/go.mod h1:O5akjsqc88aSQUNqRY5o6/O9q7y11KVHqikeg26echw=
+github.com/solo-io/skv2 v0.34.12-0.20240320191326-fd4393a3d887 h1:RvFPXPU+yn1eIOwQlY+/+VVu0E+GDZkZQwQkWeIlxBY=
+github.com/solo-io/skv2 v0.34.12-0.20240320191326-fd4393a3d887/go.mod h1:O5akjsqc88aSQUNqRY5o6/O9q7y11KVHqikeg26echw=
 github.com/sourcegraph/conc v0.3.0 h1:OQTbbt6P72L20UqAkXXuLOj79LfEanQ+YQFNpLA9ySo=
 github.com/sourcegraph/conc v0.3.0/go.mod h1:Sdozi7LEKbFPqYX2/J+iBAM6HpqSLTASQIKqDmF7Mt0=
 github.com/spaolacci/murmur3 v0.0.0-20180118202830-f09979ecbc72/go.mod h1:JwIasOWyU6f++ZhiEuf87xNszmSA2myDM2Kzu9HwQUA=

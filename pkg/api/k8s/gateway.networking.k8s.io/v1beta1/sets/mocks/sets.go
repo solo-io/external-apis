@@ -136,6 +136,20 @@ func (mr *MockGatewaySetMockRecorder) Generic() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockGatewaySet)(nil).Generic))
 }
 
+// GetEqualityFunc mocks base method.
+func (m *MockGatewaySet) GetEqualityFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEqualityFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetEqualityFunc indicates an expected call of GetEqualityFunc.
+func (mr *MockGatewaySetMockRecorder) GetEqualityFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEqualityFunc", reflect.TypeOf((*MockGatewaySet)(nil).GetEqualityFunc))
+}
+
 // GetSortFunc mocks base method.
 func (m *MockGatewaySet) GetSortFunc() func(client.Object, client.Object) bool {
 	m.ctrl.T.Helper()
@@ -406,6 +420,20 @@ func (mr *MockGatewayClassSetMockRecorder) Generic() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockGatewayClassSet)(nil).Generic))
 }
 
+// GetEqualityFunc mocks base method.
+func (m *MockGatewayClassSet) GetEqualityFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEqualityFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetEqualityFunc indicates an expected call of GetEqualityFunc.
+func (mr *MockGatewayClassSetMockRecorder) GetEqualityFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEqualityFunc", reflect.TypeOf((*MockGatewayClassSet)(nil).GetEqualityFunc))
+}
+
 // GetSortFunc mocks base method.
 func (m *MockGatewayClassSet) GetSortFunc() func(client.Object, client.Object) bool {
 	m.ctrl.T.Helper()
@@ -674,6 +702,20 @@ func (m *MockHTTPRouteSet) Generic() sets.ResourceSet {
 func (mr *MockHTTPRouteSetMockRecorder) Generic() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockHTTPRouteSet)(nil).Generic))
+}
+
+// GetEqualityFunc mocks base method.
+func (m *MockHTTPRouteSet) GetEqualityFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEqualityFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetEqualityFunc indicates an expected call of GetEqualityFunc.
+func (mr *MockHTTPRouteSetMockRecorder) GetEqualityFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEqualityFunc", reflect.TypeOf((*MockHTTPRouteSet)(nil).GetEqualityFunc))
 }
 
 // GetSortFunc mocks base method.

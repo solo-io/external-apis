@@ -51,10 +51,13 @@ type AuthorizationPolicySet interface {
 	Clone() AuthorizationPolicySet
 	// Get the sort function used by the set
 	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
 func makeGenericAuthorizationPolicySet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	authorizationPolicyList []*security_istio_io_v1beta1.AuthorizationPolicy,
 ) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
@@ -64,26 +67,33 @@ func makeGenericAuthorizationPolicySet(
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
-	return sksets.NewResourceSet(genericSortFunc, genericResources...)
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type authorizationPolicySet struct {
-	set      sksets.ResourceSet
-	sortFunc func(toInsert, existing client.Object) bool
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
 func NewAuthorizationPolicySet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	authorizationPolicyList ...*security_istio_io_v1beta1.AuthorizationPolicy,
 ) AuthorizationPolicySet {
 	return &authorizationPolicySet{
-		set:      makeGenericAuthorizationPolicySet(sortFunc, authorizationPolicyList),
-		sortFunc: sortFunc,
+		set:          makeGenericAuthorizationPolicySet(sortFunc, equalityFunc, authorizationPolicyList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
 func NewAuthorizationPolicySetFromList(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	authorizationPolicyList *security_istio_io_v1beta1.AuthorizationPolicyList,
 ) AuthorizationPolicySet {
 	list := make([]*security_istio_io_v1beta1.AuthorizationPolicy, 0, len(authorizationPolicyList.Items))
@@ -91,8 +101,9 @@ func NewAuthorizationPolicySetFromList(
 		list = append(list, authorizationPolicyList.Items[idx])
 	}
 	return &authorizationPolicySet{
-		set:      makeGenericAuthorizationPolicySet(sortFunc, list),
-		sortFunc: sortFunc,
+		set:          makeGenericAuthorizationPolicySet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
@@ -193,7 +204,7 @@ func (s *authorizationPolicySet) Union(set AuthorizationPolicySet) Authorization
 	if s == nil {
 		return set
 	}
-	return NewAuthorizationPolicySet(s.GetSortFunc(), append(s.List(), set.List()...)...)
+	return NewAuthorizationPolicySet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *authorizationPolicySet) Difference(set AuthorizationPolicySet) AuthorizationPolicySet {
@@ -201,7 +212,11 @@ func (s *authorizationPolicySet) Difference(set AuthorizationPolicySet) Authoriz
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &authorizationPolicySet{set: newSet}
+	return &authorizationPolicySet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *authorizationPolicySet) Intersection(set AuthorizationPolicySet) AuthorizationPolicySet {
@@ -213,7 +228,7 @@ func (s *authorizationPolicySet) Intersection(set AuthorizationPolicySet) Author
 	for _, obj := range newSet.List() {
 		authorizationPolicyList = append(authorizationPolicyList, obj.(*security_istio_io_v1beta1.AuthorizationPolicy))
 	}
-	return NewAuthorizationPolicySet(s.GetSortFunc(), authorizationPolicyList...)
+	return NewAuthorizationPolicySet(s.sortFunc, s.equalityFunc, authorizationPolicyList...)
 }
 
 func (s *authorizationPolicySet) Find(id ezkube.ResourceId) (*security_istio_io_v1beta1.AuthorizationPolicy, error) {
@@ -258,9 +273,13 @@ func (s *authorizationPolicySet) Clone() AuthorizationPolicySet {
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
 	return &authorizationPolicySet{
 		set: sksets.NewResourceSet(
 			genericSortFunc,
+			genericEqualityFunc,
 			s.Generic().Clone().List()...,
 		),
 	}
@@ -268,6 +287,10 @@ func (s *authorizationPolicySet) Clone() AuthorizationPolicySet {
 
 func (s *authorizationPolicySet) GetSortFunc() func(toInsert, existing client.Object) bool {
 	return s.sortFunc
+}
+
+func (s *authorizationPolicySet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }
 
 type PeerAuthenticationSet interface {
@@ -307,10 +330,13 @@ type PeerAuthenticationSet interface {
 	Clone() PeerAuthenticationSet
 	// Get the sort function used by the set
 	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
 func makeGenericPeerAuthenticationSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	peerAuthenticationList []*security_istio_io_v1beta1.PeerAuthentication,
 ) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
@@ -320,26 +346,33 @@ func makeGenericPeerAuthenticationSet(
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
-	return sksets.NewResourceSet(genericSortFunc, genericResources...)
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type peerAuthenticationSet struct {
-	set      sksets.ResourceSet
-	sortFunc func(toInsert, existing client.Object) bool
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
 func NewPeerAuthenticationSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	peerAuthenticationList ...*security_istio_io_v1beta1.PeerAuthentication,
 ) PeerAuthenticationSet {
 	return &peerAuthenticationSet{
-		set:      makeGenericPeerAuthenticationSet(sortFunc, peerAuthenticationList),
-		sortFunc: sortFunc,
+		set:          makeGenericPeerAuthenticationSet(sortFunc, equalityFunc, peerAuthenticationList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
 func NewPeerAuthenticationSetFromList(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	peerAuthenticationList *security_istio_io_v1beta1.PeerAuthenticationList,
 ) PeerAuthenticationSet {
 	list := make([]*security_istio_io_v1beta1.PeerAuthentication, 0, len(peerAuthenticationList.Items))
@@ -347,8 +380,9 @@ func NewPeerAuthenticationSetFromList(
 		list = append(list, peerAuthenticationList.Items[idx])
 	}
 	return &peerAuthenticationSet{
-		set:      makeGenericPeerAuthenticationSet(sortFunc, list),
-		sortFunc: sortFunc,
+		set:          makeGenericPeerAuthenticationSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
@@ -449,7 +483,7 @@ func (s *peerAuthenticationSet) Union(set PeerAuthenticationSet) PeerAuthenticat
 	if s == nil {
 		return set
 	}
-	return NewPeerAuthenticationSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
+	return NewPeerAuthenticationSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *peerAuthenticationSet) Difference(set PeerAuthenticationSet) PeerAuthenticationSet {
@@ -457,7 +491,11 @@ func (s *peerAuthenticationSet) Difference(set PeerAuthenticationSet) PeerAuthen
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &peerAuthenticationSet{set: newSet}
+	return &peerAuthenticationSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *peerAuthenticationSet) Intersection(set PeerAuthenticationSet) PeerAuthenticationSet {
@@ -469,7 +507,7 @@ func (s *peerAuthenticationSet) Intersection(set PeerAuthenticationSet) PeerAuth
 	for _, obj := range newSet.List() {
 		peerAuthenticationList = append(peerAuthenticationList, obj.(*security_istio_io_v1beta1.PeerAuthentication))
 	}
-	return NewPeerAuthenticationSet(s.GetSortFunc(), peerAuthenticationList...)
+	return NewPeerAuthenticationSet(s.sortFunc, s.equalityFunc, peerAuthenticationList...)
 }
 
 func (s *peerAuthenticationSet) Find(id ezkube.ResourceId) (*security_istio_io_v1beta1.PeerAuthentication, error) {
@@ -514,9 +552,13 @@ func (s *peerAuthenticationSet) Clone() PeerAuthenticationSet {
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
 	return &peerAuthenticationSet{
 		set: sksets.NewResourceSet(
 			genericSortFunc,
+			genericEqualityFunc,
 			s.Generic().Clone().List()...,
 		),
 	}
@@ -524,6 +566,10 @@ func (s *peerAuthenticationSet) Clone() PeerAuthenticationSet {
 
 func (s *peerAuthenticationSet) GetSortFunc() func(toInsert, existing client.Object) bool {
 	return s.sortFunc
+}
+
+func (s *peerAuthenticationSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }
 
 type RequestAuthenticationSet interface {
@@ -563,10 +609,13 @@ type RequestAuthenticationSet interface {
 	Clone() RequestAuthenticationSet
 	// Get the sort function used by the set
 	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
 func makeGenericRequestAuthenticationSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	requestAuthenticationList []*security_istio_io_v1beta1.RequestAuthentication,
 ) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
@@ -576,26 +625,33 @@ func makeGenericRequestAuthenticationSet(
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
-	return sksets.NewResourceSet(genericSortFunc, genericResources...)
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type requestAuthenticationSet struct {
-	set      sksets.ResourceSet
-	sortFunc func(toInsert, existing client.Object) bool
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
 func NewRequestAuthenticationSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	requestAuthenticationList ...*security_istio_io_v1beta1.RequestAuthentication,
 ) RequestAuthenticationSet {
 	return &requestAuthenticationSet{
-		set:      makeGenericRequestAuthenticationSet(sortFunc, requestAuthenticationList),
-		sortFunc: sortFunc,
+		set:          makeGenericRequestAuthenticationSet(sortFunc, equalityFunc, requestAuthenticationList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
 func NewRequestAuthenticationSetFromList(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	requestAuthenticationList *security_istio_io_v1beta1.RequestAuthenticationList,
 ) RequestAuthenticationSet {
 	list := make([]*security_istio_io_v1beta1.RequestAuthentication, 0, len(requestAuthenticationList.Items))
@@ -603,8 +659,9 @@ func NewRequestAuthenticationSetFromList(
 		list = append(list, requestAuthenticationList.Items[idx])
 	}
 	return &requestAuthenticationSet{
-		set:      makeGenericRequestAuthenticationSet(sortFunc, list),
-		sortFunc: sortFunc,
+		set:          makeGenericRequestAuthenticationSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
@@ -705,7 +762,7 @@ func (s *requestAuthenticationSet) Union(set RequestAuthenticationSet) RequestAu
 	if s == nil {
 		return set
 	}
-	return NewRequestAuthenticationSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
+	return NewRequestAuthenticationSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *requestAuthenticationSet) Difference(set RequestAuthenticationSet) RequestAuthenticationSet {
@@ -713,7 +770,11 @@ func (s *requestAuthenticationSet) Difference(set RequestAuthenticationSet) Requ
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &requestAuthenticationSet{set: newSet}
+	return &requestAuthenticationSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *requestAuthenticationSet) Intersection(set RequestAuthenticationSet) RequestAuthenticationSet {
@@ -725,7 +786,7 @@ func (s *requestAuthenticationSet) Intersection(set RequestAuthenticationSet) Re
 	for _, obj := range newSet.List() {
 		requestAuthenticationList = append(requestAuthenticationList, obj.(*security_istio_io_v1beta1.RequestAuthentication))
 	}
-	return NewRequestAuthenticationSet(s.GetSortFunc(), requestAuthenticationList...)
+	return NewRequestAuthenticationSet(s.sortFunc, s.equalityFunc, requestAuthenticationList...)
 }
 
 func (s *requestAuthenticationSet) Find(id ezkube.ResourceId) (*security_istio_io_v1beta1.RequestAuthentication, error) {
@@ -770,9 +831,13 @@ func (s *requestAuthenticationSet) Clone() RequestAuthenticationSet {
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
 	return &requestAuthenticationSet{
 		set: sksets.NewResourceSet(
 			genericSortFunc,
+			genericEqualityFunc,
 			s.Generic().Clone().List()...,
 		),
 	}
@@ -780,4 +845,8 @@ func (s *requestAuthenticationSet) Clone() RequestAuthenticationSet {
 
 func (s *requestAuthenticationSet) GetSortFunc() func(toInsert, existing client.Object) bool {
 	return s.sortFunc
+}
+
+func (s *requestAuthenticationSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }

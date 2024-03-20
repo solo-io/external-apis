@@ -136,6 +136,20 @@ func (mr *MockRoleSetMockRecorder) Generic() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockRoleSet)(nil).Generic))
 }
 
+// GetEqualityFunc mocks base method.
+func (m *MockRoleSet) GetEqualityFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEqualityFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetEqualityFunc indicates an expected call of GetEqualityFunc.
+func (mr *MockRoleSetMockRecorder) GetEqualityFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEqualityFunc", reflect.TypeOf((*MockRoleSet)(nil).GetEqualityFunc))
+}
+
 // GetSortFunc mocks base method.
 func (m *MockRoleSet) GetSortFunc() func(client.Object, client.Object) bool {
 	m.ctrl.T.Helper()
@@ -404,6 +418,20 @@ func (m *MockRoleBindingSet) Generic() sets.ResourceSet {
 func (mr *MockRoleBindingSetMockRecorder) Generic() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockRoleBindingSet)(nil).Generic))
+}
+
+// GetEqualityFunc mocks base method.
+func (m *MockRoleBindingSet) GetEqualityFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEqualityFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetEqualityFunc indicates an expected call of GetEqualityFunc.
+func (mr *MockRoleBindingSetMockRecorder) GetEqualityFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEqualityFunc", reflect.TypeOf((*MockRoleBindingSet)(nil).GetEqualityFunc))
 }
 
 // GetSortFunc mocks base method.
@@ -676,6 +704,20 @@ func (mr *MockClusterRoleSetMockRecorder) Generic() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockClusterRoleSet)(nil).Generic))
 }
 
+// GetEqualityFunc mocks base method.
+func (m *MockClusterRoleSet) GetEqualityFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEqualityFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetEqualityFunc indicates an expected call of GetEqualityFunc.
+func (mr *MockClusterRoleSetMockRecorder) GetEqualityFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEqualityFunc", reflect.TypeOf((*MockClusterRoleSet)(nil).GetEqualityFunc))
+}
+
 // GetSortFunc mocks base method.
 func (m *MockClusterRoleSet) GetSortFunc() func(client.Object, client.Object) bool {
 	m.ctrl.T.Helper()
@@ -944,6 +986,20 @@ func (m *MockClusterRoleBindingSet) Generic() sets.ResourceSet {
 func (mr *MockClusterRoleBindingSetMockRecorder) Generic() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockClusterRoleBindingSet)(nil).Generic))
+}
+
+// GetEqualityFunc mocks base method.
+func (m *MockClusterRoleBindingSet) GetEqualityFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEqualityFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetEqualityFunc indicates an expected call of GetEqualityFunc.
+func (mr *MockClusterRoleBindingSetMockRecorder) GetEqualityFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEqualityFunc", reflect.TypeOf((*MockClusterRoleBindingSet)(nil).GetEqualityFunc))
 }
 
 // GetSortFunc mocks base method.

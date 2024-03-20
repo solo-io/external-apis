@@ -51,10 +51,13 @@ type CertificateSigningRequestSet interface {
 	Clone() CertificateSigningRequestSet
 	// Get the sort function used by the set
 	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
 func makeGenericCertificateSigningRequestSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	certificateSigningRequestList []*certificates_k8s_io_v1beta1.CertificateSigningRequest,
 ) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
@@ -64,26 +67,33 @@ func makeGenericCertificateSigningRequestSet(
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
-	return sksets.NewResourceSet(genericSortFunc, genericResources...)
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type certificateSigningRequestSet struct {
-	set      sksets.ResourceSet
-	sortFunc func(toInsert, existing client.Object) bool
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
 func NewCertificateSigningRequestSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	certificateSigningRequestList ...*certificates_k8s_io_v1beta1.CertificateSigningRequest,
 ) CertificateSigningRequestSet {
 	return &certificateSigningRequestSet{
-		set:      makeGenericCertificateSigningRequestSet(sortFunc, certificateSigningRequestList),
-		sortFunc: sortFunc,
+		set:          makeGenericCertificateSigningRequestSet(sortFunc, equalityFunc, certificateSigningRequestList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
 func NewCertificateSigningRequestSetFromList(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	certificateSigningRequestList *certificates_k8s_io_v1beta1.CertificateSigningRequestList,
 ) CertificateSigningRequestSet {
 	list := make([]*certificates_k8s_io_v1beta1.CertificateSigningRequest, 0, len(certificateSigningRequestList.Items))
@@ -91,8 +101,9 @@ func NewCertificateSigningRequestSetFromList(
 		list = append(list, &certificateSigningRequestList.Items[idx])
 	}
 	return &certificateSigningRequestSet{
-		set:      makeGenericCertificateSigningRequestSet(sortFunc, list),
-		sortFunc: sortFunc,
+		set:          makeGenericCertificateSigningRequestSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
@@ -193,7 +204,7 @@ func (s *certificateSigningRequestSet) Union(set CertificateSigningRequestSet) C
 	if s == nil {
 		return set
 	}
-	return NewCertificateSigningRequestSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
+	return NewCertificateSigningRequestSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *certificateSigningRequestSet) Difference(set CertificateSigningRequestSet) CertificateSigningRequestSet {
@@ -201,7 +212,11 @@ func (s *certificateSigningRequestSet) Difference(set CertificateSigningRequestS
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &certificateSigningRequestSet{set: newSet}
+	return &certificateSigningRequestSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *certificateSigningRequestSet) Intersection(set CertificateSigningRequestSet) CertificateSigningRequestSet {
@@ -213,7 +228,7 @@ func (s *certificateSigningRequestSet) Intersection(set CertificateSigningReques
 	for _, obj := range newSet.List() {
 		certificateSigningRequestList = append(certificateSigningRequestList, obj.(*certificates_k8s_io_v1beta1.CertificateSigningRequest))
 	}
-	return NewCertificateSigningRequestSet(s.GetSortFunc(), certificateSigningRequestList...)
+	return NewCertificateSigningRequestSet(s.sortFunc, s.equalityFunc, certificateSigningRequestList...)
 }
 
 func (s *certificateSigningRequestSet) Find(id ezkube.ResourceId) (*certificates_k8s_io_v1beta1.CertificateSigningRequest, error) {
@@ -258,9 +273,13 @@ func (s *certificateSigningRequestSet) Clone() CertificateSigningRequestSet {
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
 	return &certificateSigningRequestSet{
 		set: sksets.NewResourceSet(
 			genericSortFunc,
+			genericEqualityFunc,
 			s.Generic().Clone().List()...,
 		),
 	}
@@ -268,4 +287,8 @@ func (s *certificateSigningRequestSet) Clone() CertificateSigningRequestSet {
 
 func (s *certificateSigningRequestSet) GetSortFunc() func(toInsert, existing client.Object) bool {
 	return s.sortFunc
+}
+
+func (s *certificateSigningRequestSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }

@@ -51,10 +51,13 @@ type TrafficTargetSet interface {
 	Clone() TrafficTargetSet
 	// Get the sort function used by the set
 	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
 func makeGenericTrafficTargetSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	trafficTargetList []*access_smi_spec_io_v1alpha2.TrafficTarget,
 ) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
@@ -64,26 +67,33 @@ func makeGenericTrafficTargetSet(
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
-	return sksets.NewResourceSet(genericSortFunc, genericResources...)
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type trafficTargetSet struct {
-	set      sksets.ResourceSet
-	sortFunc func(toInsert, existing client.Object) bool
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
 func NewTrafficTargetSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	trafficTargetList ...*access_smi_spec_io_v1alpha2.TrafficTarget,
 ) TrafficTargetSet {
 	return &trafficTargetSet{
-		set:      makeGenericTrafficTargetSet(sortFunc, trafficTargetList),
-		sortFunc: sortFunc,
+		set:          makeGenericTrafficTargetSet(sortFunc, equalityFunc, trafficTargetList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
 func NewTrafficTargetSetFromList(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	trafficTargetList *access_smi_spec_io_v1alpha2.TrafficTargetList,
 ) TrafficTargetSet {
 	list := make([]*access_smi_spec_io_v1alpha2.TrafficTarget, 0, len(trafficTargetList.Items))
@@ -91,8 +101,9 @@ func NewTrafficTargetSetFromList(
 		list = append(list, &trafficTargetList.Items[idx])
 	}
 	return &trafficTargetSet{
-		set:      makeGenericTrafficTargetSet(sortFunc, list),
-		sortFunc: sortFunc,
+		set:          makeGenericTrafficTargetSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
@@ -193,7 +204,7 @@ func (s *trafficTargetSet) Union(set TrafficTargetSet) TrafficTargetSet {
 	if s == nil {
 		return set
 	}
-	return NewTrafficTargetSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
+	return NewTrafficTargetSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *trafficTargetSet) Difference(set TrafficTargetSet) TrafficTargetSet {
@@ -201,7 +212,11 @@ func (s *trafficTargetSet) Difference(set TrafficTargetSet) TrafficTargetSet {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &trafficTargetSet{set: newSet}
+	return &trafficTargetSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *trafficTargetSet) Intersection(set TrafficTargetSet) TrafficTargetSet {
@@ -213,7 +228,7 @@ func (s *trafficTargetSet) Intersection(set TrafficTargetSet) TrafficTargetSet {
 	for _, obj := range newSet.List() {
 		trafficTargetList = append(trafficTargetList, obj.(*access_smi_spec_io_v1alpha2.TrafficTarget))
 	}
-	return NewTrafficTargetSet(s.GetSortFunc(), trafficTargetList...)
+	return NewTrafficTargetSet(s.sortFunc, s.equalityFunc, trafficTargetList...)
 }
 
 func (s *trafficTargetSet) Find(id ezkube.ResourceId) (*access_smi_spec_io_v1alpha2.TrafficTarget, error) {
@@ -258,9 +273,13 @@ func (s *trafficTargetSet) Clone() TrafficTargetSet {
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
 	return &trafficTargetSet{
 		set: sksets.NewResourceSet(
 			genericSortFunc,
+			genericEqualityFunc,
 			s.Generic().Clone().List()...,
 		),
 	}
@@ -268,4 +287,8 @@ func (s *trafficTargetSet) Clone() TrafficTargetSet {
 
 func (s *trafficTargetSet) GetSortFunc() func(toInsert, existing client.Object) bool {
 	return s.sortFunc
+}
+
+func (s *trafficTargetSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }

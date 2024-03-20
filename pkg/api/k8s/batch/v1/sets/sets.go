@@ -51,10 +51,13 @@ type JobSet interface {
 	Clone() JobSet
 	// Get the sort function used by the set
 	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
 func makeGenericJobSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	jobList []*batch_v1.Job,
 ) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
@@ -64,26 +67,33 @@ func makeGenericJobSet(
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
-	return sksets.NewResourceSet(genericSortFunc, genericResources...)
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type jobSet struct {
-	set      sksets.ResourceSet
-	sortFunc func(toInsert, existing client.Object) bool
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
 func NewJobSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	jobList ...*batch_v1.Job,
 ) JobSet {
 	return &jobSet{
-		set:      makeGenericJobSet(sortFunc, jobList),
-		sortFunc: sortFunc,
+		set:          makeGenericJobSet(sortFunc, equalityFunc, jobList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
 func NewJobSetFromList(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	jobList *batch_v1.JobList,
 ) JobSet {
 	list := make([]*batch_v1.Job, 0, len(jobList.Items))
@@ -91,8 +101,9 @@ func NewJobSetFromList(
 		list = append(list, &jobList.Items[idx])
 	}
 	return &jobSet{
-		set:      makeGenericJobSet(sortFunc, list),
-		sortFunc: sortFunc,
+		set:          makeGenericJobSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
@@ -193,7 +204,7 @@ func (s *jobSet) Union(set JobSet) JobSet {
 	if s == nil {
 		return set
 	}
-	return NewJobSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
+	return NewJobSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *jobSet) Difference(set JobSet) JobSet {
@@ -201,7 +212,11 @@ func (s *jobSet) Difference(set JobSet) JobSet {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &jobSet{set: newSet}
+	return &jobSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *jobSet) Intersection(set JobSet) JobSet {
@@ -213,7 +228,7 @@ func (s *jobSet) Intersection(set JobSet) JobSet {
 	for _, obj := range newSet.List() {
 		jobList = append(jobList, obj.(*batch_v1.Job))
 	}
-	return NewJobSet(s.GetSortFunc(), jobList...)
+	return NewJobSet(s.sortFunc, s.equalityFunc, jobList...)
 }
 
 func (s *jobSet) Find(id ezkube.ResourceId) (*batch_v1.Job, error) {
@@ -258,9 +273,13 @@ func (s *jobSet) Clone() JobSet {
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
 	return &jobSet{
 		set: sksets.NewResourceSet(
 			genericSortFunc,
+			genericEqualityFunc,
 			s.Generic().Clone().List()...,
 		),
 	}
@@ -268,4 +287,8 @@ func (s *jobSet) Clone() JobSet {
 
 func (s *jobSet) GetSortFunc() func(toInsert, existing client.Object) bool {
 	return s.sortFunc
+}
+
+func (s *jobSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }

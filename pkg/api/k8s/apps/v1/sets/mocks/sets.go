@@ -136,6 +136,20 @@ func (mr *MockDeploymentSetMockRecorder) Generic() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockDeploymentSet)(nil).Generic))
 }
 
+// GetEqualityFunc mocks base method.
+func (m *MockDeploymentSet) GetEqualityFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEqualityFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetEqualityFunc indicates an expected call of GetEqualityFunc.
+func (mr *MockDeploymentSetMockRecorder) GetEqualityFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEqualityFunc", reflect.TypeOf((*MockDeploymentSet)(nil).GetEqualityFunc))
+}
+
 // GetSortFunc mocks base method.
 func (m *MockDeploymentSet) GetSortFunc() func(client.Object, client.Object) bool {
 	m.ctrl.T.Helper()
@@ -404,6 +418,20 @@ func (m *MockReplicaSetSet) Generic() sets.ResourceSet {
 func (mr *MockReplicaSetSetMockRecorder) Generic() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockReplicaSetSet)(nil).Generic))
+}
+
+// GetEqualityFunc mocks base method.
+func (m *MockReplicaSetSet) GetEqualityFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEqualityFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetEqualityFunc indicates an expected call of GetEqualityFunc.
+func (mr *MockReplicaSetSetMockRecorder) GetEqualityFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEqualityFunc", reflect.TypeOf((*MockReplicaSetSet)(nil).GetEqualityFunc))
 }
 
 // GetSortFunc mocks base method.
@@ -676,6 +704,20 @@ func (mr *MockDaemonSetSetMockRecorder) Generic() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockDaemonSetSet)(nil).Generic))
 }
 
+// GetEqualityFunc mocks base method.
+func (m *MockDaemonSetSet) GetEqualityFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEqualityFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetEqualityFunc indicates an expected call of GetEqualityFunc.
+func (mr *MockDaemonSetSetMockRecorder) GetEqualityFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEqualityFunc", reflect.TypeOf((*MockDaemonSetSet)(nil).GetEqualityFunc))
+}
+
 // GetSortFunc mocks base method.
 func (m *MockDaemonSetSet) GetSortFunc() func(client.Object, client.Object) bool {
 	m.ctrl.T.Helper()
@@ -944,6 +986,20 @@ func (m *MockStatefulSetSet) Generic() sets.ResourceSet {
 func (mr *MockStatefulSetSetMockRecorder) Generic() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockStatefulSetSet)(nil).Generic))
+}
+
+// GetEqualityFunc mocks base method.
+func (m *MockStatefulSetSet) GetEqualityFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEqualityFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetEqualityFunc indicates an expected call of GetEqualityFunc.
+func (mr *MockStatefulSetSetMockRecorder) GetEqualityFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEqualityFunc", reflect.TypeOf((*MockStatefulSetSet)(nil).GetEqualityFunc))
 }
 
 // GetSortFunc mocks base method.

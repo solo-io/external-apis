@@ -51,10 +51,13 @@ type TelemetrySet interface {
 	Clone() TelemetrySet
 	// Get the sort function used by the set
 	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
 func makeGenericTelemetrySet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	telemetryList []*telemetry_istio_io_v1alpha1.Telemetry,
 ) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
@@ -64,26 +67,33 @@ func makeGenericTelemetrySet(
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
-	return sksets.NewResourceSet(genericSortFunc, genericResources...)
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type telemetrySet struct {
-	set      sksets.ResourceSet
-	sortFunc func(toInsert, existing client.Object) bool
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
 func NewTelemetrySet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	telemetryList ...*telemetry_istio_io_v1alpha1.Telemetry,
 ) TelemetrySet {
 	return &telemetrySet{
-		set:      makeGenericTelemetrySet(sortFunc, telemetryList),
-		sortFunc: sortFunc,
+		set:          makeGenericTelemetrySet(sortFunc, equalityFunc, telemetryList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
 func NewTelemetrySetFromList(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	telemetryList *telemetry_istio_io_v1alpha1.TelemetryList,
 ) TelemetrySet {
 	list := make([]*telemetry_istio_io_v1alpha1.Telemetry, 0, len(telemetryList.Items))
@@ -91,8 +101,9 @@ func NewTelemetrySetFromList(
 		list = append(list, telemetryList.Items[idx])
 	}
 	return &telemetrySet{
-		set:      makeGenericTelemetrySet(sortFunc, list),
-		sortFunc: sortFunc,
+		set:          makeGenericTelemetrySet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
@@ -193,7 +204,7 @@ func (s *telemetrySet) Union(set TelemetrySet) TelemetrySet {
 	if s == nil {
 		return set
 	}
-	return NewTelemetrySet(s.GetSortFunc(), append(s.List(), set.List()...)...)
+	return NewTelemetrySet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *telemetrySet) Difference(set TelemetrySet) TelemetrySet {
@@ -201,7 +212,11 @@ func (s *telemetrySet) Difference(set TelemetrySet) TelemetrySet {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &telemetrySet{set: newSet}
+	return &telemetrySet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *telemetrySet) Intersection(set TelemetrySet) TelemetrySet {
@@ -213,7 +228,7 @@ func (s *telemetrySet) Intersection(set TelemetrySet) TelemetrySet {
 	for _, obj := range newSet.List() {
 		telemetryList = append(telemetryList, obj.(*telemetry_istio_io_v1alpha1.Telemetry))
 	}
-	return NewTelemetrySet(s.GetSortFunc(), telemetryList...)
+	return NewTelemetrySet(s.sortFunc, s.equalityFunc, telemetryList...)
 }
 
 func (s *telemetrySet) Find(id ezkube.ResourceId) (*telemetry_istio_io_v1alpha1.Telemetry, error) {
@@ -258,9 +273,13 @@ func (s *telemetrySet) Clone() TelemetrySet {
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
 	return &telemetrySet{
 		set: sksets.NewResourceSet(
 			genericSortFunc,
+			genericEqualityFunc,
 			s.Generic().Clone().List()...,
 		),
 	}
@@ -268,4 +287,8 @@ func (s *telemetrySet) Clone() TelemetrySet {
 
 func (s *telemetrySet) GetSortFunc() func(toInsert, existing client.Object) bool {
 	return s.sortFunc
+}
+
+func (s *telemetrySet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }

@@ -136,6 +136,20 @@ func (mr *MockValidatingWebhookConfigurationSetMockRecorder) Generic() *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockValidatingWebhookConfigurationSet)(nil).Generic))
 }
 
+// GetEqualityFunc mocks base method.
+func (m *MockValidatingWebhookConfigurationSet) GetEqualityFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEqualityFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetEqualityFunc indicates an expected call of GetEqualityFunc.
+func (mr *MockValidatingWebhookConfigurationSetMockRecorder) GetEqualityFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEqualityFunc", reflect.TypeOf((*MockValidatingWebhookConfigurationSet)(nil).GetEqualityFunc))
+}
+
 // GetSortFunc mocks base method.
 func (m *MockValidatingWebhookConfigurationSet) GetSortFunc() func(client.Object, client.Object) bool {
 	m.ctrl.T.Helper()
@@ -404,6 +418,20 @@ func (m *MockMutatingWebhookConfigurationSet) Generic() sets.ResourceSet {
 func (mr *MockMutatingWebhookConfigurationSetMockRecorder) Generic() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockMutatingWebhookConfigurationSet)(nil).Generic))
+}
+
+// GetEqualityFunc mocks base method.
+func (m *MockMutatingWebhookConfigurationSet) GetEqualityFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEqualityFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetEqualityFunc indicates an expected call of GetEqualityFunc.
+func (mr *MockMutatingWebhookConfigurationSetMockRecorder) GetEqualityFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEqualityFunc", reflect.TypeOf((*MockMutatingWebhookConfigurationSet)(nil).GetEqualityFunc))
 }
 
 // GetSortFunc mocks base method.

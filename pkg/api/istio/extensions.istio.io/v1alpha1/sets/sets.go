@@ -51,10 +51,13 @@ type WasmPluginSet interface {
 	Clone() WasmPluginSet
 	// Get the sort function used by the set
 	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
 func makeGenericWasmPluginSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	wasmPluginList []*extensions_istio_io_v1alpha1.WasmPlugin,
 ) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
@@ -64,26 +67,33 @@ func makeGenericWasmPluginSet(
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
-	return sksets.NewResourceSet(genericSortFunc, genericResources...)
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type wasmPluginSet struct {
-	set      sksets.ResourceSet
-	sortFunc func(toInsert, existing client.Object) bool
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
 func NewWasmPluginSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	wasmPluginList ...*extensions_istio_io_v1alpha1.WasmPlugin,
 ) WasmPluginSet {
 	return &wasmPluginSet{
-		set:      makeGenericWasmPluginSet(sortFunc, wasmPluginList),
-		sortFunc: sortFunc,
+		set:          makeGenericWasmPluginSet(sortFunc, equalityFunc, wasmPluginList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
 func NewWasmPluginSetFromList(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	wasmPluginList *extensions_istio_io_v1alpha1.WasmPluginList,
 ) WasmPluginSet {
 	list := make([]*extensions_istio_io_v1alpha1.WasmPlugin, 0, len(wasmPluginList.Items))
@@ -91,8 +101,9 @@ func NewWasmPluginSetFromList(
 		list = append(list, wasmPluginList.Items[idx])
 	}
 	return &wasmPluginSet{
-		set:      makeGenericWasmPluginSet(sortFunc, list),
-		sortFunc: sortFunc,
+		set:          makeGenericWasmPluginSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
@@ -193,7 +204,7 @@ func (s *wasmPluginSet) Union(set WasmPluginSet) WasmPluginSet {
 	if s == nil {
 		return set
 	}
-	return NewWasmPluginSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
+	return NewWasmPluginSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *wasmPluginSet) Difference(set WasmPluginSet) WasmPluginSet {
@@ -201,7 +212,11 @@ func (s *wasmPluginSet) Difference(set WasmPluginSet) WasmPluginSet {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &wasmPluginSet{set: newSet}
+	return &wasmPluginSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *wasmPluginSet) Intersection(set WasmPluginSet) WasmPluginSet {
@@ -213,7 +228,7 @@ func (s *wasmPluginSet) Intersection(set WasmPluginSet) WasmPluginSet {
 	for _, obj := range newSet.List() {
 		wasmPluginList = append(wasmPluginList, obj.(*extensions_istio_io_v1alpha1.WasmPlugin))
 	}
-	return NewWasmPluginSet(s.GetSortFunc(), wasmPluginList...)
+	return NewWasmPluginSet(s.sortFunc, s.equalityFunc, wasmPluginList...)
 }
 
 func (s *wasmPluginSet) Find(id ezkube.ResourceId) (*extensions_istio_io_v1alpha1.WasmPlugin, error) {
@@ -258,9 +273,13 @@ func (s *wasmPluginSet) Clone() WasmPluginSet {
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
 	return &wasmPluginSet{
 		set: sksets.NewResourceSet(
 			genericSortFunc,
+			genericEqualityFunc,
 			s.Generic().Clone().List()...,
 		),
 	}
@@ -268,4 +287,8 @@ func (s *wasmPluginSet) Clone() WasmPluginSet {
 
 func (s *wasmPluginSet) GetSortFunc() func(toInsert, existing client.Object) bool {
 	return s.sortFunc
+}
+
+func (s *wasmPluginSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }

@@ -51,10 +51,13 @@ type EnvoyFilterSet interface {
 	Clone() EnvoyFilterSet
 	// Get the sort function used by the set
 	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
 func makeGenericEnvoyFilterSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	envoyFilterList []*networking_istio_io_v1alpha3.EnvoyFilter,
 ) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
@@ -64,26 +67,33 @@ func makeGenericEnvoyFilterSet(
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
-	return sksets.NewResourceSet(genericSortFunc, genericResources...)
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type envoyFilterSet struct {
-	set      sksets.ResourceSet
-	sortFunc func(toInsert, existing client.Object) bool
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
 func NewEnvoyFilterSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	envoyFilterList ...*networking_istio_io_v1alpha3.EnvoyFilter,
 ) EnvoyFilterSet {
 	return &envoyFilterSet{
-		set:      makeGenericEnvoyFilterSet(sortFunc, envoyFilterList),
-		sortFunc: sortFunc,
+		set:          makeGenericEnvoyFilterSet(sortFunc, equalityFunc, envoyFilterList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
 func NewEnvoyFilterSetFromList(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	envoyFilterList *networking_istio_io_v1alpha3.EnvoyFilterList,
 ) EnvoyFilterSet {
 	list := make([]*networking_istio_io_v1alpha3.EnvoyFilter, 0, len(envoyFilterList.Items))
@@ -91,8 +101,9 @@ func NewEnvoyFilterSetFromList(
 		list = append(list, envoyFilterList.Items[idx])
 	}
 	return &envoyFilterSet{
-		set:      makeGenericEnvoyFilterSet(sortFunc, list),
-		sortFunc: sortFunc,
+		set:          makeGenericEnvoyFilterSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
@@ -193,7 +204,7 @@ func (s *envoyFilterSet) Union(set EnvoyFilterSet) EnvoyFilterSet {
 	if s == nil {
 		return set
 	}
-	return NewEnvoyFilterSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
+	return NewEnvoyFilterSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *envoyFilterSet) Difference(set EnvoyFilterSet) EnvoyFilterSet {
@@ -201,7 +212,11 @@ func (s *envoyFilterSet) Difference(set EnvoyFilterSet) EnvoyFilterSet {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &envoyFilterSet{set: newSet}
+	return &envoyFilterSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *envoyFilterSet) Intersection(set EnvoyFilterSet) EnvoyFilterSet {
@@ -213,7 +228,7 @@ func (s *envoyFilterSet) Intersection(set EnvoyFilterSet) EnvoyFilterSet {
 	for _, obj := range newSet.List() {
 		envoyFilterList = append(envoyFilterList, obj.(*networking_istio_io_v1alpha3.EnvoyFilter))
 	}
-	return NewEnvoyFilterSet(s.GetSortFunc(), envoyFilterList...)
+	return NewEnvoyFilterSet(s.sortFunc, s.equalityFunc, envoyFilterList...)
 }
 
 func (s *envoyFilterSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1alpha3.EnvoyFilter, error) {
@@ -258,9 +273,13 @@ func (s *envoyFilterSet) Clone() EnvoyFilterSet {
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
 	return &envoyFilterSet{
 		set: sksets.NewResourceSet(
 			genericSortFunc,
+			genericEqualityFunc,
 			s.Generic().Clone().List()...,
 		),
 	}
@@ -268,4 +287,8 @@ func (s *envoyFilterSet) Clone() EnvoyFilterSet {
 
 func (s *envoyFilterSet) GetSortFunc() func(toInsert, existing client.Object) bool {
 	return s.sortFunc
+}
+
+func (s *envoyFilterSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }

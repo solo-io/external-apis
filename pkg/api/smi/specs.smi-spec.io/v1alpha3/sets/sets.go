@@ -51,10 +51,13 @@ type HTTPRouteGroupSet interface {
 	Clone() HTTPRouteGroupSet
 	// Get the sort function used by the set
 	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
 func makeGenericHTTPRouteGroupSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	hTTPRouteGroupList []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup,
 ) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
@@ -64,26 +67,33 @@ func makeGenericHTTPRouteGroupSet(
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
-	return sksets.NewResourceSet(genericSortFunc, genericResources...)
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type hTTPRouteGroupSet struct {
-	set      sksets.ResourceSet
-	sortFunc func(toInsert, existing client.Object) bool
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
 func NewHTTPRouteGroupSet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	hTTPRouteGroupList ...*specs_smi_spec_io_v1alpha3.HTTPRouteGroup,
 ) HTTPRouteGroupSet {
 	return &hTTPRouteGroupSet{
-		set:      makeGenericHTTPRouteGroupSet(sortFunc, hTTPRouteGroupList),
-		sortFunc: sortFunc,
+		set:          makeGenericHTTPRouteGroupSet(sortFunc, equalityFunc, hTTPRouteGroupList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
 func NewHTTPRouteGroupSetFromList(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	hTTPRouteGroupList *specs_smi_spec_io_v1alpha3.HTTPRouteGroupList,
 ) HTTPRouteGroupSet {
 	list := make([]*specs_smi_spec_io_v1alpha3.HTTPRouteGroup, 0, len(hTTPRouteGroupList.Items))
@@ -91,8 +101,9 @@ func NewHTTPRouteGroupSetFromList(
 		list = append(list, &hTTPRouteGroupList.Items[idx])
 	}
 	return &hTTPRouteGroupSet{
-		set:      makeGenericHTTPRouteGroupSet(sortFunc, list),
-		sortFunc: sortFunc,
+		set:          makeGenericHTTPRouteGroupSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
@@ -193,7 +204,7 @@ func (s *hTTPRouteGroupSet) Union(set HTTPRouteGroupSet) HTTPRouteGroupSet {
 	if s == nil {
 		return set
 	}
-	return NewHTTPRouteGroupSet(s.GetSortFunc(), append(s.List(), set.List()...)...)
+	return NewHTTPRouteGroupSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *hTTPRouteGroupSet) Difference(set HTTPRouteGroupSet) HTTPRouteGroupSet {
@@ -201,7 +212,11 @@ func (s *hTTPRouteGroupSet) Difference(set HTTPRouteGroupSet) HTTPRouteGroupSet 
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &hTTPRouteGroupSet{set: newSet}
+	return &hTTPRouteGroupSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *hTTPRouteGroupSet) Intersection(set HTTPRouteGroupSet) HTTPRouteGroupSet {
@@ -213,7 +228,7 @@ func (s *hTTPRouteGroupSet) Intersection(set HTTPRouteGroupSet) HTTPRouteGroupSe
 	for _, obj := range newSet.List() {
 		hTTPRouteGroupList = append(hTTPRouteGroupList, obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
 	}
-	return NewHTTPRouteGroupSet(s.GetSortFunc(), hTTPRouteGroupList...)
+	return NewHTTPRouteGroupSet(s.sortFunc, s.equalityFunc, hTTPRouteGroupList...)
 }
 
 func (s *hTTPRouteGroupSet) Find(id ezkube.ResourceId) (*specs_smi_spec_io_v1alpha3.HTTPRouteGroup, error) {
@@ -258,9 +273,13 @@ func (s *hTTPRouteGroupSet) Clone() HTTPRouteGroupSet {
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
 	return &hTTPRouteGroupSet{
 		set: sksets.NewResourceSet(
 			genericSortFunc,
+			genericEqualityFunc,
 			s.Generic().Clone().List()...,
 		),
 	}
@@ -268,4 +287,8 @@ func (s *hTTPRouteGroupSet) Clone() HTTPRouteGroupSet {
 
 func (s *hTTPRouteGroupSet) GetSortFunc() func(toInsert, existing client.Object) bool {
 	return s.sortFunc
+}
+
+func (s *hTTPRouteGroupSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }

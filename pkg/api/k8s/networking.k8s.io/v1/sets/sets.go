@@ -51,10 +51,13 @@ type NetworkPolicySet interface {
 	Clone() NetworkPolicySet
 	// Get the sort function used by the set
 	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
 func makeGenericNetworkPolicySet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	networkPolicyList []*networking_k8s_io_v1.NetworkPolicy,
 ) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
@@ -64,26 +67,33 @@ func makeGenericNetworkPolicySet(
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
-	return sksets.NewResourceSet(genericSortFunc, genericResources...)
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type networkPolicySet struct {
-	set      sksets.ResourceSet
-	sortFunc func(toInsert, existing client.Object) bool
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
 func NewNetworkPolicySet(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	networkPolicyList ...*networking_k8s_io_v1.NetworkPolicy,
 ) NetworkPolicySet {
 	return &networkPolicySet{
-		set:      makeGenericNetworkPolicySet(sortFunc, networkPolicyList),
-		sortFunc: sortFunc,
+		set:          makeGenericNetworkPolicySet(sortFunc, equalityFunc, networkPolicyList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
 func NewNetworkPolicySetFromList(
 	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
 	networkPolicyList *networking_k8s_io_v1.NetworkPolicyList,
 ) NetworkPolicySet {
 	list := make([]*networking_k8s_io_v1.NetworkPolicy, 0, len(networkPolicyList.Items))
@@ -91,8 +101,9 @@ func NewNetworkPolicySetFromList(
 		list = append(list, &networkPolicyList.Items[idx])
 	}
 	return &networkPolicySet{
-		set:      makeGenericNetworkPolicySet(sortFunc, list),
-		sortFunc: sortFunc,
+		set:          makeGenericNetworkPolicySet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
 	}
 }
 
@@ -193,7 +204,7 @@ func (s *networkPolicySet) Union(set NetworkPolicySet) NetworkPolicySet {
 	if s == nil {
 		return set
 	}
-	return NewNetworkPolicySet(s.GetSortFunc(), append(s.List(), set.List()...)...)
+	return NewNetworkPolicySet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *networkPolicySet) Difference(set NetworkPolicySet) NetworkPolicySet {
@@ -201,7 +212,11 @@ func (s *networkPolicySet) Difference(set NetworkPolicySet) NetworkPolicySet {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &networkPolicySet{set: newSet}
+	return &networkPolicySet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *networkPolicySet) Intersection(set NetworkPolicySet) NetworkPolicySet {
@@ -213,7 +228,7 @@ func (s *networkPolicySet) Intersection(set NetworkPolicySet) NetworkPolicySet {
 	for _, obj := range newSet.List() {
 		networkPolicyList = append(networkPolicyList, obj.(*networking_k8s_io_v1.NetworkPolicy))
 	}
-	return NewNetworkPolicySet(s.GetSortFunc(), networkPolicyList...)
+	return NewNetworkPolicySet(s.sortFunc, s.equalityFunc, networkPolicyList...)
 }
 
 func (s *networkPolicySet) Find(id ezkube.ResourceId) (*networking_k8s_io_v1.NetworkPolicy, error) {
@@ -258,9 +273,13 @@ func (s *networkPolicySet) Clone() NetworkPolicySet {
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
 		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
 	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
 	return &networkPolicySet{
 		set: sksets.NewResourceSet(
 			genericSortFunc,
+			genericEqualityFunc,
 			s.Generic().Clone().List()...,
 		),
 	}
@@ -268,4 +287,8 @@ func (s *networkPolicySet) Clone() NetworkPolicySet {
 
 func (s *networkPolicySet) GetSortFunc() func(toInsert, existing client.Object) bool {
 	return s.sortFunc
+}
+
+func (s *networkPolicySet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }
