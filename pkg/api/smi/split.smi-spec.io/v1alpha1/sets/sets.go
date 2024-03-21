@@ -11,6 +11,7 @@ import (
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"
 	"github.com/solo-io/skv2/pkg/ezkube"
 	"k8s.io/apimachinery/pkg/util/sets"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 type TrafficSplitSet interface {
@@ -48,30 +49,62 @@ type TrafficSplitSet interface {
 	Delta(newSet TrafficSplitSet) sksets.ResourceDelta
 	// Create a deep copy of the current TrafficSplitSet
 	Clone() TrafficSplitSet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
-func makeGenericTrafficSplitSet(trafficSplitList []*split_smi_spec_io_v1alpha1.TrafficSplit) sksets.ResourceSet {
+func makeGenericTrafficSplitSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	trafficSplitList []*split_smi_spec_io_v1alpha1.TrafficSplit,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range trafficSplitList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type trafficSplitSet struct {
-	set sksets.ResourceSet
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
-func NewTrafficSplitSet(trafficSplitList ...*split_smi_spec_io_v1alpha1.TrafficSplit) TrafficSplitSet {
-	return &trafficSplitSet{set: makeGenericTrafficSplitSet(trafficSplitList)}
+func NewTrafficSplitSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	trafficSplitList ...*split_smi_spec_io_v1alpha1.TrafficSplit,
+) TrafficSplitSet {
+	return &trafficSplitSet{
+		set:          makeGenericTrafficSplitSet(sortFunc, equalityFunc, trafficSplitList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
-func NewTrafficSplitSetFromList(trafficSplitList *split_smi_spec_io_v1alpha1.TrafficSplitList) TrafficSplitSet {
+func NewTrafficSplitSetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	trafficSplitList *split_smi_spec_io_v1alpha1.TrafficSplitList,
+) TrafficSplitSet {
 	list := make([]*split_smi_spec_io_v1alpha1.TrafficSplit, 0, len(trafficSplitList.Items))
 	for idx := range trafficSplitList.Items {
 		list = append(list, &trafficSplitList.Items[idx])
 	}
-	return &trafficSplitSet{set: makeGenericTrafficSplitSet(list)}
+	return &trafficSplitSet{
+		set:          makeGenericTrafficSplitSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
 func (s *trafficSplitSet) Keys() sets.String {
@@ -126,7 +159,7 @@ func (s *trafficSplitSet) Map() map[string]*split_smi_spec_io_v1alpha1.TrafficSp
 	}
 
 	newMap := map[string]*split_smi_spec_io_v1alpha1.TrafficSplit{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*split_smi_spec_io_v1alpha1.TrafficSplit)
 	}
 	return newMap
@@ -171,7 +204,7 @@ func (s *trafficSplitSet) Union(set TrafficSplitSet) TrafficSplitSet {
 	if s == nil {
 		return set
 	}
-	return NewTrafficSplitSet(append(s.List(), set.List()...)...)
+	return NewTrafficSplitSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *trafficSplitSet) Difference(set TrafficSplitSet) TrafficSplitSet {
@@ -179,7 +212,11 @@ func (s *trafficSplitSet) Difference(set TrafficSplitSet) TrafficSplitSet {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &trafficSplitSet{set: newSet}
+	return &trafficSplitSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *trafficSplitSet) Intersection(set TrafficSplitSet) TrafficSplitSet {
@@ -191,7 +228,7 @@ func (s *trafficSplitSet) Intersection(set TrafficSplitSet) TrafficSplitSet {
 	for _, obj := range newSet.List() {
 		trafficSplitList = append(trafficSplitList, obj.(*split_smi_spec_io_v1alpha1.TrafficSplit))
 	}
-	return NewTrafficSplitSet(trafficSplitList...)
+	return NewTrafficSplitSet(s.sortFunc, s.equalityFunc, trafficSplitList...)
 }
 
 func (s *trafficSplitSet) Find(id ezkube.ResourceId) (*split_smi_spec_io_v1alpha1.TrafficSplit, error) {
@@ -233,5 +270,25 @@ func (s *trafficSplitSet) Clone() TrafficSplitSet {
 	if s == nil {
 		return nil
 	}
-	return &trafficSplitSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return &trafficSplitSet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			genericEqualityFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *trafficSplitSet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
+}
+
+func (s *trafficSplitSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }

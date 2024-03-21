@@ -11,6 +11,7 @@ import (
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"
 	"github.com/solo-io/skv2/pkg/ezkube"
 	"k8s.io/apimachinery/pkg/util/sets"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 type DestinationRuleSet interface {
@@ -48,30 +49,62 @@ type DestinationRuleSet interface {
 	Delta(newSet DestinationRuleSet) sksets.ResourceDelta
 	// Create a deep copy of the current DestinationRuleSet
 	Clone() DestinationRuleSet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
-func makeGenericDestinationRuleSet(destinationRuleList []*networking_istio_io_v1beta1.DestinationRule) sksets.ResourceSet {
+func makeGenericDestinationRuleSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	destinationRuleList []*networking_istio_io_v1beta1.DestinationRule,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range destinationRuleList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type destinationRuleSet struct {
-	set sksets.ResourceSet
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
-func NewDestinationRuleSet(destinationRuleList ...*networking_istio_io_v1beta1.DestinationRule) DestinationRuleSet {
-	return &destinationRuleSet{set: makeGenericDestinationRuleSet(destinationRuleList)}
+func NewDestinationRuleSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	destinationRuleList ...*networking_istio_io_v1beta1.DestinationRule,
+) DestinationRuleSet {
+	return &destinationRuleSet{
+		set:          makeGenericDestinationRuleSet(sortFunc, equalityFunc, destinationRuleList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
-func NewDestinationRuleSetFromList(destinationRuleList *networking_istio_io_v1beta1.DestinationRuleList) DestinationRuleSet {
+func NewDestinationRuleSetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	destinationRuleList *networking_istio_io_v1beta1.DestinationRuleList,
+) DestinationRuleSet {
 	list := make([]*networking_istio_io_v1beta1.DestinationRule, 0, len(destinationRuleList.Items))
 	for idx := range destinationRuleList.Items {
 		list = append(list, destinationRuleList.Items[idx])
 	}
-	return &destinationRuleSet{set: makeGenericDestinationRuleSet(list)}
+	return &destinationRuleSet{
+		set:          makeGenericDestinationRuleSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
 func (s *destinationRuleSet) Keys() sets.String {
@@ -126,7 +159,7 @@ func (s *destinationRuleSet) Map() map[string]*networking_istio_io_v1beta1.Desti
 	}
 
 	newMap := map[string]*networking_istio_io_v1beta1.DestinationRule{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*networking_istio_io_v1beta1.DestinationRule)
 	}
 	return newMap
@@ -171,7 +204,7 @@ func (s *destinationRuleSet) Union(set DestinationRuleSet) DestinationRuleSet {
 	if s == nil {
 		return set
 	}
-	return NewDestinationRuleSet(append(s.List(), set.List()...)...)
+	return NewDestinationRuleSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *destinationRuleSet) Difference(set DestinationRuleSet) DestinationRuleSet {
@@ -179,7 +212,11 @@ func (s *destinationRuleSet) Difference(set DestinationRuleSet) DestinationRuleS
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &destinationRuleSet{set: newSet}
+	return &destinationRuleSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *destinationRuleSet) Intersection(set DestinationRuleSet) DestinationRuleSet {
@@ -191,7 +228,7 @@ func (s *destinationRuleSet) Intersection(set DestinationRuleSet) DestinationRul
 	for _, obj := range newSet.List() {
 		destinationRuleList = append(destinationRuleList, obj.(*networking_istio_io_v1beta1.DestinationRule))
 	}
-	return NewDestinationRuleSet(destinationRuleList...)
+	return NewDestinationRuleSet(s.sortFunc, s.equalityFunc, destinationRuleList...)
 }
 
 func (s *destinationRuleSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1beta1.DestinationRule, error) {
@@ -233,7 +270,27 @@ func (s *destinationRuleSet) Clone() DestinationRuleSet {
 	if s == nil {
 		return nil
 	}
-	return &destinationRuleSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return &destinationRuleSet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			genericEqualityFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *destinationRuleSet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
+}
+
+func (s *destinationRuleSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }
 
 type GatewaySet interface {
@@ -271,30 +328,62 @@ type GatewaySet interface {
 	Delta(newSet GatewaySet) sksets.ResourceDelta
 	// Create a deep copy of the current GatewaySet
 	Clone() GatewaySet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
-func makeGenericGatewaySet(gatewayList []*networking_istio_io_v1beta1.Gateway) sksets.ResourceSet {
+func makeGenericGatewaySet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	gatewayList []*networking_istio_io_v1beta1.Gateway,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range gatewayList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type gatewaySet struct {
-	set sksets.ResourceSet
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
-func NewGatewaySet(gatewayList ...*networking_istio_io_v1beta1.Gateway) GatewaySet {
-	return &gatewaySet{set: makeGenericGatewaySet(gatewayList)}
+func NewGatewaySet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	gatewayList ...*networking_istio_io_v1beta1.Gateway,
+) GatewaySet {
+	return &gatewaySet{
+		set:          makeGenericGatewaySet(sortFunc, equalityFunc, gatewayList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
-func NewGatewaySetFromList(gatewayList *networking_istio_io_v1beta1.GatewayList) GatewaySet {
+func NewGatewaySetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	gatewayList *networking_istio_io_v1beta1.GatewayList,
+) GatewaySet {
 	list := make([]*networking_istio_io_v1beta1.Gateway, 0, len(gatewayList.Items))
 	for idx := range gatewayList.Items {
 		list = append(list, gatewayList.Items[idx])
 	}
-	return &gatewaySet{set: makeGenericGatewaySet(list)}
+	return &gatewaySet{
+		set:          makeGenericGatewaySet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
 func (s *gatewaySet) Keys() sets.String {
@@ -349,7 +438,7 @@ func (s *gatewaySet) Map() map[string]*networking_istio_io_v1beta1.Gateway {
 	}
 
 	newMap := map[string]*networking_istio_io_v1beta1.Gateway{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*networking_istio_io_v1beta1.Gateway)
 	}
 	return newMap
@@ -394,7 +483,7 @@ func (s *gatewaySet) Union(set GatewaySet) GatewaySet {
 	if s == nil {
 		return set
 	}
-	return NewGatewaySet(append(s.List(), set.List()...)...)
+	return NewGatewaySet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *gatewaySet) Difference(set GatewaySet) GatewaySet {
@@ -402,7 +491,11 @@ func (s *gatewaySet) Difference(set GatewaySet) GatewaySet {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &gatewaySet{set: newSet}
+	return &gatewaySet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *gatewaySet) Intersection(set GatewaySet) GatewaySet {
@@ -414,7 +507,7 @@ func (s *gatewaySet) Intersection(set GatewaySet) GatewaySet {
 	for _, obj := range newSet.List() {
 		gatewayList = append(gatewayList, obj.(*networking_istio_io_v1beta1.Gateway))
 	}
-	return NewGatewaySet(gatewayList...)
+	return NewGatewaySet(s.sortFunc, s.equalityFunc, gatewayList...)
 }
 
 func (s *gatewaySet) Find(id ezkube.ResourceId) (*networking_istio_io_v1beta1.Gateway, error) {
@@ -456,7 +549,27 @@ func (s *gatewaySet) Clone() GatewaySet {
 	if s == nil {
 		return nil
 	}
-	return &gatewaySet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return &gatewaySet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			genericEqualityFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *gatewaySet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
+}
+
+func (s *gatewaySet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }
 
 type ProxyConfigSet interface {
@@ -494,30 +607,62 @@ type ProxyConfigSet interface {
 	Delta(newSet ProxyConfigSet) sksets.ResourceDelta
 	// Create a deep copy of the current ProxyConfigSet
 	Clone() ProxyConfigSet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
-func makeGenericProxyConfigSet(proxyConfigList []*networking_istio_io_v1beta1.ProxyConfig) sksets.ResourceSet {
+func makeGenericProxyConfigSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	proxyConfigList []*networking_istio_io_v1beta1.ProxyConfig,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range proxyConfigList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type proxyConfigSet struct {
-	set sksets.ResourceSet
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
-func NewProxyConfigSet(proxyConfigList ...*networking_istio_io_v1beta1.ProxyConfig) ProxyConfigSet {
-	return &proxyConfigSet{set: makeGenericProxyConfigSet(proxyConfigList)}
+func NewProxyConfigSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	proxyConfigList ...*networking_istio_io_v1beta1.ProxyConfig,
+) ProxyConfigSet {
+	return &proxyConfigSet{
+		set:          makeGenericProxyConfigSet(sortFunc, equalityFunc, proxyConfigList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
-func NewProxyConfigSetFromList(proxyConfigList *networking_istio_io_v1beta1.ProxyConfigList) ProxyConfigSet {
+func NewProxyConfigSetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	proxyConfigList *networking_istio_io_v1beta1.ProxyConfigList,
+) ProxyConfigSet {
 	list := make([]*networking_istio_io_v1beta1.ProxyConfig, 0, len(proxyConfigList.Items))
 	for idx := range proxyConfigList.Items {
 		list = append(list, proxyConfigList.Items[idx])
 	}
-	return &proxyConfigSet{set: makeGenericProxyConfigSet(list)}
+	return &proxyConfigSet{
+		set:          makeGenericProxyConfigSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
 func (s *proxyConfigSet) Keys() sets.String {
@@ -572,7 +717,7 @@ func (s *proxyConfigSet) Map() map[string]*networking_istio_io_v1beta1.ProxyConf
 	}
 
 	newMap := map[string]*networking_istio_io_v1beta1.ProxyConfig{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*networking_istio_io_v1beta1.ProxyConfig)
 	}
 	return newMap
@@ -617,7 +762,7 @@ func (s *proxyConfigSet) Union(set ProxyConfigSet) ProxyConfigSet {
 	if s == nil {
 		return set
 	}
-	return NewProxyConfigSet(append(s.List(), set.List()...)...)
+	return NewProxyConfigSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *proxyConfigSet) Difference(set ProxyConfigSet) ProxyConfigSet {
@@ -625,7 +770,11 @@ func (s *proxyConfigSet) Difference(set ProxyConfigSet) ProxyConfigSet {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &proxyConfigSet{set: newSet}
+	return &proxyConfigSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *proxyConfigSet) Intersection(set ProxyConfigSet) ProxyConfigSet {
@@ -637,7 +786,7 @@ func (s *proxyConfigSet) Intersection(set ProxyConfigSet) ProxyConfigSet {
 	for _, obj := range newSet.List() {
 		proxyConfigList = append(proxyConfigList, obj.(*networking_istio_io_v1beta1.ProxyConfig))
 	}
-	return NewProxyConfigSet(proxyConfigList...)
+	return NewProxyConfigSet(s.sortFunc, s.equalityFunc, proxyConfigList...)
 }
 
 func (s *proxyConfigSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1beta1.ProxyConfig, error) {
@@ -679,7 +828,27 @@ func (s *proxyConfigSet) Clone() ProxyConfigSet {
 	if s == nil {
 		return nil
 	}
-	return &proxyConfigSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return &proxyConfigSet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			genericEqualityFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *proxyConfigSet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
+}
+
+func (s *proxyConfigSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }
 
 type ServiceEntrySet interface {
@@ -717,30 +886,62 @@ type ServiceEntrySet interface {
 	Delta(newSet ServiceEntrySet) sksets.ResourceDelta
 	// Create a deep copy of the current ServiceEntrySet
 	Clone() ServiceEntrySet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
-func makeGenericServiceEntrySet(serviceEntryList []*networking_istio_io_v1beta1.ServiceEntry) sksets.ResourceSet {
+func makeGenericServiceEntrySet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	serviceEntryList []*networking_istio_io_v1beta1.ServiceEntry,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range serviceEntryList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type serviceEntrySet struct {
-	set sksets.ResourceSet
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
-func NewServiceEntrySet(serviceEntryList ...*networking_istio_io_v1beta1.ServiceEntry) ServiceEntrySet {
-	return &serviceEntrySet{set: makeGenericServiceEntrySet(serviceEntryList)}
+func NewServiceEntrySet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	serviceEntryList ...*networking_istio_io_v1beta1.ServiceEntry,
+) ServiceEntrySet {
+	return &serviceEntrySet{
+		set:          makeGenericServiceEntrySet(sortFunc, equalityFunc, serviceEntryList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
-func NewServiceEntrySetFromList(serviceEntryList *networking_istio_io_v1beta1.ServiceEntryList) ServiceEntrySet {
+func NewServiceEntrySetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	serviceEntryList *networking_istio_io_v1beta1.ServiceEntryList,
+) ServiceEntrySet {
 	list := make([]*networking_istio_io_v1beta1.ServiceEntry, 0, len(serviceEntryList.Items))
 	for idx := range serviceEntryList.Items {
 		list = append(list, serviceEntryList.Items[idx])
 	}
-	return &serviceEntrySet{set: makeGenericServiceEntrySet(list)}
+	return &serviceEntrySet{
+		set:          makeGenericServiceEntrySet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
 func (s *serviceEntrySet) Keys() sets.String {
@@ -795,7 +996,7 @@ func (s *serviceEntrySet) Map() map[string]*networking_istio_io_v1beta1.ServiceE
 	}
 
 	newMap := map[string]*networking_istio_io_v1beta1.ServiceEntry{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*networking_istio_io_v1beta1.ServiceEntry)
 	}
 	return newMap
@@ -840,7 +1041,7 @@ func (s *serviceEntrySet) Union(set ServiceEntrySet) ServiceEntrySet {
 	if s == nil {
 		return set
 	}
-	return NewServiceEntrySet(append(s.List(), set.List()...)...)
+	return NewServiceEntrySet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *serviceEntrySet) Difference(set ServiceEntrySet) ServiceEntrySet {
@@ -848,7 +1049,11 @@ func (s *serviceEntrySet) Difference(set ServiceEntrySet) ServiceEntrySet {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &serviceEntrySet{set: newSet}
+	return &serviceEntrySet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *serviceEntrySet) Intersection(set ServiceEntrySet) ServiceEntrySet {
@@ -860,7 +1065,7 @@ func (s *serviceEntrySet) Intersection(set ServiceEntrySet) ServiceEntrySet {
 	for _, obj := range newSet.List() {
 		serviceEntryList = append(serviceEntryList, obj.(*networking_istio_io_v1beta1.ServiceEntry))
 	}
-	return NewServiceEntrySet(serviceEntryList...)
+	return NewServiceEntrySet(s.sortFunc, s.equalityFunc, serviceEntryList...)
 }
 
 func (s *serviceEntrySet) Find(id ezkube.ResourceId) (*networking_istio_io_v1beta1.ServiceEntry, error) {
@@ -902,7 +1107,27 @@ func (s *serviceEntrySet) Clone() ServiceEntrySet {
 	if s == nil {
 		return nil
 	}
-	return &serviceEntrySet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return &serviceEntrySet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			genericEqualityFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *serviceEntrySet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
+}
+
+func (s *serviceEntrySet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }
 
 type WorkloadEntrySet interface {
@@ -940,30 +1165,62 @@ type WorkloadEntrySet interface {
 	Delta(newSet WorkloadEntrySet) sksets.ResourceDelta
 	// Create a deep copy of the current WorkloadEntrySet
 	Clone() WorkloadEntrySet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
-func makeGenericWorkloadEntrySet(workloadEntryList []*networking_istio_io_v1beta1.WorkloadEntry) sksets.ResourceSet {
+func makeGenericWorkloadEntrySet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	workloadEntryList []*networking_istio_io_v1beta1.WorkloadEntry,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range workloadEntryList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type workloadEntrySet struct {
-	set sksets.ResourceSet
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
-func NewWorkloadEntrySet(workloadEntryList ...*networking_istio_io_v1beta1.WorkloadEntry) WorkloadEntrySet {
-	return &workloadEntrySet{set: makeGenericWorkloadEntrySet(workloadEntryList)}
+func NewWorkloadEntrySet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	workloadEntryList ...*networking_istio_io_v1beta1.WorkloadEntry,
+) WorkloadEntrySet {
+	return &workloadEntrySet{
+		set:          makeGenericWorkloadEntrySet(sortFunc, equalityFunc, workloadEntryList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
-func NewWorkloadEntrySetFromList(workloadEntryList *networking_istio_io_v1beta1.WorkloadEntryList) WorkloadEntrySet {
+func NewWorkloadEntrySetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	workloadEntryList *networking_istio_io_v1beta1.WorkloadEntryList,
+) WorkloadEntrySet {
 	list := make([]*networking_istio_io_v1beta1.WorkloadEntry, 0, len(workloadEntryList.Items))
 	for idx := range workloadEntryList.Items {
 		list = append(list, workloadEntryList.Items[idx])
 	}
-	return &workloadEntrySet{set: makeGenericWorkloadEntrySet(list)}
+	return &workloadEntrySet{
+		set:          makeGenericWorkloadEntrySet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
 func (s *workloadEntrySet) Keys() sets.String {
@@ -1018,7 +1275,7 @@ func (s *workloadEntrySet) Map() map[string]*networking_istio_io_v1beta1.Workloa
 	}
 
 	newMap := map[string]*networking_istio_io_v1beta1.WorkloadEntry{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*networking_istio_io_v1beta1.WorkloadEntry)
 	}
 	return newMap
@@ -1063,7 +1320,7 @@ func (s *workloadEntrySet) Union(set WorkloadEntrySet) WorkloadEntrySet {
 	if s == nil {
 		return set
 	}
-	return NewWorkloadEntrySet(append(s.List(), set.List()...)...)
+	return NewWorkloadEntrySet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *workloadEntrySet) Difference(set WorkloadEntrySet) WorkloadEntrySet {
@@ -1071,7 +1328,11 @@ func (s *workloadEntrySet) Difference(set WorkloadEntrySet) WorkloadEntrySet {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &workloadEntrySet{set: newSet}
+	return &workloadEntrySet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *workloadEntrySet) Intersection(set WorkloadEntrySet) WorkloadEntrySet {
@@ -1083,7 +1344,7 @@ func (s *workloadEntrySet) Intersection(set WorkloadEntrySet) WorkloadEntrySet {
 	for _, obj := range newSet.List() {
 		workloadEntryList = append(workloadEntryList, obj.(*networking_istio_io_v1beta1.WorkloadEntry))
 	}
-	return NewWorkloadEntrySet(workloadEntryList...)
+	return NewWorkloadEntrySet(s.sortFunc, s.equalityFunc, workloadEntryList...)
 }
 
 func (s *workloadEntrySet) Find(id ezkube.ResourceId) (*networking_istio_io_v1beta1.WorkloadEntry, error) {
@@ -1125,7 +1386,27 @@ func (s *workloadEntrySet) Clone() WorkloadEntrySet {
 	if s == nil {
 		return nil
 	}
-	return &workloadEntrySet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return &workloadEntrySet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			genericEqualityFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *workloadEntrySet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
+}
+
+func (s *workloadEntrySet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }
 
 type WorkloadGroupSet interface {
@@ -1163,30 +1444,62 @@ type WorkloadGroupSet interface {
 	Delta(newSet WorkloadGroupSet) sksets.ResourceDelta
 	// Create a deep copy of the current WorkloadGroupSet
 	Clone() WorkloadGroupSet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
-func makeGenericWorkloadGroupSet(workloadGroupList []*networking_istio_io_v1beta1.WorkloadGroup) sksets.ResourceSet {
+func makeGenericWorkloadGroupSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	workloadGroupList []*networking_istio_io_v1beta1.WorkloadGroup,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range workloadGroupList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type workloadGroupSet struct {
-	set sksets.ResourceSet
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
-func NewWorkloadGroupSet(workloadGroupList ...*networking_istio_io_v1beta1.WorkloadGroup) WorkloadGroupSet {
-	return &workloadGroupSet{set: makeGenericWorkloadGroupSet(workloadGroupList)}
+func NewWorkloadGroupSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	workloadGroupList ...*networking_istio_io_v1beta1.WorkloadGroup,
+) WorkloadGroupSet {
+	return &workloadGroupSet{
+		set:          makeGenericWorkloadGroupSet(sortFunc, equalityFunc, workloadGroupList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
-func NewWorkloadGroupSetFromList(workloadGroupList *networking_istio_io_v1beta1.WorkloadGroupList) WorkloadGroupSet {
+func NewWorkloadGroupSetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	workloadGroupList *networking_istio_io_v1beta1.WorkloadGroupList,
+) WorkloadGroupSet {
 	list := make([]*networking_istio_io_v1beta1.WorkloadGroup, 0, len(workloadGroupList.Items))
 	for idx := range workloadGroupList.Items {
 		list = append(list, workloadGroupList.Items[idx])
 	}
-	return &workloadGroupSet{set: makeGenericWorkloadGroupSet(list)}
+	return &workloadGroupSet{
+		set:          makeGenericWorkloadGroupSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
 func (s *workloadGroupSet) Keys() sets.String {
@@ -1241,7 +1554,7 @@ func (s *workloadGroupSet) Map() map[string]*networking_istio_io_v1beta1.Workloa
 	}
 
 	newMap := map[string]*networking_istio_io_v1beta1.WorkloadGroup{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*networking_istio_io_v1beta1.WorkloadGroup)
 	}
 	return newMap
@@ -1286,7 +1599,7 @@ func (s *workloadGroupSet) Union(set WorkloadGroupSet) WorkloadGroupSet {
 	if s == nil {
 		return set
 	}
-	return NewWorkloadGroupSet(append(s.List(), set.List()...)...)
+	return NewWorkloadGroupSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *workloadGroupSet) Difference(set WorkloadGroupSet) WorkloadGroupSet {
@@ -1294,7 +1607,11 @@ func (s *workloadGroupSet) Difference(set WorkloadGroupSet) WorkloadGroupSet {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &workloadGroupSet{set: newSet}
+	return &workloadGroupSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *workloadGroupSet) Intersection(set WorkloadGroupSet) WorkloadGroupSet {
@@ -1306,7 +1623,7 @@ func (s *workloadGroupSet) Intersection(set WorkloadGroupSet) WorkloadGroupSet {
 	for _, obj := range newSet.List() {
 		workloadGroupList = append(workloadGroupList, obj.(*networking_istio_io_v1beta1.WorkloadGroup))
 	}
-	return NewWorkloadGroupSet(workloadGroupList...)
+	return NewWorkloadGroupSet(s.sortFunc, s.equalityFunc, workloadGroupList...)
 }
 
 func (s *workloadGroupSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1beta1.WorkloadGroup, error) {
@@ -1348,7 +1665,27 @@ func (s *workloadGroupSet) Clone() WorkloadGroupSet {
 	if s == nil {
 		return nil
 	}
-	return &workloadGroupSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return &workloadGroupSet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			genericEqualityFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *workloadGroupSet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
+}
+
+func (s *workloadGroupSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }
 
 type VirtualServiceSet interface {
@@ -1386,30 +1723,62 @@ type VirtualServiceSet interface {
 	Delta(newSet VirtualServiceSet) sksets.ResourceDelta
 	// Create a deep copy of the current VirtualServiceSet
 	Clone() VirtualServiceSet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
-func makeGenericVirtualServiceSet(virtualServiceList []*networking_istio_io_v1beta1.VirtualService) sksets.ResourceSet {
+func makeGenericVirtualServiceSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	virtualServiceList []*networking_istio_io_v1beta1.VirtualService,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range virtualServiceList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type virtualServiceSet struct {
-	set sksets.ResourceSet
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
-func NewVirtualServiceSet(virtualServiceList ...*networking_istio_io_v1beta1.VirtualService) VirtualServiceSet {
-	return &virtualServiceSet{set: makeGenericVirtualServiceSet(virtualServiceList)}
+func NewVirtualServiceSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	virtualServiceList ...*networking_istio_io_v1beta1.VirtualService,
+) VirtualServiceSet {
+	return &virtualServiceSet{
+		set:          makeGenericVirtualServiceSet(sortFunc, equalityFunc, virtualServiceList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
-func NewVirtualServiceSetFromList(virtualServiceList *networking_istio_io_v1beta1.VirtualServiceList) VirtualServiceSet {
+func NewVirtualServiceSetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	virtualServiceList *networking_istio_io_v1beta1.VirtualServiceList,
+) VirtualServiceSet {
 	list := make([]*networking_istio_io_v1beta1.VirtualService, 0, len(virtualServiceList.Items))
 	for idx := range virtualServiceList.Items {
 		list = append(list, virtualServiceList.Items[idx])
 	}
-	return &virtualServiceSet{set: makeGenericVirtualServiceSet(list)}
+	return &virtualServiceSet{
+		set:          makeGenericVirtualServiceSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
 func (s *virtualServiceSet) Keys() sets.String {
@@ -1464,7 +1833,7 @@ func (s *virtualServiceSet) Map() map[string]*networking_istio_io_v1beta1.Virtua
 	}
 
 	newMap := map[string]*networking_istio_io_v1beta1.VirtualService{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*networking_istio_io_v1beta1.VirtualService)
 	}
 	return newMap
@@ -1509,7 +1878,7 @@ func (s *virtualServiceSet) Union(set VirtualServiceSet) VirtualServiceSet {
 	if s == nil {
 		return set
 	}
-	return NewVirtualServiceSet(append(s.List(), set.List()...)...)
+	return NewVirtualServiceSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *virtualServiceSet) Difference(set VirtualServiceSet) VirtualServiceSet {
@@ -1517,7 +1886,11 @@ func (s *virtualServiceSet) Difference(set VirtualServiceSet) VirtualServiceSet 
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &virtualServiceSet{set: newSet}
+	return &virtualServiceSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *virtualServiceSet) Intersection(set VirtualServiceSet) VirtualServiceSet {
@@ -1529,7 +1902,7 @@ func (s *virtualServiceSet) Intersection(set VirtualServiceSet) VirtualServiceSe
 	for _, obj := range newSet.List() {
 		virtualServiceList = append(virtualServiceList, obj.(*networking_istio_io_v1beta1.VirtualService))
 	}
-	return NewVirtualServiceSet(virtualServiceList...)
+	return NewVirtualServiceSet(s.sortFunc, s.equalityFunc, virtualServiceList...)
 }
 
 func (s *virtualServiceSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1beta1.VirtualService, error) {
@@ -1571,7 +1944,27 @@ func (s *virtualServiceSet) Clone() VirtualServiceSet {
 	if s == nil {
 		return nil
 	}
-	return &virtualServiceSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return &virtualServiceSet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			genericEqualityFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *virtualServiceSet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
+}
+
+func (s *virtualServiceSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }
 
 type SidecarSet interface {
@@ -1609,30 +2002,62 @@ type SidecarSet interface {
 	Delta(newSet SidecarSet) sksets.ResourceDelta
 	// Create a deep copy of the current SidecarSet
 	Clone() SidecarSet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
-func makeGenericSidecarSet(sidecarList []*networking_istio_io_v1beta1.Sidecar) sksets.ResourceSet {
+func makeGenericSidecarSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	sidecarList []*networking_istio_io_v1beta1.Sidecar,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range sidecarList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type sidecarSet struct {
-	set sksets.ResourceSet
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
-func NewSidecarSet(sidecarList ...*networking_istio_io_v1beta1.Sidecar) SidecarSet {
-	return &sidecarSet{set: makeGenericSidecarSet(sidecarList)}
+func NewSidecarSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	sidecarList ...*networking_istio_io_v1beta1.Sidecar,
+) SidecarSet {
+	return &sidecarSet{
+		set:          makeGenericSidecarSet(sortFunc, equalityFunc, sidecarList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
-func NewSidecarSetFromList(sidecarList *networking_istio_io_v1beta1.SidecarList) SidecarSet {
+func NewSidecarSetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	sidecarList *networking_istio_io_v1beta1.SidecarList,
+) SidecarSet {
 	list := make([]*networking_istio_io_v1beta1.Sidecar, 0, len(sidecarList.Items))
 	for idx := range sidecarList.Items {
 		list = append(list, sidecarList.Items[idx])
 	}
-	return &sidecarSet{set: makeGenericSidecarSet(list)}
+	return &sidecarSet{
+		set:          makeGenericSidecarSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
 func (s *sidecarSet) Keys() sets.String {
@@ -1687,7 +2112,7 @@ func (s *sidecarSet) Map() map[string]*networking_istio_io_v1beta1.Sidecar {
 	}
 
 	newMap := map[string]*networking_istio_io_v1beta1.Sidecar{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*networking_istio_io_v1beta1.Sidecar)
 	}
 	return newMap
@@ -1732,7 +2157,7 @@ func (s *sidecarSet) Union(set SidecarSet) SidecarSet {
 	if s == nil {
 		return set
 	}
-	return NewSidecarSet(append(s.List(), set.List()...)...)
+	return NewSidecarSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *sidecarSet) Difference(set SidecarSet) SidecarSet {
@@ -1740,7 +2165,11 @@ func (s *sidecarSet) Difference(set SidecarSet) SidecarSet {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &sidecarSet{set: newSet}
+	return &sidecarSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *sidecarSet) Intersection(set SidecarSet) SidecarSet {
@@ -1752,7 +2181,7 @@ func (s *sidecarSet) Intersection(set SidecarSet) SidecarSet {
 	for _, obj := range newSet.List() {
 		sidecarList = append(sidecarList, obj.(*networking_istio_io_v1beta1.Sidecar))
 	}
-	return NewSidecarSet(sidecarList...)
+	return NewSidecarSet(s.sortFunc, s.equalityFunc, sidecarList...)
 }
 
 func (s *sidecarSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1beta1.Sidecar, error) {
@@ -1794,5 +2223,25 @@ func (s *sidecarSet) Clone() SidecarSet {
 	if s == nil {
 		return nil
 	}
-	return &sidecarSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return &sidecarSet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			genericEqualityFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *sidecarSet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
+}
+
+func (s *sidecarSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }

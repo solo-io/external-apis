@@ -13,6 +13,7 @@ import (
 	sets "github.com/solo-io/skv2/contrib/pkg/sets"
 	ezkube "github.com/solo-io/skv2/pkg/ezkube"
 	sets0 "k8s.io/apimachinery/pkg/util/sets"
+	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // MockHTTPRouteGroupSet is a mock of HTTPRouteGroupSet interface.
@@ -133,6 +134,34 @@ func (m *MockHTTPRouteGroupSet) Generic() sets.ResourceSet {
 func (mr *MockHTTPRouteGroupSetMockRecorder) Generic() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Generic))
+}
+
+// GetEqualityFunc mocks base method.
+func (m *MockHTTPRouteGroupSet) GetEqualityFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEqualityFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetEqualityFunc indicates an expected call of GetEqualityFunc.
+func (mr *MockHTTPRouteGroupSetMockRecorder) GetEqualityFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEqualityFunc", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).GetEqualityFunc))
+}
+
+// GetSortFunc mocks base method.
+func (m *MockHTTPRouteGroupSet) GetSortFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSortFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetSortFunc indicates an expected call of GetSortFunc.
+func (mr *MockHTTPRouteGroupSetMockRecorder) GetSortFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSortFunc", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).GetSortFunc))
 }
 
 // Has mocks base method.

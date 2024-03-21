@@ -11,6 +11,7 @@ import (
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"
 	"github.com/solo-io/skv2/pkg/ezkube"
 	"k8s.io/apimachinery/pkg/util/sets"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 type ValidatingWebhookConfigurationSet interface {
@@ -48,30 +49,62 @@ type ValidatingWebhookConfigurationSet interface {
 	Delta(newSet ValidatingWebhookConfigurationSet) sksets.ResourceDelta
 	// Create a deep copy of the current ValidatingWebhookConfigurationSet
 	Clone() ValidatingWebhookConfigurationSet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
-func makeGenericValidatingWebhookConfigurationSet(validatingWebhookConfigurationList []*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration) sksets.ResourceSet {
+func makeGenericValidatingWebhookConfigurationSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	validatingWebhookConfigurationList []*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range validatingWebhookConfigurationList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type validatingWebhookConfigurationSet struct {
-	set sksets.ResourceSet
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
-func NewValidatingWebhookConfigurationSet(validatingWebhookConfigurationList ...*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration) ValidatingWebhookConfigurationSet {
-	return &validatingWebhookConfigurationSet{set: makeGenericValidatingWebhookConfigurationSet(validatingWebhookConfigurationList)}
+func NewValidatingWebhookConfigurationSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	validatingWebhookConfigurationList ...*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration,
+) ValidatingWebhookConfigurationSet {
+	return &validatingWebhookConfigurationSet{
+		set:          makeGenericValidatingWebhookConfigurationSet(sortFunc, equalityFunc, validatingWebhookConfigurationList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
-func NewValidatingWebhookConfigurationSetFromList(validatingWebhookConfigurationList *admissionregistration_k8s_io_v1.ValidatingWebhookConfigurationList) ValidatingWebhookConfigurationSet {
+func NewValidatingWebhookConfigurationSetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	validatingWebhookConfigurationList *admissionregistration_k8s_io_v1.ValidatingWebhookConfigurationList,
+) ValidatingWebhookConfigurationSet {
 	list := make([]*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration, 0, len(validatingWebhookConfigurationList.Items))
 	for idx := range validatingWebhookConfigurationList.Items {
 		list = append(list, &validatingWebhookConfigurationList.Items[idx])
 	}
-	return &validatingWebhookConfigurationSet{set: makeGenericValidatingWebhookConfigurationSet(list)}
+	return &validatingWebhookConfigurationSet{
+		set:          makeGenericValidatingWebhookConfigurationSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
 func (s *validatingWebhookConfigurationSet) Keys() sets.String {
@@ -126,7 +159,7 @@ func (s *validatingWebhookConfigurationSet) Map() map[string]*admissionregistrat
 	}
 
 	newMap := map[string]*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration)
 	}
 	return newMap
@@ -171,7 +204,7 @@ func (s *validatingWebhookConfigurationSet) Union(set ValidatingWebhookConfigura
 	if s == nil {
 		return set
 	}
-	return NewValidatingWebhookConfigurationSet(append(s.List(), set.List()...)...)
+	return NewValidatingWebhookConfigurationSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *validatingWebhookConfigurationSet) Difference(set ValidatingWebhookConfigurationSet) ValidatingWebhookConfigurationSet {
@@ -179,7 +212,11 @@ func (s *validatingWebhookConfigurationSet) Difference(set ValidatingWebhookConf
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &validatingWebhookConfigurationSet{set: newSet}
+	return &validatingWebhookConfigurationSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *validatingWebhookConfigurationSet) Intersection(set ValidatingWebhookConfigurationSet) ValidatingWebhookConfigurationSet {
@@ -191,7 +228,7 @@ func (s *validatingWebhookConfigurationSet) Intersection(set ValidatingWebhookCo
 	for _, obj := range newSet.List() {
 		validatingWebhookConfigurationList = append(validatingWebhookConfigurationList, obj.(*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration))
 	}
-	return NewValidatingWebhookConfigurationSet(validatingWebhookConfigurationList...)
+	return NewValidatingWebhookConfigurationSet(s.sortFunc, s.equalityFunc, validatingWebhookConfigurationList...)
 }
 
 func (s *validatingWebhookConfigurationSet) Find(id ezkube.ResourceId) (*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration, error) {
@@ -233,7 +270,27 @@ func (s *validatingWebhookConfigurationSet) Clone() ValidatingWebhookConfigurati
 	if s == nil {
 		return nil
 	}
-	return &validatingWebhookConfigurationSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return &validatingWebhookConfigurationSet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			genericEqualityFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *validatingWebhookConfigurationSet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
+}
+
+func (s *validatingWebhookConfigurationSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }
 
 type MutatingWebhookConfigurationSet interface {
@@ -271,30 +328,62 @@ type MutatingWebhookConfigurationSet interface {
 	Delta(newSet MutatingWebhookConfigurationSet) sksets.ResourceDelta
 	// Create a deep copy of the current MutatingWebhookConfigurationSet
 	Clone() MutatingWebhookConfigurationSet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
-func makeGenericMutatingWebhookConfigurationSet(mutatingWebhookConfigurationList []*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) sksets.ResourceSet {
+func makeGenericMutatingWebhookConfigurationSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	mutatingWebhookConfigurationList []*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range mutatingWebhookConfigurationList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type mutatingWebhookConfigurationSet struct {
-	set sksets.ResourceSet
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
-func NewMutatingWebhookConfigurationSet(mutatingWebhookConfigurationList ...*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) MutatingWebhookConfigurationSet {
-	return &mutatingWebhookConfigurationSet{set: makeGenericMutatingWebhookConfigurationSet(mutatingWebhookConfigurationList)}
+func NewMutatingWebhookConfigurationSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	mutatingWebhookConfigurationList ...*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration,
+) MutatingWebhookConfigurationSet {
+	return &mutatingWebhookConfigurationSet{
+		set:          makeGenericMutatingWebhookConfigurationSet(sortFunc, equalityFunc, mutatingWebhookConfigurationList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
-func NewMutatingWebhookConfigurationSetFromList(mutatingWebhookConfigurationList *admissionregistration_k8s_io_v1.MutatingWebhookConfigurationList) MutatingWebhookConfigurationSet {
+func NewMutatingWebhookConfigurationSetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	mutatingWebhookConfigurationList *admissionregistration_k8s_io_v1.MutatingWebhookConfigurationList,
+) MutatingWebhookConfigurationSet {
 	list := make([]*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration, 0, len(mutatingWebhookConfigurationList.Items))
 	for idx := range mutatingWebhookConfigurationList.Items {
 		list = append(list, &mutatingWebhookConfigurationList.Items[idx])
 	}
-	return &mutatingWebhookConfigurationSet{set: makeGenericMutatingWebhookConfigurationSet(list)}
+	return &mutatingWebhookConfigurationSet{
+		set:          makeGenericMutatingWebhookConfigurationSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
 func (s *mutatingWebhookConfigurationSet) Keys() sets.String {
@@ -349,7 +438,7 @@ func (s *mutatingWebhookConfigurationSet) Map() map[string]*admissionregistratio
 	}
 
 	newMap := map[string]*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration)
 	}
 	return newMap
@@ -394,7 +483,7 @@ func (s *mutatingWebhookConfigurationSet) Union(set MutatingWebhookConfiguration
 	if s == nil {
 		return set
 	}
-	return NewMutatingWebhookConfigurationSet(append(s.List(), set.List()...)...)
+	return NewMutatingWebhookConfigurationSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *mutatingWebhookConfigurationSet) Difference(set MutatingWebhookConfigurationSet) MutatingWebhookConfigurationSet {
@@ -402,7 +491,11 @@ func (s *mutatingWebhookConfigurationSet) Difference(set MutatingWebhookConfigur
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &mutatingWebhookConfigurationSet{set: newSet}
+	return &mutatingWebhookConfigurationSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *mutatingWebhookConfigurationSet) Intersection(set MutatingWebhookConfigurationSet) MutatingWebhookConfigurationSet {
@@ -414,7 +507,7 @@ func (s *mutatingWebhookConfigurationSet) Intersection(set MutatingWebhookConfig
 	for _, obj := range newSet.List() {
 		mutatingWebhookConfigurationList = append(mutatingWebhookConfigurationList, obj.(*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration))
 	}
-	return NewMutatingWebhookConfigurationSet(mutatingWebhookConfigurationList...)
+	return NewMutatingWebhookConfigurationSet(s.sortFunc, s.equalityFunc, mutatingWebhookConfigurationList...)
 }
 
 func (s *mutatingWebhookConfigurationSet) Find(id ezkube.ResourceId) (*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration, error) {
@@ -456,5 +549,25 @@ func (s *mutatingWebhookConfigurationSet) Clone() MutatingWebhookConfigurationSe
 	if s == nil {
 		return nil
 	}
-	return &mutatingWebhookConfigurationSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return &mutatingWebhookConfigurationSet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			genericEqualityFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *mutatingWebhookConfigurationSet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
+}
+
+func (s *mutatingWebhookConfigurationSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }

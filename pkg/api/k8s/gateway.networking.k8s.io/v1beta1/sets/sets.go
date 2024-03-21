@@ -11,6 +11,7 @@ import (
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"
 	"github.com/solo-io/skv2/pkg/ezkube"
 	"k8s.io/apimachinery/pkg/util/sets"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 type GatewaySet interface {
@@ -48,30 +49,62 @@ type GatewaySet interface {
 	Delta(newSet GatewaySet) sksets.ResourceDelta
 	// Create a deep copy of the current GatewaySet
 	Clone() GatewaySet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
-func makeGenericGatewaySet(gatewayList []*gateway_networking_k8s_io_v1beta1.Gateway) sksets.ResourceSet {
+func makeGenericGatewaySet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	gatewayList []*gateway_networking_k8s_io_v1beta1.Gateway,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range gatewayList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type gatewaySet struct {
-	set sksets.ResourceSet
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
-func NewGatewaySet(gatewayList ...*gateway_networking_k8s_io_v1beta1.Gateway) GatewaySet {
-	return &gatewaySet{set: makeGenericGatewaySet(gatewayList)}
+func NewGatewaySet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	gatewayList ...*gateway_networking_k8s_io_v1beta1.Gateway,
+) GatewaySet {
+	return &gatewaySet{
+		set:          makeGenericGatewaySet(sortFunc, equalityFunc, gatewayList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
-func NewGatewaySetFromList(gatewayList *gateway_networking_k8s_io_v1beta1.GatewayList) GatewaySet {
+func NewGatewaySetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	gatewayList *gateway_networking_k8s_io_v1beta1.GatewayList,
+) GatewaySet {
 	list := make([]*gateway_networking_k8s_io_v1beta1.Gateway, 0, len(gatewayList.Items))
 	for idx := range gatewayList.Items {
 		list = append(list, &gatewayList.Items[idx])
 	}
-	return &gatewaySet{set: makeGenericGatewaySet(list)}
+	return &gatewaySet{
+		set:          makeGenericGatewaySet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
 func (s *gatewaySet) Keys() sets.String {
@@ -126,7 +159,7 @@ func (s *gatewaySet) Map() map[string]*gateway_networking_k8s_io_v1beta1.Gateway
 	}
 
 	newMap := map[string]*gateway_networking_k8s_io_v1beta1.Gateway{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*gateway_networking_k8s_io_v1beta1.Gateway)
 	}
 	return newMap
@@ -171,7 +204,7 @@ func (s *gatewaySet) Union(set GatewaySet) GatewaySet {
 	if s == nil {
 		return set
 	}
-	return NewGatewaySet(append(s.List(), set.List()...)...)
+	return NewGatewaySet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *gatewaySet) Difference(set GatewaySet) GatewaySet {
@@ -179,7 +212,11 @@ func (s *gatewaySet) Difference(set GatewaySet) GatewaySet {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &gatewaySet{set: newSet}
+	return &gatewaySet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *gatewaySet) Intersection(set GatewaySet) GatewaySet {
@@ -191,7 +228,7 @@ func (s *gatewaySet) Intersection(set GatewaySet) GatewaySet {
 	for _, obj := range newSet.List() {
 		gatewayList = append(gatewayList, obj.(*gateway_networking_k8s_io_v1beta1.Gateway))
 	}
-	return NewGatewaySet(gatewayList...)
+	return NewGatewaySet(s.sortFunc, s.equalityFunc, gatewayList...)
 }
 
 func (s *gatewaySet) Find(id ezkube.ResourceId) (*gateway_networking_k8s_io_v1beta1.Gateway, error) {
@@ -233,7 +270,27 @@ func (s *gatewaySet) Clone() GatewaySet {
 	if s == nil {
 		return nil
 	}
-	return &gatewaySet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return &gatewaySet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			genericEqualityFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *gatewaySet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
+}
+
+func (s *gatewaySet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }
 
 type GatewayClassSet interface {
@@ -271,30 +328,62 @@ type GatewayClassSet interface {
 	Delta(newSet GatewayClassSet) sksets.ResourceDelta
 	// Create a deep copy of the current GatewayClassSet
 	Clone() GatewayClassSet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
-func makeGenericGatewayClassSet(gatewayClassList []*gateway_networking_k8s_io_v1beta1.GatewayClass) sksets.ResourceSet {
+func makeGenericGatewayClassSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	gatewayClassList []*gateway_networking_k8s_io_v1beta1.GatewayClass,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range gatewayClassList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type gatewayClassSet struct {
-	set sksets.ResourceSet
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
-func NewGatewayClassSet(gatewayClassList ...*gateway_networking_k8s_io_v1beta1.GatewayClass) GatewayClassSet {
-	return &gatewayClassSet{set: makeGenericGatewayClassSet(gatewayClassList)}
+func NewGatewayClassSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	gatewayClassList ...*gateway_networking_k8s_io_v1beta1.GatewayClass,
+) GatewayClassSet {
+	return &gatewayClassSet{
+		set:          makeGenericGatewayClassSet(sortFunc, equalityFunc, gatewayClassList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
-func NewGatewayClassSetFromList(gatewayClassList *gateway_networking_k8s_io_v1beta1.GatewayClassList) GatewayClassSet {
+func NewGatewayClassSetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	gatewayClassList *gateway_networking_k8s_io_v1beta1.GatewayClassList,
+) GatewayClassSet {
 	list := make([]*gateway_networking_k8s_io_v1beta1.GatewayClass, 0, len(gatewayClassList.Items))
 	for idx := range gatewayClassList.Items {
 		list = append(list, &gatewayClassList.Items[idx])
 	}
-	return &gatewayClassSet{set: makeGenericGatewayClassSet(list)}
+	return &gatewayClassSet{
+		set:          makeGenericGatewayClassSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
 func (s *gatewayClassSet) Keys() sets.String {
@@ -349,7 +438,7 @@ func (s *gatewayClassSet) Map() map[string]*gateway_networking_k8s_io_v1beta1.Ga
 	}
 
 	newMap := map[string]*gateway_networking_k8s_io_v1beta1.GatewayClass{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*gateway_networking_k8s_io_v1beta1.GatewayClass)
 	}
 	return newMap
@@ -394,7 +483,7 @@ func (s *gatewayClassSet) Union(set GatewayClassSet) GatewayClassSet {
 	if s == nil {
 		return set
 	}
-	return NewGatewayClassSet(append(s.List(), set.List()...)...)
+	return NewGatewayClassSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *gatewayClassSet) Difference(set GatewayClassSet) GatewayClassSet {
@@ -402,7 +491,11 @@ func (s *gatewayClassSet) Difference(set GatewayClassSet) GatewayClassSet {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &gatewayClassSet{set: newSet}
+	return &gatewayClassSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *gatewayClassSet) Intersection(set GatewayClassSet) GatewayClassSet {
@@ -414,7 +507,7 @@ func (s *gatewayClassSet) Intersection(set GatewayClassSet) GatewayClassSet {
 	for _, obj := range newSet.List() {
 		gatewayClassList = append(gatewayClassList, obj.(*gateway_networking_k8s_io_v1beta1.GatewayClass))
 	}
-	return NewGatewayClassSet(gatewayClassList...)
+	return NewGatewayClassSet(s.sortFunc, s.equalityFunc, gatewayClassList...)
 }
 
 func (s *gatewayClassSet) Find(id ezkube.ResourceId) (*gateway_networking_k8s_io_v1beta1.GatewayClass, error) {
@@ -456,7 +549,27 @@ func (s *gatewayClassSet) Clone() GatewayClassSet {
 	if s == nil {
 		return nil
 	}
-	return &gatewayClassSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return &gatewayClassSet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			genericEqualityFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *gatewayClassSet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
+}
+
+func (s *gatewayClassSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }
 
 type HTTPRouteSet interface {
@@ -494,30 +607,62 @@ type HTTPRouteSet interface {
 	Delta(newSet HTTPRouteSet) sksets.ResourceDelta
 	// Create a deep copy of the current HTTPRouteSet
 	Clone() HTTPRouteSet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
-func makeGenericHTTPRouteSet(hTTPRouteList []*gateway_networking_k8s_io_v1beta1.HTTPRoute) sksets.ResourceSet {
+func makeGenericHTTPRouteSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	hTTPRouteList []*gateway_networking_k8s_io_v1beta1.HTTPRoute,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range hTTPRouteList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type hTTPRouteSet struct {
-	set sksets.ResourceSet
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
-func NewHTTPRouteSet(hTTPRouteList ...*gateway_networking_k8s_io_v1beta1.HTTPRoute) HTTPRouteSet {
-	return &hTTPRouteSet{set: makeGenericHTTPRouteSet(hTTPRouteList)}
+func NewHTTPRouteSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	hTTPRouteList ...*gateway_networking_k8s_io_v1beta1.HTTPRoute,
+) HTTPRouteSet {
+	return &hTTPRouteSet{
+		set:          makeGenericHTTPRouteSet(sortFunc, equalityFunc, hTTPRouteList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
-func NewHTTPRouteSetFromList(hTTPRouteList *gateway_networking_k8s_io_v1beta1.HTTPRouteList) HTTPRouteSet {
+func NewHTTPRouteSetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	hTTPRouteList *gateway_networking_k8s_io_v1beta1.HTTPRouteList,
+) HTTPRouteSet {
 	list := make([]*gateway_networking_k8s_io_v1beta1.HTTPRoute, 0, len(hTTPRouteList.Items))
 	for idx := range hTTPRouteList.Items {
 		list = append(list, &hTTPRouteList.Items[idx])
 	}
-	return &hTTPRouteSet{set: makeGenericHTTPRouteSet(list)}
+	return &hTTPRouteSet{
+		set:          makeGenericHTTPRouteSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
 func (s *hTTPRouteSet) Keys() sets.String {
@@ -572,7 +717,7 @@ func (s *hTTPRouteSet) Map() map[string]*gateway_networking_k8s_io_v1beta1.HTTPR
 	}
 
 	newMap := map[string]*gateway_networking_k8s_io_v1beta1.HTTPRoute{}
-	for k, v := range s.Generic().Map() {
+	for k, v := range s.Generic().Map().Map() {
 		newMap[k] = v.(*gateway_networking_k8s_io_v1beta1.HTTPRoute)
 	}
 	return newMap
@@ -617,7 +762,7 @@ func (s *hTTPRouteSet) Union(set HTTPRouteSet) HTTPRouteSet {
 	if s == nil {
 		return set
 	}
-	return NewHTTPRouteSet(append(s.List(), set.List()...)...)
+	return NewHTTPRouteSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *hTTPRouteSet) Difference(set HTTPRouteSet) HTTPRouteSet {
@@ -625,7 +770,11 @@ func (s *hTTPRouteSet) Difference(set HTTPRouteSet) HTTPRouteSet {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &hTTPRouteSet{set: newSet}
+	return &hTTPRouteSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *hTTPRouteSet) Intersection(set HTTPRouteSet) HTTPRouteSet {
@@ -637,7 +786,7 @@ func (s *hTTPRouteSet) Intersection(set HTTPRouteSet) HTTPRouteSet {
 	for _, obj := range newSet.List() {
 		hTTPRouteList = append(hTTPRouteList, obj.(*gateway_networking_k8s_io_v1beta1.HTTPRoute))
 	}
-	return NewHTTPRouteSet(hTTPRouteList...)
+	return NewHTTPRouteSet(s.sortFunc, s.equalityFunc, hTTPRouteList...)
 }
 
 func (s *hTTPRouteSet) Find(id ezkube.ResourceId) (*gateway_networking_k8s_io_v1beta1.HTTPRoute, error) {
@@ -679,5 +828,25 @@ func (s *hTTPRouteSet) Clone() HTTPRouteSet {
 	if s == nil {
 		return nil
 	}
-	return &hTTPRouteSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		return s.equalityFunc(a.(client.Object), b.(client.Object))
+	}
+	return &hTTPRouteSet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			genericEqualityFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *hTTPRouteSet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
+}
+
+func (s *hTTPRouteSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }

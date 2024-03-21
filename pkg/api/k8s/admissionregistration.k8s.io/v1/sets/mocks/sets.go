@@ -13,6 +13,7 @@ import (
 	ezkube "github.com/solo-io/skv2/pkg/ezkube"
 	v1 "k8s.io/api/admissionregistration/v1"
 	sets0 "k8s.io/apimachinery/pkg/util/sets"
+	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // MockValidatingWebhookConfigurationSet is a mock of ValidatingWebhookConfigurationSet interface.
@@ -133,6 +134,34 @@ func (m *MockValidatingWebhookConfigurationSet) Generic() sets.ResourceSet {
 func (mr *MockValidatingWebhookConfigurationSetMockRecorder) Generic() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockValidatingWebhookConfigurationSet)(nil).Generic))
+}
+
+// GetEqualityFunc mocks base method.
+func (m *MockValidatingWebhookConfigurationSet) GetEqualityFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEqualityFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetEqualityFunc indicates an expected call of GetEqualityFunc.
+func (mr *MockValidatingWebhookConfigurationSetMockRecorder) GetEqualityFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEqualityFunc", reflect.TypeOf((*MockValidatingWebhookConfigurationSet)(nil).GetEqualityFunc))
+}
+
+// GetSortFunc mocks base method.
+func (m *MockValidatingWebhookConfigurationSet) GetSortFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSortFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetSortFunc indicates an expected call of GetSortFunc.
+func (mr *MockValidatingWebhookConfigurationSetMockRecorder) GetSortFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSortFunc", reflect.TypeOf((*MockValidatingWebhookConfigurationSet)(nil).GetSortFunc))
 }
 
 // Has mocks base method.
@@ -389,6 +418,34 @@ func (m *MockMutatingWebhookConfigurationSet) Generic() sets.ResourceSet {
 func (mr *MockMutatingWebhookConfigurationSetMockRecorder) Generic() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockMutatingWebhookConfigurationSet)(nil).Generic))
+}
+
+// GetEqualityFunc mocks base method.
+func (m *MockMutatingWebhookConfigurationSet) GetEqualityFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEqualityFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetEqualityFunc indicates an expected call of GetEqualityFunc.
+func (mr *MockMutatingWebhookConfigurationSetMockRecorder) GetEqualityFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEqualityFunc", reflect.TypeOf((*MockMutatingWebhookConfigurationSet)(nil).GetEqualityFunc))
+}
+
+// GetSortFunc mocks base method.
+func (m *MockMutatingWebhookConfigurationSet) GetSortFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSortFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetSortFunc indicates an expected call of GetSortFunc.
+func (mr *MockMutatingWebhookConfigurationSetMockRecorder) GetSortFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSortFunc", reflect.TypeOf((*MockMutatingWebhookConfigurationSet)(nil).GetSortFunc))
 }
 
 // Has mocks base method.
