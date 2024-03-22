@@ -159,7 +159,7 @@ func (s *wasmPluginSet) Map() map[string]*extensions_istio_io_v1alpha1.WasmPlugi
 	}
 
 	newMap := map[string]*extensions_istio_io_v1alpha1.WasmPlugin{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*extensions_istio_io_v1alpha1.WasmPlugin)
 	}
 	return newMap

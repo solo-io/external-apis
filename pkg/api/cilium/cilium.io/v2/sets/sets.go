@@ -159,7 +159,7 @@ func (s *ciliumNetworkPolicySet) Map() map[string]*cilium_io_v2.CiliumNetworkPol
 	}
 
 	newMap := map[string]*cilium_io_v2.CiliumNetworkPolicy{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*cilium_io_v2.CiliumNetworkPolicy)
 	}
 	return newMap

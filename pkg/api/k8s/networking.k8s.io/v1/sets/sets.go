@@ -159,7 +159,7 @@ func (s *networkPolicySet) Map() map[string]*networking_k8s_io_v1.NetworkPolicy 
 	}
 
 	newMap := map[string]*networking_k8s_io_v1.NetworkPolicy{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*networking_k8s_io_v1.NetworkPolicy)
 	}
 	return newMap

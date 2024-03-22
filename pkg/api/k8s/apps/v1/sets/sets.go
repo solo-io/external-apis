@@ -159,7 +159,7 @@ func (s *deploymentSet) Map() map[string]*apps_v1.Deployment {
 	}
 
 	newMap := map[string]*apps_v1.Deployment{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*apps_v1.Deployment)
 	}
 	return newMap
@@ -438,7 +438,7 @@ func (s *replicaSetSet) Map() map[string]*apps_v1.ReplicaSet {
 	}
 
 	newMap := map[string]*apps_v1.ReplicaSet{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*apps_v1.ReplicaSet)
 	}
 	return newMap
@@ -717,7 +717,7 @@ func (s *daemonSetSet) Map() map[string]*apps_v1.DaemonSet {
 	}
 
 	newMap := map[string]*apps_v1.DaemonSet{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*apps_v1.DaemonSet)
 	}
 	return newMap
@@ -996,7 +996,7 @@ func (s *statefulSetSet) Map() map[string]*apps_v1.StatefulSet {
 	}
 
 	newMap := map[string]*apps_v1.StatefulSet{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*apps_v1.StatefulSet)
 	}
 	return newMap

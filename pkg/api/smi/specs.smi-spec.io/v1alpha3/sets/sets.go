@@ -159,7 +159,7 @@ func (s *hTTPRouteGroupSet) Map() map[string]*specs_smi_spec_io_v1alpha3.HTTPRou
 	}
 
 	newMap := map[string]*specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup)
 	}
 	return newMap

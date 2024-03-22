@@ -159,7 +159,7 @@ func (s *secretSet) Map() map[string]*v1.Secret {
 	}
 
 	newMap := map[string]*v1.Secret{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*v1.Secret)
 	}
 	return newMap
@@ -438,7 +438,7 @@ func (s *serviceAccountSet) Map() map[string]*v1.ServiceAccount {
 	}
 
 	newMap := map[string]*v1.ServiceAccount{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*v1.ServiceAccount)
 	}
 	return newMap
@@ -717,7 +717,7 @@ func (s *configMapSet) Map() map[string]*v1.ConfigMap {
 	}
 
 	newMap := map[string]*v1.ConfigMap{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*v1.ConfigMap)
 	}
 	return newMap
@@ -996,7 +996,7 @@ func (s *serviceSet) Map() map[string]*v1.Service {
 	}
 
 	newMap := map[string]*v1.Service{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*v1.Service)
 	}
 	return newMap
@@ -1275,7 +1275,7 @@ func (s *podSet) Map() map[string]*v1.Pod {
 	}
 
 	newMap := map[string]*v1.Pod{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*v1.Pod)
 	}
 	return newMap
@@ -1554,7 +1554,7 @@ func (s *endpointsSet) Map() map[string]*v1.Endpoints {
 	}
 
 	newMap := map[string]*v1.Endpoints{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*v1.Endpoints)
 	}
 	return newMap
@@ -1833,7 +1833,7 @@ func (s *namespaceSet) Map() map[string]*v1.Namespace {
 	}
 
 	newMap := map[string]*v1.Namespace{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*v1.Namespace)
 	}
 	return newMap
@@ -2112,7 +2112,7 @@ func (s *nodeSet) Map() map[string]*v1.Node {
 	}
 
 	newMap := map[string]*v1.Node{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*v1.Node)
 	}
 	return newMap

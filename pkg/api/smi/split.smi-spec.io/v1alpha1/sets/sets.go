@@ -159,7 +159,7 @@ func (s *trafficSplitSet) Map() map[string]*split_smi_spec_io_v1alpha1.TrafficSp
 	}
 
 	newMap := map[string]*split_smi_spec_io_v1alpha1.TrafficSplit{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*split_smi_spec_io_v1alpha1.TrafficSplit)
 	}
 	return newMap

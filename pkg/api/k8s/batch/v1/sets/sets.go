@@ -159,7 +159,7 @@ func (s *jobSet) Map() map[string]*batch_v1.Job {
 	}
 
 	newMap := map[string]*batch_v1.Job{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*batch_v1.Job)
 	}
 	return newMap

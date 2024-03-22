@@ -159,7 +159,7 @@ func (s *telemetrySet) Map() map[string]*telemetry_istio_io_v1alpha1.Telemetry {
 	}
 
 	newMap := map[string]*telemetry_istio_io_v1alpha1.Telemetry{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*telemetry_istio_io_v1alpha1.Telemetry)
 	}
 	return newMap

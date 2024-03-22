@@ -159,7 +159,7 @@ func (s *meshSet) Map() map[string]*appmesh_k8s_aws_v1beta2.Mesh {
 	}
 
 	newMap := map[string]*appmesh_k8s_aws_v1beta2.Mesh{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*appmesh_k8s_aws_v1beta2.Mesh)
 	}
 	return newMap
@@ -438,7 +438,7 @@ func (s *virtualServiceSet) Map() map[string]*appmesh_k8s_aws_v1beta2.VirtualSer
 	}
 
 	newMap := map[string]*appmesh_k8s_aws_v1beta2.VirtualService{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*appmesh_k8s_aws_v1beta2.VirtualService)
 	}
 	return newMap
@@ -717,7 +717,7 @@ func (s *virtualNodeSet) Map() map[string]*appmesh_k8s_aws_v1beta2.VirtualNode {
 	}
 
 	newMap := map[string]*appmesh_k8s_aws_v1beta2.VirtualNode{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*appmesh_k8s_aws_v1beta2.VirtualNode)
 	}
 	return newMap
@@ -996,7 +996,7 @@ func (s *virtualRouterSet) Map() map[string]*appmesh_k8s_aws_v1beta2.VirtualRout
 	}
 
 	newMap := map[string]*appmesh_k8s_aws_v1beta2.VirtualRouter{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*appmesh_k8s_aws_v1beta2.VirtualRouter)
 	}
 	return newMap
@@ -1275,7 +1275,7 @@ func (s *virtualGatewaySet) Map() map[string]*appmesh_k8s_aws_v1beta2.VirtualGat
 	}
 
 	newMap := map[string]*appmesh_k8s_aws_v1beta2.VirtualGateway{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*appmesh_k8s_aws_v1beta2.VirtualGateway)
 	}
 	return newMap
@@ -1554,7 +1554,7 @@ func (s *gatewayRouteSet) Map() map[string]*appmesh_k8s_aws_v1beta2.GatewayRoute
 	}
 
 	newMap := map[string]*appmesh_k8s_aws_v1beta2.GatewayRoute{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*appmesh_k8s_aws_v1beta2.GatewayRoute)
 	}
 	return newMap

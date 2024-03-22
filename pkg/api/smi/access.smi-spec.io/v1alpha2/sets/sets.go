@@ -159,7 +159,7 @@ func (s *trafficTargetSet) Map() map[string]*access_smi_spec_io_v1alpha2.Traffic
 	}
 
 	newMap := map[string]*access_smi_spec_io_v1alpha2.TrafficTarget{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*access_smi_spec_io_v1alpha2.TrafficTarget)
 	}
 	return newMap

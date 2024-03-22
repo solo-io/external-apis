@@ -159,7 +159,7 @@ func (s *envoyFilterSet) Map() map[string]*networking_istio_io_v1alpha3.EnvoyFil
 	}
 
 	newMap := map[string]*networking_istio_io_v1alpha3.EnvoyFilter{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*networking_istio_io_v1alpha3.EnvoyFilter)
 	}
 	return newMap

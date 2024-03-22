@@ -159,7 +159,7 @@ func (s *istioOperatorSet) Map() map[string]*install_istio_io_v1alpha1.IstioOper
 	}
 
 	newMap := map[string]*install_istio_io_v1alpha1.IstioOperator{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*install_istio_io_v1alpha1.IstioOperator)
 	}
 	return newMap

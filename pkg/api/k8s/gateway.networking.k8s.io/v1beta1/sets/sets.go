@@ -159,7 +159,7 @@ func (s *gatewaySet) Map() map[string]*gateway_networking_k8s_io_v1beta1.Gateway
 	}
 
 	newMap := map[string]*gateway_networking_k8s_io_v1beta1.Gateway{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*gateway_networking_k8s_io_v1beta1.Gateway)
 	}
 	return newMap
@@ -438,7 +438,7 @@ func (s *gatewayClassSet) Map() map[string]*gateway_networking_k8s_io_v1beta1.Ga
 	}
 
 	newMap := map[string]*gateway_networking_k8s_io_v1beta1.GatewayClass{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*gateway_networking_k8s_io_v1beta1.GatewayClass)
 	}
 	return newMap
@@ -717,7 +717,7 @@ func (s *hTTPRouteSet) Map() map[string]*gateway_networking_k8s_io_v1beta1.HTTPR
 	}
 
 	newMap := map[string]*gateway_networking_k8s_io_v1beta1.HTTPRoute{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*gateway_networking_k8s_io_v1beta1.HTTPRoute)
 	}
 	return newMap

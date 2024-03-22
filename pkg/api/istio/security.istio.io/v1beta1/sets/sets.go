@@ -159,7 +159,7 @@ func (s *authorizationPolicySet) Map() map[string]*security_istio_io_v1beta1.Aut
 	}
 
 	newMap := map[string]*security_istio_io_v1beta1.AuthorizationPolicy{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*security_istio_io_v1beta1.AuthorizationPolicy)
 	}
 	return newMap
@@ -438,7 +438,7 @@ func (s *peerAuthenticationSet) Map() map[string]*security_istio_io_v1beta1.Peer
 	}
 
 	newMap := map[string]*security_istio_io_v1beta1.PeerAuthentication{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*security_istio_io_v1beta1.PeerAuthentication)
 	}
 	return newMap
@@ -717,7 +717,7 @@ func (s *requestAuthenticationSet) Map() map[string]*security_istio_io_v1beta1.R
 	}
 
 	newMap := map[string]*security_istio_io_v1beta1.RequestAuthentication{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*security_istio_io_v1beta1.RequestAuthentication)
 	}
 	return newMap

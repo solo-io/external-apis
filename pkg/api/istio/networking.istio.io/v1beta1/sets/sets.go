@@ -159,7 +159,7 @@ func (s *destinationRuleSet) Map() map[string]*networking_istio_io_v1beta1.Desti
 	}
 
 	newMap := map[string]*networking_istio_io_v1beta1.DestinationRule{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*networking_istio_io_v1beta1.DestinationRule)
 	}
 	return newMap
@@ -438,7 +438,7 @@ func (s *gatewaySet) Map() map[string]*networking_istio_io_v1beta1.Gateway {
 	}
 
 	newMap := map[string]*networking_istio_io_v1beta1.Gateway{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*networking_istio_io_v1beta1.Gateway)
 	}
 	return newMap
@@ -717,7 +717,7 @@ func (s *proxyConfigSet) Map() map[string]*networking_istio_io_v1beta1.ProxyConf
 	}
 
 	newMap := map[string]*networking_istio_io_v1beta1.ProxyConfig{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*networking_istio_io_v1beta1.ProxyConfig)
 	}
 	return newMap
@@ -996,7 +996,7 @@ func (s *serviceEntrySet) Map() map[string]*networking_istio_io_v1beta1.ServiceE
 	}
 
 	newMap := map[string]*networking_istio_io_v1beta1.ServiceEntry{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*networking_istio_io_v1beta1.ServiceEntry)
 	}
 	return newMap
@@ -1275,7 +1275,7 @@ func (s *workloadEntrySet) Map() map[string]*networking_istio_io_v1beta1.Workloa
 	}
 
 	newMap := map[string]*networking_istio_io_v1beta1.WorkloadEntry{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*networking_istio_io_v1beta1.WorkloadEntry)
 	}
 	return newMap
@@ -1554,7 +1554,7 @@ func (s *workloadGroupSet) Map() map[string]*networking_istio_io_v1beta1.Workloa
 	}
 
 	newMap := map[string]*networking_istio_io_v1beta1.WorkloadGroup{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*networking_istio_io_v1beta1.WorkloadGroup)
 	}
 	return newMap
@@ -1833,7 +1833,7 @@ func (s *virtualServiceSet) Map() map[string]*networking_istio_io_v1beta1.Virtua
 	}
 
 	newMap := map[string]*networking_istio_io_v1beta1.VirtualService{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*networking_istio_io_v1beta1.VirtualService)
 	}
 	return newMap
@@ -2112,7 +2112,7 @@ func (s *sidecarSet) Map() map[string]*networking_istio_io_v1beta1.Sidecar {
 	}
 
 	newMap := map[string]*networking_istio_io_v1beta1.Sidecar{}
-	for k, v := range s.Generic().Map().Map() {
+	for k, v := range s.Generic().Map() {
 		newMap[k] = v.(*networking_istio_io_v1beta1.Sidecar)
 	}
 	return newMap
