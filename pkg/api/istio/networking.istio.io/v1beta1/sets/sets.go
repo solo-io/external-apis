@@ -10,6 +10,7 @@ import (
 	"github.com/rotisserie/eris"
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"
 	"github.com/solo-io/skv2/pkg/ezkube"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -65,10 +66,46 @@ func makeGenericDestinationRuleSet(
 		genericResources = append(genericResources, obj)
 	}
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
-		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &networking_istio_io_v1beta1.DestinationRule{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &networking_istio_io_v1beta1.DestinationRule{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return sortFunc(objToInsert, objExisting)
 	}
 	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
-		return equalityFunc(a.(client.Object), b.(client.Object))
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &networking_istio_io_v1beta1.DestinationRule{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &networking_istio_io_v1beta1.DestinationRule{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return equalityFunc(objA, objB)
 	}
 	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
@@ -271,10 +308,46 @@ func (s *destinationRuleSet) Clone() DestinationRuleSet {
 		return nil
 	}
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
-		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &networking_istio_io_v1beta1.DestinationRule{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &networking_istio_io_v1beta1.DestinationRule{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return s.sortFunc(objToInsert, objExisting)
 	}
 	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
-		return s.equalityFunc(a.(client.Object), b.(client.Object))
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &networking_istio_io_v1beta1.DestinationRule{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &networking_istio_io_v1beta1.DestinationRule{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return s.equalityFunc(objA, objB)
 	}
 	return &destinationRuleSet{
 		set: sksets.NewResourceSet(
@@ -344,10 +417,46 @@ func makeGenericGatewaySet(
 		genericResources = append(genericResources, obj)
 	}
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
-		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &networking_istio_io_v1beta1.Gateway{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &networking_istio_io_v1beta1.Gateway{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return sortFunc(objToInsert, objExisting)
 	}
 	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
-		return equalityFunc(a.(client.Object), b.(client.Object))
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &networking_istio_io_v1beta1.Gateway{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &networking_istio_io_v1beta1.Gateway{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return equalityFunc(objA, objB)
 	}
 	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
@@ -550,10 +659,46 @@ func (s *gatewaySet) Clone() GatewaySet {
 		return nil
 	}
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
-		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &networking_istio_io_v1beta1.Gateway{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &networking_istio_io_v1beta1.Gateway{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return s.sortFunc(objToInsert, objExisting)
 	}
 	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
-		return s.equalityFunc(a.(client.Object), b.(client.Object))
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &networking_istio_io_v1beta1.Gateway{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &networking_istio_io_v1beta1.Gateway{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return s.equalityFunc(objA, objB)
 	}
 	return &gatewaySet{
 		set: sksets.NewResourceSet(
@@ -623,10 +768,46 @@ func makeGenericProxyConfigSet(
 		genericResources = append(genericResources, obj)
 	}
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
-		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &networking_istio_io_v1beta1.ProxyConfig{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &networking_istio_io_v1beta1.ProxyConfig{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return sortFunc(objToInsert, objExisting)
 	}
 	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
-		return equalityFunc(a.(client.Object), b.(client.Object))
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &networking_istio_io_v1beta1.ProxyConfig{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &networking_istio_io_v1beta1.ProxyConfig{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return equalityFunc(objA, objB)
 	}
 	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
@@ -829,10 +1010,46 @@ func (s *proxyConfigSet) Clone() ProxyConfigSet {
 		return nil
 	}
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
-		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &networking_istio_io_v1beta1.ProxyConfig{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &networking_istio_io_v1beta1.ProxyConfig{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return s.sortFunc(objToInsert, objExisting)
 	}
 	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
-		return s.equalityFunc(a.(client.Object), b.(client.Object))
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &networking_istio_io_v1beta1.ProxyConfig{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &networking_istio_io_v1beta1.ProxyConfig{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return s.equalityFunc(objA, objB)
 	}
 	return &proxyConfigSet{
 		set: sksets.NewResourceSet(
@@ -902,10 +1119,46 @@ func makeGenericServiceEntrySet(
 		genericResources = append(genericResources, obj)
 	}
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
-		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &networking_istio_io_v1beta1.ServiceEntry{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &networking_istio_io_v1beta1.ServiceEntry{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return sortFunc(objToInsert, objExisting)
 	}
 	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
-		return equalityFunc(a.(client.Object), b.(client.Object))
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &networking_istio_io_v1beta1.ServiceEntry{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &networking_istio_io_v1beta1.ServiceEntry{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return equalityFunc(objA, objB)
 	}
 	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
@@ -1108,10 +1361,46 @@ func (s *serviceEntrySet) Clone() ServiceEntrySet {
 		return nil
 	}
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
-		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &networking_istio_io_v1beta1.ServiceEntry{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &networking_istio_io_v1beta1.ServiceEntry{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return s.sortFunc(objToInsert, objExisting)
 	}
 	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
-		return s.equalityFunc(a.(client.Object), b.(client.Object))
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &networking_istio_io_v1beta1.ServiceEntry{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &networking_istio_io_v1beta1.ServiceEntry{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return s.equalityFunc(objA, objB)
 	}
 	return &serviceEntrySet{
 		set: sksets.NewResourceSet(
@@ -1181,10 +1470,46 @@ func makeGenericWorkloadEntrySet(
 		genericResources = append(genericResources, obj)
 	}
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
-		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &networking_istio_io_v1beta1.WorkloadEntry{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &networking_istio_io_v1beta1.WorkloadEntry{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return sortFunc(objToInsert, objExisting)
 	}
 	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
-		return equalityFunc(a.(client.Object), b.(client.Object))
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &networking_istio_io_v1beta1.WorkloadEntry{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &networking_istio_io_v1beta1.WorkloadEntry{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return equalityFunc(objA, objB)
 	}
 	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
@@ -1387,10 +1712,46 @@ func (s *workloadEntrySet) Clone() WorkloadEntrySet {
 		return nil
 	}
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
-		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &networking_istio_io_v1beta1.WorkloadEntry{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &networking_istio_io_v1beta1.WorkloadEntry{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return s.sortFunc(objToInsert, objExisting)
 	}
 	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
-		return s.equalityFunc(a.(client.Object), b.(client.Object))
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &networking_istio_io_v1beta1.WorkloadEntry{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &networking_istio_io_v1beta1.WorkloadEntry{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return s.equalityFunc(objA, objB)
 	}
 	return &workloadEntrySet{
 		set: sksets.NewResourceSet(
@@ -1460,10 +1821,46 @@ func makeGenericWorkloadGroupSet(
 		genericResources = append(genericResources, obj)
 	}
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
-		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &networking_istio_io_v1beta1.WorkloadGroup{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &networking_istio_io_v1beta1.WorkloadGroup{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return sortFunc(objToInsert, objExisting)
 	}
 	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
-		return equalityFunc(a.(client.Object), b.(client.Object))
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &networking_istio_io_v1beta1.WorkloadGroup{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &networking_istio_io_v1beta1.WorkloadGroup{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return equalityFunc(objA, objB)
 	}
 	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
@@ -1666,10 +2063,46 @@ func (s *workloadGroupSet) Clone() WorkloadGroupSet {
 		return nil
 	}
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
-		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &networking_istio_io_v1beta1.WorkloadGroup{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &networking_istio_io_v1beta1.WorkloadGroup{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return s.sortFunc(objToInsert, objExisting)
 	}
 	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
-		return s.equalityFunc(a.(client.Object), b.(client.Object))
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &networking_istio_io_v1beta1.WorkloadGroup{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &networking_istio_io_v1beta1.WorkloadGroup{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return s.equalityFunc(objA, objB)
 	}
 	return &workloadGroupSet{
 		set: sksets.NewResourceSet(
@@ -1739,10 +2172,46 @@ func makeGenericVirtualServiceSet(
 		genericResources = append(genericResources, obj)
 	}
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
-		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &networking_istio_io_v1beta1.VirtualService{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &networking_istio_io_v1beta1.VirtualService{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return sortFunc(objToInsert, objExisting)
 	}
 	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
-		return equalityFunc(a.(client.Object), b.(client.Object))
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &networking_istio_io_v1beta1.VirtualService{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &networking_istio_io_v1beta1.VirtualService{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return equalityFunc(objA, objB)
 	}
 	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
@@ -1945,10 +2414,46 @@ func (s *virtualServiceSet) Clone() VirtualServiceSet {
 		return nil
 	}
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
-		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &networking_istio_io_v1beta1.VirtualService{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &networking_istio_io_v1beta1.VirtualService{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return s.sortFunc(objToInsert, objExisting)
 	}
 	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
-		return s.equalityFunc(a.(client.Object), b.(client.Object))
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &networking_istio_io_v1beta1.VirtualService{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &networking_istio_io_v1beta1.VirtualService{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return s.equalityFunc(objA, objB)
 	}
 	return &virtualServiceSet{
 		set: sksets.NewResourceSet(
@@ -2018,10 +2523,46 @@ func makeGenericSidecarSet(
 		genericResources = append(genericResources, obj)
 	}
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
-		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &networking_istio_io_v1beta1.Sidecar{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &networking_istio_io_v1beta1.Sidecar{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return sortFunc(objToInsert, objExisting)
 	}
 	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
-		return equalityFunc(a.(client.Object), b.(client.Object))
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &networking_istio_io_v1beta1.Sidecar{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &networking_istio_io_v1beta1.Sidecar{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return equalityFunc(objA, objB)
 	}
 	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
@@ -2224,10 +2765,46 @@ func (s *sidecarSet) Clone() SidecarSet {
 		return nil
 	}
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
-		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &networking_istio_io_v1beta1.Sidecar{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &networking_istio_io_v1beta1.Sidecar{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return s.sortFunc(objToInsert, objExisting)
 	}
 	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
-		return s.equalityFunc(a.(client.Object), b.(client.Object))
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &networking_istio_io_v1beta1.Sidecar{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &networking_istio_io_v1beta1.Sidecar{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return s.equalityFunc(objA, objB)
 	}
 	return &sidecarSet{
 		set: sksets.NewResourceSet(

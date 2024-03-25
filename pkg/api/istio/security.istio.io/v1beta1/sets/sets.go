@@ -10,6 +10,7 @@ import (
 	"github.com/rotisserie/eris"
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"
 	"github.com/solo-io/skv2/pkg/ezkube"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -65,10 +66,46 @@ func makeGenericAuthorizationPolicySet(
 		genericResources = append(genericResources, obj)
 	}
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
-		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &security_istio_io_v1beta1.AuthorizationPolicy{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &security_istio_io_v1beta1.AuthorizationPolicy{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return sortFunc(objToInsert, objExisting)
 	}
 	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
-		return equalityFunc(a.(client.Object), b.(client.Object))
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &security_istio_io_v1beta1.AuthorizationPolicy{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &security_istio_io_v1beta1.AuthorizationPolicy{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return equalityFunc(objA, objB)
 	}
 	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
@@ -271,10 +308,46 @@ func (s *authorizationPolicySet) Clone() AuthorizationPolicySet {
 		return nil
 	}
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
-		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &security_istio_io_v1beta1.AuthorizationPolicy{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &security_istio_io_v1beta1.AuthorizationPolicy{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return s.sortFunc(objToInsert, objExisting)
 	}
 	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
-		return s.equalityFunc(a.(client.Object), b.(client.Object))
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &security_istio_io_v1beta1.AuthorizationPolicy{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &security_istio_io_v1beta1.AuthorizationPolicy{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return s.equalityFunc(objA, objB)
 	}
 	return &authorizationPolicySet{
 		set: sksets.NewResourceSet(
@@ -344,10 +417,46 @@ func makeGenericPeerAuthenticationSet(
 		genericResources = append(genericResources, obj)
 	}
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
-		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &security_istio_io_v1beta1.PeerAuthentication{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &security_istio_io_v1beta1.PeerAuthentication{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return sortFunc(objToInsert, objExisting)
 	}
 	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
-		return equalityFunc(a.(client.Object), b.(client.Object))
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &security_istio_io_v1beta1.PeerAuthentication{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &security_istio_io_v1beta1.PeerAuthentication{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return equalityFunc(objA, objB)
 	}
 	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
@@ -550,10 +659,46 @@ func (s *peerAuthenticationSet) Clone() PeerAuthenticationSet {
 		return nil
 	}
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
-		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &security_istio_io_v1beta1.PeerAuthentication{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &security_istio_io_v1beta1.PeerAuthentication{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return s.sortFunc(objToInsert, objExisting)
 	}
 	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
-		return s.equalityFunc(a.(client.Object), b.(client.Object))
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &security_istio_io_v1beta1.PeerAuthentication{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &security_istio_io_v1beta1.PeerAuthentication{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return s.equalityFunc(objA, objB)
 	}
 	return &peerAuthenticationSet{
 		set: sksets.NewResourceSet(
@@ -623,10 +768,46 @@ func makeGenericRequestAuthenticationSet(
 		genericResources = append(genericResources, obj)
 	}
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
-		return sortFunc(toInsert.(client.Object), existing.(client.Object))
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &security_istio_io_v1beta1.RequestAuthentication{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &security_istio_io_v1beta1.RequestAuthentication{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return sortFunc(objToInsert, objExisting)
 	}
 	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
-		return equalityFunc(a.(client.Object), b.(client.Object))
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &security_istio_io_v1beta1.RequestAuthentication{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &security_istio_io_v1beta1.RequestAuthentication{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return equalityFunc(objA, objB)
 	}
 	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
@@ -829,10 +1010,46 @@ func (s *requestAuthenticationSet) Clone() RequestAuthenticationSet {
 		return nil
 	}
 	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
-		return s.sortFunc(toInsert.(client.Object), existing.(client.Object))
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &security_istio_io_v1beta1.RequestAuthentication{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &security_istio_io_v1beta1.RequestAuthentication{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return s.sortFunc(objToInsert, objExisting)
 	}
 	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
-		return s.equalityFunc(a.(client.Object), b.(client.Object))
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &security_istio_io_v1beta1.RequestAuthentication{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &security_istio_io_v1beta1.RequestAuthentication{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return s.equalityFunc(objA, objB)
 	}
 	return &requestAuthenticationSet{
 		set: sksets.NewResourceSet(
