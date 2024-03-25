@@ -10,7 +10,9 @@ import (
 	"github.com/rotisserie/eris"
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"
 	"github.com/solo-io/skv2/pkg/ezkube"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/sets"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 type CiliumNetworkPolicySet interface {
@@ -48,30 +50,98 @@ type CiliumNetworkPolicySet interface {
 	Delta(newSet CiliumNetworkPolicySet) sksets.ResourceDelta
 	// Create a deep copy of the current CiliumNetworkPolicySet
 	Clone() CiliumNetworkPolicySet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
-func makeGenericCiliumNetworkPolicySet(ciliumNetworkPolicyList []*cilium_io_v2.CiliumNetworkPolicy) sksets.ResourceSet {
+func makeGenericCiliumNetworkPolicySet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	ciliumNetworkPolicyList []*cilium_io_v2.CiliumNetworkPolicy,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range ciliumNetworkPolicyList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &cilium_io_v2.CiliumNetworkPolicy{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &cilium_io_v2.CiliumNetworkPolicy{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return sortFunc(objToInsert, objExisting)
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &cilium_io_v2.CiliumNetworkPolicy{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &cilium_io_v2.CiliumNetworkPolicy{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return equalityFunc(objA, objB)
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type ciliumNetworkPolicySet struct {
-	set sksets.ResourceSet
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
-func NewCiliumNetworkPolicySet(ciliumNetworkPolicyList ...*cilium_io_v2.CiliumNetworkPolicy) CiliumNetworkPolicySet {
-	return &ciliumNetworkPolicySet{set: makeGenericCiliumNetworkPolicySet(ciliumNetworkPolicyList)}
+func NewCiliumNetworkPolicySet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	ciliumNetworkPolicyList ...*cilium_io_v2.CiliumNetworkPolicy,
+) CiliumNetworkPolicySet {
+	return &ciliumNetworkPolicySet{
+		set:          makeGenericCiliumNetworkPolicySet(sortFunc, equalityFunc, ciliumNetworkPolicyList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
-func NewCiliumNetworkPolicySetFromList(ciliumNetworkPolicyList *cilium_io_v2.CiliumNetworkPolicyList) CiliumNetworkPolicySet {
+func NewCiliumNetworkPolicySetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	ciliumNetworkPolicyList *cilium_io_v2.CiliumNetworkPolicyList,
+) CiliumNetworkPolicySet {
 	list := make([]*cilium_io_v2.CiliumNetworkPolicy, 0, len(ciliumNetworkPolicyList.Items))
 	for idx := range ciliumNetworkPolicyList.Items {
 		list = append(list, &ciliumNetworkPolicyList.Items[idx])
 	}
-	return &ciliumNetworkPolicySet{set: makeGenericCiliumNetworkPolicySet(list)}
+	return &ciliumNetworkPolicySet{
+		set:          makeGenericCiliumNetworkPolicySet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
 func (s *ciliumNetworkPolicySet) Keys() sets.String {
@@ -171,7 +241,7 @@ func (s *ciliumNetworkPolicySet) Union(set CiliumNetworkPolicySet) CiliumNetwork
 	if s == nil {
 		return set
 	}
-	return NewCiliumNetworkPolicySet(append(s.List(), set.List()...)...)
+	return NewCiliumNetworkPolicySet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *ciliumNetworkPolicySet) Difference(set CiliumNetworkPolicySet) CiliumNetworkPolicySet {
@@ -179,7 +249,11 @@ func (s *ciliumNetworkPolicySet) Difference(set CiliumNetworkPolicySet) CiliumNe
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &ciliumNetworkPolicySet{set: newSet}
+	return &ciliumNetworkPolicySet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *ciliumNetworkPolicySet) Intersection(set CiliumNetworkPolicySet) CiliumNetworkPolicySet {
@@ -191,7 +265,7 @@ func (s *ciliumNetworkPolicySet) Intersection(set CiliumNetworkPolicySet) Cilium
 	for _, obj := range newSet.List() {
 		ciliumNetworkPolicyList = append(ciliumNetworkPolicyList, obj.(*cilium_io_v2.CiliumNetworkPolicy))
 	}
-	return NewCiliumNetworkPolicySet(ciliumNetworkPolicyList...)
+	return NewCiliumNetworkPolicySet(s.sortFunc, s.equalityFunc, ciliumNetworkPolicyList...)
 }
 
 func (s *ciliumNetworkPolicySet) Find(id ezkube.ResourceId) (*cilium_io_v2.CiliumNetworkPolicy, error) {
@@ -233,5 +307,61 @@ func (s *ciliumNetworkPolicySet) Clone() CiliumNetworkPolicySet {
 	if s == nil {
 		return nil
 	}
-	return &ciliumNetworkPolicySet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &cilium_io_v2.CiliumNetworkPolicy{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &cilium_io_v2.CiliumNetworkPolicy{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return s.sortFunc(objToInsert, objExisting)
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &cilium_io_v2.CiliumNetworkPolicy{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &cilium_io_v2.CiliumNetworkPolicy{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return s.equalityFunc(objA, objB)
+	}
+	return &ciliumNetworkPolicySet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			genericEqualityFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *ciliumNetworkPolicySet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
+}
+
+func (s *ciliumNetworkPolicySet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }

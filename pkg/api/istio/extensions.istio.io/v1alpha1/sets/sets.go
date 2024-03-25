@@ -10,7 +10,9 @@ import (
 	"github.com/rotisserie/eris"
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"
 	"github.com/solo-io/skv2/pkg/ezkube"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/sets"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 type WasmPluginSet interface {
@@ -48,30 +50,98 @@ type WasmPluginSet interface {
 	Delta(newSet WasmPluginSet) sksets.ResourceDelta
 	// Create a deep copy of the current WasmPluginSet
 	Clone() WasmPluginSet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
-func makeGenericWasmPluginSet(wasmPluginList []*extensions_istio_io_v1alpha1.WasmPlugin) sksets.ResourceSet {
+func makeGenericWasmPluginSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	wasmPluginList []*extensions_istio_io_v1alpha1.WasmPlugin,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range wasmPluginList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &extensions_istio_io_v1alpha1.WasmPlugin{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &extensions_istio_io_v1alpha1.WasmPlugin{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return sortFunc(objToInsert, objExisting)
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &extensions_istio_io_v1alpha1.WasmPlugin{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &extensions_istio_io_v1alpha1.WasmPlugin{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return equalityFunc(objA, objB)
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type wasmPluginSet struct {
-	set sksets.ResourceSet
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
-func NewWasmPluginSet(wasmPluginList ...*extensions_istio_io_v1alpha1.WasmPlugin) WasmPluginSet {
-	return &wasmPluginSet{set: makeGenericWasmPluginSet(wasmPluginList)}
+func NewWasmPluginSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	wasmPluginList ...*extensions_istio_io_v1alpha1.WasmPlugin,
+) WasmPluginSet {
+	return &wasmPluginSet{
+		set:          makeGenericWasmPluginSet(sortFunc, equalityFunc, wasmPluginList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
-func NewWasmPluginSetFromList(wasmPluginList *extensions_istio_io_v1alpha1.WasmPluginList) WasmPluginSet {
+func NewWasmPluginSetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	wasmPluginList *extensions_istio_io_v1alpha1.WasmPluginList,
+) WasmPluginSet {
 	list := make([]*extensions_istio_io_v1alpha1.WasmPlugin, 0, len(wasmPluginList.Items))
 	for idx := range wasmPluginList.Items {
 		list = append(list, wasmPluginList.Items[idx])
 	}
-	return &wasmPluginSet{set: makeGenericWasmPluginSet(list)}
+	return &wasmPluginSet{
+		set:          makeGenericWasmPluginSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
 func (s *wasmPluginSet) Keys() sets.String {
@@ -171,7 +241,7 @@ func (s *wasmPluginSet) Union(set WasmPluginSet) WasmPluginSet {
 	if s == nil {
 		return set
 	}
-	return NewWasmPluginSet(append(s.List(), set.List()...)...)
+	return NewWasmPluginSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *wasmPluginSet) Difference(set WasmPluginSet) WasmPluginSet {
@@ -179,7 +249,11 @@ func (s *wasmPluginSet) Difference(set WasmPluginSet) WasmPluginSet {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &wasmPluginSet{set: newSet}
+	return &wasmPluginSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *wasmPluginSet) Intersection(set WasmPluginSet) WasmPluginSet {
@@ -191,7 +265,7 @@ func (s *wasmPluginSet) Intersection(set WasmPluginSet) WasmPluginSet {
 	for _, obj := range newSet.List() {
 		wasmPluginList = append(wasmPluginList, obj.(*extensions_istio_io_v1alpha1.WasmPlugin))
 	}
-	return NewWasmPluginSet(wasmPluginList...)
+	return NewWasmPluginSet(s.sortFunc, s.equalityFunc, wasmPluginList...)
 }
 
 func (s *wasmPluginSet) Find(id ezkube.ResourceId) (*extensions_istio_io_v1alpha1.WasmPlugin, error) {
@@ -233,5 +307,61 @@ func (s *wasmPluginSet) Clone() WasmPluginSet {
 	if s == nil {
 		return nil
 	}
-	return &wasmPluginSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &extensions_istio_io_v1alpha1.WasmPlugin{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &extensions_istio_io_v1alpha1.WasmPlugin{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return s.sortFunc(objToInsert, objExisting)
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &extensions_istio_io_v1alpha1.WasmPlugin{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &extensions_istio_io_v1alpha1.WasmPlugin{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return s.equalityFunc(objA, objB)
+	}
+	return &wasmPluginSet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			genericEqualityFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *wasmPluginSet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
+}
+
+func (s *wasmPluginSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }

@@ -10,7 +10,9 @@ import (
 	"github.com/rotisserie/eris"
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"
 	"github.com/solo-io/skv2/pkg/ezkube"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/sets"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 type IstioOperatorSet interface {
@@ -48,30 +50,98 @@ type IstioOperatorSet interface {
 	Delta(newSet IstioOperatorSet) sksets.ResourceDelta
 	// Create a deep copy of the current IstioOperatorSet
 	Clone() IstioOperatorSet
+	// Get the sort function used by the set
+	GetSortFunc() func(toInsert, existing client.Object) bool
+	// Get the equality function used by the set
+	GetEqualityFunc() func(a, b client.Object) bool
 }
 
-func makeGenericIstioOperatorSet(istioOperatorList []*install_istio_io_v1alpha1.IstioOperator) sksets.ResourceSet {
+func makeGenericIstioOperatorSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	istioOperatorList []*install_istio_io_v1alpha1.IstioOperator,
+) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
 	for _, obj := range istioOperatorList {
 		genericResources = append(genericResources, obj)
 	}
-	return sksets.NewResourceSet(genericResources...)
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &install_istio_io_v1alpha1.IstioOperator{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &install_istio_io_v1alpha1.IstioOperator{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return sortFunc(objToInsert, objExisting)
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &install_istio_io_v1alpha1.IstioOperator{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &install_istio_io_v1alpha1.IstioOperator{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return equalityFunc(objA, objB)
+	}
+	return sksets.NewResourceSet(genericSortFunc, genericEqualityFunc, genericResources...)
 }
 
 type istioOperatorSet struct {
-	set sksets.ResourceSet
+	set          sksets.ResourceSet
+	sortFunc     func(toInsert, existing client.Object) bool
+	equalityFunc func(a, b client.Object) bool
 }
 
-func NewIstioOperatorSet(istioOperatorList ...*install_istio_io_v1alpha1.IstioOperator) IstioOperatorSet {
-	return &istioOperatorSet{set: makeGenericIstioOperatorSet(istioOperatorList)}
+func NewIstioOperatorSet(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	istioOperatorList ...*install_istio_io_v1alpha1.IstioOperator,
+) IstioOperatorSet {
+	return &istioOperatorSet{
+		set:          makeGenericIstioOperatorSet(sortFunc, equalityFunc, istioOperatorList),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
-func NewIstioOperatorSetFromList(istioOperatorList *install_istio_io_v1alpha1.IstioOperatorList) IstioOperatorSet {
+func NewIstioOperatorSetFromList(
+	sortFunc func(toInsert, existing client.Object) bool,
+	equalityFunc func(a, b client.Object) bool,
+	istioOperatorList *install_istio_io_v1alpha1.IstioOperatorList,
+) IstioOperatorSet {
 	list := make([]*install_istio_io_v1alpha1.IstioOperator, 0, len(istioOperatorList.Items))
 	for idx := range istioOperatorList.Items {
 		list = append(list, &istioOperatorList.Items[idx])
 	}
-	return &istioOperatorSet{set: makeGenericIstioOperatorSet(list)}
+	return &istioOperatorSet{
+		set:          makeGenericIstioOperatorSet(sortFunc, equalityFunc, list),
+		sortFunc:     sortFunc,
+		equalityFunc: equalityFunc,
+	}
 }
 
 func (s *istioOperatorSet) Keys() sets.String {
@@ -171,7 +241,7 @@ func (s *istioOperatorSet) Union(set IstioOperatorSet) IstioOperatorSet {
 	if s == nil {
 		return set
 	}
-	return NewIstioOperatorSet(append(s.List(), set.List()...)...)
+	return NewIstioOperatorSet(s.sortFunc, s.equalityFunc, append(s.List(), set.List()...)...)
 }
 
 func (s *istioOperatorSet) Difference(set IstioOperatorSet) IstioOperatorSet {
@@ -179,7 +249,11 @@ func (s *istioOperatorSet) Difference(set IstioOperatorSet) IstioOperatorSet {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &istioOperatorSet{set: newSet}
+	return &istioOperatorSet{
+		set:          newSet,
+		sortFunc:     s.sortFunc,
+		equalityFunc: s.equalityFunc,
+	}
 }
 
 func (s *istioOperatorSet) Intersection(set IstioOperatorSet) IstioOperatorSet {
@@ -191,7 +265,7 @@ func (s *istioOperatorSet) Intersection(set IstioOperatorSet) IstioOperatorSet {
 	for _, obj := range newSet.List() {
 		istioOperatorList = append(istioOperatorList, obj.(*install_istio_io_v1alpha1.IstioOperator))
 	}
-	return NewIstioOperatorSet(istioOperatorList...)
+	return NewIstioOperatorSet(s.sortFunc, s.equalityFunc, istioOperatorList...)
 }
 
 func (s *istioOperatorSet) Find(id ezkube.ResourceId) (*install_istio_io_v1alpha1.IstioOperator, error) {
@@ -233,5 +307,61 @@ func (s *istioOperatorSet) Clone() IstioOperatorSet {
 	if s == nil {
 		return nil
 	}
-	return &istioOperatorSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	genericSortFunc := func(toInsert, existing ezkube.ResourceId) bool {
+		objToInsert, ok := toInsert.(client.Object)
+		if !ok {
+			objToInsert = &install_istio_io_v1alpha1.IstioOperator{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      toInsert.GetName(),
+					Namespace: toInsert.GetNamespace(),
+				},
+			}
+		}
+		objExisting, ok := existing.(client.Object)
+		if !ok {
+			objExisting = &install_istio_io_v1alpha1.IstioOperator{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      existing.GetName(),
+					Namespace: existing.GetNamespace(),
+				},
+			}
+		}
+		return s.sortFunc(objToInsert, objExisting)
+	}
+	genericEqualityFunc := func(a, b ezkube.ResourceId) bool {
+		objA, ok := a.(client.Object)
+		if !ok {
+			objA = &install_istio_io_v1alpha1.IstioOperator{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      a.GetName(),
+					Namespace: a.GetNamespace(),
+				},
+			}
+		}
+		objB, ok := b.(client.Object)
+		if !ok {
+			objB = &install_istio_io_v1alpha1.IstioOperator{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      b.GetName(),
+					Namespace: b.GetNamespace(),
+				},
+			}
+		}
+		return s.equalityFunc(objA, objB)
+	}
+	return &istioOperatorSet{
+		set: sksets.NewResourceSet(
+			genericSortFunc,
+			genericEqualityFunc,
+			s.Generic().Clone().List()...,
+		),
+	}
+}
+
+func (s *istioOperatorSet) GetSortFunc() func(toInsert, existing client.Object) bool {
+	return s.sortFunc
+}
+
+func (s *istioOperatorSet) GetEqualityFunc() func(a, b client.Object) bool {
+	return s.equalityFunc
 }

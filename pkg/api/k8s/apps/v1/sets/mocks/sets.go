@@ -13,6 +13,7 @@ import (
 	ezkube "github.com/solo-io/skv2/pkg/ezkube"
 	v1 "k8s.io/api/apps/v1"
 	sets0 "k8s.io/apimachinery/pkg/util/sets"
+	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // MockDeploymentSet is a mock of DeploymentSet interface.
@@ -133,6 +134,34 @@ func (m *MockDeploymentSet) Generic() sets.ResourceSet {
 func (mr *MockDeploymentSetMockRecorder) Generic() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockDeploymentSet)(nil).Generic))
+}
+
+// GetEqualityFunc mocks base method.
+func (m *MockDeploymentSet) GetEqualityFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEqualityFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetEqualityFunc indicates an expected call of GetEqualityFunc.
+func (mr *MockDeploymentSetMockRecorder) GetEqualityFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEqualityFunc", reflect.TypeOf((*MockDeploymentSet)(nil).GetEqualityFunc))
+}
+
+// GetSortFunc mocks base method.
+func (m *MockDeploymentSet) GetSortFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSortFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetSortFunc indicates an expected call of GetSortFunc.
+func (mr *MockDeploymentSetMockRecorder) GetSortFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSortFunc", reflect.TypeOf((*MockDeploymentSet)(nil).GetSortFunc))
 }
 
 // Has mocks base method.
@@ -391,6 +420,34 @@ func (mr *MockReplicaSetSetMockRecorder) Generic() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockReplicaSetSet)(nil).Generic))
 }
 
+// GetEqualityFunc mocks base method.
+func (m *MockReplicaSetSet) GetEqualityFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEqualityFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetEqualityFunc indicates an expected call of GetEqualityFunc.
+func (mr *MockReplicaSetSetMockRecorder) GetEqualityFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEqualityFunc", reflect.TypeOf((*MockReplicaSetSet)(nil).GetEqualityFunc))
+}
+
+// GetSortFunc mocks base method.
+func (m *MockReplicaSetSet) GetSortFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSortFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetSortFunc indicates an expected call of GetSortFunc.
+func (mr *MockReplicaSetSetMockRecorder) GetSortFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSortFunc", reflect.TypeOf((*MockReplicaSetSet)(nil).GetSortFunc))
+}
+
 // Has mocks base method.
 func (m *MockReplicaSetSet) Has(replicaSet ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
@@ -647,6 +704,34 @@ func (mr *MockDaemonSetSetMockRecorder) Generic() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockDaemonSetSet)(nil).Generic))
 }
 
+// GetEqualityFunc mocks base method.
+func (m *MockDaemonSetSet) GetEqualityFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEqualityFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetEqualityFunc indicates an expected call of GetEqualityFunc.
+func (mr *MockDaemonSetSetMockRecorder) GetEqualityFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEqualityFunc", reflect.TypeOf((*MockDaemonSetSet)(nil).GetEqualityFunc))
+}
+
+// GetSortFunc mocks base method.
+func (m *MockDaemonSetSet) GetSortFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSortFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetSortFunc indicates an expected call of GetSortFunc.
+func (mr *MockDaemonSetSetMockRecorder) GetSortFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSortFunc", reflect.TypeOf((*MockDaemonSetSet)(nil).GetSortFunc))
+}
+
 // Has mocks base method.
 func (m *MockDaemonSetSet) Has(daemonSet ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
@@ -901,6 +986,34 @@ func (m *MockStatefulSetSet) Generic() sets.ResourceSet {
 func (mr *MockStatefulSetSetMockRecorder) Generic() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockStatefulSetSet)(nil).Generic))
+}
+
+// GetEqualityFunc mocks base method.
+func (m *MockStatefulSetSet) GetEqualityFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEqualityFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetEqualityFunc indicates an expected call of GetEqualityFunc.
+func (mr *MockStatefulSetSetMockRecorder) GetEqualityFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEqualityFunc", reflect.TypeOf((*MockStatefulSetSet)(nil).GetEqualityFunc))
+}
+
+// GetSortFunc mocks base method.
+func (m *MockStatefulSetSet) GetSortFunc() func(client.Object, client.Object) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSortFunc")
+	ret0, _ := ret[0].(func(client.Object, client.Object) bool)
+	return ret0
+}
+
+// GetSortFunc indicates an expected call of GetSortFunc.
+func (mr *MockStatefulSetSetMockRecorder) GetSortFunc() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSortFunc", reflect.TypeOf((*MockStatefulSetSet)(nil).GetSortFunc))
 }
 
 // Has mocks base method.
