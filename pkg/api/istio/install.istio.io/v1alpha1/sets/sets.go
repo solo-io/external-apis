@@ -171,7 +171,7 @@ func (s *istioOperatorSet) Union(set IstioOperatorSet) IstioOperatorSet {
 	if s == nil {
 		return set
 	}
-	return NewIstioOperatorSet(append(s.List(), set.List()...)...)
+	return &istioOperatorMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *istioOperatorSet) Difference(set IstioOperatorSet) IstioOperatorSet {
@@ -233,5 +233,203 @@ func (s *istioOperatorSet) Clone() IstioOperatorSet {
 	if s == nil {
 		return nil
 	}
-	return &istioOperatorSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &istioOperatorMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type istioOperatorMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewIstioOperatorMergedSet(istioOperatorList ...*install_istio_io_v1alpha1.IstioOperator) IstioOperatorSet {
+	return &istioOperatorMergedSet{sets: []sksets.ResourceSet{makeGenericIstioOperatorSet(istioOperatorList)}}
+}
+
+func NewIstioOperatorMergedSetFromList(istioOperatorList *install_istio_io_v1alpha1.IstioOperatorList) IstioOperatorSet {
+	list := make([]*install_istio_io_v1alpha1.IstioOperator, 0, len(istioOperatorList.Items))
+	for idx := range istioOperatorList.Items {
+		list = append(list, &istioOperatorList.Items[idx])
+	}
+	return &istioOperatorMergedSet{sets: []sksets.ResourceSet{makeGenericIstioOperatorSet(list)}}
+}
+
+func (s *istioOperatorMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *istioOperatorMergedSet) List(filterResource ...func(*install_istio_io_v1alpha1.IstioOperator) bool) []*install_istio_io_v1alpha1.IstioOperator {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*install_istio_io_v1alpha1.IstioOperator))
+		})
+	}
+	istioOperatorList := []*install_istio_io_v1alpha1.IstioOperator{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			istioOperatorList = append(istioOperatorList, obj.(*install_istio_io_v1alpha1.IstioOperator))
+		}
+	}
+	return istioOperatorList
+}
+
+func (s *istioOperatorMergedSet) UnsortedList(filterResource ...func(*install_istio_io_v1alpha1.IstioOperator) bool) []*install_istio_io_v1alpha1.IstioOperator {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*install_istio_io_v1alpha1.IstioOperator))
+		})
+	}
+	istioOperatorList := []*install_istio_io_v1alpha1.IstioOperator{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			istioOperatorList = append(istioOperatorList, obj.(*install_istio_io_v1alpha1.IstioOperator))
+		}
+	}
+	return istioOperatorList
+}
+
+func (s *istioOperatorMergedSet) Map() map[string]*install_istio_io_v1alpha1.IstioOperator {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*install_istio_io_v1alpha1.IstioOperator{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*install_istio_io_v1alpha1.IstioOperator)
+		}
+	}
+	return newMap
+}
+
+func (s *istioOperatorMergedSet) Insert(
+	istioOperatorList ...*install_istio_io_v1alpha1.IstioOperator,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericIstioOperatorSet(istioOperatorList))
+	}
+	for _, obj := range istioOperatorList {
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
+	}
+}
+
+func (s *istioOperatorMergedSet) Has(istioOperator ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(istioOperator) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *istioOperatorMergedSet) Equal(
+	istioOperatorSet IstioOperatorSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *istioOperatorMergedSet) Delete(IstioOperator ezkube.ResourceId) {
+	for _, set := range s.sets {
+		set.Delete(IstioOperator)
+	}
+}
+
+func (s *istioOperatorMergedSet) Union(set IstioOperatorSet) IstioOperatorSet {
+	if s == nil {
+		return set
+	}
+	return &istioOperatorMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *istioOperatorMergedSet) Difference(set IstioOperatorSet) IstioOperatorSet {
+	panic("unimplemented")
+}
+
+func (s *istioOperatorMergedSet) Intersection(set IstioOperatorSet) IstioOperatorSet {
+	panic("unimplemented")
+}
+
+func (s *istioOperatorMergedSet) Find(id ezkube.ResourceId) (*install_istio_io_v1alpha1.IstioOperator, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find IstioOperator %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&install_istio_io_v1alpha1.IstioOperator{}, id)
+		if err == nil {
+			return obj.(*install_istio_io_v1alpha1.IstioOperator), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *istioOperatorMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *istioOperatorMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *istioOperatorMergedSet) Delta(newSet IstioOperatorSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *istioOperatorMergedSet) Clone() IstioOperatorSet {
+	if s == nil {
+		return nil
+	}
+	return &istioOperatorMergedSet{sets: s.sets[:]}
 }

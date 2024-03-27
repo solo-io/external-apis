@@ -171,7 +171,7 @@ func (s *trafficSplitSet) Union(set TrafficSplitSet) TrafficSplitSet {
 	if s == nil {
 		return set
 	}
-	return NewTrafficSplitSet(append(s.List(), set.List()...)...)
+	return &trafficSplitMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *trafficSplitSet) Difference(set TrafficSplitSet) TrafficSplitSet {
@@ -233,5 +233,203 @@ func (s *trafficSplitSet) Clone() TrafficSplitSet {
 	if s == nil {
 		return nil
 	}
-	return &trafficSplitSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &trafficSplitMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type trafficSplitMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewTrafficSplitMergedSet(trafficSplitList ...*split_smi_spec_io_v1alpha1.TrafficSplit) TrafficSplitSet {
+	return &trafficSplitMergedSet{sets: []sksets.ResourceSet{makeGenericTrafficSplitSet(trafficSplitList)}}
+}
+
+func NewTrafficSplitMergedSetFromList(trafficSplitList *split_smi_spec_io_v1alpha1.TrafficSplitList) TrafficSplitSet {
+	list := make([]*split_smi_spec_io_v1alpha1.TrafficSplit, 0, len(trafficSplitList.Items))
+	for idx := range trafficSplitList.Items {
+		list = append(list, &trafficSplitList.Items[idx])
+	}
+	return &trafficSplitMergedSet{sets: []sksets.ResourceSet{makeGenericTrafficSplitSet(list)}}
+}
+
+func (s *trafficSplitMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *trafficSplitMergedSet) List(filterResource ...func(*split_smi_spec_io_v1alpha1.TrafficSplit) bool) []*split_smi_spec_io_v1alpha1.TrafficSplit {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*split_smi_spec_io_v1alpha1.TrafficSplit))
+		})
+	}
+	trafficSplitList := []*split_smi_spec_io_v1alpha1.TrafficSplit{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			trafficSplitList = append(trafficSplitList, obj.(*split_smi_spec_io_v1alpha1.TrafficSplit))
+		}
+	}
+	return trafficSplitList
+}
+
+func (s *trafficSplitMergedSet) UnsortedList(filterResource ...func(*split_smi_spec_io_v1alpha1.TrafficSplit) bool) []*split_smi_spec_io_v1alpha1.TrafficSplit {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*split_smi_spec_io_v1alpha1.TrafficSplit))
+		})
+	}
+	trafficSplitList := []*split_smi_spec_io_v1alpha1.TrafficSplit{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			trafficSplitList = append(trafficSplitList, obj.(*split_smi_spec_io_v1alpha1.TrafficSplit))
+		}
+	}
+	return trafficSplitList
+}
+
+func (s *trafficSplitMergedSet) Map() map[string]*split_smi_spec_io_v1alpha1.TrafficSplit {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*split_smi_spec_io_v1alpha1.TrafficSplit{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*split_smi_spec_io_v1alpha1.TrafficSplit)
+		}
+	}
+	return newMap
+}
+
+func (s *trafficSplitMergedSet) Insert(
+	trafficSplitList ...*split_smi_spec_io_v1alpha1.TrafficSplit,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericTrafficSplitSet(trafficSplitList))
+	}
+	for _, obj := range trafficSplitList {
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
+	}
+}
+
+func (s *trafficSplitMergedSet) Has(trafficSplit ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(trafficSplit) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *trafficSplitMergedSet) Equal(
+	trafficSplitSet TrafficSplitSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *trafficSplitMergedSet) Delete(TrafficSplit ezkube.ResourceId) {
+	for _, set := range s.sets {
+		set.Delete(TrafficSplit)
+	}
+}
+
+func (s *trafficSplitMergedSet) Union(set TrafficSplitSet) TrafficSplitSet {
+	if s == nil {
+		return set
+	}
+	return &trafficSplitMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *trafficSplitMergedSet) Difference(set TrafficSplitSet) TrafficSplitSet {
+	panic("unimplemented")
+}
+
+func (s *trafficSplitMergedSet) Intersection(set TrafficSplitSet) TrafficSplitSet {
+	panic("unimplemented")
+}
+
+func (s *trafficSplitMergedSet) Find(id ezkube.ResourceId) (*split_smi_spec_io_v1alpha1.TrafficSplit, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find TrafficSplit %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&split_smi_spec_io_v1alpha1.TrafficSplit{}, id)
+		if err == nil {
+			return obj.(*split_smi_spec_io_v1alpha1.TrafficSplit), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *trafficSplitMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *trafficSplitMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *trafficSplitMergedSet) Delta(newSet TrafficSplitSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *trafficSplitMergedSet) Clone() TrafficSplitSet {
+	if s == nil {
+		return nil
+	}
+	return &trafficSplitMergedSet{sets: s.sets[:]}
 }

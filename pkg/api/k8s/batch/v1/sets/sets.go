@@ -171,7 +171,7 @@ func (s *jobSet) Union(set JobSet) JobSet {
 	if s == nil {
 		return set
 	}
-	return NewJobSet(append(s.List(), set.List()...)...)
+	return &jobMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *jobSet) Difference(set JobSet) JobSet {
@@ -233,5 +233,203 @@ func (s *jobSet) Clone() JobSet {
 	if s == nil {
 		return nil
 	}
-	return &jobSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &jobMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type jobMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewJobMergedSet(jobList ...*batch_v1.Job) JobSet {
+	return &jobMergedSet{sets: []sksets.ResourceSet{makeGenericJobSet(jobList)}}
+}
+
+func NewJobMergedSetFromList(jobList *batch_v1.JobList) JobSet {
+	list := make([]*batch_v1.Job, 0, len(jobList.Items))
+	for idx := range jobList.Items {
+		list = append(list, &jobList.Items[idx])
+	}
+	return &jobMergedSet{sets: []sksets.ResourceSet{makeGenericJobSet(list)}}
+}
+
+func (s *jobMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *jobMergedSet) List(filterResource ...func(*batch_v1.Job) bool) []*batch_v1.Job {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*batch_v1.Job))
+		})
+	}
+	jobList := []*batch_v1.Job{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			jobList = append(jobList, obj.(*batch_v1.Job))
+		}
+	}
+	return jobList
+}
+
+func (s *jobMergedSet) UnsortedList(filterResource ...func(*batch_v1.Job) bool) []*batch_v1.Job {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*batch_v1.Job))
+		})
+	}
+	jobList := []*batch_v1.Job{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			jobList = append(jobList, obj.(*batch_v1.Job))
+		}
+	}
+	return jobList
+}
+
+func (s *jobMergedSet) Map() map[string]*batch_v1.Job {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*batch_v1.Job{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*batch_v1.Job)
+		}
+	}
+	return newMap
+}
+
+func (s *jobMergedSet) Insert(
+	jobList ...*batch_v1.Job,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericJobSet(jobList))
+	}
+	for _, obj := range jobList {
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
+	}
+}
+
+func (s *jobMergedSet) Has(job ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(job) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *jobMergedSet) Equal(
+	jobSet JobSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *jobMergedSet) Delete(Job ezkube.ResourceId) {
+	for _, set := range s.sets {
+		set.Delete(Job)
+	}
+}
+
+func (s *jobMergedSet) Union(set JobSet) JobSet {
+	if s == nil {
+		return set
+	}
+	return &jobMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *jobMergedSet) Difference(set JobSet) JobSet {
+	panic("unimplemented")
+}
+
+func (s *jobMergedSet) Intersection(set JobSet) JobSet {
+	panic("unimplemented")
+}
+
+func (s *jobMergedSet) Find(id ezkube.ResourceId) (*batch_v1.Job, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find Job %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&batch_v1.Job{}, id)
+		if err == nil {
+			return obj.(*batch_v1.Job), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *jobMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *jobMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *jobMergedSet) Delta(newSet JobSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *jobMergedSet) Clone() JobSet {
+	if s == nil {
+		return nil
+	}
+	return &jobMergedSet{sets: s.sets[:]}
 }

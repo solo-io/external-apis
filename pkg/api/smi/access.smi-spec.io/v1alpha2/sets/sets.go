@@ -171,7 +171,7 @@ func (s *trafficTargetSet) Union(set TrafficTargetSet) TrafficTargetSet {
 	if s == nil {
 		return set
 	}
-	return NewTrafficTargetSet(append(s.List(), set.List()...)...)
+	return &trafficTargetMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *trafficTargetSet) Difference(set TrafficTargetSet) TrafficTargetSet {
@@ -233,5 +233,203 @@ func (s *trafficTargetSet) Clone() TrafficTargetSet {
 	if s == nil {
 		return nil
 	}
-	return &trafficTargetSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &trafficTargetMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type trafficTargetMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewTrafficTargetMergedSet(trafficTargetList ...*access_smi_spec_io_v1alpha2.TrafficTarget) TrafficTargetSet {
+	return &trafficTargetMergedSet{sets: []sksets.ResourceSet{makeGenericTrafficTargetSet(trafficTargetList)}}
+}
+
+func NewTrafficTargetMergedSetFromList(trafficTargetList *access_smi_spec_io_v1alpha2.TrafficTargetList) TrafficTargetSet {
+	list := make([]*access_smi_spec_io_v1alpha2.TrafficTarget, 0, len(trafficTargetList.Items))
+	for idx := range trafficTargetList.Items {
+		list = append(list, &trafficTargetList.Items[idx])
+	}
+	return &trafficTargetMergedSet{sets: []sksets.ResourceSet{makeGenericTrafficTargetSet(list)}}
+}
+
+func (s *trafficTargetMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *trafficTargetMergedSet) List(filterResource ...func(*access_smi_spec_io_v1alpha2.TrafficTarget) bool) []*access_smi_spec_io_v1alpha2.TrafficTarget {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*access_smi_spec_io_v1alpha2.TrafficTarget))
+		})
+	}
+	trafficTargetList := []*access_smi_spec_io_v1alpha2.TrafficTarget{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			trafficTargetList = append(trafficTargetList, obj.(*access_smi_spec_io_v1alpha2.TrafficTarget))
+		}
+	}
+	return trafficTargetList
+}
+
+func (s *trafficTargetMergedSet) UnsortedList(filterResource ...func(*access_smi_spec_io_v1alpha2.TrafficTarget) bool) []*access_smi_spec_io_v1alpha2.TrafficTarget {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*access_smi_spec_io_v1alpha2.TrafficTarget))
+		})
+	}
+	trafficTargetList := []*access_smi_spec_io_v1alpha2.TrafficTarget{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			trafficTargetList = append(trafficTargetList, obj.(*access_smi_spec_io_v1alpha2.TrafficTarget))
+		}
+	}
+	return trafficTargetList
+}
+
+func (s *trafficTargetMergedSet) Map() map[string]*access_smi_spec_io_v1alpha2.TrafficTarget {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*access_smi_spec_io_v1alpha2.TrafficTarget{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*access_smi_spec_io_v1alpha2.TrafficTarget)
+		}
+	}
+	return newMap
+}
+
+func (s *trafficTargetMergedSet) Insert(
+	trafficTargetList ...*access_smi_spec_io_v1alpha2.TrafficTarget,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericTrafficTargetSet(trafficTargetList))
+	}
+	for _, obj := range trafficTargetList {
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
+	}
+}
+
+func (s *trafficTargetMergedSet) Has(trafficTarget ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(trafficTarget) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *trafficTargetMergedSet) Equal(
+	trafficTargetSet TrafficTargetSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *trafficTargetMergedSet) Delete(TrafficTarget ezkube.ResourceId) {
+	for _, set := range s.sets {
+		set.Delete(TrafficTarget)
+	}
+}
+
+func (s *trafficTargetMergedSet) Union(set TrafficTargetSet) TrafficTargetSet {
+	if s == nil {
+		return set
+	}
+	return &trafficTargetMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *trafficTargetMergedSet) Difference(set TrafficTargetSet) TrafficTargetSet {
+	panic("unimplemented")
+}
+
+func (s *trafficTargetMergedSet) Intersection(set TrafficTargetSet) TrafficTargetSet {
+	panic("unimplemented")
+}
+
+func (s *trafficTargetMergedSet) Find(id ezkube.ResourceId) (*access_smi_spec_io_v1alpha2.TrafficTarget, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find TrafficTarget %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&access_smi_spec_io_v1alpha2.TrafficTarget{}, id)
+		if err == nil {
+			return obj.(*access_smi_spec_io_v1alpha2.TrafficTarget), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *trafficTargetMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *trafficTargetMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *trafficTargetMergedSet) Delta(newSet TrafficTargetSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *trafficTargetMergedSet) Clone() TrafficTargetSet {
+	if s == nil {
+		return nil
+	}
+	return &trafficTargetMergedSet{sets: s.sets[:]}
 }

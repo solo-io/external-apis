@@ -171,7 +171,7 @@ func (s *validatingWebhookConfigurationSet) Union(set ValidatingWebhookConfigura
 	if s == nil {
 		return set
 	}
-	return NewValidatingWebhookConfigurationSet(append(s.List(), set.List()...)...)
+	return &validatingWebhookConfigurationMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *validatingWebhookConfigurationSet) Difference(set ValidatingWebhookConfigurationSet) ValidatingWebhookConfigurationSet {
@@ -233,7 +233,205 @@ func (s *validatingWebhookConfigurationSet) Clone() ValidatingWebhookConfigurati
 	if s == nil {
 		return nil
 	}
-	return &validatingWebhookConfigurationSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &validatingWebhookConfigurationMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type validatingWebhookConfigurationMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewValidatingWebhookConfigurationMergedSet(validatingWebhookConfigurationList ...*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration) ValidatingWebhookConfigurationSet {
+	return &validatingWebhookConfigurationMergedSet{sets: []sksets.ResourceSet{makeGenericValidatingWebhookConfigurationSet(validatingWebhookConfigurationList)}}
+}
+
+func NewValidatingWebhookConfigurationMergedSetFromList(validatingWebhookConfigurationList *admissionregistration_k8s_io_v1.ValidatingWebhookConfigurationList) ValidatingWebhookConfigurationSet {
+	list := make([]*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration, 0, len(validatingWebhookConfigurationList.Items))
+	for idx := range validatingWebhookConfigurationList.Items {
+		list = append(list, &validatingWebhookConfigurationList.Items[idx])
+	}
+	return &validatingWebhookConfigurationMergedSet{sets: []sksets.ResourceSet{makeGenericValidatingWebhookConfigurationSet(list)}}
+}
+
+func (s *validatingWebhookConfigurationMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *validatingWebhookConfigurationMergedSet) List(filterResource ...func(*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration) bool) []*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration))
+		})
+	}
+	validatingWebhookConfigurationList := []*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			validatingWebhookConfigurationList = append(validatingWebhookConfigurationList, obj.(*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration))
+		}
+	}
+	return validatingWebhookConfigurationList
+}
+
+func (s *validatingWebhookConfigurationMergedSet) UnsortedList(filterResource ...func(*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration) bool) []*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration))
+		})
+	}
+	validatingWebhookConfigurationList := []*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			validatingWebhookConfigurationList = append(validatingWebhookConfigurationList, obj.(*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration))
+		}
+	}
+	return validatingWebhookConfigurationList
+}
+
+func (s *validatingWebhookConfigurationMergedSet) Map() map[string]*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration)
+		}
+	}
+	return newMap
+}
+
+func (s *validatingWebhookConfigurationMergedSet) Insert(
+	validatingWebhookConfigurationList ...*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericValidatingWebhookConfigurationSet(validatingWebhookConfigurationList))
+	}
+	for _, obj := range validatingWebhookConfigurationList {
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
+	}
+}
+
+func (s *validatingWebhookConfigurationMergedSet) Has(validatingWebhookConfiguration ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(validatingWebhookConfiguration) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *validatingWebhookConfigurationMergedSet) Equal(
+	validatingWebhookConfigurationSet ValidatingWebhookConfigurationSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *validatingWebhookConfigurationMergedSet) Delete(ValidatingWebhookConfiguration ezkube.ResourceId) {
+	for _, set := range s.sets {
+		set.Delete(ValidatingWebhookConfiguration)
+	}
+}
+
+func (s *validatingWebhookConfigurationMergedSet) Union(set ValidatingWebhookConfigurationSet) ValidatingWebhookConfigurationSet {
+	if s == nil {
+		return set
+	}
+	return &validatingWebhookConfigurationMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *validatingWebhookConfigurationMergedSet) Difference(set ValidatingWebhookConfigurationSet) ValidatingWebhookConfigurationSet {
+	panic("unimplemented")
+}
+
+func (s *validatingWebhookConfigurationMergedSet) Intersection(set ValidatingWebhookConfigurationSet) ValidatingWebhookConfigurationSet {
+	panic("unimplemented")
+}
+
+func (s *validatingWebhookConfigurationMergedSet) Find(id ezkube.ResourceId) (*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find ValidatingWebhookConfiguration %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration{}, id)
+		if err == nil {
+			return obj.(*admissionregistration_k8s_io_v1.ValidatingWebhookConfiguration), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *validatingWebhookConfigurationMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *validatingWebhookConfigurationMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *validatingWebhookConfigurationMergedSet) Delta(newSet ValidatingWebhookConfigurationSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *validatingWebhookConfigurationMergedSet) Clone() ValidatingWebhookConfigurationSet {
+	if s == nil {
+		return nil
+	}
+	return &validatingWebhookConfigurationMergedSet{sets: s.sets[:]}
 }
 
 type MutatingWebhookConfigurationSet interface {
@@ -394,7 +592,7 @@ func (s *mutatingWebhookConfigurationSet) Union(set MutatingWebhookConfiguration
 	if s == nil {
 		return set
 	}
-	return NewMutatingWebhookConfigurationSet(append(s.List(), set.List()...)...)
+	return &mutatingWebhookConfigurationMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *mutatingWebhookConfigurationSet) Difference(set MutatingWebhookConfigurationSet) MutatingWebhookConfigurationSet {
@@ -456,5 +654,203 @@ func (s *mutatingWebhookConfigurationSet) Clone() MutatingWebhookConfigurationSe
 	if s == nil {
 		return nil
 	}
-	return &mutatingWebhookConfigurationSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &mutatingWebhookConfigurationMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type mutatingWebhookConfigurationMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewMutatingWebhookConfigurationMergedSet(mutatingWebhookConfigurationList ...*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) MutatingWebhookConfigurationSet {
+	return &mutatingWebhookConfigurationMergedSet{sets: []sksets.ResourceSet{makeGenericMutatingWebhookConfigurationSet(mutatingWebhookConfigurationList)}}
+}
+
+func NewMutatingWebhookConfigurationMergedSetFromList(mutatingWebhookConfigurationList *admissionregistration_k8s_io_v1.MutatingWebhookConfigurationList) MutatingWebhookConfigurationSet {
+	list := make([]*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration, 0, len(mutatingWebhookConfigurationList.Items))
+	for idx := range mutatingWebhookConfigurationList.Items {
+		list = append(list, &mutatingWebhookConfigurationList.Items[idx])
+	}
+	return &mutatingWebhookConfigurationMergedSet{sets: []sksets.ResourceSet{makeGenericMutatingWebhookConfigurationSet(list)}}
+}
+
+func (s *mutatingWebhookConfigurationMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *mutatingWebhookConfigurationMergedSet) List(filterResource ...func(*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) bool) []*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration))
+		})
+	}
+	mutatingWebhookConfigurationList := []*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			mutatingWebhookConfigurationList = append(mutatingWebhookConfigurationList, obj.(*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration))
+		}
+	}
+	return mutatingWebhookConfigurationList
+}
+
+func (s *mutatingWebhookConfigurationMergedSet) UnsortedList(filterResource ...func(*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration) bool) []*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration))
+		})
+	}
+	mutatingWebhookConfigurationList := []*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			mutatingWebhookConfigurationList = append(mutatingWebhookConfigurationList, obj.(*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration))
+		}
+	}
+	return mutatingWebhookConfigurationList
+}
+
+func (s *mutatingWebhookConfigurationMergedSet) Map() map[string]*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration)
+		}
+	}
+	return newMap
+}
+
+func (s *mutatingWebhookConfigurationMergedSet) Insert(
+	mutatingWebhookConfigurationList ...*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericMutatingWebhookConfigurationSet(mutatingWebhookConfigurationList))
+	}
+	for _, obj := range mutatingWebhookConfigurationList {
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
+	}
+}
+
+func (s *mutatingWebhookConfigurationMergedSet) Has(mutatingWebhookConfiguration ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(mutatingWebhookConfiguration) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *mutatingWebhookConfigurationMergedSet) Equal(
+	mutatingWebhookConfigurationSet MutatingWebhookConfigurationSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *mutatingWebhookConfigurationMergedSet) Delete(MutatingWebhookConfiguration ezkube.ResourceId) {
+	for _, set := range s.sets {
+		set.Delete(MutatingWebhookConfiguration)
+	}
+}
+
+func (s *mutatingWebhookConfigurationMergedSet) Union(set MutatingWebhookConfigurationSet) MutatingWebhookConfigurationSet {
+	if s == nil {
+		return set
+	}
+	return &mutatingWebhookConfigurationMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *mutatingWebhookConfigurationMergedSet) Difference(set MutatingWebhookConfigurationSet) MutatingWebhookConfigurationSet {
+	panic("unimplemented")
+}
+
+func (s *mutatingWebhookConfigurationMergedSet) Intersection(set MutatingWebhookConfigurationSet) MutatingWebhookConfigurationSet {
+	panic("unimplemented")
+}
+
+func (s *mutatingWebhookConfigurationMergedSet) Find(id ezkube.ResourceId) (*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find MutatingWebhookConfiguration %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&admissionregistration_k8s_io_v1.MutatingWebhookConfiguration{}, id)
+		if err == nil {
+			return obj.(*admissionregistration_k8s_io_v1.MutatingWebhookConfiguration), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *mutatingWebhookConfigurationMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *mutatingWebhookConfigurationMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *mutatingWebhookConfigurationMergedSet) Delta(newSet MutatingWebhookConfigurationSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *mutatingWebhookConfigurationMergedSet) Clone() MutatingWebhookConfigurationSet {
+	if s == nil {
+		return nil
+	}
+	return &mutatingWebhookConfigurationMergedSet{sets: s.sets[:]}
 }

@@ -171,7 +171,7 @@ func (s *networkPolicySet) Union(set NetworkPolicySet) NetworkPolicySet {
 	if s == nil {
 		return set
 	}
-	return NewNetworkPolicySet(append(s.List(), set.List()...)...)
+	return &networkPolicyMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *networkPolicySet) Difference(set NetworkPolicySet) NetworkPolicySet {
@@ -233,5 +233,203 @@ func (s *networkPolicySet) Clone() NetworkPolicySet {
 	if s == nil {
 		return nil
 	}
-	return &networkPolicySet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &networkPolicyMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type networkPolicyMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewNetworkPolicyMergedSet(networkPolicyList ...*networking_k8s_io_v1.NetworkPolicy) NetworkPolicySet {
+	return &networkPolicyMergedSet{sets: []sksets.ResourceSet{makeGenericNetworkPolicySet(networkPolicyList)}}
+}
+
+func NewNetworkPolicyMergedSetFromList(networkPolicyList *networking_k8s_io_v1.NetworkPolicyList) NetworkPolicySet {
+	list := make([]*networking_k8s_io_v1.NetworkPolicy, 0, len(networkPolicyList.Items))
+	for idx := range networkPolicyList.Items {
+		list = append(list, &networkPolicyList.Items[idx])
+	}
+	return &networkPolicyMergedSet{sets: []sksets.ResourceSet{makeGenericNetworkPolicySet(list)}}
+}
+
+func (s *networkPolicyMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *networkPolicyMergedSet) List(filterResource ...func(*networking_k8s_io_v1.NetworkPolicy) bool) []*networking_k8s_io_v1.NetworkPolicy {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_k8s_io_v1.NetworkPolicy))
+		})
+	}
+	networkPolicyList := []*networking_k8s_io_v1.NetworkPolicy{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			networkPolicyList = append(networkPolicyList, obj.(*networking_k8s_io_v1.NetworkPolicy))
+		}
+	}
+	return networkPolicyList
+}
+
+func (s *networkPolicyMergedSet) UnsortedList(filterResource ...func(*networking_k8s_io_v1.NetworkPolicy) bool) []*networking_k8s_io_v1.NetworkPolicy {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_k8s_io_v1.NetworkPolicy))
+		})
+	}
+	networkPolicyList := []*networking_k8s_io_v1.NetworkPolicy{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			networkPolicyList = append(networkPolicyList, obj.(*networking_k8s_io_v1.NetworkPolicy))
+		}
+	}
+	return networkPolicyList
+}
+
+func (s *networkPolicyMergedSet) Map() map[string]*networking_k8s_io_v1.NetworkPolicy {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*networking_k8s_io_v1.NetworkPolicy{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*networking_k8s_io_v1.NetworkPolicy)
+		}
+	}
+	return newMap
+}
+
+func (s *networkPolicyMergedSet) Insert(
+	networkPolicyList ...*networking_k8s_io_v1.NetworkPolicy,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericNetworkPolicySet(networkPolicyList))
+	}
+	for _, obj := range networkPolicyList {
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
+	}
+}
+
+func (s *networkPolicyMergedSet) Has(networkPolicy ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(networkPolicy) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *networkPolicyMergedSet) Equal(
+	networkPolicySet NetworkPolicySet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *networkPolicyMergedSet) Delete(NetworkPolicy ezkube.ResourceId) {
+	for _, set := range s.sets {
+		set.Delete(NetworkPolicy)
+	}
+}
+
+func (s *networkPolicyMergedSet) Union(set NetworkPolicySet) NetworkPolicySet {
+	if s == nil {
+		return set
+	}
+	return &networkPolicyMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *networkPolicyMergedSet) Difference(set NetworkPolicySet) NetworkPolicySet {
+	panic("unimplemented")
+}
+
+func (s *networkPolicyMergedSet) Intersection(set NetworkPolicySet) NetworkPolicySet {
+	panic("unimplemented")
+}
+
+func (s *networkPolicyMergedSet) Find(id ezkube.ResourceId) (*networking_k8s_io_v1.NetworkPolicy, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find NetworkPolicy %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&networking_k8s_io_v1.NetworkPolicy{}, id)
+		if err == nil {
+			return obj.(*networking_k8s_io_v1.NetworkPolicy), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *networkPolicyMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *networkPolicyMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *networkPolicyMergedSet) Delta(newSet NetworkPolicySet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *networkPolicyMergedSet) Clone() NetworkPolicySet {
+	if s == nil {
+		return nil
+	}
+	return &networkPolicyMergedSet{sets: s.sets[:]}
 }

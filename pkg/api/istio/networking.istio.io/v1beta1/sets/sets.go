@@ -171,7 +171,7 @@ func (s *destinationRuleSet) Union(set DestinationRuleSet) DestinationRuleSet {
 	if s == nil {
 		return set
 	}
-	return NewDestinationRuleSet(append(s.List(), set.List()...)...)
+	return &destinationRuleMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *destinationRuleSet) Difference(set DestinationRuleSet) DestinationRuleSet {
@@ -233,7 +233,205 @@ func (s *destinationRuleSet) Clone() DestinationRuleSet {
 	if s == nil {
 		return nil
 	}
-	return &destinationRuleSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &destinationRuleMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type destinationRuleMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewDestinationRuleMergedSet(destinationRuleList ...*networking_istio_io_v1beta1.DestinationRule) DestinationRuleSet {
+	return &destinationRuleMergedSet{sets: []sksets.ResourceSet{makeGenericDestinationRuleSet(destinationRuleList)}}
+}
+
+func NewDestinationRuleMergedSetFromList(destinationRuleList *networking_istio_io_v1beta1.DestinationRuleList) DestinationRuleSet {
+	list := make([]*networking_istio_io_v1beta1.DestinationRule, 0, len(destinationRuleList.Items))
+	for idx := range destinationRuleList.Items {
+		list = append(list, destinationRuleList.Items[idx])
+	}
+	return &destinationRuleMergedSet{sets: []sksets.ResourceSet{makeGenericDestinationRuleSet(list)}}
+}
+
+func (s *destinationRuleMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *destinationRuleMergedSet) List(filterResource ...func(*networking_istio_io_v1beta1.DestinationRule) bool) []*networking_istio_io_v1beta1.DestinationRule {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1beta1.DestinationRule))
+		})
+	}
+	destinationRuleList := []*networking_istio_io_v1beta1.DestinationRule{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			destinationRuleList = append(destinationRuleList, obj.(*networking_istio_io_v1beta1.DestinationRule))
+		}
+	}
+	return destinationRuleList
+}
+
+func (s *destinationRuleMergedSet) UnsortedList(filterResource ...func(*networking_istio_io_v1beta1.DestinationRule) bool) []*networking_istio_io_v1beta1.DestinationRule {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1beta1.DestinationRule))
+		})
+	}
+	destinationRuleList := []*networking_istio_io_v1beta1.DestinationRule{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			destinationRuleList = append(destinationRuleList, obj.(*networking_istio_io_v1beta1.DestinationRule))
+		}
+	}
+	return destinationRuleList
+}
+
+func (s *destinationRuleMergedSet) Map() map[string]*networking_istio_io_v1beta1.DestinationRule {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*networking_istio_io_v1beta1.DestinationRule{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*networking_istio_io_v1beta1.DestinationRule)
+		}
+	}
+	return newMap
+}
+
+func (s *destinationRuleMergedSet) Insert(
+	destinationRuleList ...*networking_istio_io_v1beta1.DestinationRule,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericDestinationRuleSet(destinationRuleList))
+	}
+	for _, obj := range destinationRuleList {
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
+	}
+}
+
+func (s *destinationRuleMergedSet) Has(destinationRule ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(destinationRule) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *destinationRuleMergedSet) Equal(
+	destinationRuleSet DestinationRuleSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *destinationRuleMergedSet) Delete(DestinationRule ezkube.ResourceId) {
+	for _, set := range s.sets {
+		set.Delete(DestinationRule)
+	}
+}
+
+func (s *destinationRuleMergedSet) Union(set DestinationRuleSet) DestinationRuleSet {
+	if s == nil {
+		return set
+	}
+	return &destinationRuleMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *destinationRuleMergedSet) Difference(set DestinationRuleSet) DestinationRuleSet {
+	panic("unimplemented")
+}
+
+func (s *destinationRuleMergedSet) Intersection(set DestinationRuleSet) DestinationRuleSet {
+	panic("unimplemented")
+}
+
+func (s *destinationRuleMergedSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1beta1.DestinationRule, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find DestinationRule %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&networking_istio_io_v1beta1.DestinationRule{}, id)
+		if err == nil {
+			return obj.(*networking_istio_io_v1beta1.DestinationRule), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *destinationRuleMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *destinationRuleMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *destinationRuleMergedSet) Delta(newSet DestinationRuleSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *destinationRuleMergedSet) Clone() DestinationRuleSet {
+	if s == nil {
+		return nil
+	}
+	return &destinationRuleMergedSet{sets: s.sets[:]}
 }
 
 type GatewaySet interface {
@@ -394,7 +592,7 @@ func (s *gatewaySet) Union(set GatewaySet) GatewaySet {
 	if s == nil {
 		return set
 	}
-	return NewGatewaySet(append(s.List(), set.List()...)...)
+	return &gatewayMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *gatewaySet) Difference(set GatewaySet) GatewaySet {
@@ -456,7 +654,205 @@ func (s *gatewaySet) Clone() GatewaySet {
 	if s == nil {
 		return nil
 	}
-	return &gatewaySet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &gatewayMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type gatewayMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewGatewayMergedSet(gatewayList ...*networking_istio_io_v1beta1.Gateway) GatewaySet {
+	return &gatewayMergedSet{sets: []sksets.ResourceSet{makeGenericGatewaySet(gatewayList)}}
+}
+
+func NewGatewayMergedSetFromList(gatewayList *networking_istio_io_v1beta1.GatewayList) GatewaySet {
+	list := make([]*networking_istio_io_v1beta1.Gateway, 0, len(gatewayList.Items))
+	for idx := range gatewayList.Items {
+		list = append(list, gatewayList.Items[idx])
+	}
+	return &gatewayMergedSet{sets: []sksets.ResourceSet{makeGenericGatewaySet(list)}}
+}
+
+func (s *gatewayMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *gatewayMergedSet) List(filterResource ...func(*networking_istio_io_v1beta1.Gateway) bool) []*networking_istio_io_v1beta1.Gateway {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1beta1.Gateway))
+		})
+	}
+	gatewayList := []*networking_istio_io_v1beta1.Gateway{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			gatewayList = append(gatewayList, obj.(*networking_istio_io_v1beta1.Gateway))
+		}
+	}
+	return gatewayList
+}
+
+func (s *gatewayMergedSet) UnsortedList(filterResource ...func(*networking_istio_io_v1beta1.Gateway) bool) []*networking_istio_io_v1beta1.Gateway {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1beta1.Gateway))
+		})
+	}
+	gatewayList := []*networking_istio_io_v1beta1.Gateway{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			gatewayList = append(gatewayList, obj.(*networking_istio_io_v1beta1.Gateway))
+		}
+	}
+	return gatewayList
+}
+
+func (s *gatewayMergedSet) Map() map[string]*networking_istio_io_v1beta1.Gateway {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*networking_istio_io_v1beta1.Gateway{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*networking_istio_io_v1beta1.Gateway)
+		}
+	}
+	return newMap
+}
+
+func (s *gatewayMergedSet) Insert(
+	gatewayList ...*networking_istio_io_v1beta1.Gateway,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericGatewaySet(gatewayList))
+	}
+	for _, obj := range gatewayList {
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
+	}
+}
+
+func (s *gatewayMergedSet) Has(gateway ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(gateway) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *gatewayMergedSet) Equal(
+	gatewaySet GatewaySet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *gatewayMergedSet) Delete(Gateway ezkube.ResourceId) {
+	for _, set := range s.sets {
+		set.Delete(Gateway)
+	}
+}
+
+func (s *gatewayMergedSet) Union(set GatewaySet) GatewaySet {
+	if s == nil {
+		return set
+	}
+	return &gatewayMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *gatewayMergedSet) Difference(set GatewaySet) GatewaySet {
+	panic("unimplemented")
+}
+
+func (s *gatewayMergedSet) Intersection(set GatewaySet) GatewaySet {
+	panic("unimplemented")
+}
+
+func (s *gatewayMergedSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1beta1.Gateway, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find Gateway %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&networking_istio_io_v1beta1.Gateway{}, id)
+		if err == nil {
+			return obj.(*networking_istio_io_v1beta1.Gateway), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *gatewayMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *gatewayMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *gatewayMergedSet) Delta(newSet GatewaySet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *gatewayMergedSet) Clone() GatewaySet {
+	if s == nil {
+		return nil
+	}
+	return &gatewayMergedSet{sets: s.sets[:]}
 }
 
 type ProxyConfigSet interface {
@@ -617,7 +1013,7 @@ func (s *proxyConfigSet) Union(set ProxyConfigSet) ProxyConfigSet {
 	if s == nil {
 		return set
 	}
-	return NewProxyConfigSet(append(s.List(), set.List()...)...)
+	return &proxyConfigMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *proxyConfigSet) Difference(set ProxyConfigSet) ProxyConfigSet {
@@ -679,7 +1075,205 @@ func (s *proxyConfigSet) Clone() ProxyConfigSet {
 	if s == nil {
 		return nil
 	}
-	return &proxyConfigSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &proxyConfigMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type proxyConfigMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewProxyConfigMergedSet(proxyConfigList ...*networking_istio_io_v1beta1.ProxyConfig) ProxyConfigSet {
+	return &proxyConfigMergedSet{sets: []sksets.ResourceSet{makeGenericProxyConfigSet(proxyConfigList)}}
+}
+
+func NewProxyConfigMergedSetFromList(proxyConfigList *networking_istio_io_v1beta1.ProxyConfigList) ProxyConfigSet {
+	list := make([]*networking_istio_io_v1beta1.ProxyConfig, 0, len(proxyConfigList.Items))
+	for idx := range proxyConfigList.Items {
+		list = append(list, proxyConfigList.Items[idx])
+	}
+	return &proxyConfigMergedSet{sets: []sksets.ResourceSet{makeGenericProxyConfigSet(list)}}
+}
+
+func (s *proxyConfigMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *proxyConfigMergedSet) List(filterResource ...func(*networking_istio_io_v1beta1.ProxyConfig) bool) []*networking_istio_io_v1beta1.ProxyConfig {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1beta1.ProxyConfig))
+		})
+	}
+	proxyConfigList := []*networking_istio_io_v1beta1.ProxyConfig{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			proxyConfigList = append(proxyConfigList, obj.(*networking_istio_io_v1beta1.ProxyConfig))
+		}
+	}
+	return proxyConfigList
+}
+
+func (s *proxyConfigMergedSet) UnsortedList(filterResource ...func(*networking_istio_io_v1beta1.ProxyConfig) bool) []*networking_istio_io_v1beta1.ProxyConfig {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1beta1.ProxyConfig))
+		})
+	}
+	proxyConfigList := []*networking_istio_io_v1beta1.ProxyConfig{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			proxyConfigList = append(proxyConfigList, obj.(*networking_istio_io_v1beta1.ProxyConfig))
+		}
+	}
+	return proxyConfigList
+}
+
+func (s *proxyConfigMergedSet) Map() map[string]*networking_istio_io_v1beta1.ProxyConfig {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*networking_istio_io_v1beta1.ProxyConfig{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*networking_istio_io_v1beta1.ProxyConfig)
+		}
+	}
+	return newMap
+}
+
+func (s *proxyConfigMergedSet) Insert(
+	proxyConfigList ...*networking_istio_io_v1beta1.ProxyConfig,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericProxyConfigSet(proxyConfigList))
+	}
+	for _, obj := range proxyConfigList {
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
+	}
+}
+
+func (s *proxyConfigMergedSet) Has(proxyConfig ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(proxyConfig) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *proxyConfigMergedSet) Equal(
+	proxyConfigSet ProxyConfigSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *proxyConfigMergedSet) Delete(ProxyConfig ezkube.ResourceId) {
+	for _, set := range s.sets {
+		set.Delete(ProxyConfig)
+	}
+}
+
+func (s *proxyConfigMergedSet) Union(set ProxyConfigSet) ProxyConfigSet {
+	if s == nil {
+		return set
+	}
+	return &proxyConfigMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *proxyConfigMergedSet) Difference(set ProxyConfigSet) ProxyConfigSet {
+	panic("unimplemented")
+}
+
+func (s *proxyConfigMergedSet) Intersection(set ProxyConfigSet) ProxyConfigSet {
+	panic("unimplemented")
+}
+
+func (s *proxyConfigMergedSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1beta1.ProxyConfig, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find ProxyConfig %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&networking_istio_io_v1beta1.ProxyConfig{}, id)
+		if err == nil {
+			return obj.(*networking_istio_io_v1beta1.ProxyConfig), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *proxyConfigMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *proxyConfigMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *proxyConfigMergedSet) Delta(newSet ProxyConfigSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *proxyConfigMergedSet) Clone() ProxyConfigSet {
+	if s == nil {
+		return nil
+	}
+	return &proxyConfigMergedSet{sets: s.sets[:]}
 }
 
 type ServiceEntrySet interface {
@@ -840,7 +1434,7 @@ func (s *serviceEntrySet) Union(set ServiceEntrySet) ServiceEntrySet {
 	if s == nil {
 		return set
 	}
-	return NewServiceEntrySet(append(s.List(), set.List()...)...)
+	return &serviceEntryMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *serviceEntrySet) Difference(set ServiceEntrySet) ServiceEntrySet {
@@ -902,7 +1496,205 @@ func (s *serviceEntrySet) Clone() ServiceEntrySet {
 	if s == nil {
 		return nil
 	}
-	return &serviceEntrySet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &serviceEntryMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type serviceEntryMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewServiceEntryMergedSet(serviceEntryList ...*networking_istio_io_v1beta1.ServiceEntry) ServiceEntrySet {
+	return &serviceEntryMergedSet{sets: []sksets.ResourceSet{makeGenericServiceEntrySet(serviceEntryList)}}
+}
+
+func NewServiceEntryMergedSetFromList(serviceEntryList *networking_istio_io_v1beta1.ServiceEntryList) ServiceEntrySet {
+	list := make([]*networking_istio_io_v1beta1.ServiceEntry, 0, len(serviceEntryList.Items))
+	for idx := range serviceEntryList.Items {
+		list = append(list, serviceEntryList.Items[idx])
+	}
+	return &serviceEntryMergedSet{sets: []sksets.ResourceSet{makeGenericServiceEntrySet(list)}}
+}
+
+func (s *serviceEntryMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *serviceEntryMergedSet) List(filterResource ...func(*networking_istio_io_v1beta1.ServiceEntry) bool) []*networking_istio_io_v1beta1.ServiceEntry {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1beta1.ServiceEntry))
+		})
+	}
+	serviceEntryList := []*networking_istio_io_v1beta1.ServiceEntry{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			serviceEntryList = append(serviceEntryList, obj.(*networking_istio_io_v1beta1.ServiceEntry))
+		}
+	}
+	return serviceEntryList
+}
+
+func (s *serviceEntryMergedSet) UnsortedList(filterResource ...func(*networking_istio_io_v1beta1.ServiceEntry) bool) []*networking_istio_io_v1beta1.ServiceEntry {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1beta1.ServiceEntry))
+		})
+	}
+	serviceEntryList := []*networking_istio_io_v1beta1.ServiceEntry{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			serviceEntryList = append(serviceEntryList, obj.(*networking_istio_io_v1beta1.ServiceEntry))
+		}
+	}
+	return serviceEntryList
+}
+
+func (s *serviceEntryMergedSet) Map() map[string]*networking_istio_io_v1beta1.ServiceEntry {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*networking_istio_io_v1beta1.ServiceEntry{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*networking_istio_io_v1beta1.ServiceEntry)
+		}
+	}
+	return newMap
+}
+
+func (s *serviceEntryMergedSet) Insert(
+	serviceEntryList ...*networking_istio_io_v1beta1.ServiceEntry,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericServiceEntrySet(serviceEntryList))
+	}
+	for _, obj := range serviceEntryList {
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
+	}
+}
+
+func (s *serviceEntryMergedSet) Has(serviceEntry ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(serviceEntry) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *serviceEntryMergedSet) Equal(
+	serviceEntrySet ServiceEntrySet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *serviceEntryMergedSet) Delete(ServiceEntry ezkube.ResourceId) {
+	for _, set := range s.sets {
+		set.Delete(ServiceEntry)
+	}
+}
+
+func (s *serviceEntryMergedSet) Union(set ServiceEntrySet) ServiceEntrySet {
+	if s == nil {
+		return set
+	}
+	return &serviceEntryMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *serviceEntryMergedSet) Difference(set ServiceEntrySet) ServiceEntrySet {
+	panic("unimplemented")
+}
+
+func (s *serviceEntryMergedSet) Intersection(set ServiceEntrySet) ServiceEntrySet {
+	panic("unimplemented")
+}
+
+func (s *serviceEntryMergedSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1beta1.ServiceEntry, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find ServiceEntry %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&networking_istio_io_v1beta1.ServiceEntry{}, id)
+		if err == nil {
+			return obj.(*networking_istio_io_v1beta1.ServiceEntry), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *serviceEntryMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *serviceEntryMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *serviceEntryMergedSet) Delta(newSet ServiceEntrySet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *serviceEntryMergedSet) Clone() ServiceEntrySet {
+	if s == nil {
+		return nil
+	}
+	return &serviceEntryMergedSet{sets: s.sets[:]}
 }
 
 type WorkloadEntrySet interface {
@@ -1063,7 +1855,7 @@ func (s *workloadEntrySet) Union(set WorkloadEntrySet) WorkloadEntrySet {
 	if s == nil {
 		return set
 	}
-	return NewWorkloadEntrySet(append(s.List(), set.List()...)...)
+	return &workloadEntryMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *workloadEntrySet) Difference(set WorkloadEntrySet) WorkloadEntrySet {
@@ -1125,7 +1917,205 @@ func (s *workloadEntrySet) Clone() WorkloadEntrySet {
 	if s == nil {
 		return nil
 	}
-	return &workloadEntrySet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &workloadEntryMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type workloadEntryMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewWorkloadEntryMergedSet(workloadEntryList ...*networking_istio_io_v1beta1.WorkloadEntry) WorkloadEntrySet {
+	return &workloadEntryMergedSet{sets: []sksets.ResourceSet{makeGenericWorkloadEntrySet(workloadEntryList)}}
+}
+
+func NewWorkloadEntryMergedSetFromList(workloadEntryList *networking_istio_io_v1beta1.WorkloadEntryList) WorkloadEntrySet {
+	list := make([]*networking_istio_io_v1beta1.WorkloadEntry, 0, len(workloadEntryList.Items))
+	for idx := range workloadEntryList.Items {
+		list = append(list, workloadEntryList.Items[idx])
+	}
+	return &workloadEntryMergedSet{sets: []sksets.ResourceSet{makeGenericWorkloadEntrySet(list)}}
+}
+
+func (s *workloadEntryMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *workloadEntryMergedSet) List(filterResource ...func(*networking_istio_io_v1beta1.WorkloadEntry) bool) []*networking_istio_io_v1beta1.WorkloadEntry {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1beta1.WorkloadEntry))
+		})
+	}
+	workloadEntryList := []*networking_istio_io_v1beta1.WorkloadEntry{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			workloadEntryList = append(workloadEntryList, obj.(*networking_istio_io_v1beta1.WorkloadEntry))
+		}
+	}
+	return workloadEntryList
+}
+
+func (s *workloadEntryMergedSet) UnsortedList(filterResource ...func(*networking_istio_io_v1beta1.WorkloadEntry) bool) []*networking_istio_io_v1beta1.WorkloadEntry {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1beta1.WorkloadEntry))
+		})
+	}
+	workloadEntryList := []*networking_istio_io_v1beta1.WorkloadEntry{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			workloadEntryList = append(workloadEntryList, obj.(*networking_istio_io_v1beta1.WorkloadEntry))
+		}
+	}
+	return workloadEntryList
+}
+
+func (s *workloadEntryMergedSet) Map() map[string]*networking_istio_io_v1beta1.WorkloadEntry {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*networking_istio_io_v1beta1.WorkloadEntry{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*networking_istio_io_v1beta1.WorkloadEntry)
+		}
+	}
+	return newMap
+}
+
+func (s *workloadEntryMergedSet) Insert(
+	workloadEntryList ...*networking_istio_io_v1beta1.WorkloadEntry,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericWorkloadEntrySet(workloadEntryList))
+	}
+	for _, obj := range workloadEntryList {
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
+	}
+}
+
+func (s *workloadEntryMergedSet) Has(workloadEntry ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(workloadEntry) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *workloadEntryMergedSet) Equal(
+	workloadEntrySet WorkloadEntrySet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *workloadEntryMergedSet) Delete(WorkloadEntry ezkube.ResourceId) {
+	for _, set := range s.sets {
+		set.Delete(WorkloadEntry)
+	}
+}
+
+func (s *workloadEntryMergedSet) Union(set WorkloadEntrySet) WorkloadEntrySet {
+	if s == nil {
+		return set
+	}
+	return &workloadEntryMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *workloadEntryMergedSet) Difference(set WorkloadEntrySet) WorkloadEntrySet {
+	panic("unimplemented")
+}
+
+func (s *workloadEntryMergedSet) Intersection(set WorkloadEntrySet) WorkloadEntrySet {
+	panic("unimplemented")
+}
+
+func (s *workloadEntryMergedSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1beta1.WorkloadEntry, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find WorkloadEntry %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&networking_istio_io_v1beta1.WorkloadEntry{}, id)
+		if err == nil {
+			return obj.(*networking_istio_io_v1beta1.WorkloadEntry), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *workloadEntryMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *workloadEntryMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *workloadEntryMergedSet) Delta(newSet WorkloadEntrySet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *workloadEntryMergedSet) Clone() WorkloadEntrySet {
+	if s == nil {
+		return nil
+	}
+	return &workloadEntryMergedSet{sets: s.sets[:]}
 }
 
 type WorkloadGroupSet interface {
@@ -1286,7 +2276,7 @@ func (s *workloadGroupSet) Union(set WorkloadGroupSet) WorkloadGroupSet {
 	if s == nil {
 		return set
 	}
-	return NewWorkloadGroupSet(append(s.List(), set.List()...)...)
+	return &workloadGroupMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *workloadGroupSet) Difference(set WorkloadGroupSet) WorkloadGroupSet {
@@ -1348,7 +2338,205 @@ func (s *workloadGroupSet) Clone() WorkloadGroupSet {
 	if s == nil {
 		return nil
 	}
-	return &workloadGroupSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &workloadGroupMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type workloadGroupMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewWorkloadGroupMergedSet(workloadGroupList ...*networking_istio_io_v1beta1.WorkloadGroup) WorkloadGroupSet {
+	return &workloadGroupMergedSet{sets: []sksets.ResourceSet{makeGenericWorkloadGroupSet(workloadGroupList)}}
+}
+
+func NewWorkloadGroupMergedSetFromList(workloadGroupList *networking_istio_io_v1beta1.WorkloadGroupList) WorkloadGroupSet {
+	list := make([]*networking_istio_io_v1beta1.WorkloadGroup, 0, len(workloadGroupList.Items))
+	for idx := range workloadGroupList.Items {
+		list = append(list, workloadGroupList.Items[idx])
+	}
+	return &workloadGroupMergedSet{sets: []sksets.ResourceSet{makeGenericWorkloadGroupSet(list)}}
+}
+
+func (s *workloadGroupMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *workloadGroupMergedSet) List(filterResource ...func(*networking_istio_io_v1beta1.WorkloadGroup) bool) []*networking_istio_io_v1beta1.WorkloadGroup {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1beta1.WorkloadGroup))
+		})
+	}
+	workloadGroupList := []*networking_istio_io_v1beta1.WorkloadGroup{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			workloadGroupList = append(workloadGroupList, obj.(*networking_istio_io_v1beta1.WorkloadGroup))
+		}
+	}
+	return workloadGroupList
+}
+
+func (s *workloadGroupMergedSet) UnsortedList(filterResource ...func(*networking_istio_io_v1beta1.WorkloadGroup) bool) []*networking_istio_io_v1beta1.WorkloadGroup {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1beta1.WorkloadGroup))
+		})
+	}
+	workloadGroupList := []*networking_istio_io_v1beta1.WorkloadGroup{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			workloadGroupList = append(workloadGroupList, obj.(*networking_istio_io_v1beta1.WorkloadGroup))
+		}
+	}
+	return workloadGroupList
+}
+
+func (s *workloadGroupMergedSet) Map() map[string]*networking_istio_io_v1beta1.WorkloadGroup {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*networking_istio_io_v1beta1.WorkloadGroup{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*networking_istio_io_v1beta1.WorkloadGroup)
+		}
+	}
+	return newMap
+}
+
+func (s *workloadGroupMergedSet) Insert(
+	workloadGroupList ...*networking_istio_io_v1beta1.WorkloadGroup,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericWorkloadGroupSet(workloadGroupList))
+	}
+	for _, obj := range workloadGroupList {
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
+	}
+}
+
+func (s *workloadGroupMergedSet) Has(workloadGroup ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(workloadGroup) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *workloadGroupMergedSet) Equal(
+	workloadGroupSet WorkloadGroupSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *workloadGroupMergedSet) Delete(WorkloadGroup ezkube.ResourceId) {
+	for _, set := range s.sets {
+		set.Delete(WorkloadGroup)
+	}
+}
+
+func (s *workloadGroupMergedSet) Union(set WorkloadGroupSet) WorkloadGroupSet {
+	if s == nil {
+		return set
+	}
+	return &workloadGroupMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *workloadGroupMergedSet) Difference(set WorkloadGroupSet) WorkloadGroupSet {
+	panic("unimplemented")
+}
+
+func (s *workloadGroupMergedSet) Intersection(set WorkloadGroupSet) WorkloadGroupSet {
+	panic("unimplemented")
+}
+
+func (s *workloadGroupMergedSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1beta1.WorkloadGroup, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find WorkloadGroup %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&networking_istio_io_v1beta1.WorkloadGroup{}, id)
+		if err == nil {
+			return obj.(*networking_istio_io_v1beta1.WorkloadGroup), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *workloadGroupMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *workloadGroupMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *workloadGroupMergedSet) Delta(newSet WorkloadGroupSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *workloadGroupMergedSet) Clone() WorkloadGroupSet {
+	if s == nil {
+		return nil
+	}
+	return &workloadGroupMergedSet{sets: s.sets[:]}
 }
 
 type VirtualServiceSet interface {
@@ -1509,7 +2697,7 @@ func (s *virtualServiceSet) Union(set VirtualServiceSet) VirtualServiceSet {
 	if s == nil {
 		return set
 	}
-	return NewVirtualServiceSet(append(s.List(), set.List()...)...)
+	return &virtualServiceMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *virtualServiceSet) Difference(set VirtualServiceSet) VirtualServiceSet {
@@ -1571,7 +2759,205 @@ func (s *virtualServiceSet) Clone() VirtualServiceSet {
 	if s == nil {
 		return nil
 	}
-	return &virtualServiceSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &virtualServiceMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type virtualServiceMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewVirtualServiceMergedSet(virtualServiceList ...*networking_istio_io_v1beta1.VirtualService) VirtualServiceSet {
+	return &virtualServiceMergedSet{sets: []sksets.ResourceSet{makeGenericVirtualServiceSet(virtualServiceList)}}
+}
+
+func NewVirtualServiceMergedSetFromList(virtualServiceList *networking_istio_io_v1beta1.VirtualServiceList) VirtualServiceSet {
+	list := make([]*networking_istio_io_v1beta1.VirtualService, 0, len(virtualServiceList.Items))
+	for idx := range virtualServiceList.Items {
+		list = append(list, virtualServiceList.Items[idx])
+	}
+	return &virtualServiceMergedSet{sets: []sksets.ResourceSet{makeGenericVirtualServiceSet(list)}}
+}
+
+func (s *virtualServiceMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *virtualServiceMergedSet) List(filterResource ...func(*networking_istio_io_v1beta1.VirtualService) bool) []*networking_istio_io_v1beta1.VirtualService {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1beta1.VirtualService))
+		})
+	}
+	virtualServiceList := []*networking_istio_io_v1beta1.VirtualService{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			virtualServiceList = append(virtualServiceList, obj.(*networking_istio_io_v1beta1.VirtualService))
+		}
+	}
+	return virtualServiceList
+}
+
+func (s *virtualServiceMergedSet) UnsortedList(filterResource ...func(*networking_istio_io_v1beta1.VirtualService) bool) []*networking_istio_io_v1beta1.VirtualService {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1beta1.VirtualService))
+		})
+	}
+	virtualServiceList := []*networking_istio_io_v1beta1.VirtualService{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			virtualServiceList = append(virtualServiceList, obj.(*networking_istio_io_v1beta1.VirtualService))
+		}
+	}
+	return virtualServiceList
+}
+
+func (s *virtualServiceMergedSet) Map() map[string]*networking_istio_io_v1beta1.VirtualService {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*networking_istio_io_v1beta1.VirtualService{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*networking_istio_io_v1beta1.VirtualService)
+		}
+	}
+	return newMap
+}
+
+func (s *virtualServiceMergedSet) Insert(
+	virtualServiceList ...*networking_istio_io_v1beta1.VirtualService,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericVirtualServiceSet(virtualServiceList))
+	}
+	for _, obj := range virtualServiceList {
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
+	}
+}
+
+func (s *virtualServiceMergedSet) Has(virtualService ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(virtualService) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *virtualServiceMergedSet) Equal(
+	virtualServiceSet VirtualServiceSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *virtualServiceMergedSet) Delete(VirtualService ezkube.ResourceId) {
+	for _, set := range s.sets {
+		set.Delete(VirtualService)
+	}
+}
+
+func (s *virtualServiceMergedSet) Union(set VirtualServiceSet) VirtualServiceSet {
+	if s == nil {
+		return set
+	}
+	return &virtualServiceMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *virtualServiceMergedSet) Difference(set VirtualServiceSet) VirtualServiceSet {
+	panic("unimplemented")
+}
+
+func (s *virtualServiceMergedSet) Intersection(set VirtualServiceSet) VirtualServiceSet {
+	panic("unimplemented")
+}
+
+func (s *virtualServiceMergedSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1beta1.VirtualService, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find VirtualService %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&networking_istio_io_v1beta1.VirtualService{}, id)
+		if err == nil {
+			return obj.(*networking_istio_io_v1beta1.VirtualService), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *virtualServiceMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *virtualServiceMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *virtualServiceMergedSet) Delta(newSet VirtualServiceSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *virtualServiceMergedSet) Clone() VirtualServiceSet {
+	if s == nil {
+		return nil
+	}
+	return &virtualServiceMergedSet{sets: s.sets[:]}
 }
 
 type SidecarSet interface {
@@ -1732,7 +3118,7 @@ func (s *sidecarSet) Union(set SidecarSet) SidecarSet {
 	if s == nil {
 		return set
 	}
-	return NewSidecarSet(append(s.List(), set.List()...)...)
+	return &sidecarMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
 }
 
 func (s *sidecarSet) Difference(set SidecarSet) SidecarSet {
@@ -1794,5 +3180,203 @@ func (s *sidecarSet) Clone() SidecarSet {
 	if s == nil {
 		return nil
 	}
-	return &sidecarSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &sidecarMergedSet{sets: []sksets.ResourceSet{s.Generic()}}
+}
+
+type sidecarMergedSet struct {
+	sets []sksets.ResourceSet
+}
+
+func NewSidecarMergedSet(sidecarList ...*networking_istio_io_v1beta1.Sidecar) SidecarSet {
+	return &sidecarMergedSet{sets: []sksets.ResourceSet{makeGenericSidecarSet(sidecarList)}}
+}
+
+func NewSidecarMergedSetFromList(sidecarList *networking_istio_io_v1beta1.SidecarList) SidecarSet {
+	list := make([]*networking_istio_io_v1beta1.Sidecar, 0, len(sidecarList.Items))
+	for idx := range sidecarList.Items {
+		list = append(list, sidecarList.Items[idx])
+	}
+	return &sidecarMergedSet{sets: []sksets.ResourceSet{makeGenericSidecarSet(list)}}
+}
+
+func (s *sidecarMergedSet) Keys() sets.String {
+	if s == nil {
+		return sets.String{}
+	}
+	toRet := sets.String{}
+	for _, set := range s.sets {
+		toRet = toRet.Union(set.Keys())
+	}
+	return toRet
+}
+
+func (s *sidecarMergedSet) List(filterResource ...func(*networking_istio_io_v1beta1.Sidecar) bool) []*networking_istio_io_v1beta1.Sidecar {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1beta1.Sidecar))
+		})
+	}
+	sidecarList := []*networking_istio_io_v1beta1.Sidecar{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.List(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			sidecarList = append(sidecarList, obj.(*networking_istio_io_v1beta1.Sidecar))
+		}
+	}
+	return sidecarList
+}
+
+func (s *sidecarMergedSet) UnsortedList(filterResource ...func(*networking_istio_io_v1beta1.Sidecar) bool) []*networking_istio_io_v1beta1.Sidecar {
+	if s == nil {
+		return nil
+	}
+	var genericFilters []func(ezkube.ResourceId) bool
+	for _, filter := range filterResource {
+		filter := filter
+		genericFilters = append(genericFilters, func(obj ezkube.ResourceId) bool {
+			return filter(obj.(*networking_istio_io_v1beta1.Sidecar))
+		})
+	}
+	sidecarList := []*networking_istio_io_v1beta1.Sidecar{}
+	tracker := map[ezkube.ResourceId]bool{}
+	for i := len(s.sets) - 1; i >= 0; i-- {
+		set := s.sets[i]
+		for _, obj := range set.UnsortedList(genericFilters...) {
+			if tracker[obj] {
+				continue
+			}
+			tracker[obj] = true
+			sidecarList = append(sidecarList, obj.(*networking_istio_io_v1beta1.Sidecar))
+		}
+	}
+	return sidecarList
+}
+
+func (s *sidecarMergedSet) Map() map[string]*networking_istio_io_v1beta1.Sidecar {
+	if s == nil {
+		return nil
+	}
+
+	newMap := map[string]*networking_istio_io_v1beta1.Sidecar{}
+	for _, set := range s.sets {
+		for k, v := range set.Map() {
+			newMap[k] = v.(*networking_istio_io_v1beta1.Sidecar)
+		}
+	}
+	return newMap
+}
+
+func (s *sidecarMergedSet) Insert(
+	sidecarList ...*networking_istio_io_v1beta1.Sidecar,
+) {
+	if s == nil {
+	}
+	if len(s.sets) == 0 {
+		s.sets = append(s.sets, makeGenericSidecarSet(sidecarList))
+	}
+	for _, obj := range sidecarList {
+		inserted := false
+		for _, set := range s.sets {
+			if set.Has(obj) {
+				set.Insert(obj)
+				inserted = true
+				break
+			}
+		}
+		if !inserted {
+			s.sets[0].Insert(obj)
+		}
+	}
+}
+
+func (s *sidecarMergedSet) Has(sidecar ezkube.ResourceId) bool {
+	if s == nil {
+		return false
+	}
+	for _, set := range s.sets {
+		if set.Has(sidecar) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *sidecarMergedSet) Equal(
+	sidecarSet SidecarSet,
+) bool {
+	panic("unimplemented")
+}
+
+func (s *sidecarMergedSet) Delete(Sidecar ezkube.ResourceId) {
+	for _, set := range s.sets {
+		set.Delete(Sidecar)
+	}
+}
+
+func (s *sidecarMergedSet) Union(set SidecarSet) SidecarSet {
+	if s == nil {
+		return set
+	}
+	return &sidecarMergedSet{sets: append(s.sets, set.Generic())}
+}
+
+func (s *sidecarMergedSet) Difference(set SidecarSet) SidecarSet {
+	panic("unimplemented")
+}
+
+func (s *sidecarMergedSet) Intersection(set SidecarSet) SidecarSet {
+	panic("unimplemented")
+}
+
+func (s *sidecarMergedSet) Find(id ezkube.ResourceId) (*networking_istio_io_v1beta1.Sidecar, error) {
+	if s == nil {
+		return nil, eris.Errorf("empty set, cannot find Sidecar %v", sksets.Key(id))
+	}
+
+	var err error
+	for _, set := range s.sets {
+		var obj ezkube.ResourceId
+		obj, err = set.Find(&networking_istio_io_v1beta1.Sidecar{}, id)
+		if err == nil {
+			return obj.(*networking_istio_io_v1beta1.Sidecar), nil
+		}
+	}
+
+	return nil, err
+}
+
+func (s *sidecarMergedSet) Length() int {
+	if s == nil {
+		return 0
+	}
+	totalLen := 0
+	for _, set := range s.sets {
+		totalLen += set.Length()
+	}
+	return totalLen
+}
+
+func (s *sidecarMergedSet) Generic() sksets.ResourceSet {
+	panic("unimplemented")
+}
+
+func (s *sidecarMergedSet) Delta(newSet SidecarSet) sksets.ResourceDelta {
+	panic("unimplemented")
+}
+
+func (s *sidecarMergedSet) Clone() SidecarSet {
+	if s == nil {
+		return nil
+	}
+	return &sidecarMergedSet{sets: s.sets[:]}
 }
