@@ -420,7 +420,11 @@ func (s *telemetryMergedSet) Length() int {
 }
 
 func (s *telemetryMergedSet) Generic() sksets.ResourceSet {
-	panic("unimplemented")
+	res := make([]ezkube.ResourceId, s.Length())
+	for _, thing := range s.List() {
+		res = append(res, thing)
+	}
+	return sksets.NewResourceSet(res...)
 }
 
 func (s *telemetryMergedSet) Delta(newSet TelemetrySet) sksets.ResourceDelta {

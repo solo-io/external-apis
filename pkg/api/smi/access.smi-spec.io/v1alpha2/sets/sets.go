@@ -420,7 +420,11 @@ func (s *trafficTargetMergedSet) Length() int {
 }
 
 func (s *trafficTargetMergedSet) Generic() sksets.ResourceSet {
-	panic("unimplemented")
+	res := make([]ezkube.ResourceId, s.Length())
+	for _, thing := range s.List() {
+		res = append(res, thing)
+	}
+	return sksets.NewResourceSet(res...)
 }
 
 func (s *trafficTargetMergedSet) Delta(newSet TrafficTargetSet) sksets.ResourceDelta {

@@ -420,7 +420,11 @@ func (s *wasmPluginMergedSet) Length() int {
 }
 
 func (s *wasmPluginMergedSet) Generic() sksets.ResourceSet {
-	panic("unimplemented")
+	res := make([]ezkube.ResourceId, s.Length())
+	for _, thing := range s.List() {
+		res = append(res, thing)
+	}
+	return sksets.NewResourceSet(res...)
 }
 
 func (s *wasmPluginMergedSet) Delta(newSet WasmPluginSet) sksets.ResourceDelta {

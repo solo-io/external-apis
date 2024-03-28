@@ -908,6 +908,8 @@ github.com/solo-io/protoc-gen-ext v0.0.18 h1:zSAL8NzWpJUGYoA5IyjHiKASNyHjR0uxBQ7
 github.com/solo-io/protoc-gen-ext v0.0.18/go.mod h1:iGyCvmKmhJNXs5MgBcYFBF0om7LDnCVD2WwhOZGnqeA=
 github.com/solo-io/skv2 v0.36.6-0.20240328205124-7489cd70e00d h1:VX4Xo9xpyxDUJDDI9yfsi5uIWbrsUaeAWbBIP/YoGas=
 github.com/solo-io/skv2 v0.36.6-0.20240328205124-7489cd70e00d/go.mod h1:0GKILLOrQiTKvGsf7UEFZJiDxJHrp0yKJQ6NbHzn+vY=
+github.com/solo-io/skv2 v0.36.6-0.20240328214857-6dc774d337da h1:y2LW2u/LVrbEE50EXb1Wqn3XCyZc1oiYS9wKxazB2MM=
+github.com/solo-io/skv2 v0.36.6-0.20240328214857-6dc774d337da/go.mod h1:0GKILLOrQiTKvGsf7UEFZJiDxJHrp0yKJQ6NbHzn+vY=
 github.com/sourcegraph/conc v0.3.0 h1:OQTbbt6P72L20UqAkXXuLOj79LfEanQ+YQFNpLA9ySo=
 github.com/sourcegraph/conc v0.3.0/go.mod h1:Sdozi7LEKbFPqYX2/J+iBAM6HpqSLTASQIKqDmF7Mt0=
 github.com/spaolacci/murmur3 v0.0.0-20180118202830-f09979ecbc72/go.mod h1:JwIasOWyU6f++ZhiEuf87xNszmSA2myDM2Kzu9HwQUA=

@@ -420,7 +420,11 @@ func (s *jobMergedSet) Length() int {
 }
 
 func (s *jobMergedSet) Generic() sksets.ResourceSet {
-	panic("unimplemented")
+	res := make([]ezkube.ResourceId, s.Length())
+	for _, thing := range s.List() {
+		res = append(res, thing)
+	}
+	return sksets.NewResourceSet(res...)
 }
 
 func (s *jobMergedSet) Delta(newSet JobSet) sksets.ResourceDelta {

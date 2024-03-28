@@ -420,7 +420,11 @@ func (s *deploymentMergedSet) Length() int {
 }
 
 func (s *deploymentMergedSet) Generic() sksets.ResourceSet {
-	panic("unimplemented")
+	res := make([]ezkube.ResourceId, s.Length())
+	for _, thing := range s.List() {
+		res = append(res, thing)
+	}
+	return sksets.NewResourceSet(res...)
 }
 
 func (s *deploymentMergedSet) Delta(newSet DeploymentSet) sksets.ResourceDelta {
@@ -841,7 +845,11 @@ func (s *replicaSetMergedSet) Length() int {
 }
 
 func (s *replicaSetMergedSet) Generic() sksets.ResourceSet {
-	panic("unimplemented")
+	res := make([]ezkube.ResourceId, s.Length())
+	for _, thing := range s.List() {
+		res = append(res, thing)
+	}
+	return sksets.NewResourceSet(res...)
 }
 
 func (s *replicaSetMergedSet) Delta(newSet ReplicaSetSet) sksets.ResourceDelta {
@@ -1262,7 +1270,11 @@ func (s *daemonSetMergedSet) Length() int {
 }
 
 func (s *daemonSetMergedSet) Generic() sksets.ResourceSet {
-	panic("unimplemented")
+	res := make([]ezkube.ResourceId, s.Length())
+	for _, thing := range s.List() {
+		res = append(res, thing)
+	}
+	return sksets.NewResourceSet(res...)
 }
 
 func (s *daemonSetMergedSet) Delta(newSet DaemonSetSet) sksets.ResourceDelta {
@@ -1683,7 +1695,11 @@ func (s *statefulSetMergedSet) Length() int {
 }
 
 func (s *statefulSetMergedSet) Generic() sksets.ResourceSet {
-	panic("unimplemented")
+	res := make([]ezkube.ResourceId, s.Length())
+	for _, thing := range s.List() {
+		res = append(res, thing)
+	}
+	return sksets.NewResourceSet(res...)
 }
 
 func (s *statefulSetMergedSet) Delta(newSet StatefulSetSet) sksets.ResourceDelta {

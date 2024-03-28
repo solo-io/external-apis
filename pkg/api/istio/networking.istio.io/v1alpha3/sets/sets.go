@@ -420,7 +420,11 @@ func (s *envoyFilterMergedSet) Length() int {
 }
 
 func (s *envoyFilterMergedSet) Generic() sksets.ResourceSet {
-	panic("unimplemented")
+	res := make([]ezkube.ResourceId, s.Length())
+	for _, thing := range s.List() {
+		res = append(res, thing)
+	}
+	return sksets.NewResourceSet(res...)
 }
 
 func (s *envoyFilterMergedSet) Delta(newSet EnvoyFilterSet) sksets.ResourceDelta {

@@ -420,7 +420,11 @@ func (s *gatewayMergedSet) Length() int {
 }
 
 func (s *gatewayMergedSet) Generic() sksets.ResourceSet {
-	panic("unimplemented")
+	res := make([]ezkube.ResourceId, s.Length())
+	for _, thing := range s.List() {
+		res = append(res, thing)
+	}
+	return sksets.NewResourceSet(res...)
 }
 
 func (s *gatewayMergedSet) Delta(newSet GatewaySet) sksets.ResourceDelta {
@@ -841,7 +845,11 @@ func (s *gatewayClassMergedSet) Length() int {
 }
 
 func (s *gatewayClassMergedSet) Generic() sksets.ResourceSet {
-	panic("unimplemented")
+	res := make([]ezkube.ResourceId, s.Length())
+	for _, thing := range s.List() {
+		res = append(res, thing)
+	}
+	return sksets.NewResourceSet(res...)
 }
 
 func (s *gatewayClassMergedSet) Delta(newSet GatewayClassSet) sksets.ResourceDelta {
@@ -1262,7 +1270,11 @@ func (s *hTTPRouteMergedSet) Length() int {
 }
 
 func (s *hTTPRouteMergedSet) Generic() sksets.ResourceSet {
-	panic("unimplemented")
+	res := make([]ezkube.ResourceId, s.Length())
+	for _, thing := range s.List() {
+		res = append(res, thing)
+	}
+	return sksets.NewResourceSet(res...)
 }
 
 func (s *hTTPRouteMergedSet) Delta(newSet HTTPRouteSet) sksets.ResourceDelta {

@@ -420,7 +420,11 @@ func (s *authorizationPolicyMergedSet) Length() int {
 }
 
 func (s *authorizationPolicyMergedSet) Generic() sksets.ResourceSet {
-	panic("unimplemented")
+	res := make([]ezkube.ResourceId, s.Length())
+	for _, thing := range s.List() {
+		res = append(res, thing)
+	}
+	return sksets.NewResourceSet(res...)
 }
 
 func (s *authorizationPolicyMergedSet) Delta(newSet AuthorizationPolicySet) sksets.ResourceDelta {
@@ -841,7 +845,11 @@ func (s *peerAuthenticationMergedSet) Length() int {
 }
 
 func (s *peerAuthenticationMergedSet) Generic() sksets.ResourceSet {
-	panic("unimplemented")
+	res := make([]ezkube.ResourceId, s.Length())
+	for _, thing := range s.List() {
+		res = append(res, thing)
+	}
+	return sksets.NewResourceSet(res...)
 }
 
 func (s *peerAuthenticationMergedSet) Delta(newSet PeerAuthenticationSet) sksets.ResourceDelta {
@@ -1262,7 +1270,11 @@ func (s *requestAuthenticationMergedSet) Length() int {
 }
 
 func (s *requestAuthenticationMergedSet) Generic() sksets.ResourceSet {
-	panic("unimplemented")
+	res := make([]ezkube.ResourceId, s.Length())
+	for _, thing := range s.List() {
+		res = append(res, thing)
+	}
+	return sksets.NewResourceSet(res...)
 }
 
 func (s *requestAuthenticationMergedSet) Delta(newSet RequestAuthenticationSet) sksets.ResourceDelta {

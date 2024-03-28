@@ -420,7 +420,11 @@ func (s *validatingWebhookConfigurationMergedSet) Length() int {
 }
 
 func (s *validatingWebhookConfigurationMergedSet) Generic() sksets.ResourceSet {
-	panic("unimplemented")
+	res := make([]ezkube.ResourceId, s.Length())
+	for _, thing := range s.List() {
+		res = append(res, thing)
+	}
+	return sksets.NewResourceSet(res...)
 }
 
 func (s *validatingWebhookConfigurationMergedSet) Delta(newSet ValidatingWebhookConfigurationSet) sksets.ResourceDelta {
@@ -841,7 +845,11 @@ func (s *mutatingWebhookConfigurationMergedSet) Length() int {
 }
 
 func (s *mutatingWebhookConfigurationMergedSet) Generic() sksets.ResourceSet {
-	panic("unimplemented")
+	res := make([]ezkube.ResourceId, s.Length())
+	for _, thing := range s.List() {
+		res = append(res, thing)
+	}
+	return sksets.NewResourceSet(res...)
 }
 
 func (s *mutatingWebhookConfigurationMergedSet) Delta(newSet MutatingWebhookConfigurationSet) sksets.ResourceDelta {
