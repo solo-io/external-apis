@@ -171,7 +171,7 @@ func (s *hTTPRouteGroupSet) Union(set HTTPRouteGroupSet) HTTPRouteGroupSet {
 	if s == nil {
 		return set
 	}
-	return &hTTPRouteGroupMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewHTTPRouteGroupSet(append(s.List(), set.List()...)...)
 }
 
 func (s *hTTPRouteGroupSet) Difference(set HTTPRouteGroupSet) HTTPRouteGroupSet {

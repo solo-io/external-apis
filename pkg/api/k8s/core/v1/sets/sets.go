@@ -171,7 +171,7 @@ func (s *secretSet) Union(set SecretSet) SecretSet {
 	if s == nil {
 		return set
 	}
-	return &secretMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewSecretSet(append(s.List(), set.List()...)...)
 }
 
 func (s *secretSet) Difference(set SecretSet) SecretSet {
@@ -592,7 +592,7 @@ func (s *serviceAccountSet) Union(set ServiceAccountSet) ServiceAccountSet {
 	if s == nil {
 		return set
 	}
-	return &serviceAccountMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewServiceAccountSet(append(s.List(), set.List()...)...)
 }
 
 func (s *serviceAccountSet) Difference(set ServiceAccountSet) ServiceAccountSet {
@@ -1013,7 +1013,7 @@ func (s *configMapSet) Union(set ConfigMapSet) ConfigMapSet {
 	if s == nil {
 		return set
 	}
-	return &configMapMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewConfigMapSet(append(s.List(), set.List()...)...)
 }
 
 func (s *configMapSet) Difference(set ConfigMapSet) ConfigMapSet {
@@ -1434,7 +1434,7 @@ func (s *serviceSet) Union(set ServiceSet) ServiceSet {
 	if s == nil {
 		return set
 	}
-	return &serviceMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewServiceSet(append(s.List(), set.List()...)...)
 }
 
 func (s *serviceSet) Difference(set ServiceSet) ServiceSet {
@@ -1855,7 +1855,7 @@ func (s *podSet) Union(set PodSet) PodSet {
 	if s == nil {
 		return set
 	}
-	return &podMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewPodSet(append(s.List(), set.List()...)...)
 }
 
 func (s *podSet) Difference(set PodSet) PodSet {
@@ -2276,7 +2276,7 @@ func (s *endpointsSet) Union(set EndpointsSet) EndpointsSet {
 	if s == nil {
 		return set
 	}
-	return &endpointsMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewEndpointsSet(append(s.List(), set.List()...)...)
 }
 
 func (s *endpointsSet) Difference(set EndpointsSet) EndpointsSet {
@@ -2697,7 +2697,7 @@ func (s *namespaceSet) Union(set NamespaceSet) NamespaceSet {
 	if s == nil {
 		return set
 	}
-	return &namespaceMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewNamespaceSet(append(s.List(), set.List()...)...)
 }
 
 func (s *namespaceSet) Difference(set NamespaceSet) NamespaceSet {
@@ -3118,7 +3118,7 @@ func (s *nodeSet) Union(set NodeSet) NodeSet {
 	if s == nil {
 		return set
 	}
-	return &nodeMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewNodeSet(append(s.List(), set.List()...)...)
 }
 
 func (s *nodeSet) Difference(set NodeSet) NodeSet {

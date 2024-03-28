@@ -171,7 +171,7 @@ func (s *ciliumNetworkPolicySet) Union(set CiliumNetworkPolicySet) CiliumNetwork
 	if s == nil {
 		return set
 	}
-	return &ciliumNetworkPolicyMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewCiliumNetworkPolicySet(append(s.List(), set.List()...)...)
 }
 
 func (s *ciliumNetworkPolicySet) Difference(set CiliumNetworkPolicySet) CiliumNetworkPolicySet {

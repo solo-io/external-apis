@@ -171,7 +171,7 @@ func (s *jobSet) Union(set JobSet) JobSet {
 	if s == nil {
 		return set
 	}
-	return &jobMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewJobSet(append(s.List(), set.List()...)...)
 }
 
 func (s *jobSet) Difference(set JobSet) JobSet {

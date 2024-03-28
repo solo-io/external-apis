@@ -171,7 +171,7 @@ func (s *destinationRuleSet) Union(set DestinationRuleSet) DestinationRuleSet {
 	if s == nil {
 		return set
 	}
-	return &destinationRuleMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewDestinationRuleSet(append(s.List(), set.List()...)...)
 }
 
 func (s *destinationRuleSet) Difference(set DestinationRuleSet) DestinationRuleSet {
@@ -592,7 +592,7 @@ func (s *gatewaySet) Union(set GatewaySet) GatewaySet {
 	if s == nil {
 		return set
 	}
-	return &gatewayMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewGatewaySet(append(s.List(), set.List()...)...)
 }
 
 func (s *gatewaySet) Difference(set GatewaySet) GatewaySet {
@@ -1013,7 +1013,7 @@ func (s *proxyConfigSet) Union(set ProxyConfigSet) ProxyConfigSet {
 	if s == nil {
 		return set
 	}
-	return &proxyConfigMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewProxyConfigSet(append(s.List(), set.List()...)...)
 }
 
 func (s *proxyConfigSet) Difference(set ProxyConfigSet) ProxyConfigSet {
@@ -1434,7 +1434,7 @@ func (s *serviceEntrySet) Union(set ServiceEntrySet) ServiceEntrySet {
 	if s == nil {
 		return set
 	}
-	return &serviceEntryMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewServiceEntrySet(append(s.List(), set.List()...)...)
 }
 
 func (s *serviceEntrySet) Difference(set ServiceEntrySet) ServiceEntrySet {
@@ -1855,7 +1855,7 @@ func (s *workloadEntrySet) Union(set WorkloadEntrySet) WorkloadEntrySet {
 	if s == nil {
 		return set
 	}
-	return &workloadEntryMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewWorkloadEntrySet(append(s.List(), set.List()...)...)
 }
 
 func (s *workloadEntrySet) Difference(set WorkloadEntrySet) WorkloadEntrySet {
@@ -2276,7 +2276,7 @@ func (s *workloadGroupSet) Union(set WorkloadGroupSet) WorkloadGroupSet {
 	if s == nil {
 		return set
 	}
-	return &workloadGroupMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewWorkloadGroupSet(append(s.List(), set.List()...)...)
 }
 
 func (s *workloadGroupSet) Difference(set WorkloadGroupSet) WorkloadGroupSet {
@@ -2697,7 +2697,7 @@ func (s *virtualServiceSet) Union(set VirtualServiceSet) VirtualServiceSet {
 	if s == nil {
 		return set
 	}
-	return &virtualServiceMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewVirtualServiceSet(append(s.List(), set.List()...)...)
 }
 
 func (s *virtualServiceSet) Difference(set VirtualServiceSet) VirtualServiceSet {
@@ -3118,7 +3118,7 @@ func (s *sidecarSet) Union(set SidecarSet) SidecarSet {
 	if s == nil {
 		return set
 	}
-	return &sidecarMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewSidecarSet(append(s.List(), set.List()...)...)
 }
 
 func (s *sidecarSet) Difference(set SidecarSet) SidecarSet {

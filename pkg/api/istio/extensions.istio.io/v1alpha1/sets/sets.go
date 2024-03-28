@@ -171,7 +171,7 @@ func (s *wasmPluginSet) Union(set WasmPluginSet) WasmPluginSet {
 	if s == nil {
 		return set
 	}
-	return &wasmPluginMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewWasmPluginSet(append(s.List(), set.List()...)...)
 }
 
 func (s *wasmPluginSet) Difference(set WasmPluginSet) WasmPluginSet {

@@ -171,7 +171,7 @@ func (s *istioOperatorSet) Union(set IstioOperatorSet) IstioOperatorSet {
 	if s == nil {
 		return set
 	}
-	return &istioOperatorMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewIstioOperatorSet(append(s.List(), set.List()...)...)
 }
 
 func (s *istioOperatorSet) Difference(set IstioOperatorSet) IstioOperatorSet {

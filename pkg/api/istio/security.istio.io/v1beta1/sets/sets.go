@@ -171,7 +171,7 @@ func (s *authorizationPolicySet) Union(set AuthorizationPolicySet) Authorization
 	if s == nil {
 		return set
 	}
-	return &authorizationPolicyMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewAuthorizationPolicySet(append(s.List(), set.List()...)...)
 }
 
 func (s *authorizationPolicySet) Difference(set AuthorizationPolicySet) AuthorizationPolicySet {
@@ -592,7 +592,7 @@ func (s *peerAuthenticationSet) Union(set PeerAuthenticationSet) PeerAuthenticat
 	if s == nil {
 		return set
 	}
-	return &peerAuthenticationMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewPeerAuthenticationSet(append(s.List(), set.List()...)...)
 }
 
 func (s *peerAuthenticationSet) Difference(set PeerAuthenticationSet) PeerAuthenticationSet {
@@ -1013,7 +1013,7 @@ func (s *requestAuthenticationSet) Union(set RequestAuthenticationSet) RequestAu
 	if s == nil {
 		return set
 	}
-	return &requestAuthenticationMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewRequestAuthenticationSet(append(s.List(), set.List()...)...)
 }
 
 func (s *requestAuthenticationSet) Difference(set RequestAuthenticationSet) RequestAuthenticationSet {

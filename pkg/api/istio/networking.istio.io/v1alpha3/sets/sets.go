@@ -171,7 +171,7 @@ func (s *envoyFilterSet) Union(set EnvoyFilterSet) EnvoyFilterSet {
 	if s == nil {
 		return set
 	}
-	return &envoyFilterMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewEnvoyFilterSet(append(s.List(), set.List()...)...)
 }
 
 func (s *envoyFilterSet) Difference(set EnvoyFilterSet) EnvoyFilterSet {

@@ -171,7 +171,7 @@ func (s *telemetrySet) Union(set TelemetrySet) TelemetrySet {
 	if s == nil {
 		return set
 	}
-	return &telemetryMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewTelemetrySet(append(s.List(), set.List()...)...)
 }
 
 func (s *telemetrySet) Difference(set TelemetrySet) TelemetrySet {

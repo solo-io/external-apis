@@ -171,7 +171,7 @@ func (s *trafficTargetSet) Union(set TrafficTargetSet) TrafficTargetSet {
 	if s == nil {
 		return set
 	}
-	return &trafficTargetMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewTrafficTargetSet(append(s.List(), set.List()...)...)
 }
 
 func (s *trafficTargetSet) Difference(set TrafficTargetSet) TrafficTargetSet {

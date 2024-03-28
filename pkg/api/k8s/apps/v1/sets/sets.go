@@ -171,7 +171,7 @@ func (s *deploymentSet) Union(set DeploymentSet) DeploymentSet {
 	if s == nil {
 		return set
 	}
-	return &deploymentMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewDeploymentSet(append(s.List(), set.List()...)...)
 }
 
 func (s *deploymentSet) Difference(set DeploymentSet) DeploymentSet {
@@ -592,7 +592,7 @@ func (s *replicaSetSet) Union(set ReplicaSetSet) ReplicaSetSet {
 	if s == nil {
 		return set
 	}
-	return &replicaSetMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewReplicaSetSet(append(s.List(), set.List()...)...)
 }
 
 func (s *replicaSetSet) Difference(set ReplicaSetSet) ReplicaSetSet {
@@ -1013,7 +1013,7 @@ func (s *daemonSetSet) Union(set DaemonSetSet) DaemonSetSet {
 	if s == nil {
 		return set
 	}
-	return &daemonSetMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewDaemonSetSet(append(s.List(), set.List()...)...)
 }
 
 func (s *daemonSetSet) Difference(set DaemonSetSet) DaemonSetSet {
@@ -1434,7 +1434,7 @@ func (s *statefulSetSet) Union(set StatefulSetSet) StatefulSetSet {
 	if s == nil {
 		return set
 	}
-	return &statefulSetMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewStatefulSetSet(append(s.List(), set.List()...)...)
 }
 
 func (s *statefulSetSet) Difference(set StatefulSetSet) StatefulSetSet {

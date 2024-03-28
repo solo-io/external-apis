@@ -171,7 +171,7 @@ func (s *gatewaySet) Union(set GatewaySet) GatewaySet {
 	if s == nil {
 		return set
 	}
-	return &gatewayMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewGatewaySet(append(s.List(), set.List()...)...)
 }
 
 func (s *gatewaySet) Difference(set GatewaySet) GatewaySet {
@@ -592,7 +592,7 @@ func (s *gatewayClassSet) Union(set GatewayClassSet) GatewayClassSet {
 	if s == nil {
 		return set
 	}
-	return &gatewayClassMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewGatewayClassSet(append(s.List(), set.List()...)...)
 }
 
 func (s *gatewayClassSet) Difference(set GatewayClassSet) GatewayClassSet {
@@ -1013,7 +1013,7 @@ func (s *hTTPRouteSet) Union(set HTTPRouteSet) HTTPRouteSet {
 	if s == nil {
 		return set
 	}
-	return &hTTPRouteMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewHTTPRouteSet(append(s.List(), set.List()...)...)
 }
 
 func (s *hTTPRouteSet) Difference(set HTTPRouteSet) HTTPRouteSet {

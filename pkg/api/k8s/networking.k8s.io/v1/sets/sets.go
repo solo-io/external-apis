@@ -171,7 +171,7 @@ func (s *networkPolicySet) Union(set NetworkPolicySet) NetworkPolicySet {
 	if s == nil {
 		return set
 	}
-	return &networkPolicyMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewNetworkPolicySet(append(s.List(), set.List()...)...)
 }
 
 func (s *networkPolicySet) Difference(set NetworkPolicySet) NetworkPolicySet {

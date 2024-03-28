@@ -171,7 +171,7 @@ func (s *meshSet) Union(set MeshSet) MeshSet {
 	if s == nil {
 		return set
 	}
-	return &meshMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewMeshSet(append(s.List(), set.List()...)...)
 }
 
 func (s *meshSet) Difference(set MeshSet) MeshSet {
@@ -592,7 +592,7 @@ func (s *virtualServiceSet) Union(set VirtualServiceSet) VirtualServiceSet {
 	if s == nil {
 		return set
 	}
-	return &virtualServiceMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewVirtualServiceSet(append(s.List(), set.List()...)...)
 }
 
 func (s *virtualServiceSet) Difference(set VirtualServiceSet) VirtualServiceSet {
@@ -1013,7 +1013,7 @@ func (s *virtualNodeSet) Union(set VirtualNodeSet) VirtualNodeSet {
 	if s == nil {
 		return set
 	}
-	return &virtualNodeMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewVirtualNodeSet(append(s.List(), set.List()...)...)
 }
 
 func (s *virtualNodeSet) Difference(set VirtualNodeSet) VirtualNodeSet {
@@ -1434,7 +1434,7 @@ func (s *virtualRouterSet) Union(set VirtualRouterSet) VirtualRouterSet {
 	if s == nil {
 		return set
 	}
-	return &virtualRouterMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewVirtualRouterSet(append(s.List(), set.List()...)...)
 }
 
 func (s *virtualRouterSet) Difference(set VirtualRouterSet) VirtualRouterSet {
@@ -1855,7 +1855,7 @@ func (s *virtualGatewaySet) Union(set VirtualGatewaySet) VirtualGatewaySet {
 	if s == nil {
 		return set
 	}
-	return &virtualGatewayMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewVirtualGatewaySet(append(s.List(), set.List()...)...)
 }
 
 func (s *virtualGatewaySet) Difference(set VirtualGatewaySet) VirtualGatewaySet {
@@ -2276,7 +2276,7 @@ func (s *gatewayRouteSet) Union(set GatewayRouteSet) GatewayRouteSet {
 	if s == nil {
 		return set
 	}
-	return &gatewayRouteMergedSet{sets: []sksets.ResourceSet{s.Generic(), set.Generic()}}
+	return NewGatewayRouteSet(append(s.List(), set.List()...)...)
 }
 
 func (s *gatewayRouteSet) Difference(set GatewayRouteSet) GatewayRouteSet {
