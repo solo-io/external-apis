@@ -1,6 +1,6 @@
 module github.com/solo-io/external-apis
 
-go 1.22.1
+go 1.22.2
 
 replace (
 	github.com/Sirupsen/logrus => github.com/sirupsen/logrus v1.4.2
