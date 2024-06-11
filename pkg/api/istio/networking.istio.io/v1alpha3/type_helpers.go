@@ -7,5 +7,26 @@ import (
 	. "istio.io/client-go/pkg/apis/networking/v1alpha3"
 )
 
+// DestinationRuleSlice represents a slice of *DestinationRule
+type DestinationRuleSlice []*DestinationRule
+
+// GatewaySlice represents a slice of *Gateway
+type GatewaySlice []*Gateway
+
+// ServiceEntrySlice represents a slice of *ServiceEntry
+type ServiceEntrySlice []*ServiceEntry
+
+// WorkloadEntrySlice represents a slice of *WorkloadEntry
+type WorkloadEntrySlice []*WorkloadEntry
+
+// WorkloadGroupSlice represents a slice of *WorkloadGroup
+type WorkloadGroupSlice []*WorkloadGroup
+
+// VirtualServiceSlice represents a slice of *VirtualService
+type VirtualServiceSlice []*VirtualService
+
+// SidecarSlice represents a slice of *Sidecar
+type SidecarSlice []*Sidecar
+
 // EnvoyFilterSlice represents a slice of *EnvoyFilter
 type EnvoyFilterSlice []*EnvoyFilter
