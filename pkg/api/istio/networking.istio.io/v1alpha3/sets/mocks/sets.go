@@ -15,6 +15,1798 @@ import (
 	sets0 "k8s.io/apimachinery/pkg/util/sets"
 )
 
+// MockDestinationRuleSet is a mock of DestinationRuleSet interface.
+type MockDestinationRuleSet struct {
+	ctrl     *gomock.Controller
+	recorder *MockDestinationRuleSetMockRecorder
+}
+
+// MockDestinationRuleSetMockRecorder is the mock recorder for MockDestinationRuleSet.
+type MockDestinationRuleSetMockRecorder struct {
+	mock *MockDestinationRuleSet
+}
+
+// NewMockDestinationRuleSet creates a new mock instance.
+func NewMockDestinationRuleSet(ctrl *gomock.Controller) *MockDestinationRuleSet {
+	mock := &MockDestinationRuleSet{ctrl: ctrl}
+	mock.recorder = &MockDestinationRuleSetMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockDestinationRuleSet) EXPECT() *MockDestinationRuleSetMockRecorder {
+	return m.recorder
+}
+
+// Clone mocks base method.
+func (m *MockDestinationRuleSet) Clone() v1alpha3sets.DestinationRuleSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1alpha3sets.DestinationRuleSet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone.
+func (mr *MockDestinationRuleSetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockDestinationRuleSet)(nil).Clone))
+}
+
+// Delete mocks base method.
+func (m *MockDestinationRuleSet) Delete(destinationRule ezkube.ResourceId) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Delete", destinationRule)
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockDestinationRuleSetMockRecorder) Delete(destinationRule interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockDestinationRuleSet)(nil).Delete), destinationRule)
+}
+
+// Delta mocks base method.
+func (m *MockDestinationRuleSet) Delta(newSet v1alpha3sets.DestinationRuleSet) sets.ResourceDelta {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Delta", newSet)
+	ret0, _ := ret[0].(sets.ResourceDelta)
+	return ret0
+}
+
+// Delta indicates an expected call of Delta.
+func (mr *MockDestinationRuleSetMockRecorder) Delta(newSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockDestinationRuleSet)(nil).Delta), newSet)
+}
+
+// Difference mocks base method.
+func (m *MockDestinationRuleSet) Difference(set v1alpha3sets.DestinationRuleSet) v1alpha3sets.DestinationRuleSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Difference", set)
+	ret0, _ := ret[0].(v1alpha3sets.DestinationRuleSet)
+	return ret0
+}
+
+// Difference indicates an expected call of Difference.
+func (mr *MockDestinationRuleSetMockRecorder) Difference(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Difference", reflect.TypeOf((*MockDestinationRuleSet)(nil).Difference), set)
+}
+
+// Equal mocks base method.
+func (m *MockDestinationRuleSet) Equal(destinationRuleSet v1alpha3sets.DestinationRuleSet) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Equal", destinationRuleSet)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Equal indicates an expected call of Equal.
+func (mr *MockDestinationRuleSetMockRecorder) Equal(destinationRuleSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Equal", reflect.TypeOf((*MockDestinationRuleSet)(nil).Equal), destinationRuleSet)
+}
+
+// Find mocks base method.
+func (m *MockDestinationRuleSet) Find(id ezkube.ResourceId) (*v1alpha3.DestinationRule, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1alpha3.DestinationRule)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockDestinationRuleSetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockDestinationRuleSet)(nil).Find), id)
+}
+
+// Generic mocks base method.
+func (m *MockDestinationRuleSet) Generic() sets.ResourceSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Generic")
+	ret0, _ := ret[0].(sets.ResourceSet)
+	return ret0
+}
+
+// Generic indicates an expected call of Generic.
+func (mr *MockDestinationRuleSetMockRecorder) Generic() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockDestinationRuleSet)(nil).Generic))
+}
+
+// Has mocks base method.
+func (m *MockDestinationRuleSet) Has(destinationRule ezkube.ResourceId) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Has", destinationRule)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Has indicates an expected call of Has.
+func (mr *MockDestinationRuleSetMockRecorder) Has(destinationRule interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Has", reflect.TypeOf((*MockDestinationRuleSet)(nil).Has), destinationRule)
+}
+
+// Insert mocks base method.
+func (m *MockDestinationRuleSet) Insert(destinationRule ...*v1alpha3.DestinationRule) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range destinationRule {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "Insert", varargs...)
+}
+
+// Insert indicates an expected call of Insert.
+func (mr *MockDestinationRuleSetMockRecorder) Insert(destinationRule ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockDestinationRuleSet)(nil).Insert), destinationRule...)
+}
+
+// Intersection mocks base method.
+func (m *MockDestinationRuleSet) Intersection(set v1alpha3sets.DestinationRuleSet) v1alpha3sets.DestinationRuleSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Intersection", set)
+	ret0, _ := ret[0].(v1alpha3sets.DestinationRuleSet)
+	return ret0
+}
+
+// Intersection indicates an expected call of Intersection.
+func (mr *MockDestinationRuleSetMockRecorder) Intersection(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockDestinationRuleSet)(nil).Intersection), set)
+}
+
+// Keys mocks base method.
+func (m *MockDestinationRuleSet) Keys() sets0.String {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Keys")
+	ret0, _ := ret[0].(sets0.String)
+	return ret0
+}
+
+// Keys indicates an expected call of Keys.
+func (mr *MockDestinationRuleSetMockRecorder) Keys() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Keys", reflect.TypeOf((*MockDestinationRuleSet)(nil).Keys))
+}
+
+// Length mocks base method.
+func (m *MockDestinationRuleSet) Length() int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Length")
+	ret0, _ := ret[0].(int)
+	return ret0
+}
+
+// Length indicates an expected call of Length.
+func (mr *MockDestinationRuleSetMockRecorder) Length() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Length", reflect.TypeOf((*MockDestinationRuleSet)(nil).Length))
+}
+
+// List mocks base method.
+func (m *MockDestinationRuleSet) List(filterResource ...func(*v1alpha3.DestinationRule) bool) []*v1alpha3.DestinationRule {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
+	ret0, _ := ret[0].([]*v1alpha3.DestinationRule)
+	return ret0
+}
+
+// List indicates an expected call of List.
+func (mr *MockDestinationRuleSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockDestinationRuleSet)(nil).List), filterResource...)
+}
+
+// Map mocks base method.
+func (m *MockDestinationRuleSet) Map() map[string]*v1alpha3.DestinationRule {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Map")
+	ret0, _ := ret[0].(map[string]*v1alpha3.DestinationRule)
+	return ret0
+}
+
+// Map indicates an expected call of Map.
+func (mr *MockDestinationRuleSetMockRecorder) Map() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Map", reflect.TypeOf((*MockDestinationRuleSet)(nil).Map))
+}
+
+// Union mocks base method.
+func (m *MockDestinationRuleSet) Union(set v1alpha3sets.DestinationRuleSet) v1alpha3sets.DestinationRuleSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Union", set)
+	ret0, _ := ret[0].(v1alpha3sets.DestinationRuleSet)
+	return ret0
+}
+
+// Union indicates an expected call of Union.
+func (mr *MockDestinationRuleSetMockRecorder) Union(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Union", reflect.TypeOf((*MockDestinationRuleSet)(nil).Union), set)
+}
+
+// UnsortedList mocks base method.
+func (m *MockDestinationRuleSet) UnsortedList(filterResource ...func(*v1alpha3.DestinationRule) bool) []*v1alpha3.DestinationRule {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1alpha3.DestinationRule)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList.
+func (mr *MockDestinationRuleSetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockDestinationRuleSet)(nil).UnsortedList), filterResource...)
+}
+
+// MockGatewaySet is a mock of GatewaySet interface.
+type MockGatewaySet struct {
+	ctrl     *gomock.Controller
+	recorder *MockGatewaySetMockRecorder
+}
+
+// MockGatewaySetMockRecorder is the mock recorder for MockGatewaySet.
+type MockGatewaySetMockRecorder struct {
+	mock *MockGatewaySet
+}
+
+// NewMockGatewaySet creates a new mock instance.
+func NewMockGatewaySet(ctrl *gomock.Controller) *MockGatewaySet {
+	mock := &MockGatewaySet{ctrl: ctrl}
+	mock.recorder = &MockGatewaySetMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockGatewaySet) EXPECT() *MockGatewaySetMockRecorder {
+	return m.recorder
+}
+
+// Clone mocks base method.
+func (m *MockGatewaySet) Clone() v1alpha3sets.GatewaySet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1alpha3sets.GatewaySet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone.
+func (mr *MockGatewaySetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockGatewaySet)(nil).Clone))
+}
+
+// Delete mocks base method.
+func (m *MockGatewaySet) Delete(gateway ezkube.ResourceId) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Delete", gateway)
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockGatewaySetMockRecorder) Delete(gateway interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockGatewaySet)(nil).Delete), gateway)
+}
+
+// Delta mocks base method.
+func (m *MockGatewaySet) Delta(newSet v1alpha3sets.GatewaySet) sets.ResourceDelta {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Delta", newSet)
+	ret0, _ := ret[0].(sets.ResourceDelta)
+	return ret0
+}
+
+// Delta indicates an expected call of Delta.
+func (mr *MockGatewaySetMockRecorder) Delta(newSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockGatewaySet)(nil).Delta), newSet)
+}
+
+// Difference mocks base method.
+func (m *MockGatewaySet) Difference(set v1alpha3sets.GatewaySet) v1alpha3sets.GatewaySet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Difference", set)
+	ret0, _ := ret[0].(v1alpha3sets.GatewaySet)
+	return ret0
+}
+
+// Difference indicates an expected call of Difference.
+func (mr *MockGatewaySetMockRecorder) Difference(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Difference", reflect.TypeOf((*MockGatewaySet)(nil).Difference), set)
+}
+
+// Equal mocks base method.
+func (m *MockGatewaySet) Equal(gatewaySet v1alpha3sets.GatewaySet) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Equal", gatewaySet)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Equal indicates an expected call of Equal.
+func (mr *MockGatewaySetMockRecorder) Equal(gatewaySet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Equal", reflect.TypeOf((*MockGatewaySet)(nil).Equal), gatewaySet)
+}
+
+// Find mocks base method.
+func (m *MockGatewaySet) Find(id ezkube.ResourceId) (*v1alpha3.Gateway, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1alpha3.Gateway)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockGatewaySetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockGatewaySet)(nil).Find), id)
+}
+
+// Generic mocks base method.
+func (m *MockGatewaySet) Generic() sets.ResourceSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Generic")
+	ret0, _ := ret[0].(sets.ResourceSet)
+	return ret0
+}
+
+// Generic indicates an expected call of Generic.
+func (mr *MockGatewaySetMockRecorder) Generic() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockGatewaySet)(nil).Generic))
+}
+
+// Has mocks base method.
+func (m *MockGatewaySet) Has(gateway ezkube.ResourceId) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Has", gateway)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Has indicates an expected call of Has.
+func (mr *MockGatewaySetMockRecorder) Has(gateway interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Has", reflect.TypeOf((*MockGatewaySet)(nil).Has), gateway)
+}
+
+// Insert mocks base method.
+func (m *MockGatewaySet) Insert(gateway ...*v1alpha3.Gateway) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range gateway {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "Insert", varargs...)
+}
+
+// Insert indicates an expected call of Insert.
+func (mr *MockGatewaySetMockRecorder) Insert(gateway ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockGatewaySet)(nil).Insert), gateway...)
+}
+
+// Intersection mocks base method.
+func (m *MockGatewaySet) Intersection(set v1alpha3sets.GatewaySet) v1alpha3sets.GatewaySet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Intersection", set)
+	ret0, _ := ret[0].(v1alpha3sets.GatewaySet)
+	return ret0
+}
+
+// Intersection indicates an expected call of Intersection.
+func (mr *MockGatewaySetMockRecorder) Intersection(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockGatewaySet)(nil).Intersection), set)
+}
+
+// Keys mocks base method.
+func (m *MockGatewaySet) Keys() sets0.String {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Keys")
+	ret0, _ := ret[0].(sets0.String)
+	return ret0
+}
+
+// Keys indicates an expected call of Keys.
+func (mr *MockGatewaySetMockRecorder) Keys() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Keys", reflect.TypeOf((*MockGatewaySet)(nil).Keys))
+}
+
+// Length mocks base method.
+func (m *MockGatewaySet) Length() int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Length")
+	ret0, _ := ret[0].(int)
+	return ret0
+}
+
+// Length indicates an expected call of Length.
+func (mr *MockGatewaySetMockRecorder) Length() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Length", reflect.TypeOf((*MockGatewaySet)(nil).Length))
+}
+
+// List mocks base method.
+func (m *MockGatewaySet) List(filterResource ...func(*v1alpha3.Gateway) bool) []*v1alpha3.Gateway {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
+	ret0, _ := ret[0].([]*v1alpha3.Gateway)
+	return ret0
+}
+
+// List indicates an expected call of List.
+func (mr *MockGatewaySetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockGatewaySet)(nil).List), filterResource...)
+}
+
+// Map mocks base method.
+func (m *MockGatewaySet) Map() map[string]*v1alpha3.Gateway {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Map")
+	ret0, _ := ret[0].(map[string]*v1alpha3.Gateway)
+	return ret0
+}
+
+// Map indicates an expected call of Map.
+func (mr *MockGatewaySetMockRecorder) Map() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Map", reflect.TypeOf((*MockGatewaySet)(nil).Map))
+}
+
+// Union mocks base method.
+func (m *MockGatewaySet) Union(set v1alpha3sets.GatewaySet) v1alpha3sets.GatewaySet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Union", set)
+	ret0, _ := ret[0].(v1alpha3sets.GatewaySet)
+	return ret0
+}
+
+// Union indicates an expected call of Union.
+func (mr *MockGatewaySetMockRecorder) Union(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Union", reflect.TypeOf((*MockGatewaySet)(nil).Union), set)
+}
+
+// UnsortedList mocks base method.
+func (m *MockGatewaySet) UnsortedList(filterResource ...func(*v1alpha3.Gateway) bool) []*v1alpha3.Gateway {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1alpha3.Gateway)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList.
+func (mr *MockGatewaySetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockGatewaySet)(nil).UnsortedList), filterResource...)
+}
+
+// MockServiceEntrySet is a mock of ServiceEntrySet interface.
+type MockServiceEntrySet struct {
+	ctrl     *gomock.Controller
+	recorder *MockServiceEntrySetMockRecorder
+}
+
+// MockServiceEntrySetMockRecorder is the mock recorder for MockServiceEntrySet.
+type MockServiceEntrySetMockRecorder struct {
+	mock *MockServiceEntrySet
+}
+
+// NewMockServiceEntrySet creates a new mock instance.
+func NewMockServiceEntrySet(ctrl *gomock.Controller) *MockServiceEntrySet {
+	mock := &MockServiceEntrySet{ctrl: ctrl}
+	mock.recorder = &MockServiceEntrySetMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockServiceEntrySet) EXPECT() *MockServiceEntrySetMockRecorder {
+	return m.recorder
+}
+
+// Clone mocks base method.
+func (m *MockServiceEntrySet) Clone() v1alpha3sets.ServiceEntrySet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1alpha3sets.ServiceEntrySet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone.
+func (mr *MockServiceEntrySetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockServiceEntrySet)(nil).Clone))
+}
+
+// Delete mocks base method.
+func (m *MockServiceEntrySet) Delete(serviceEntry ezkube.ResourceId) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Delete", serviceEntry)
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockServiceEntrySetMockRecorder) Delete(serviceEntry interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockServiceEntrySet)(nil).Delete), serviceEntry)
+}
+
+// Delta mocks base method.
+func (m *MockServiceEntrySet) Delta(newSet v1alpha3sets.ServiceEntrySet) sets.ResourceDelta {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Delta", newSet)
+	ret0, _ := ret[0].(sets.ResourceDelta)
+	return ret0
+}
+
+// Delta indicates an expected call of Delta.
+func (mr *MockServiceEntrySetMockRecorder) Delta(newSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockServiceEntrySet)(nil).Delta), newSet)
+}
+
+// Difference mocks base method.
+func (m *MockServiceEntrySet) Difference(set v1alpha3sets.ServiceEntrySet) v1alpha3sets.ServiceEntrySet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Difference", set)
+	ret0, _ := ret[0].(v1alpha3sets.ServiceEntrySet)
+	return ret0
+}
+
+// Difference indicates an expected call of Difference.
+func (mr *MockServiceEntrySetMockRecorder) Difference(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Difference", reflect.TypeOf((*MockServiceEntrySet)(nil).Difference), set)
+}
+
+// Equal mocks base method.
+func (m *MockServiceEntrySet) Equal(serviceEntrySet v1alpha3sets.ServiceEntrySet) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Equal", serviceEntrySet)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Equal indicates an expected call of Equal.
+func (mr *MockServiceEntrySetMockRecorder) Equal(serviceEntrySet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Equal", reflect.TypeOf((*MockServiceEntrySet)(nil).Equal), serviceEntrySet)
+}
+
+// Find mocks base method.
+func (m *MockServiceEntrySet) Find(id ezkube.ResourceId) (*v1alpha3.ServiceEntry, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1alpha3.ServiceEntry)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockServiceEntrySetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockServiceEntrySet)(nil).Find), id)
+}
+
+// Generic mocks base method.
+func (m *MockServiceEntrySet) Generic() sets.ResourceSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Generic")
+	ret0, _ := ret[0].(sets.ResourceSet)
+	return ret0
+}
+
+// Generic indicates an expected call of Generic.
+func (mr *MockServiceEntrySetMockRecorder) Generic() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockServiceEntrySet)(nil).Generic))
+}
+
+// Has mocks base method.
+func (m *MockServiceEntrySet) Has(serviceEntry ezkube.ResourceId) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Has", serviceEntry)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Has indicates an expected call of Has.
+func (mr *MockServiceEntrySetMockRecorder) Has(serviceEntry interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Has", reflect.TypeOf((*MockServiceEntrySet)(nil).Has), serviceEntry)
+}
+
+// Insert mocks base method.
+func (m *MockServiceEntrySet) Insert(serviceEntry ...*v1alpha3.ServiceEntry) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range serviceEntry {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "Insert", varargs...)
+}
+
+// Insert indicates an expected call of Insert.
+func (mr *MockServiceEntrySetMockRecorder) Insert(serviceEntry ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockServiceEntrySet)(nil).Insert), serviceEntry...)
+}
+
+// Intersection mocks base method.
+func (m *MockServiceEntrySet) Intersection(set v1alpha3sets.ServiceEntrySet) v1alpha3sets.ServiceEntrySet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Intersection", set)
+	ret0, _ := ret[0].(v1alpha3sets.ServiceEntrySet)
+	return ret0
+}
+
+// Intersection indicates an expected call of Intersection.
+func (mr *MockServiceEntrySetMockRecorder) Intersection(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockServiceEntrySet)(nil).Intersection), set)
+}
+
+// Keys mocks base method.
+func (m *MockServiceEntrySet) Keys() sets0.String {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Keys")
+	ret0, _ := ret[0].(sets0.String)
+	return ret0
+}
+
+// Keys indicates an expected call of Keys.
+func (mr *MockServiceEntrySetMockRecorder) Keys() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Keys", reflect.TypeOf((*MockServiceEntrySet)(nil).Keys))
+}
+
+// Length mocks base method.
+func (m *MockServiceEntrySet) Length() int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Length")
+	ret0, _ := ret[0].(int)
+	return ret0
+}
+
+// Length indicates an expected call of Length.
+func (mr *MockServiceEntrySetMockRecorder) Length() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Length", reflect.TypeOf((*MockServiceEntrySet)(nil).Length))
+}
+
+// List mocks base method.
+func (m *MockServiceEntrySet) List(filterResource ...func(*v1alpha3.ServiceEntry) bool) []*v1alpha3.ServiceEntry {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
+	ret0, _ := ret[0].([]*v1alpha3.ServiceEntry)
+	return ret0
+}
+
+// List indicates an expected call of List.
+func (mr *MockServiceEntrySetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockServiceEntrySet)(nil).List), filterResource...)
+}
+
+// Map mocks base method.
+func (m *MockServiceEntrySet) Map() map[string]*v1alpha3.ServiceEntry {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Map")
+	ret0, _ := ret[0].(map[string]*v1alpha3.ServiceEntry)
+	return ret0
+}
+
+// Map indicates an expected call of Map.
+func (mr *MockServiceEntrySetMockRecorder) Map() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Map", reflect.TypeOf((*MockServiceEntrySet)(nil).Map))
+}
+
+// Union mocks base method.
+func (m *MockServiceEntrySet) Union(set v1alpha3sets.ServiceEntrySet) v1alpha3sets.ServiceEntrySet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Union", set)
+	ret0, _ := ret[0].(v1alpha3sets.ServiceEntrySet)
+	return ret0
+}
+
+// Union indicates an expected call of Union.
+func (mr *MockServiceEntrySetMockRecorder) Union(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Union", reflect.TypeOf((*MockServiceEntrySet)(nil).Union), set)
+}
+
+// UnsortedList mocks base method.
+func (m *MockServiceEntrySet) UnsortedList(filterResource ...func(*v1alpha3.ServiceEntry) bool) []*v1alpha3.ServiceEntry {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1alpha3.ServiceEntry)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList.
+func (mr *MockServiceEntrySetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockServiceEntrySet)(nil).UnsortedList), filterResource...)
+}
+
+// MockWorkloadEntrySet is a mock of WorkloadEntrySet interface.
+type MockWorkloadEntrySet struct {
+	ctrl     *gomock.Controller
+	recorder *MockWorkloadEntrySetMockRecorder
+}
+
+// MockWorkloadEntrySetMockRecorder is the mock recorder for MockWorkloadEntrySet.
+type MockWorkloadEntrySetMockRecorder struct {
+	mock *MockWorkloadEntrySet
+}
+
+// NewMockWorkloadEntrySet creates a new mock instance.
+func NewMockWorkloadEntrySet(ctrl *gomock.Controller) *MockWorkloadEntrySet {
+	mock := &MockWorkloadEntrySet{ctrl: ctrl}
+	mock.recorder = &MockWorkloadEntrySetMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockWorkloadEntrySet) EXPECT() *MockWorkloadEntrySetMockRecorder {
+	return m.recorder
+}
+
+// Clone mocks base method.
+func (m *MockWorkloadEntrySet) Clone() v1alpha3sets.WorkloadEntrySet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1alpha3sets.WorkloadEntrySet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone.
+func (mr *MockWorkloadEntrySetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockWorkloadEntrySet)(nil).Clone))
+}
+
+// Delete mocks base method.
+func (m *MockWorkloadEntrySet) Delete(workloadEntry ezkube.ResourceId) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Delete", workloadEntry)
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockWorkloadEntrySetMockRecorder) Delete(workloadEntry interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockWorkloadEntrySet)(nil).Delete), workloadEntry)
+}
+
+// Delta mocks base method.
+func (m *MockWorkloadEntrySet) Delta(newSet v1alpha3sets.WorkloadEntrySet) sets.ResourceDelta {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Delta", newSet)
+	ret0, _ := ret[0].(sets.ResourceDelta)
+	return ret0
+}
+
+// Delta indicates an expected call of Delta.
+func (mr *MockWorkloadEntrySetMockRecorder) Delta(newSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockWorkloadEntrySet)(nil).Delta), newSet)
+}
+
+// Difference mocks base method.
+func (m *MockWorkloadEntrySet) Difference(set v1alpha3sets.WorkloadEntrySet) v1alpha3sets.WorkloadEntrySet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Difference", set)
+	ret0, _ := ret[0].(v1alpha3sets.WorkloadEntrySet)
+	return ret0
+}
+
+// Difference indicates an expected call of Difference.
+func (mr *MockWorkloadEntrySetMockRecorder) Difference(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Difference", reflect.TypeOf((*MockWorkloadEntrySet)(nil).Difference), set)
+}
+
+// Equal mocks base method.
+func (m *MockWorkloadEntrySet) Equal(workloadEntrySet v1alpha3sets.WorkloadEntrySet) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Equal", workloadEntrySet)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Equal indicates an expected call of Equal.
+func (mr *MockWorkloadEntrySetMockRecorder) Equal(workloadEntrySet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Equal", reflect.TypeOf((*MockWorkloadEntrySet)(nil).Equal), workloadEntrySet)
+}
+
+// Find mocks base method.
+func (m *MockWorkloadEntrySet) Find(id ezkube.ResourceId) (*v1alpha3.WorkloadEntry, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1alpha3.WorkloadEntry)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockWorkloadEntrySetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockWorkloadEntrySet)(nil).Find), id)
+}
+
+// Generic mocks base method.
+func (m *MockWorkloadEntrySet) Generic() sets.ResourceSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Generic")
+	ret0, _ := ret[0].(sets.ResourceSet)
+	return ret0
+}
+
+// Generic indicates an expected call of Generic.
+func (mr *MockWorkloadEntrySetMockRecorder) Generic() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockWorkloadEntrySet)(nil).Generic))
+}
+
+// Has mocks base method.
+func (m *MockWorkloadEntrySet) Has(workloadEntry ezkube.ResourceId) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Has", workloadEntry)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Has indicates an expected call of Has.
+func (mr *MockWorkloadEntrySetMockRecorder) Has(workloadEntry interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Has", reflect.TypeOf((*MockWorkloadEntrySet)(nil).Has), workloadEntry)
+}
+
+// Insert mocks base method.
+func (m *MockWorkloadEntrySet) Insert(workloadEntry ...*v1alpha3.WorkloadEntry) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range workloadEntry {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "Insert", varargs...)
+}
+
+// Insert indicates an expected call of Insert.
+func (mr *MockWorkloadEntrySetMockRecorder) Insert(workloadEntry ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockWorkloadEntrySet)(nil).Insert), workloadEntry...)
+}
+
+// Intersection mocks base method.
+func (m *MockWorkloadEntrySet) Intersection(set v1alpha3sets.WorkloadEntrySet) v1alpha3sets.WorkloadEntrySet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Intersection", set)
+	ret0, _ := ret[0].(v1alpha3sets.WorkloadEntrySet)
+	return ret0
+}
+
+// Intersection indicates an expected call of Intersection.
+func (mr *MockWorkloadEntrySetMockRecorder) Intersection(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockWorkloadEntrySet)(nil).Intersection), set)
+}
+
+// Keys mocks base method.
+func (m *MockWorkloadEntrySet) Keys() sets0.String {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Keys")
+	ret0, _ := ret[0].(sets0.String)
+	return ret0
+}
+
+// Keys indicates an expected call of Keys.
+func (mr *MockWorkloadEntrySetMockRecorder) Keys() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Keys", reflect.TypeOf((*MockWorkloadEntrySet)(nil).Keys))
+}
+
+// Length mocks base method.
+func (m *MockWorkloadEntrySet) Length() int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Length")
+	ret0, _ := ret[0].(int)
+	return ret0
+}
+
+// Length indicates an expected call of Length.
+func (mr *MockWorkloadEntrySetMockRecorder) Length() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Length", reflect.TypeOf((*MockWorkloadEntrySet)(nil).Length))
+}
+
+// List mocks base method.
+func (m *MockWorkloadEntrySet) List(filterResource ...func(*v1alpha3.WorkloadEntry) bool) []*v1alpha3.WorkloadEntry {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
+	ret0, _ := ret[0].([]*v1alpha3.WorkloadEntry)
+	return ret0
+}
+
+// List indicates an expected call of List.
+func (mr *MockWorkloadEntrySetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockWorkloadEntrySet)(nil).List), filterResource...)
+}
+
+// Map mocks base method.
+func (m *MockWorkloadEntrySet) Map() map[string]*v1alpha3.WorkloadEntry {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Map")
+	ret0, _ := ret[0].(map[string]*v1alpha3.WorkloadEntry)
+	return ret0
+}
+
+// Map indicates an expected call of Map.
+func (mr *MockWorkloadEntrySetMockRecorder) Map() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Map", reflect.TypeOf((*MockWorkloadEntrySet)(nil).Map))
+}
+
+// Union mocks base method.
+func (m *MockWorkloadEntrySet) Union(set v1alpha3sets.WorkloadEntrySet) v1alpha3sets.WorkloadEntrySet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Union", set)
+	ret0, _ := ret[0].(v1alpha3sets.WorkloadEntrySet)
+	return ret0
+}
+
+// Union indicates an expected call of Union.
+func (mr *MockWorkloadEntrySetMockRecorder) Union(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Union", reflect.TypeOf((*MockWorkloadEntrySet)(nil).Union), set)
+}
+
+// UnsortedList mocks base method.
+func (m *MockWorkloadEntrySet) UnsortedList(filterResource ...func(*v1alpha3.WorkloadEntry) bool) []*v1alpha3.WorkloadEntry {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1alpha3.WorkloadEntry)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList.
+func (mr *MockWorkloadEntrySetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockWorkloadEntrySet)(nil).UnsortedList), filterResource...)
+}
+
+// MockWorkloadGroupSet is a mock of WorkloadGroupSet interface.
+type MockWorkloadGroupSet struct {
+	ctrl     *gomock.Controller
+	recorder *MockWorkloadGroupSetMockRecorder
+}
+
+// MockWorkloadGroupSetMockRecorder is the mock recorder for MockWorkloadGroupSet.
+type MockWorkloadGroupSetMockRecorder struct {
+	mock *MockWorkloadGroupSet
+}
+
+// NewMockWorkloadGroupSet creates a new mock instance.
+func NewMockWorkloadGroupSet(ctrl *gomock.Controller) *MockWorkloadGroupSet {
+	mock := &MockWorkloadGroupSet{ctrl: ctrl}
+	mock.recorder = &MockWorkloadGroupSetMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockWorkloadGroupSet) EXPECT() *MockWorkloadGroupSetMockRecorder {
+	return m.recorder
+}
+
+// Clone mocks base method.
+func (m *MockWorkloadGroupSet) Clone() v1alpha3sets.WorkloadGroupSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1alpha3sets.WorkloadGroupSet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone.
+func (mr *MockWorkloadGroupSetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockWorkloadGroupSet)(nil).Clone))
+}
+
+// Delete mocks base method.
+func (m *MockWorkloadGroupSet) Delete(workloadGroup ezkube.ResourceId) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Delete", workloadGroup)
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockWorkloadGroupSetMockRecorder) Delete(workloadGroup interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockWorkloadGroupSet)(nil).Delete), workloadGroup)
+}
+
+// Delta mocks base method.
+func (m *MockWorkloadGroupSet) Delta(newSet v1alpha3sets.WorkloadGroupSet) sets.ResourceDelta {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Delta", newSet)
+	ret0, _ := ret[0].(sets.ResourceDelta)
+	return ret0
+}
+
+// Delta indicates an expected call of Delta.
+func (mr *MockWorkloadGroupSetMockRecorder) Delta(newSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockWorkloadGroupSet)(nil).Delta), newSet)
+}
+
+// Difference mocks base method.
+func (m *MockWorkloadGroupSet) Difference(set v1alpha3sets.WorkloadGroupSet) v1alpha3sets.WorkloadGroupSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Difference", set)
+	ret0, _ := ret[0].(v1alpha3sets.WorkloadGroupSet)
+	return ret0
+}
+
+// Difference indicates an expected call of Difference.
+func (mr *MockWorkloadGroupSetMockRecorder) Difference(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Difference", reflect.TypeOf((*MockWorkloadGroupSet)(nil).Difference), set)
+}
+
+// Equal mocks base method.
+func (m *MockWorkloadGroupSet) Equal(workloadGroupSet v1alpha3sets.WorkloadGroupSet) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Equal", workloadGroupSet)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Equal indicates an expected call of Equal.
+func (mr *MockWorkloadGroupSetMockRecorder) Equal(workloadGroupSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Equal", reflect.TypeOf((*MockWorkloadGroupSet)(nil).Equal), workloadGroupSet)
+}
+
+// Find mocks base method.
+func (m *MockWorkloadGroupSet) Find(id ezkube.ResourceId) (*v1alpha3.WorkloadGroup, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1alpha3.WorkloadGroup)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockWorkloadGroupSetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockWorkloadGroupSet)(nil).Find), id)
+}
+
+// Generic mocks base method.
+func (m *MockWorkloadGroupSet) Generic() sets.ResourceSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Generic")
+	ret0, _ := ret[0].(sets.ResourceSet)
+	return ret0
+}
+
+// Generic indicates an expected call of Generic.
+func (mr *MockWorkloadGroupSetMockRecorder) Generic() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockWorkloadGroupSet)(nil).Generic))
+}
+
+// Has mocks base method.
+func (m *MockWorkloadGroupSet) Has(workloadGroup ezkube.ResourceId) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Has", workloadGroup)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Has indicates an expected call of Has.
+func (mr *MockWorkloadGroupSetMockRecorder) Has(workloadGroup interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Has", reflect.TypeOf((*MockWorkloadGroupSet)(nil).Has), workloadGroup)
+}
+
+// Insert mocks base method.
+func (m *MockWorkloadGroupSet) Insert(workloadGroup ...*v1alpha3.WorkloadGroup) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range workloadGroup {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "Insert", varargs...)
+}
+
+// Insert indicates an expected call of Insert.
+func (mr *MockWorkloadGroupSetMockRecorder) Insert(workloadGroup ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockWorkloadGroupSet)(nil).Insert), workloadGroup...)
+}
+
+// Intersection mocks base method.
+func (m *MockWorkloadGroupSet) Intersection(set v1alpha3sets.WorkloadGroupSet) v1alpha3sets.WorkloadGroupSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Intersection", set)
+	ret0, _ := ret[0].(v1alpha3sets.WorkloadGroupSet)
+	return ret0
+}
+
+// Intersection indicates an expected call of Intersection.
+func (mr *MockWorkloadGroupSetMockRecorder) Intersection(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockWorkloadGroupSet)(nil).Intersection), set)
+}
+
+// Keys mocks base method.
+func (m *MockWorkloadGroupSet) Keys() sets0.String {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Keys")
+	ret0, _ := ret[0].(sets0.String)
+	return ret0
+}
+
+// Keys indicates an expected call of Keys.
+func (mr *MockWorkloadGroupSetMockRecorder) Keys() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Keys", reflect.TypeOf((*MockWorkloadGroupSet)(nil).Keys))
+}
+
+// Length mocks base method.
+func (m *MockWorkloadGroupSet) Length() int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Length")
+	ret0, _ := ret[0].(int)
+	return ret0
+}
+
+// Length indicates an expected call of Length.
+func (mr *MockWorkloadGroupSetMockRecorder) Length() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Length", reflect.TypeOf((*MockWorkloadGroupSet)(nil).Length))
+}
+
+// List mocks base method.
+func (m *MockWorkloadGroupSet) List(filterResource ...func(*v1alpha3.WorkloadGroup) bool) []*v1alpha3.WorkloadGroup {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
+	ret0, _ := ret[0].([]*v1alpha3.WorkloadGroup)
+	return ret0
+}
+
+// List indicates an expected call of List.
+func (mr *MockWorkloadGroupSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockWorkloadGroupSet)(nil).List), filterResource...)
+}
+
+// Map mocks base method.
+func (m *MockWorkloadGroupSet) Map() map[string]*v1alpha3.WorkloadGroup {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Map")
+	ret0, _ := ret[0].(map[string]*v1alpha3.WorkloadGroup)
+	return ret0
+}
+
+// Map indicates an expected call of Map.
+func (mr *MockWorkloadGroupSetMockRecorder) Map() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Map", reflect.TypeOf((*MockWorkloadGroupSet)(nil).Map))
+}
+
+// Union mocks base method.
+func (m *MockWorkloadGroupSet) Union(set v1alpha3sets.WorkloadGroupSet) v1alpha3sets.WorkloadGroupSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Union", set)
+	ret0, _ := ret[0].(v1alpha3sets.WorkloadGroupSet)
+	return ret0
+}
+
+// Union indicates an expected call of Union.
+func (mr *MockWorkloadGroupSetMockRecorder) Union(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Union", reflect.TypeOf((*MockWorkloadGroupSet)(nil).Union), set)
+}
+
+// UnsortedList mocks base method.
+func (m *MockWorkloadGroupSet) UnsortedList(filterResource ...func(*v1alpha3.WorkloadGroup) bool) []*v1alpha3.WorkloadGroup {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1alpha3.WorkloadGroup)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList.
+func (mr *MockWorkloadGroupSetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockWorkloadGroupSet)(nil).UnsortedList), filterResource...)
+}
+
+// MockVirtualServiceSet is a mock of VirtualServiceSet interface.
+type MockVirtualServiceSet struct {
+	ctrl     *gomock.Controller
+	recorder *MockVirtualServiceSetMockRecorder
+}
+
+// MockVirtualServiceSetMockRecorder is the mock recorder for MockVirtualServiceSet.
+type MockVirtualServiceSetMockRecorder struct {
+	mock *MockVirtualServiceSet
+}
+
+// NewMockVirtualServiceSet creates a new mock instance.
+func NewMockVirtualServiceSet(ctrl *gomock.Controller) *MockVirtualServiceSet {
+	mock := &MockVirtualServiceSet{ctrl: ctrl}
+	mock.recorder = &MockVirtualServiceSetMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockVirtualServiceSet) EXPECT() *MockVirtualServiceSetMockRecorder {
+	return m.recorder
+}
+
+// Clone mocks base method.
+func (m *MockVirtualServiceSet) Clone() v1alpha3sets.VirtualServiceSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1alpha3sets.VirtualServiceSet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone.
+func (mr *MockVirtualServiceSetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockVirtualServiceSet)(nil).Clone))
+}
+
+// Delete mocks base method.
+func (m *MockVirtualServiceSet) Delete(virtualService ezkube.ResourceId) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Delete", virtualService)
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockVirtualServiceSetMockRecorder) Delete(virtualService interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockVirtualServiceSet)(nil).Delete), virtualService)
+}
+
+// Delta mocks base method.
+func (m *MockVirtualServiceSet) Delta(newSet v1alpha3sets.VirtualServiceSet) sets.ResourceDelta {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Delta", newSet)
+	ret0, _ := ret[0].(sets.ResourceDelta)
+	return ret0
+}
+
+// Delta indicates an expected call of Delta.
+func (mr *MockVirtualServiceSetMockRecorder) Delta(newSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockVirtualServiceSet)(nil).Delta), newSet)
+}
+
+// Difference mocks base method.
+func (m *MockVirtualServiceSet) Difference(set v1alpha3sets.VirtualServiceSet) v1alpha3sets.VirtualServiceSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Difference", set)
+	ret0, _ := ret[0].(v1alpha3sets.VirtualServiceSet)
+	return ret0
+}
+
+// Difference indicates an expected call of Difference.
+func (mr *MockVirtualServiceSetMockRecorder) Difference(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Difference", reflect.TypeOf((*MockVirtualServiceSet)(nil).Difference), set)
+}
+
+// Equal mocks base method.
+func (m *MockVirtualServiceSet) Equal(virtualServiceSet v1alpha3sets.VirtualServiceSet) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Equal", virtualServiceSet)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Equal indicates an expected call of Equal.
+func (mr *MockVirtualServiceSetMockRecorder) Equal(virtualServiceSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Equal", reflect.TypeOf((*MockVirtualServiceSet)(nil).Equal), virtualServiceSet)
+}
+
+// Find mocks base method.
+func (m *MockVirtualServiceSet) Find(id ezkube.ResourceId) (*v1alpha3.VirtualService, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1alpha3.VirtualService)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockVirtualServiceSetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockVirtualServiceSet)(nil).Find), id)
+}
+
+// Generic mocks base method.
+func (m *MockVirtualServiceSet) Generic() sets.ResourceSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Generic")
+	ret0, _ := ret[0].(sets.ResourceSet)
+	return ret0
+}
+
+// Generic indicates an expected call of Generic.
+func (mr *MockVirtualServiceSetMockRecorder) Generic() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockVirtualServiceSet)(nil).Generic))
+}
+
+// Has mocks base method.
+func (m *MockVirtualServiceSet) Has(virtualService ezkube.ResourceId) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Has", virtualService)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Has indicates an expected call of Has.
+func (mr *MockVirtualServiceSetMockRecorder) Has(virtualService interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Has", reflect.TypeOf((*MockVirtualServiceSet)(nil).Has), virtualService)
+}
+
+// Insert mocks base method.
+func (m *MockVirtualServiceSet) Insert(virtualService ...*v1alpha3.VirtualService) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range virtualService {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "Insert", varargs...)
+}
+
+// Insert indicates an expected call of Insert.
+func (mr *MockVirtualServiceSetMockRecorder) Insert(virtualService ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockVirtualServiceSet)(nil).Insert), virtualService...)
+}
+
+// Intersection mocks base method.
+func (m *MockVirtualServiceSet) Intersection(set v1alpha3sets.VirtualServiceSet) v1alpha3sets.VirtualServiceSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Intersection", set)
+	ret0, _ := ret[0].(v1alpha3sets.VirtualServiceSet)
+	return ret0
+}
+
+// Intersection indicates an expected call of Intersection.
+func (mr *MockVirtualServiceSetMockRecorder) Intersection(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockVirtualServiceSet)(nil).Intersection), set)
+}
+
+// Keys mocks base method.
+func (m *MockVirtualServiceSet) Keys() sets0.String {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Keys")
+	ret0, _ := ret[0].(sets0.String)
+	return ret0
+}
+
+// Keys indicates an expected call of Keys.
+func (mr *MockVirtualServiceSetMockRecorder) Keys() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Keys", reflect.TypeOf((*MockVirtualServiceSet)(nil).Keys))
+}
+
+// Length mocks base method.
+func (m *MockVirtualServiceSet) Length() int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Length")
+	ret0, _ := ret[0].(int)
+	return ret0
+}
+
+// Length indicates an expected call of Length.
+func (mr *MockVirtualServiceSetMockRecorder) Length() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Length", reflect.TypeOf((*MockVirtualServiceSet)(nil).Length))
+}
+
+// List mocks base method.
+func (m *MockVirtualServiceSet) List(filterResource ...func(*v1alpha3.VirtualService) bool) []*v1alpha3.VirtualService {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
+	ret0, _ := ret[0].([]*v1alpha3.VirtualService)
+	return ret0
+}
+
+// List indicates an expected call of List.
+func (mr *MockVirtualServiceSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockVirtualServiceSet)(nil).List), filterResource...)
+}
+
+// Map mocks base method.
+func (m *MockVirtualServiceSet) Map() map[string]*v1alpha3.VirtualService {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Map")
+	ret0, _ := ret[0].(map[string]*v1alpha3.VirtualService)
+	return ret0
+}
+
+// Map indicates an expected call of Map.
+func (mr *MockVirtualServiceSetMockRecorder) Map() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Map", reflect.TypeOf((*MockVirtualServiceSet)(nil).Map))
+}
+
+// Union mocks base method.
+func (m *MockVirtualServiceSet) Union(set v1alpha3sets.VirtualServiceSet) v1alpha3sets.VirtualServiceSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Union", set)
+	ret0, _ := ret[0].(v1alpha3sets.VirtualServiceSet)
+	return ret0
+}
+
+// Union indicates an expected call of Union.
+func (mr *MockVirtualServiceSetMockRecorder) Union(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Union", reflect.TypeOf((*MockVirtualServiceSet)(nil).Union), set)
+}
+
+// UnsortedList mocks base method.
+func (m *MockVirtualServiceSet) UnsortedList(filterResource ...func(*v1alpha3.VirtualService) bool) []*v1alpha3.VirtualService {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1alpha3.VirtualService)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList.
+func (mr *MockVirtualServiceSetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockVirtualServiceSet)(nil).UnsortedList), filterResource...)
+}
+
+// MockSidecarSet is a mock of SidecarSet interface.
+type MockSidecarSet struct {
+	ctrl     *gomock.Controller
+	recorder *MockSidecarSetMockRecorder
+}
+
+// MockSidecarSetMockRecorder is the mock recorder for MockSidecarSet.
+type MockSidecarSetMockRecorder struct {
+	mock *MockSidecarSet
+}
+
+// NewMockSidecarSet creates a new mock instance.
+func NewMockSidecarSet(ctrl *gomock.Controller) *MockSidecarSet {
+	mock := &MockSidecarSet{ctrl: ctrl}
+	mock.recorder = &MockSidecarSetMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockSidecarSet) EXPECT() *MockSidecarSetMockRecorder {
+	return m.recorder
+}
+
+// Clone mocks base method.
+func (m *MockSidecarSet) Clone() v1alpha3sets.SidecarSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Clone")
+	ret0, _ := ret[0].(v1alpha3sets.SidecarSet)
+	return ret0
+}
+
+// Clone indicates an expected call of Clone.
+func (mr *MockSidecarSetMockRecorder) Clone() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Clone", reflect.TypeOf((*MockSidecarSet)(nil).Clone))
+}
+
+// Delete mocks base method.
+func (m *MockSidecarSet) Delete(sidecar ezkube.ResourceId) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Delete", sidecar)
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockSidecarSetMockRecorder) Delete(sidecar interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockSidecarSet)(nil).Delete), sidecar)
+}
+
+// Delta mocks base method.
+func (m *MockSidecarSet) Delta(newSet v1alpha3sets.SidecarSet) sets.ResourceDelta {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Delta", newSet)
+	ret0, _ := ret[0].(sets.ResourceDelta)
+	return ret0
+}
+
+// Delta indicates an expected call of Delta.
+func (mr *MockSidecarSetMockRecorder) Delta(newSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delta", reflect.TypeOf((*MockSidecarSet)(nil).Delta), newSet)
+}
+
+// Difference mocks base method.
+func (m *MockSidecarSet) Difference(set v1alpha3sets.SidecarSet) v1alpha3sets.SidecarSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Difference", set)
+	ret0, _ := ret[0].(v1alpha3sets.SidecarSet)
+	return ret0
+}
+
+// Difference indicates an expected call of Difference.
+func (mr *MockSidecarSetMockRecorder) Difference(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Difference", reflect.TypeOf((*MockSidecarSet)(nil).Difference), set)
+}
+
+// Equal mocks base method.
+func (m *MockSidecarSet) Equal(sidecarSet v1alpha3sets.SidecarSet) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Equal", sidecarSet)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Equal indicates an expected call of Equal.
+func (mr *MockSidecarSetMockRecorder) Equal(sidecarSet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Equal", reflect.TypeOf((*MockSidecarSet)(nil).Equal), sidecarSet)
+}
+
+// Find mocks base method.
+func (m *MockSidecarSet) Find(id ezkube.ResourceId) (*v1alpha3.Sidecar, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", id)
+	ret0, _ := ret[0].(*v1alpha3.Sidecar)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find.
+func (mr *MockSidecarSetMockRecorder) Find(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockSidecarSet)(nil).Find), id)
+}
+
+// Generic mocks base method.
+func (m *MockSidecarSet) Generic() sets.ResourceSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Generic")
+	ret0, _ := ret[0].(sets.ResourceSet)
+	return ret0
+}
+
+// Generic indicates an expected call of Generic.
+func (mr *MockSidecarSetMockRecorder) Generic() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generic", reflect.TypeOf((*MockSidecarSet)(nil).Generic))
+}
+
+// Has mocks base method.
+func (m *MockSidecarSet) Has(sidecar ezkube.ResourceId) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Has", sidecar)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Has indicates an expected call of Has.
+func (mr *MockSidecarSetMockRecorder) Has(sidecar interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Has", reflect.TypeOf((*MockSidecarSet)(nil).Has), sidecar)
+}
+
+// Insert mocks base method.
+func (m *MockSidecarSet) Insert(sidecar ...*v1alpha3.Sidecar) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range sidecar {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "Insert", varargs...)
+}
+
+// Insert indicates an expected call of Insert.
+func (mr *MockSidecarSetMockRecorder) Insert(sidecar ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockSidecarSet)(nil).Insert), sidecar...)
+}
+
+// Intersection mocks base method.
+func (m *MockSidecarSet) Intersection(set v1alpha3sets.SidecarSet) v1alpha3sets.SidecarSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Intersection", set)
+	ret0, _ := ret[0].(v1alpha3sets.SidecarSet)
+	return ret0
+}
+
+// Intersection indicates an expected call of Intersection.
+func (mr *MockSidecarSetMockRecorder) Intersection(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Intersection", reflect.TypeOf((*MockSidecarSet)(nil).Intersection), set)
+}
+
+// Keys mocks base method.
+func (m *MockSidecarSet) Keys() sets0.String {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Keys")
+	ret0, _ := ret[0].(sets0.String)
+	return ret0
+}
+
+// Keys indicates an expected call of Keys.
+func (mr *MockSidecarSetMockRecorder) Keys() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Keys", reflect.TypeOf((*MockSidecarSet)(nil).Keys))
+}
+
+// Length mocks base method.
+func (m *MockSidecarSet) Length() int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Length")
+	ret0, _ := ret[0].(int)
+	return ret0
+}
+
+// Length indicates an expected call of Length.
+func (mr *MockSidecarSetMockRecorder) Length() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Length", reflect.TypeOf((*MockSidecarSet)(nil).Length))
+}
+
+// List mocks base method.
+func (m *MockSidecarSet) List(filterResource ...func(*v1alpha3.Sidecar) bool) []*v1alpha3.Sidecar {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "List", varargs...)
+	ret0, _ := ret[0].([]*v1alpha3.Sidecar)
+	return ret0
+}
+
+// List indicates an expected call of List.
+func (mr *MockSidecarSetMockRecorder) List(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockSidecarSet)(nil).List), filterResource...)
+}
+
+// Map mocks base method.
+func (m *MockSidecarSet) Map() map[string]*v1alpha3.Sidecar {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Map")
+	ret0, _ := ret[0].(map[string]*v1alpha3.Sidecar)
+	return ret0
+}
+
+// Map indicates an expected call of Map.
+func (mr *MockSidecarSetMockRecorder) Map() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Map", reflect.TypeOf((*MockSidecarSet)(nil).Map))
+}
+
+// Union mocks base method.
+func (m *MockSidecarSet) Union(set v1alpha3sets.SidecarSet) v1alpha3sets.SidecarSet {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Union", set)
+	ret0, _ := ret[0].(v1alpha3sets.SidecarSet)
+	return ret0
+}
+
+// Union indicates an expected call of Union.
+func (mr *MockSidecarSetMockRecorder) Union(set interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Union", reflect.TypeOf((*MockSidecarSet)(nil).Union), set)
+}
+
+// UnsortedList mocks base method.
+func (m *MockSidecarSet) UnsortedList(filterResource ...func(*v1alpha3.Sidecar) bool) []*v1alpha3.Sidecar {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range filterResource {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
+	ret0, _ := ret[0].([]*v1alpha3.Sidecar)
+	return ret0
+}
+
+// UnsortedList indicates an expected call of UnsortedList.
+func (mr *MockSidecarSetMockRecorder) UnsortedList(filterResource ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnsortedList", reflect.TypeOf((*MockSidecarSet)(nil).UnsortedList), filterResource...)
+}
+
 // MockEnvoyFilterSet is a mock of EnvoyFilterSet interface.
 type MockEnvoyFilterSet struct {
 	ctrl     *gomock.Controller
