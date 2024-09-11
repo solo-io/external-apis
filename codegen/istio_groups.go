@@ -7,7 +7,7 @@ import (
 	networkingv1beta1 "istio.io/client-go/pkg/apis/networking/v1beta1"
 	"istio.io/client-go/pkg/apis/security/v1beta1"
 	istiotelemetryv1alpha1 "istio.io/client-go/pkg/apis/telemetry/v1alpha1"
-	operator "istio.io/istio/operator/pkg/apis/istio/v1alpha1"
+	operator "istio.io/istio/operator/pkg/apis"
 )
 
 func init() {

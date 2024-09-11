@@ -10,7 +10,7 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	controller "github.com/solo-io/external-apis/pkg/api/istio/install.istio.io/v1alpha1/controller"
-	v1alpha1 "istio.io/istio/operator/pkg/apis/istio/v1alpha1"
+	v1alpha1 "istio.io/istio/operator/pkg/apis"
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 

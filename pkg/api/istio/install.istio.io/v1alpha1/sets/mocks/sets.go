@@ -11,7 +11,7 @@ import (
 	v1alpha1sets "github.com/solo-io/external-apis/pkg/api/istio/install.istio.io/v1alpha1/sets"
 	sets "github.com/solo-io/skv2/contrib/pkg/sets"
 	ezkube "github.com/solo-io/skv2/pkg/ezkube"
-	v1alpha1 "istio.io/istio/operator/pkg/apis/istio/v1alpha1"
+	v1alpha1 "istio.io/istio/operator/pkg/apis"
 	sets0 "k8s.io/apimachinery/pkg/util/sets"
 )
 

@@ -8,7 +8,7 @@ package controller
 import (
 	"context"
 
-	install_istio_io_v1alpha1 "istio.io/istio/operator/pkg/apis/istio/v1alpha1"
+	install_istio_io_v1alpha1 "istio.io/istio/operator/pkg/apis"
 
 	"github.com/pkg/errors"
 	"github.com/solo-io/skv2/pkg/ezkube"
