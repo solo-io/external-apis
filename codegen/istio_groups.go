@@ -85,14 +85,14 @@ func istioGroups() []model.Group {
 			PointerSlices:         true,
 		},
 		{
-			GroupVersion: operator.SchemeGroupVersion,
+			GroupVersion: operator.IstioOperatorGVK.GroupVersion(),
 			Module:       "install.istio.io",
 			Resources: []model.Resource{
 				{
 					Kind: "IstioOperator",
 				},
 			},
-			CustomTypesImportPath: "istio.io/istio/operator/pkg/apis/istio/v1alpha1",
+			CustomTypesImportPath: "istio.io/istio/operator/pkg/apis",
 			ApiRoot:               istioApiRoot,
 		},
 		{

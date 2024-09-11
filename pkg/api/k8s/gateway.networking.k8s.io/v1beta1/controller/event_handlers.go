@@ -279,17 +279,17 @@ type HTTPRouteEventWatcher interface {
 	AddEventHandler(ctx context.Context, h HTTPRouteEventHandler, predicates ...predicate.Predicate) error
 }
 
-type hTTPRouteEventWatcher struct {
+type httprouteEventWatcher struct {
 	watcher events.EventWatcher
 }
 
 func NewHTTPRouteEventWatcher(name string, mgr manager.Manager) HTTPRouteEventWatcher {
-	return &hTTPRouteEventWatcher{
+	return &httprouteEventWatcher{
 		watcher: events.NewWatcher(name, mgr, &gateway_networking_k8s_io_v1beta1.HTTPRoute{}),
 	}
 }
 
-func (c *hTTPRouteEventWatcher) AddEventHandler(ctx context.Context, h HTTPRouteEventHandler, predicates ...predicate.Predicate) error {
+func (c *httprouteEventWatcher) AddEventHandler(ctx context.Context, h HTTPRouteEventHandler, predicates ...predicate.Predicate) error {
 	handler := genericHTTPRouteHandler{handler: h}
 	if err := c.watcher.Watch(ctx, handler, predicates...); err != nil {
 		return err

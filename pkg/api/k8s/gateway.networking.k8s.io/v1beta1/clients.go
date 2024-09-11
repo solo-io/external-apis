@@ -422,15 +422,15 @@ type HTTPRouteClient interface {
 	HTTPRouteStatusWriter
 }
 
-type hTTPRouteClient struct {
+type httprouteClient struct {
 	client client.Client
 }
 
-func NewHTTPRouteClient(client client.Client) *hTTPRouteClient {
-	return &hTTPRouteClient{client: client}
+func NewHTTPRouteClient(client client.Client) *httprouteClient {
+	return &httprouteClient{client: client}
 }
 
-func (c *hTTPRouteClient) GetHTTPRoute(ctx context.Context, key client.ObjectKey) (*gateway_networking_k8s_io_v1beta1.HTTPRoute, error) {
+func (c *httprouteClient) GetHTTPRoute(ctx context.Context, key client.ObjectKey) (*gateway_networking_k8s_io_v1beta1.HTTPRoute, error) {
 	obj := &gateway_networking_k8s_io_v1beta1.HTTPRoute{}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
@@ -438,7 +438,7 @@ func (c *hTTPRouteClient) GetHTTPRoute(ctx context.Context, key client.ObjectKey
 	return obj, nil
 }
 
-func (c *hTTPRouteClient) ListHTTPRoute(ctx context.Context, opts ...client.ListOption) (*gateway_networking_k8s_io_v1beta1.HTTPRouteList, error) {
+func (c *httprouteClient) ListHTTPRoute(ctx context.Context, opts ...client.ListOption) (*gateway_networking_k8s_io_v1beta1.HTTPRouteList, error) {
 	list := &gateway_networking_k8s_io_v1beta1.HTTPRouteList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
@@ -446,31 +446,31 @@ func (c *hTTPRouteClient) ListHTTPRoute(ctx context.Context, opts ...client.List
 	return list, nil
 }
 
-func (c *hTTPRouteClient) CreateHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, opts ...client.CreateOption) error {
+func (c *httprouteClient) CreateHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, opts ...client.CreateOption) error {
 	return c.client.Create(ctx, obj, opts...)
 }
 
-func (c *hTTPRouteClient) DeleteHTTPRoute(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+func (c *httprouteClient) DeleteHTTPRoute(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
 	obj := &gateway_networking_k8s_io_v1beta1.HTTPRoute{}
 	obj.SetName(key.Name)
 	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
 }
 
-func (c *hTTPRouteClient) UpdateHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, opts ...client.UpdateOption) error {
+func (c *httprouteClient) UpdateHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, opts ...client.UpdateOption) error {
 	return c.client.Update(ctx, obj, opts...)
 }
 
-func (c *hTTPRouteClient) PatchHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, patch client.Patch, opts ...client.PatchOption) error {
+func (c *httprouteClient) PatchHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, patch client.Patch, opts ...client.PatchOption) error {
 	return c.client.Patch(ctx, obj, patch, opts...)
 }
 
-func (c *hTTPRouteClient) DeleteAllOfHTTPRoute(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+func (c *httprouteClient) DeleteAllOfHTTPRoute(ctx context.Context, opts ...client.DeleteAllOfOption) error {
 	obj := &gateway_networking_k8s_io_v1beta1.HTTPRoute{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 
-func (c *hTTPRouteClient) UpsertHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, transitionFuncs ...HTTPRouteTransitionFunction) error {
+func (c *httprouteClient) UpsertHTTPRoute(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, transitionFuncs ...HTTPRouteTransitionFunction) error {
 	genericTxFunc := func(existing, desired runtime.Object) error {
 		for _, txFunc := range transitionFuncs {
 			if err := txFunc(existing.(*gateway_networking_k8s_io_v1beta1.HTTPRoute), desired.(*gateway_networking_k8s_io_v1beta1.HTTPRoute)); err != nil {
@@ -483,11 +483,11 @@ func (c *hTTPRouteClient) UpsertHTTPRoute(ctx context.Context, obj *gateway_netw
 	return err
 }
 
-func (c *hTTPRouteClient) UpdateHTTPRouteStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, opts ...client.SubResourceUpdateOption) error {
+func (c *httprouteClient) UpdateHTTPRouteStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *hTTPRouteClient) PatchHTTPRouteStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, patch client.Patch, opts ...client.SubResourcePatchOption) error {
+func (c *httprouteClient) PatchHTTPRouteStatus(ctx context.Context, obj *gateway_networking_k8s_io_v1beta1.HTTPRoute, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 

@@ -10,7 +10,7 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	controller "github.com/solo-io/external-apis/pkg/api/istio/install.istio.io/v1alpha1/controller"
-	v1alpha1 "istio.io/istio/operator/pkg/apis"
+	apis "istio.io/istio/operator/pkg/apis"
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
@@ -38,7 +38,7 @@ func (m *MockIstioOperatorEventHandler) EXPECT() *MockIstioOperatorEventHandlerM
 }
 
 // CreateIstioOperator mocks base method.
-func (m *MockIstioOperatorEventHandler) CreateIstioOperator(obj *v1alpha1.IstioOperator) error {
+func (m *MockIstioOperatorEventHandler) CreateIstioOperator(obj *apis.IstioOperator) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateIstioOperator", obj)
 	ret0, _ := ret[0].(error)
@@ -52,7 +52,7 @@ func (mr *MockIstioOperatorEventHandlerMockRecorder) CreateIstioOperator(obj int
 }
 
 // DeleteIstioOperator mocks base method.
-func (m *MockIstioOperatorEventHandler) DeleteIstioOperator(obj *v1alpha1.IstioOperator) error {
+func (m *MockIstioOperatorEventHandler) DeleteIstioOperator(obj *apis.IstioOperator) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteIstioOperator", obj)
 	ret0, _ := ret[0].(error)
@@ -66,7 +66,7 @@ func (mr *MockIstioOperatorEventHandlerMockRecorder) DeleteIstioOperator(obj int
 }
 
 // GenericIstioOperator mocks base method.
-func (m *MockIstioOperatorEventHandler) GenericIstioOperator(obj *v1alpha1.IstioOperator) error {
+func (m *MockIstioOperatorEventHandler) GenericIstioOperator(obj *apis.IstioOperator) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GenericIstioOperator", obj)
 	ret0, _ := ret[0].(error)
@@ -80,7 +80,7 @@ func (mr *MockIstioOperatorEventHandlerMockRecorder) GenericIstioOperator(obj in
 }
 
 // UpdateIstioOperator mocks base method.
-func (m *MockIstioOperatorEventHandler) UpdateIstioOperator(old, new *v1alpha1.IstioOperator) error {
+func (m *MockIstioOperatorEventHandler) UpdateIstioOperator(old, new *apis.IstioOperator) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateIstioOperator", old, new)
 	ret0, _ := ret[0].(error)
