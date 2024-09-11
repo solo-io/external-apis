@@ -11,7 +11,7 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	controller "github.com/solo-io/external-apis/pkg/api/istio/install.istio.io/v1alpha1/controller"
 	reconcile "github.com/solo-io/skv2/pkg/reconcile"
-	v1alpha1 "istio.io/istio/operator/pkg/apis/istio/v1alpha1"
+	apis "istio.io/istio/operator/pkg/apis"
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
@@ -39,7 +39,7 @@ func (m *MockMulticlusterIstioOperatorReconciler) EXPECT() *MockMulticlusterIsti
 }
 
 // ReconcileIstioOperator mocks base method.
-func (m *MockMulticlusterIstioOperatorReconciler) ReconcileIstioOperator(clusterName string, obj *v1alpha1.IstioOperator) (reconcile.Result, error) {
+func (m *MockMulticlusterIstioOperatorReconciler) ReconcileIstioOperator(clusterName string, obj *apis.IstioOperator) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileIstioOperator", clusterName, obj)
 	ret0, _ := ret[0].(reconcile.Result)
