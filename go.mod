@@ -1,6 +1,6 @@
 module github.com/solo-io/external-apis
 
-go 1.22.2
+go 1.23.1
 
 require (
 	github.com/aws/aws-app-mesh-controller-for-k8s v1.1.1
@@ -9,7 +9,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/rotisserie/eris v0.1.1
 	github.com/servicemeshinterface/smi-sdk-go v0.4.1
-	github.com/solo-io/skv2 v0.39.1
+	github.com/solo-io/skv2 v0.41.0
 	istio.io/client-go v1.23.0-alpha.0.0.20240829011120-095c1873a2c9
 	istio.io/istio v0.0.0-20240903161425-b8197f455bcf
 	k8s.io/api v0.31.0
@@ -121,8 +121,8 @@ require (
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/solo-io/anyvendor v0.0.4 // indirect
 	github.com/solo-io/cue v0.4.7 // indirect
-	github.com/solo-io/go-utils v0.21.4 // indirect
-	github.com/solo-io/protoc-gen-ext v0.0.18 // indirect
+	github.com/solo-io/go-utils v0.26.0 // indirect
+	github.com/solo-io/protoc-gen-ext v0.0.20 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
 	github.com/spf13/afero v1.11.0 // indirect
 	github.com/spf13/cast v1.6.0 // indirect
@@ -147,7 +147,7 @@ require (
 	go4.org/netipx v0.0.0-20230824141953-6213f710f925 // indirect
 	golang.org/x/crypto v0.26.0 // indirect
 	golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56 // indirect
-	golang.org/x/mod v0.19.0 // indirect
+	golang.org/x/mod v0.20.0 // indirect
 	golang.org/x/net v0.28.0 // indirect
 	golang.org/x/oauth2 v0.22.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
