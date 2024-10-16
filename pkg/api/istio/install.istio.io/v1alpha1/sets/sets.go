@@ -5,7 +5,7 @@
 package v1alpha1sets
 
 import (
-	install_istio_io_v1alpha1 "istio.io/istio/operator/pkg/apis/istio/v1alpha1"
+	install_istio_io_v1alpha1 "istio.io/istio/operator/pkg/apis"
 
 	"github.com/rotisserie/eris"
 	sksets "github.com/solo-io/skv2/contrib/pkg/sets"

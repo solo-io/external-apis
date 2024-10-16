@@ -11,7 +11,7 @@ import (
 	v1alpha1sets "github.com/solo-io/external-apis/pkg/api/istio/install.istio.io/v1alpha1/sets"
 	sets "github.com/solo-io/skv2/contrib/pkg/sets"
 	ezkube "github.com/solo-io/skv2/pkg/ezkube"
-	v1alpha1 "istio.io/istio/operator/pkg/apis/istio/v1alpha1"
+	apis "istio.io/istio/operator/pkg/apis"
 	sets0 "k8s.io/apimachinery/pkg/util/sets"
 )
 
@@ -107,10 +107,10 @@ func (mr *MockIstioOperatorSetMockRecorder) Equal(istioOperatorSet interface{}) 
 }
 
 // Find mocks base method.
-func (m *MockIstioOperatorSet) Find(id ezkube.ResourceId) (*v1alpha1.IstioOperator, error) {
+func (m *MockIstioOperatorSet) Find(id ezkube.ResourceId) (*apis.IstioOperator, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Find", id)
-	ret0, _ := ret[0].(*v1alpha1.IstioOperator)
+	ret0, _ := ret[0].(*apis.IstioOperator)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -150,7 +150,7 @@ func (mr *MockIstioOperatorSetMockRecorder) Has(istioOperator interface{}) *gomo
 }
 
 // Insert mocks base method.
-func (m *MockIstioOperatorSet) Insert(istioOperator ...*v1alpha1.IstioOperator) {
+func (m *MockIstioOperatorSet) Insert(istioOperator ...*apis.IstioOperator) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{}
 	for _, a := range istioOperator {
@@ -208,14 +208,14 @@ func (mr *MockIstioOperatorSetMockRecorder) Length() *gomock.Call {
 }
 
 // List mocks base method.
-func (m *MockIstioOperatorSet) List(filterResource ...func(*v1alpha1.IstioOperator) bool) []*v1alpha1.IstioOperator {
+func (m *MockIstioOperatorSet) List(filterResource ...func(*apis.IstioOperator) bool) []*apis.IstioOperator {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{}
 	for _, a := range filterResource {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "List", varargs...)
-	ret0, _ := ret[0].([]*v1alpha1.IstioOperator)
+	ret0, _ := ret[0].([]*apis.IstioOperator)
 	return ret0
 }
 
@@ -226,10 +226,10 @@ func (mr *MockIstioOperatorSetMockRecorder) List(filterResource ...interface{}) 
 }
 
 // Map mocks base method.
-func (m *MockIstioOperatorSet) Map() map[string]*v1alpha1.IstioOperator {
+func (m *MockIstioOperatorSet) Map() map[string]*apis.IstioOperator {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Map")
-	ret0, _ := ret[0].(map[string]*v1alpha1.IstioOperator)
+	ret0, _ := ret[0].(map[string]*apis.IstioOperator)
 	return ret0
 }
 
@@ -254,14 +254,14 @@ func (mr *MockIstioOperatorSetMockRecorder) Union(set interface{}) *gomock.Call 
 }
 
 // UnsortedList mocks base method.
-func (m *MockIstioOperatorSet) UnsortedList(filterResource ...func(*v1alpha1.IstioOperator) bool) []*v1alpha1.IstioOperator {
+func (m *MockIstioOperatorSet) UnsortedList(filterResource ...func(*apis.IstioOperator) bool) []*apis.IstioOperator {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{}
 	for _, a := range filterResource {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "UnsortedList", varargs...)
-	ret0, _ := ret[0].([]*v1alpha1.IstioOperator)
+	ret0, _ := ret[0].([]*apis.IstioOperator)
 	return ret0
 }
 

@@ -302,18 +302,18 @@ type HTTPRouteReconcileLoop interface {
 	RunHTTPRouteReconciler(ctx context.Context, rec HTTPRouteReconciler, predicates ...predicate.Predicate) error
 }
 
-type hTTPRouteReconcileLoop struct {
+type httprouteReconcileLoop struct {
 	loop reconcile.Loop
 }
 
 func NewHTTPRouteReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) HTTPRouteReconcileLoop {
-	return &hTTPRouteReconcileLoop{
+	return &httprouteReconcileLoop{
 		// empty cluster indicates this reconciler is built for the local cluster
 		loop: reconcile.NewLoop(name, "", mgr, &gateway_networking_k8s_io_v1beta1.HTTPRoute{}, options),
 	}
 }
 
-func (c *hTTPRouteReconcileLoop) RunHTTPRouteReconciler(ctx context.Context, reconciler HTTPRouteReconciler, predicates ...predicate.Predicate) error {
+func (c *httprouteReconcileLoop) RunHTTPRouteReconciler(ctx context.Context, reconciler HTTPRouteReconciler, predicates ...predicate.Predicate) error {
 	genericReconciler := genericHTTPRouteReconciler{
 		reconciler: reconciler,
 	}
