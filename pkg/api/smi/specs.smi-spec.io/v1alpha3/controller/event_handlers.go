@@ -65,17 +65,17 @@ type HTTPRouteGroupEventWatcher interface {
 	AddEventHandler(ctx context.Context, h HTTPRouteGroupEventHandler, predicates ...predicate.Predicate) error
 }
 
-type httprouteGroupEventWatcher struct {
+type hTTPRouteGroupEventWatcher struct {
 	watcher events.EventWatcher
 }
 
 func NewHTTPRouteGroupEventWatcher(name string, mgr manager.Manager) HTTPRouteGroupEventWatcher {
-	return &httprouteGroupEventWatcher{
+	return &hTTPRouteGroupEventWatcher{
 		watcher: events.NewWatcher(name, mgr, &specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}),
 	}
 }
 
-func (c *httprouteGroupEventWatcher) AddEventHandler(ctx context.Context, h HTTPRouteGroupEventHandler, predicates ...predicate.Predicate) error {
+func (c *hTTPRouteGroupEventWatcher) AddEventHandler(ctx context.Context, h HTTPRouteGroupEventHandler, predicates ...predicate.Predicate) error {
 	handler := genericHTTPRouteGroupHandler{handler: h}
 	if err := c.watcher.Watch(ctx, handler, predicates...); err != nil {
 		return err
