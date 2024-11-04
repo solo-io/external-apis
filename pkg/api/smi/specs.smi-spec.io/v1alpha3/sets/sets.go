@@ -25,13 +25,13 @@ type HTTPRouteGroupSet interface {
 	// Return the Set as a map of key to resource.
 	Map() map[string]*specs_smi_spec_io_v1alpha3.HTTPRouteGroup
 	// Insert a resource into the set.
-	Insert(httprouteGroup ...*specs_smi_spec_io_v1alpha3.HTTPRouteGroup)
+	Insert(hTTPRouteGroup ...*specs_smi_spec_io_v1alpha3.HTTPRouteGroup)
 	// Compare the equality of the keys in two sets (not the resources themselves)
-	Equal(httprouteGroupSet HTTPRouteGroupSet) bool
+	Equal(hTTPRouteGroupSet HTTPRouteGroupSet) bool
 	// Check if the set contains a key matching the resource (not the resource itself)
-	Has(httprouteGroup ezkube.ResourceId) bool
+	Has(hTTPRouteGroup ezkube.ResourceId) bool
 	// Delete the key matching the resource
-	Delete(httprouteGroup ezkube.ResourceId)
+	Delete(hTTPRouteGroup ezkube.ResourceId)
 	// Return the union with the provided set
 	Union(set HTTPRouteGroupSet) HTTPRouteGroupSet
 	// Return the difference with the provided set
@@ -50,38 +50,38 @@ type HTTPRouteGroupSet interface {
 	Clone() HTTPRouteGroupSet
 }
 
-func makeGenericHTTPRouteGroupSet(httprouteGroupList []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup) sksets.ResourceSet {
+func makeGenericHTTPRouteGroupSet(hTTPRouteGroupList []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
-	for _, obj := range httprouteGroupList {
+	for _, obj := range hTTPRouteGroupList {
 		genericResources = append(genericResources, obj)
 	}
 	return sksets.NewResourceSet(genericResources...)
 }
 
-type httprouteGroupSet struct {
+type hTTPRouteGroupSet struct {
 	set sksets.ResourceSet
 }
 
-func NewHTTPRouteGroupSet(httprouteGroupList ...*specs_smi_spec_io_v1alpha3.HTTPRouteGroup) HTTPRouteGroupSet {
-	return &httprouteGroupSet{set: makeGenericHTTPRouteGroupSet(httprouteGroupList)}
+func NewHTTPRouteGroupSet(hTTPRouteGroupList ...*specs_smi_spec_io_v1alpha3.HTTPRouteGroup) HTTPRouteGroupSet {
+	return &hTTPRouteGroupSet{set: makeGenericHTTPRouteGroupSet(hTTPRouteGroupList)}
 }
 
-func NewHTTPRouteGroupSetFromList(httprouteGroupList *specs_smi_spec_io_v1alpha3.HTTPRouteGroupList) HTTPRouteGroupSet {
-	list := make([]*specs_smi_spec_io_v1alpha3.HTTPRouteGroup, 0, len(httprouteGroupList.Items))
-	for idx := range httprouteGroupList.Items {
-		list = append(list, &httprouteGroupList.Items[idx])
+func NewHTTPRouteGroupSetFromList(hTTPRouteGroupList *specs_smi_spec_io_v1alpha3.HTTPRouteGroupList) HTTPRouteGroupSet {
+	list := make([]*specs_smi_spec_io_v1alpha3.HTTPRouteGroup, 0, len(hTTPRouteGroupList.Items))
+	for idx := range hTTPRouteGroupList.Items {
+		list = append(list, &hTTPRouteGroupList.Items[idx])
 	}
-	return &httprouteGroupSet{set: makeGenericHTTPRouteGroupSet(list)}
+	return &hTTPRouteGroupSet{set: makeGenericHTTPRouteGroupSet(list)}
 }
 
-func (s *httprouteGroupSet) Keys() sets.String {
+func (s *hTTPRouteGroupSet) Keys() sets.String {
 	if s == nil {
 		return sets.String{}
 	}
 	return s.Generic().Keys()
 }
 
-func (s *httprouteGroupSet) List(filterResource ...func(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup) bool) []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup {
+func (s *hTTPRouteGroupSet) List(filterResource ...func(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup) bool) []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup {
 	if s == nil {
 		return nil
 	}
@@ -94,14 +94,14 @@ func (s *httprouteGroupSet) List(filterResource ...func(*specs_smi_spec_io_v1alp
 	}
 
 	objs := s.Generic().List(genericFilters...)
-	httprouteGroupList := make([]*specs_smi_spec_io_v1alpha3.HTTPRouteGroup, 0, len(objs))
+	hTTPRouteGroupList := make([]*specs_smi_spec_io_v1alpha3.HTTPRouteGroup, 0, len(objs))
 	for _, obj := range objs {
-		httprouteGroupList = append(httprouteGroupList, obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
+		hTTPRouteGroupList = append(hTTPRouteGroupList, obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
 	}
-	return httprouteGroupList
+	return hTTPRouteGroupList
 }
 
-func (s *httprouteGroupSet) UnsortedList(filterResource ...func(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup) bool) []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup {
+func (s *hTTPRouteGroupSet) UnsortedList(filterResource ...func(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup) bool) []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup {
 	if s == nil {
 		return nil
 	}
@@ -113,14 +113,14 @@ func (s *httprouteGroupSet) UnsortedList(filterResource ...func(*specs_smi_spec_
 		})
 	}
 
-	var httprouteGroupList []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup
+	var hTTPRouteGroupList []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup
 	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
-		httprouteGroupList = append(httprouteGroupList, obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
+		hTTPRouteGroupList = append(hTTPRouteGroupList, obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
 	}
-	return httprouteGroupList
+	return hTTPRouteGroupList
 }
 
-func (s *httprouteGroupSet) Map() map[string]*specs_smi_spec_io_v1alpha3.HTTPRouteGroup {
+func (s *hTTPRouteGroupSet) Map() map[string]*specs_smi_spec_io_v1alpha3.HTTPRouteGroup {
 	if s == nil {
 		return nil
 	}
@@ -132,69 +132,69 @@ func (s *httprouteGroupSet) Map() map[string]*specs_smi_spec_io_v1alpha3.HTTPRou
 	return newMap
 }
 
-func (s *httprouteGroupSet) Insert(
-	httprouteGroupList ...*specs_smi_spec_io_v1alpha3.HTTPRouteGroup,
+func (s *hTTPRouteGroupSet) Insert(
+	hTTPRouteGroupList ...*specs_smi_spec_io_v1alpha3.HTTPRouteGroup,
 ) {
 	if s == nil {
 		panic("cannot insert into nil set")
 	}
 
-	for _, obj := range httprouteGroupList {
+	for _, obj := range hTTPRouteGroupList {
 		s.Generic().Insert(obj)
 	}
 }
 
-func (s *httprouteGroupSet) Has(httprouteGroup ezkube.ResourceId) bool {
+func (s *hTTPRouteGroupSet) Has(hTTPRouteGroup ezkube.ResourceId) bool {
 	if s == nil {
 		return false
 	}
-	return s.Generic().Has(httprouteGroup)
+	return s.Generic().Has(hTTPRouteGroup)
 }
 
-func (s *httprouteGroupSet) Equal(
-	httprouteGroupSet HTTPRouteGroupSet,
+func (s *hTTPRouteGroupSet) Equal(
+	hTTPRouteGroupSet HTTPRouteGroupSet,
 ) bool {
 	if s == nil {
-		return httprouteGroupSet == nil
+		return hTTPRouteGroupSet == nil
 	}
-	return s.Generic().Equal(httprouteGroupSet.Generic())
+	return s.Generic().Equal(hTTPRouteGroupSet.Generic())
 }
 
-func (s *httprouteGroupSet) Delete(HTTPRouteGroup ezkube.ResourceId) {
+func (s *hTTPRouteGroupSet) Delete(HTTPRouteGroup ezkube.ResourceId) {
 	if s == nil {
 		return
 	}
 	s.Generic().Delete(HTTPRouteGroup)
 }
 
-func (s *httprouteGroupSet) Union(set HTTPRouteGroupSet) HTTPRouteGroupSet {
+func (s *hTTPRouteGroupSet) Union(set HTTPRouteGroupSet) HTTPRouteGroupSet {
 	if s == nil {
 		return set
 	}
 	return NewHTTPRouteGroupSet(append(s.List(), set.List()...)...)
 }
 
-func (s *httprouteGroupSet) Difference(set HTTPRouteGroupSet) HTTPRouteGroupSet {
+func (s *hTTPRouteGroupSet) Difference(set HTTPRouteGroupSet) HTTPRouteGroupSet {
 	if s == nil {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &httprouteGroupSet{set: newSet}
+	return &hTTPRouteGroupSet{set: newSet}
 }
 
-func (s *httprouteGroupSet) Intersection(set HTTPRouteGroupSet) HTTPRouteGroupSet {
+func (s *hTTPRouteGroupSet) Intersection(set HTTPRouteGroupSet) HTTPRouteGroupSet {
 	if s == nil {
 		return nil
 	}
 	newSet := s.Generic().Intersection(set.Generic())
-	var httprouteGroupList []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup
+	var hTTPRouteGroupList []*specs_smi_spec_io_v1alpha3.HTTPRouteGroup
 	for _, obj := range newSet.List() {
-		httprouteGroupList = append(httprouteGroupList, obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
+		hTTPRouteGroupList = append(hTTPRouteGroupList, obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup))
 	}
-	return NewHTTPRouteGroupSet(httprouteGroupList...)
+	return NewHTTPRouteGroupSet(hTTPRouteGroupList...)
 }
 
-func (s *httprouteGroupSet) Find(id ezkube.ResourceId) (*specs_smi_spec_io_v1alpha3.HTTPRouteGroup, error) {
+func (s *hTTPRouteGroupSet) Find(id ezkube.ResourceId) (*specs_smi_spec_io_v1alpha3.HTTPRouteGroup, error) {
 	if s == nil {
 		return nil, eris.Errorf("empty set, cannot find HTTPRouteGroup %v", sksets.Key(id))
 	}
@@ -206,21 +206,21 @@ func (s *httprouteGroupSet) Find(id ezkube.ResourceId) (*specs_smi_spec_io_v1alp
 	return obj.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup), nil
 }
 
-func (s *httprouteGroupSet) Length() int {
+func (s *hTTPRouteGroupSet) Length() int {
 	if s == nil {
 		return 0
 	}
 	return s.Generic().Length()
 }
 
-func (s *httprouteGroupSet) Generic() sksets.ResourceSet {
+func (s *hTTPRouteGroupSet) Generic() sksets.ResourceSet {
 	if s == nil {
 		return nil
 	}
 	return s.set
 }
 
-func (s *httprouteGroupSet) Delta(newSet HTTPRouteGroupSet) sksets.ResourceDelta {
+func (s *hTTPRouteGroupSet) Delta(newSet HTTPRouteGroupSet) sksets.ResourceDelta {
 	if s == nil {
 		return sksets.ResourceDelta{
 			Inserted: newSet.Generic(),
@@ -229,9 +229,9 @@ func (s *httprouteGroupSet) Delta(newSet HTTPRouteGroupSet) sksets.ResourceDelta
 	return s.Generic().Delta(newSet.Generic())
 }
 
-func (s *httprouteGroupSet) Clone() HTTPRouteGroupSet {
+func (s *hTTPRouteGroupSet) Clone() HTTPRouteGroupSet {
 	if s == nil {
 		return nil
 	}
-	return &httprouteGroupSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &hTTPRouteGroupSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
 }

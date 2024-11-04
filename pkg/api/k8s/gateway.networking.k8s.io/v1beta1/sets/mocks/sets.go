@@ -565,15 +565,15 @@ func (mr *MockHTTPRouteSetMockRecorder) Clone() *gomock.Call {
 }
 
 // Delete mocks base method.
-func (m *MockHTTPRouteSet) Delete(httproute ezkube.ResourceId) {
+func (m *MockHTTPRouteSet) Delete(hTTPRoute ezkube.ResourceId) {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "Delete", httproute)
+	m.ctrl.Call(m, "Delete", hTTPRoute)
 }
 
 // Delete indicates an expected call of Delete.
-func (mr *MockHTTPRouteSetMockRecorder) Delete(httproute interface{}) *gomock.Call {
+func (mr *MockHTTPRouteSetMockRecorder) Delete(hTTPRoute interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockHTTPRouteSet)(nil).Delete), httproute)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockHTTPRouteSet)(nil).Delete), hTTPRoute)
 }
 
 // Delta mocks base method.
@@ -605,17 +605,17 @@ func (mr *MockHTTPRouteSetMockRecorder) Difference(set interface{}) *gomock.Call
 }
 
 // Equal mocks base method.
-func (m *MockHTTPRouteSet) Equal(httprouteSet v1beta1sets.HTTPRouteSet) bool {
+func (m *MockHTTPRouteSet) Equal(hTTPRouteSet v1beta1sets.HTTPRouteSet) bool {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Equal", httprouteSet)
+	ret := m.ctrl.Call(m, "Equal", hTTPRouteSet)
 	ret0, _ := ret[0].(bool)
 	return ret0
 }
 
 // Equal indicates an expected call of Equal.
-func (mr *MockHTTPRouteSetMockRecorder) Equal(httprouteSet interface{}) *gomock.Call {
+func (mr *MockHTTPRouteSetMockRecorder) Equal(hTTPRouteSet interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Equal", reflect.TypeOf((*MockHTTPRouteSet)(nil).Equal), httprouteSet)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Equal", reflect.TypeOf((*MockHTTPRouteSet)(nil).Equal), hTTPRouteSet)
 }
 
 // Find mocks base method.
@@ -648,33 +648,33 @@ func (mr *MockHTTPRouteSetMockRecorder) Generic() *gomock.Call {
 }
 
 // Has mocks base method.
-func (m *MockHTTPRouteSet) Has(httproute ezkube.ResourceId) bool {
+func (m *MockHTTPRouteSet) Has(hTTPRoute ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Has", httproute)
+	ret := m.ctrl.Call(m, "Has", hTTPRoute)
 	ret0, _ := ret[0].(bool)
 	return ret0
 }
 
 // Has indicates an expected call of Has.
-func (mr *MockHTTPRouteSetMockRecorder) Has(httproute interface{}) *gomock.Call {
+func (mr *MockHTTPRouteSetMockRecorder) Has(hTTPRoute interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Has", reflect.TypeOf((*MockHTTPRouteSet)(nil).Has), httproute)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Has", reflect.TypeOf((*MockHTTPRouteSet)(nil).Has), hTTPRoute)
 }
 
 // Insert mocks base method.
-func (m *MockHTTPRouteSet) Insert(httproute ...*v1beta1.HTTPRoute) {
+func (m *MockHTTPRouteSet) Insert(hTTPRoute ...*v1beta1.HTTPRoute) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{}
-	for _, a := range httproute {
+	for _, a := range hTTPRoute {
 		varargs = append(varargs, a)
 	}
 	m.ctrl.Call(m, "Insert", varargs...)
 }
 
 // Insert indicates an expected call of Insert.
-func (mr *MockHTTPRouteSetMockRecorder) Insert(httproute ...interface{}) *gomock.Call {
+func (mr *MockHTTPRouteSetMockRecorder) Insert(hTTPRoute ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockHTTPRouteSet)(nil).Insert), httproute...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockHTTPRouteSet)(nil).Insert), hTTPRoute...)
 }
 
 // Intersection mocks base method.

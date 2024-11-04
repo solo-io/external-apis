@@ -122,15 +122,15 @@ type HTTPRouteGroupClient interface {
 	HTTPRouteGroupStatusWriter
 }
 
-type httprouteGroupClient struct {
+type hTTPRouteGroupClient struct {
 	client client.Client
 }
 
-func NewHTTPRouteGroupClient(client client.Client) *httprouteGroupClient {
-	return &httprouteGroupClient{client: client}
+func NewHTTPRouteGroupClient(client client.Client) *hTTPRouteGroupClient {
+	return &hTTPRouteGroupClient{client: client}
 }
 
-func (c *httprouteGroupClient) GetHTTPRouteGroup(ctx context.Context, key client.ObjectKey) (*specs_smi_spec_io_v1alpha3.HTTPRouteGroup, error) {
+func (c *hTTPRouteGroupClient) GetHTTPRouteGroup(ctx context.Context, key client.ObjectKey) (*specs_smi_spec_io_v1alpha3.HTTPRouteGroup, error) {
 	obj := &specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}
 	if err := c.client.Get(ctx, key, obj); err != nil {
 		return nil, err
@@ -138,7 +138,7 @@ func (c *httprouteGroupClient) GetHTTPRouteGroup(ctx context.Context, key client
 	return obj, nil
 }
 
-func (c *httprouteGroupClient) ListHTTPRouteGroup(ctx context.Context, opts ...client.ListOption) (*specs_smi_spec_io_v1alpha3.HTTPRouteGroupList, error) {
+func (c *hTTPRouteGroupClient) ListHTTPRouteGroup(ctx context.Context, opts ...client.ListOption) (*specs_smi_spec_io_v1alpha3.HTTPRouteGroupList, error) {
 	list := &specs_smi_spec_io_v1alpha3.HTTPRouteGroupList{}
 	if err := c.client.List(ctx, list, opts...); err != nil {
 		return nil, err
@@ -146,31 +146,31 @@ func (c *httprouteGroupClient) ListHTTPRouteGroup(ctx context.Context, opts ...c
 	return list, nil
 }
 
-func (c *httprouteGroupClient) CreateHTTPRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, opts ...client.CreateOption) error {
+func (c *hTTPRouteGroupClient) CreateHTTPRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, opts ...client.CreateOption) error {
 	return c.client.Create(ctx, obj, opts...)
 }
 
-func (c *httprouteGroupClient) DeleteHTTPRouteGroup(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+func (c *hTTPRouteGroupClient) DeleteHTTPRouteGroup(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
 	obj := &specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}
 	obj.SetName(key.Name)
 	obj.SetNamespace(key.Namespace)
 	return c.client.Delete(ctx, obj, opts...)
 }
 
-func (c *httprouteGroupClient) UpdateHTTPRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, opts ...client.UpdateOption) error {
+func (c *hTTPRouteGroupClient) UpdateHTTPRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, opts ...client.UpdateOption) error {
 	return c.client.Update(ctx, obj, opts...)
 }
 
-func (c *httprouteGroupClient) PatchHTTPRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, patch client.Patch, opts ...client.PatchOption) error {
+func (c *hTTPRouteGroupClient) PatchHTTPRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, patch client.Patch, opts ...client.PatchOption) error {
 	return c.client.Patch(ctx, obj, patch, opts...)
 }
 
-func (c *httprouteGroupClient) DeleteAllOfHTTPRouteGroup(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+func (c *hTTPRouteGroupClient) DeleteAllOfHTTPRouteGroup(ctx context.Context, opts ...client.DeleteAllOfOption) error {
 	obj := &specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}
 	return c.client.DeleteAllOf(ctx, obj, opts...)
 }
 
-func (c *httprouteGroupClient) UpsertHTTPRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, transitionFuncs ...HTTPRouteGroupTransitionFunction) error {
+func (c *hTTPRouteGroupClient) UpsertHTTPRouteGroup(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, transitionFuncs ...HTTPRouteGroupTransitionFunction) error {
 	genericTxFunc := func(existing, desired runtime.Object) error {
 		for _, txFunc := range transitionFuncs {
 			if err := txFunc(existing.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup), desired.(*specs_smi_spec_io_v1alpha3.HTTPRouteGroup)); err != nil {
@@ -183,11 +183,11 @@ func (c *httprouteGroupClient) UpsertHTTPRouteGroup(ctx context.Context, obj *sp
 	return err
 }
 
-func (c *httprouteGroupClient) UpdateHTTPRouteGroupStatus(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, opts ...client.SubResourceUpdateOption) error {
+func (c *hTTPRouteGroupClient) UpdateHTTPRouteGroupStatus(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, opts ...client.SubResourceUpdateOption) error {
 	return c.client.Status().Update(ctx, obj, opts...)
 }
 
-func (c *httprouteGroupClient) PatchHTTPRouteGroupStatus(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, patch client.Patch, opts ...client.SubResourcePatchOption) error {
+func (c *hTTPRouteGroupClient) PatchHTTPRouteGroupStatus(ctx context.Context, obj *specs_smi_spec_io_v1alpha3.HTTPRouteGroup, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	return c.client.Status().Patch(ctx, obj, patch, opts...)
 }
 

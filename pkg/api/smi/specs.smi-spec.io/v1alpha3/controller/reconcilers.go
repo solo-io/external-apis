@@ -68,18 +68,18 @@ type HTTPRouteGroupReconcileLoop interface {
 	RunHTTPRouteGroupReconciler(ctx context.Context, rec HTTPRouteGroupReconciler, predicates ...predicate.Predicate) error
 }
 
-type httprouteGroupReconcileLoop struct {
+type hTTPRouteGroupReconcileLoop struct {
 	loop reconcile.Loop
 }
 
 func NewHTTPRouteGroupReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) HTTPRouteGroupReconcileLoop {
-	return &httprouteGroupReconcileLoop{
+	return &hTTPRouteGroupReconcileLoop{
 		// empty cluster indicates this reconciler is built for the local cluster
 		loop: reconcile.NewLoop(name, "", mgr, &specs_smi_spec_io_v1alpha3.HTTPRouteGroup{}, options),
 	}
 }
 
-func (c *httprouteGroupReconcileLoop) RunHTTPRouteGroupReconciler(ctx context.Context, reconciler HTTPRouteGroupReconciler, predicates ...predicate.Predicate) error {
+func (c *hTTPRouteGroupReconcileLoop) RunHTTPRouteGroupReconciler(ctx context.Context, reconciler HTTPRouteGroupReconciler, predicates ...predicate.Predicate) error {
 	genericReconciler := genericHTTPRouteGroupReconciler{
 		reconciler: reconciler,
 	}

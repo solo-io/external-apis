@@ -11,7 +11,7 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	controller "github.com/solo-io/external-apis/pkg/api/istio/install.istio.io/v1alpha1/controller"
 	reconcile "github.com/solo-io/skv2/pkg/reconcile"
-	apis "istio.io/istio/operator/pkg/apis"
+	v1alpha1 "istio.io/istio/operator/pkg/apis/istio/v1alpha1"
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
@@ -39,7 +39,7 @@ func (m *MockIstioOperatorReconciler) EXPECT() *MockIstioOperatorReconcilerMockR
 }
 
 // ReconcileIstioOperator mocks base method.
-func (m *MockIstioOperatorReconciler) ReconcileIstioOperator(obj *apis.IstioOperator) (reconcile.Result, error) {
+func (m *MockIstioOperatorReconciler) ReconcileIstioOperator(obj *v1alpha1.IstioOperator) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileIstioOperator", obj)
 	ret0, _ := ret[0].(reconcile.Result)
@@ -114,7 +114,7 @@ func (m *MockIstioOperatorFinalizer) EXPECT() *MockIstioOperatorFinalizerMockRec
 }
 
 // FinalizeIstioOperator mocks base method.
-func (m *MockIstioOperatorFinalizer) FinalizeIstioOperator(obj *apis.IstioOperator) error {
+func (m *MockIstioOperatorFinalizer) FinalizeIstioOperator(obj *v1alpha1.IstioOperator) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FinalizeIstioOperator", obj)
 	ret0, _ := ret[0].(error)
@@ -142,7 +142,7 @@ func (mr *MockIstioOperatorFinalizerMockRecorder) IstioOperatorFinalizerName() *
 }
 
 // ReconcileIstioOperator mocks base method.
-func (m *MockIstioOperatorFinalizer) ReconcileIstioOperator(obj *apis.IstioOperator) (reconcile.Result, error) {
+func (m *MockIstioOperatorFinalizer) ReconcileIstioOperator(obj *v1alpha1.IstioOperator) (reconcile.Result, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReconcileIstioOperator", obj)
 	ret0, _ := ret[0].(reconcile.Result)
