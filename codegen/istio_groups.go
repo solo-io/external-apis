@@ -122,7 +122,13 @@ func istioGroups() []model.Group {
 			Module:       istioModule,
 			Resources: []model.Resource{
 				{
+					Kind: "AuthorizationPolicy",
+				},
+				{
 					Kind: "PeerAuthentication",
+				},
+				{
+					Kind: "RequestAuthentication",
 				},
 			},
 			CustomTypesImportPath: "istio.io/client-go/pkg/apis/security/v1",
