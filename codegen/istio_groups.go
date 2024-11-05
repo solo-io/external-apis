@@ -7,7 +7,7 @@ import (
 	networkingv1alpha3 "istio.io/client-go/pkg/apis/networking/v1alpha3"
 	networkingv1beta1 "istio.io/client-go/pkg/apis/networking/v1beta1"
 	"istio.io/client-go/pkg/apis/security/v1beta1"
-	istiotelemetryv1alpha1 "istio.io/client-go/pkg/apis/telemetry/v1alpha1"
+	istiotelemetryv1 "istio.io/client-go/pkg/apis/telemetry/v1"
 )
 
 func init() {
@@ -96,14 +96,14 @@ func istioGroups() []model.Group {
 			ApiRoot:               istioApiRoot,
 		},
 		{
-			GroupVersion: istiotelemetryv1alpha1.SchemeGroupVersion,
+			GroupVersion: istiotelemetryv1.SchemeGroupVersion,
 			Module:       istioModule,
 			Resources: []model.Resource{
 				{
 					Kind: "Telemetry",
 				},
 			},
-			CustomTypesImportPath: "istio.io/client-go/pkg/apis/telemetry/v1alpha1",
+			CustomTypesImportPath: "istio.io/client-go/pkg/apis/telemetry/v1",
 			ApiRoot:               istioApiRoot,
 			PointerSlices:         true,
 		},
