@@ -53,15 +53,15 @@ func (mr *MockHTTPRouteGroupSetMockRecorder) Clone() *gomock.Call {
 }
 
 // Delete mocks base method.
-func (m *MockHTTPRouteGroupSet) Delete(hTTPRouteGroup ezkube.ResourceId) {
+func (m *MockHTTPRouteGroupSet) Delete(httprouteGroup ezkube.ResourceId) {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "Delete", hTTPRouteGroup)
+	m.ctrl.Call(m, "Delete", httprouteGroup)
 }
 
 // Delete indicates an expected call of Delete.
-func (mr *MockHTTPRouteGroupSetMockRecorder) Delete(hTTPRouteGroup interface{}) *gomock.Call {
+func (mr *MockHTTPRouteGroupSetMockRecorder) Delete(httprouteGroup interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Delete), hTTPRouteGroup)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Delete), httprouteGroup)
 }
 
 // Delta mocks base method.
@@ -93,17 +93,17 @@ func (mr *MockHTTPRouteGroupSetMockRecorder) Difference(set interface{}) *gomock
 }
 
 // Equal mocks base method.
-func (m *MockHTTPRouteGroupSet) Equal(hTTPRouteGroupSet v1alpha3sets.HTTPRouteGroupSet) bool {
+func (m *MockHTTPRouteGroupSet) Equal(httprouteGroupSet v1alpha3sets.HTTPRouteGroupSet) bool {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Equal", hTTPRouteGroupSet)
+	ret := m.ctrl.Call(m, "Equal", httprouteGroupSet)
 	ret0, _ := ret[0].(bool)
 	return ret0
 }
 
 // Equal indicates an expected call of Equal.
-func (mr *MockHTTPRouteGroupSetMockRecorder) Equal(hTTPRouteGroupSet interface{}) *gomock.Call {
+func (mr *MockHTTPRouteGroupSetMockRecorder) Equal(httprouteGroupSet interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Equal", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Equal), hTTPRouteGroupSet)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Equal", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Equal), httprouteGroupSet)
 }
 
 // Find mocks base method.
@@ -136,33 +136,33 @@ func (mr *MockHTTPRouteGroupSetMockRecorder) Generic() *gomock.Call {
 }
 
 // Has mocks base method.
-func (m *MockHTTPRouteGroupSet) Has(hTTPRouteGroup ezkube.ResourceId) bool {
+func (m *MockHTTPRouteGroupSet) Has(httprouteGroup ezkube.ResourceId) bool {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Has", hTTPRouteGroup)
+	ret := m.ctrl.Call(m, "Has", httprouteGroup)
 	ret0, _ := ret[0].(bool)
 	return ret0
 }
 
 // Has indicates an expected call of Has.
-func (mr *MockHTTPRouteGroupSetMockRecorder) Has(hTTPRouteGroup interface{}) *gomock.Call {
+func (mr *MockHTTPRouteGroupSetMockRecorder) Has(httprouteGroup interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Has", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Has), hTTPRouteGroup)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Has", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Has), httprouteGroup)
 }
 
 // Insert mocks base method.
-func (m *MockHTTPRouteGroupSet) Insert(hTTPRouteGroup ...*v1alpha3.HTTPRouteGroup) {
+func (m *MockHTTPRouteGroupSet) Insert(httprouteGroup ...*v1alpha3.HTTPRouteGroup) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{}
-	for _, a := range hTTPRouteGroup {
+	for _, a := range httprouteGroup {
 		varargs = append(varargs, a)
 	}
 	m.ctrl.Call(m, "Insert", varargs...)
 }
 
 // Insert indicates an expected call of Insert.
-func (mr *MockHTTPRouteGroupSetMockRecorder) Insert(hTTPRouteGroup ...interface{}) *gomock.Call {
+func (mr *MockHTTPRouteGroupSetMockRecorder) Insert(httprouteGroup ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Insert), hTTPRouteGroup...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockHTTPRouteGroupSet)(nil).Insert), httprouteGroup...)
 }
 
 // Intersection mocks base method.

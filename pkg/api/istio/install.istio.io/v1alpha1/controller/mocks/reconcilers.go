@@ -9,9 +9,9 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	v1alpha1 "github.com/jehawley/istio/operator/pkg/apis/istio/v1alpha1"
 	controller "github.com/solo-io/external-apis/pkg/api/istio/install.istio.io/v1alpha1/controller"
 	reconcile "github.com/solo-io/skv2/pkg/reconcile"
-	v1alpha1 "istio.io/istio/operator/pkg/apis/istio/v1alpha1"
 	predicate "sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
