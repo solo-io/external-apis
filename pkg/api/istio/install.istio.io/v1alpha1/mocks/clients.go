@@ -10,7 +10,7 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	v1alpha1 "github.com/solo-io/external-apis/pkg/api/istio/install.istio.io/v1alpha1"
-	v1alpha10 "istio.io/istio/operator/pkg/apis/istio/v1alpha1"
+	v1alpha10 "github.com/solo-io/istio-operator-legacy/operator/pkg/apis/istio/v1alpha1"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 

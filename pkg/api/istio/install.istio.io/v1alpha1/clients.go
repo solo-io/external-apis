@@ -7,9 +7,9 @@ package v1alpha1
 import (
 	"context"
 
+	install_istio_io_v1alpha1 "github.com/solo-io/istio-operator-legacy/operator/pkg/apis/istio/v1alpha1"
 	"github.com/solo-io/skv2/pkg/controllerutils"
 	"github.com/solo-io/skv2/pkg/multicluster"
-	install_istio_io_v1alpha1 "istio.io/istio/operator/pkg/apis/istio/v1alpha1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"

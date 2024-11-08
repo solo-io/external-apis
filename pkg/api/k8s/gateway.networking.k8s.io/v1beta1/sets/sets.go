@@ -471,13 +471,13 @@ type HTTPRouteSet interface {
 	// Return the Set as a map of key to resource.
 	Map() map[string]*gateway_networking_k8s_io_v1beta1.HTTPRoute
 	// Insert a resource into the set.
-	Insert(hTTPRoute ...*gateway_networking_k8s_io_v1beta1.HTTPRoute)
+	Insert(httproute ...*gateway_networking_k8s_io_v1beta1.HTTPRoute)
 	// Compare the equality of the keys in two sets (not the resources themselves)
-	Equal(hTTPRouteSet HTTPRouteSet) bool
+	Equal(httprouteSet HTTPRouteSet) bool
 	// Check if the set contains a key matching the resource (not the resource itself)
-	Has(hTTPRoute ezkube.ResourceId) bool
+	Has(httproute ezkube.ResourceId) bool
 	// Delete the key matching the resource
-	Delete(hTTPRoute ezkube.ResourceId)
+	Delete(httproute ezkube.ResourceId)
 	// Return the union with the provided set
 	Union(set HTTPRouteSet) HTTPRouteSet
 	// Return the difference with the provided set
@@ -496,38 +496,38 @@ type HTTPRouteSet interface {
 	Clone() HTTPRouteSet
 }
 
-func makeGenericHTTPRouteSet(hTTPRouteList []*gateway_networking_k8s_io_v1beta1.HTTPRoute) sksets.ResourceSet {
+func makeGenericHTTPRouteSet(httprouteList []*gateway_networking_k8s_io_v1beta1.HTTPRoute) sksets.ResourceSet {
 	var genericResources []ezkube.ResourceId
-	for _, obj := range hTTPRouteList {
+	for _, obj := range httprouteList {
 		genericResources = append(genericResources, obj)
 	}
 	return sksets.NewResourceSet(genericResources...)
 }
 
-type hTTPRouteSet struct {
+type httprouteSet struct {
 	set sksets.ResourceSet
 }
 
-func NewHTTPRouteSet(hTTPRouteList ...*gateway_networking_k8s_io_v1beta1.HTTPRoute) HTTPRouteSet {
-	return &hTTPRouteSet{set: makeGenericHTTPRouteSet(hTTPRouteList)}
+func NewHTTPRouteSet(httprouteList ...*gateway_networking_k8s_io_v1beta1.HTTPRoute) HTTPRouteSet {
+	return &httprouteSet{set: makeGenericHTTPRouteSet(httprouteList)}
 }
 
-func NewHTTPRouteSetFromList(hTTPRouteList *gateway_networking_k8s_io_v1beta1.HTTPRouteList) HTTPRouteSet {
-	list := make([]*gateway_networking_k8s_io_v1beta1.HTTPRoute, 0, len(hTTPRouteList.Items))
-	for idx := range hTTPRouteList.Items {
-		list = append(list, &hTTPRouteList.Items[idx])
+func NewHTTPRouteSetFromList(httprouteList *gateway_networking_k8s_io_v1beta1.HTTPRouteList) HTTPRouteSet {
+	list := make([]*gateway_networking_k8s_io_v1beta1.HTTPRoute, 0, len(httprouteList.Items))
+	for idx := range httprouteList.Items {
+		list = append(list, &httprouteList.Items[idx])
 	}
-	return &hTTPRouteSet{set: makeGenericHTTPRouteSet(list)}
+	return &httprouteSet{set: makeGenericHTTPRouteSet(list)}
 }
 
-func (s *hTTPRouteSet) Keys() sets.String {
+func (s *httprouteSet) Keys() sets.String {
 	if s == nil {
 		return sets.String{}
 	}
 	return s.Generic().Keys()
 }
 
-func (s *hTTPRouteSet) List(filterResource ...func(*gateway_networking_k8s_io_v1beta1.HTTPRoute) bool) []*gateway_networking_k8s_io_v1beta1.HTTPRoute {
+func (s *httprouteSet) List(filterResource ...func(*gateway_networking_k8s_io_v1beta1.HTTPRoute) bool) []*gateway_networking_k8s_io_v1beta1.HTTPRoute {
 	if s == nil {
 		return nil
 	}
@@ -540,14 +540,14 @@ func (s *hTTPRouteSet) List(filterResource ...func(*gateway_networking_k8s_io_v1
 	}
 
 	objs := s.Generic().List(genericFilters...)
-	hTTPRouteList := make([]*gateway_networking_k8s_io_v1beta1.HTTPRoute, 0, len(objs))
+	httprouteList := make([]*gateway_networking_k8s_io_v1beta1.HTTPRoute, 0, len(objs))
 	for _, obj := range objs {
-		hTTPRouteList = append(hTTPRouteList, obj.(*gateway_networking_k8s_io_v1beta1.HTTPRoute))
+		httprouteList = append(httprouteList, obj.(*gateway_networking_k8s_io_v1beta1.HTTPRoute))
 	}
-	return hTTPRouteList
+	return httprouteList
 }
 
-func (s *hTTPRouteSet) UnsortedList(filterResource ...func(*gateway_networking_k8s_io_v1beta1.HTTPRoute) bool) []*gateway_networking_k8s_io_v1beta1.HTTPRoute {
+func (s *httprouteSet) UnsortedList(filterResource ...func(*gateway_networking_k8s_io_v1beta1.HTTPRoute) bool) []*gateway_networking_k8s_io_v1beta1.HTTPRoute {
 	if s == nil {
 		return nil
 	}
@@ -559,14 +559,14 @@ func (s *hTTPRouteSet) UnsortedList(filterResource ...func(*gateway_networking_k
 		})
 	}
 
-	var hTTPRouteList []*gateway_networking_k8s_io_v1beta1.HTTPRoute
+	var httprouteList []*gateway_networking_k8s_io_v1beta1.HTTPRoute
 	for _, obj := range s.Generic().UnsortedList(genericFilters...) {
-		hTTPRouteList = append(hTTPRouteList, obj.(*gateway_networking_k8s_io_v1beta1.HTTPRoute))
+		httprouteList = append(httprouteList, obj.(*gateway_networking_k8s_io_v1beta1.HTTPRoute))
 	}
-	return hTTPRouteList
+	return httprouteList
 }
 
-func (s *hTTPRouteSet) Map() map[string]*gateway_networking_k8s_io_v1beta1.HTTPRoute {
+func (s *httprouteSet) Map() map[string]*gateway_networking_k8s_io_v1beta1.HTTPRoute {
 	if s == nil {
 		return nil
 	}
@@ -578,69 +578,69 @@ func (s *hTTPRouteSet) Map() map[string]*gateway_networking_k8s_io_v1beta1.HTTPR
 	return newMap
 }
 
-func (s *hTTPRouteSet) Insert(
-	hTTPRouteList ...*gateway_networking_k8s_io_v1beta1.HTTPRoute,
+func (s *httprouteSet) Insert(
+	httprouteList ...*gateway_networking_k8s_io_v1beta1.HTTPRoute,
 ) {
 	if s == nil {
 		panic("cannot insert into nil set")
 	}
 
-	for _, obj := range hTTPRouteList {
+	for _, obj := range httprouteList {
 		s.Generic().Insert(obj)
 	}
 }
 
-func (s *hTTPRouteSet) Has(hTTPRoute ezkube.ResourceId) bool {
+func (s *httprouteSet) Has(httproute ezkube.ResourceId) bool {
 	if s == nil {
 		return false
 	}
-	return s.Generic().Has(hTTPRoute)
+	return s.Generic().Has(httproute)
 }
 
-func (s *hTTPRouteSet) Equal(
-	hTTPRouteSet HTTPRouteSet,
+func (s *httprouteSet) Equal(
+	httprouteSet HTTPRouteSet,
 ) bool {
 	if s == nil {
-		return hTTPRouteSet == nil
+		return httprouteSet == nil
 	}
-	return s.Generic().Equal(hTTPRouteSet.Generic())
+	return s.Generic().Equal(httprouteSet.Generic())
 }
 
-func (s *hTTPRouteSet) Delete(HTTPRoute ezkube.ResourceId) {
+func (s *httprouteSet) Delete(HTTPRoute ezkube.ResourceId) {
 	if s == nil {
 		return
 	}
 	s.Generic().Delete(HTTPRoute)
 }
 
-func (s *hTTPRouteSet) Union(set HTTPRouteSet) HTTPRouteSet {
+func (s *httprouteSet) Union(set HTTPRouteSet) HTTPRouteSet {
 	if s == nil {
 		return set
 	}
 	return NewHTTPRouteSet(append(s.List(), set.List()...)...)
 }
 
-func (s *hTTPRouteSet) Difference(set HTTPRouteSet) HTTPRouteSet {
+func (s *httprouteSet) Difference(set HTTPRouteSet) HTTPRouteSet {
 	if s == nil {
 		return set
 	}
 	newSet := s.Generic().Difference(set.Generic())
-	return &hTTPRouteSet{set: newSet}
+	return &httprouteSet{set: newSet}
 }
 
-func (s *hTTPRouteSet) Intersection(set HTTPRouteSet) HTTPRouteSet {
+func (s *httprouteSet) Intersection(set HTTPRouteSet) HTTPRouteSet {
 	if s == nil {
 		return nil
 	}
 	newSet := s.Generic().Intersection(set.Generic())
-	var hTTPRouteList []*gateway_networking_k8s_io_v1beta1.HTTPRoute
+	var httprouteList []*gateway_networking_k8s_io_v1beta1.HTTPRoute
 	for _, obj := range newSet.List() {
-		hTTPRouteList = append(hTTPRouteList, obj.(*gateway_networking_k8s_io_v1beta1.HTTPRoute))
+		httprouteList = append(httprouteList, obj.(*gateway_networking_k8s_io_v1beta1.HTTPRoute))
 	}
-	return NewHTTPRouteSet(hTTPRouteList...)
+	return NewHTTPRouteSet(httprouteList...)
 }
 
-func (s *hTTPRouteSet) Find(id ezkube.ResourceId) (*gateway_networking_k8s_io_v1beta1.HTTPRoute, error) {
+func (s *httprouteSet) Find(id ezkube.ResourceId) (*gateway_networking_k8s_io_v1beta1.HTTPRoute, error) {
 	if s == nil {
 		return nil, eris.Errorf("empty set, cannot find HTTPRoute %v", sksets.Key(id))
 	}
@@ -652,21 +652,21 @@ func (s *hTTPRouteSet) Find(id ezkube.ResourceId) (*gateway_networking_k8s_io_v1
 	return obj.(*gateway_networking_k8s_io_v1beta1.HTTPRoute), nil
 }
 
-func (s *hTTPRouteSet) Length() int {
+func (s *httprouteSet) Length() int {
 	if s == nil {
 		return 0
 	}
 	return s.Generic().Length()
 }
 
-func (s *hTTPRouteSet) Generic() sksets.ResourceSet {
+func (s *httprouteSet) Generic() sksets.ResourceSet {
 	if s == nil {
 		return nil
 	}
 	return s.set
 }
 
-func (s *hTTPRouteSet) Delta(newSet HTTPRouteSet) sksets.ResourceDelta {
+func (s *httprouteSet) Delta(newSet HTTPRouteSet) sksets.ResourceDelta {
 	if s == nil {
 		return sksets.ResourceDelta{
 			Inserted: newSet.Generic(),
@@ -675,9 +675,9 @@ func (s *hTTPRouteSet) Delta(newSet HTTPRouteSet) sksets.ResourceDelta {
 	return s.Generic().Delta(newSet.Generic())
 }
 
-func (s *hTTPRouteSet) Clone() HTTPRouteSet {
+func (s *httprouteSet) Clone() HTTPRouteSet {
 	if s == nil {
 		return nil
 	}
-	return &hTTPRouteSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
+	return &httprouteSet{set: sksets.NewResourceSet(s.Generic().Clone().List()...)}
 }
