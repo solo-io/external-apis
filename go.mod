@@ -9,7 +9,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/rotisserie/eris v0.1.1
 	github.com/servicemeshinterface/smi-sdk-go v0.4.1
-	github.com/solo-io/istio-operator-legacy v0.0.0-20241108164300-f85fe304b807
+	github.com/solo-io/istio-operator-legacy v1.23.3
 	github.com/solo-io/skv2 v0.41.0
 	istio.io/client-go v1.24.0
 	k8s.io/api v0.31.1
