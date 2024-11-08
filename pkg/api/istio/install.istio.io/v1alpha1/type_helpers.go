@@ -4,7 +4,7 @@
 package v1alpha1
 
 import (
-	. "github.com/jehawley/istio/operator/pkg/apis/istio/v1alpha1"
+	. "github.com/solo-io/istio-operator-legacy/operator/pkg/apis/istio/v1alpha1"
 )
 
 // IstioOperatorSlice represents a slice of *IstioOperator

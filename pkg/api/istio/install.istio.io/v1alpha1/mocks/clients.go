@@ -9,8 +9,8 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	v1alpha1 "github.com/jehawley/istio/operator/pkg/apis/istio/v1alpha1"
-	v1alpha10 "github.com/solo-io/external-apis/pkg/api/istio/install.istio.io/v1alpha1"
+	v1alpha1 "github.com/solo-io/external-apis/pkg/api/istio/install.istio.io/v1alpha1"
+	v1alpha10 "github.com/solo-io/istio-operator-legacy/operator/pkg/apis/istio/v1alpha1"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -38,10 +38,10 @@ func (m *MockMulticlusterClientset) EXPECT() *MockMulticlusterClientsetMockRecor
 }
 
 // Cluster mocks base method.
-func (m *MockMulticlusterClientset) Cluster(cluster string) (v1alpha10.Clientset, error) {
+func (m *MockMulticlusterClientset) Cluster(cluster string) (v1alpha1.Clientset, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Cluster", cluster)
-	ret0, _ := ret[0].(v1alpha10.Clientset)
+	ret0, _ := ret[0].(v1alpha1.Clientset)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -76,10 +76,10 @@ func (m *MockClientset) EXPECT() *MockClientsetMockRecorder {
 }
 
 // IstioOperators mocks base method.
-func (m *MockClientset) IstioOperators() v1alpha10.IstioOperatorClient {
+func (m *MockClientset) IstioOperators() v1alpha1.IstioOperatorClient {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "IstioOperators")
-	ret0, _ := ret[0].(v1alpha10.IstioOperatorClient)
+	ret0, _ := ret[0].(v1alpha1.IstioOperatorClient)
 	return ret0
 }
 
@@ -113,10 +113,10 @@ func (m *MockIstioOperatorReader) EXPECT() *MockIstioOperatorReaderMockRecorder 
 }
 
 // GetIstioOperator mocks base method.
-func (m *MockIstioOperatorReader) GetIstioOperator(ctx context.Context, key client.ObjectKey) (*v1alpha1.IstioOperator, error) {
+func (m *MockIstioOperatorReader) GetIstioOperator(ctx context.Context, key client.ObjectKey) (*v1alpha10.IstioOperator, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetIstioOperator", ctx, key)
-	ret0, _ := ret[0].(*v1alpha1.IstioOperator)
+	ret0, _ := ret[0].(*v1alpha10.IstioOperator)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -128,14 +128,14 @@ func (mr *MockIstioOperatorReaderMockRecorder) GetIstioOperator(ctx, key interfa
 }
 
 // ListIstioOperator mocks base method.
-func (m *MockIstioOperatorReader) ListIstioOperator(ctx context.Context, opts ...client.ListOption) (*v1alpha1.IstioOperatorList, error) {
+func (m *MockIstioOperatorReader) ListIstioOperator(ctx context.Context, opts ...client.ListOption) (*v1alpha10.IstioOperatorList, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ListIstioOperator", varargs...)
-	ret0, _ := ret[0].(*v1alpha1.IstioOperatorList)
+	ret0, _ := ret[0].(*v1alpha10.IstioOperatorList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -171,7 +171,7 @@ func (m *MockIstioOperatorWriter) EXPECT() *MockIstioOperatorWriterMockRecorder 
 }
 
 // CreateIstioOperator mocks base method.
-func (m *MockIstioOperatorWriter) CreateIstioOperator(ctx context.Context, obj *v1alpha1.IstioOperator, opts ...client.CreateOption) error {
+func (m *MockIstioOperatorWriter) CreateIstioOperator(ctx context.Context, obj *v1alpha10.IstioOperator, opts ...client.CreateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
@@ -228,7 +228,7 @@ func (mr *MockIstioOperatorWriterMockRecorder) DeleteIstioOperator(ctx, key inte
 }
 
 // PatchIstioOperator mocks base method.
-func (m *MockIstioOperatorWriter) PatchIstioOperator(ctx context.Context, obj *v1alpha1.IstioOperator, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockIstioOperatorWriter) PatchIstioOperator(ctx context.Context, obj *v1alpha10.IstioOperator, patch client.Patch, opts ...client.PatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -247,7 +247,7 @@ func (mr *MockIstioOperatorWriterMockRecorder) PatchIstioOperator(ctx, obj, patc
 }
 
 // UpdateIstioOperator mocks base method.
-func (m *MockIstioOperatorWriter) UpdateIstioOperator(ctx context.Context, obj *v1alpha1.IstioOperator, opts ...client.UpdateOption) error {
+func (m *MockIstioOperatorWriter) UpdateIstioOperator(ctx context.Context, obj *v1alpha10.IstioOperator, opts ...client.UpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
@@ -266,7 +266,7 @@ func (mr *MockIstioOperatorWriterMockRecorder) UpdateIstioOperator(ctx, obj inte
 }
 
 // UpsertIstioOperator mocks base method.
-func (m *MockIstioOperatorWriter) UpsertIstioOperator(ctx context.Context, obj *v1alpha1.IstioOperator, transitionFuncs ...v1alpha10.IstioOperatorTransitionFunction) error {
+func (m *MockIstioOperatorWriter) UpsertIstioOperator(ctx context.Context, obj *v1alpha10.IstioOperator, transitionFuncs ...v1alpha1.IstioOperatorTransitionFunction) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range transitionFuncs {
@@ -308,7 +308,7 @@ func (m *MockIstioOperatorStatusWriter) EXPECT() *MockIstioOperatorStatusWriterM
 }
 
 // PatchIstioOperatorStatus mocks base method.
-func (m *MockIstioOperatorStatusWriter) PatchIstioOperatorStatus(ctx context.Context, obj *v1alpha1.IstioOperator, patch client.Patch, opts ...client.SubResourcePatchOption) error {
+func (m *MockIstioOperatorStatusWriter) PatchIstioOperatorStatus(ctx context.Context, obj *v1alpha10.IstioOperator, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -327,7 +327,7 @@ func (mr *MockIstioOperatorStatusWriterMockRecorder) PatchIstioOperatorStatus(ct
 }
 
 // UpdateIstioOperatorStatus mocks base method.
-func (m *MockIstioOperatorStatusWriter) UpdateIstioOperatorStatus(ctx context.Context, obj *v1alpha1.IstioOperator, opts ...client.SubResourceUpdateOption) error {
+func (m *MockIstioOperatorStatusWriter) UpdateIstioOperatorStatus(ctx context.Context, obj *v1alpha10.IstioOperator, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
@@ -369,7 +369,7 @@ func (m *MockIstioOperatorClient) EXPECT() *MockIstioOperatorClientMockRecorder 
 }
 
 // CreateIstioOperator mocks base method.
-func (m *MockIstioOperatorClient) CreateIstioOperator(ctx context.Context, obj *v1alpha1.IstioOperator, opts ...client.CreateOption) error {
+func (m *MockIstioOperatorClient) CreateIstioOperator(ctx context.Context, obj *v1alpha10.IstioOperator, opts ...client.CreateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
@@ -426,10 +426,10 @@ func (mr *MockIstioOperatorClientMockRecorder) DeleteIstioOperator(ctx, key inte
 }
 
 // GetIstioOperator mocks base method.
-func (m *MockIstioOperatorClient) GetIstioOperator(ctx context.Context, key client.ObjectKey) (*v1alpha1.IstioOperator, error) {
+func (m *MockIstioOperatorClient) GetIstioOperator(ctx context.Context, key client.ObjectKey) (*v1alpha10.IstioOperator, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetIstioOperator", ctx, key)
-	ret0, _ := ret[0].(*v1alpha1.IstioOperator)
+	ret0, _ := ret[0].(*v1alpha10.IstioOperator)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -441,14 +441,14 @@ func (mr *MockIstioOperatorClientMockRecorder) GetIstioOperator(ctx, key interfa
 }
 
 // ListIstioOperator mocks base method.
-func (m *MockIstioOperatorClient) ListIstioOperator(ctx context.Context, opts ...client.ListOption) (*v1alpha1.IstioOperatorList, error) {
+func (m *MockIstioOperatorClient) ListIstioOperator(ctx context.Context, opts ...client.ListOption) (*v1alpha10.IstioOperatorList, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ListIstioOperator", varargs...)
-	ret0, _ := ret[0].(*v1alpha1.IstioOperatorList)
+	ret0, _ := ret[0].(*v1alpha10.IstioOperatorList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -461,7 +461,7 @@ func (mr *MockIstioOperatorClientMockRecorder) ListIstioOperator(ctx interface{}
 }
 
 // PatchIstioOperator mocks base method.
-func (m *MockIstioOperatorClient) PatchIstioOperator(ctx context.Context, obj *v1alpha1.IstioOperator, patch client.Patch, opts ...client.PatchOption) error {
+func (m *MockIstioOperatorClient) PatchIstioOperator(ctx context.Context, obj *v1alpha10.IstioOperator, patch client.Patch, opts ...client.PatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -480,7 +480,7 @@ func (mr *MockIstioOperatorClientMockRecorder) PatchIstioOperator(ctx, obj, patc
 }
 
 // PatchIstioOperatorStatus mocks base method.
-func (m *MockIstioOperatorClient) PatchIstioOperatorStatus(ctx context.Context, obj *v1alpha1.IstioOperator, patch client.Patch, opts ...client.SubResourcePatchOption) error {
+func (m *MockIstioOperatorClient) PatchIstioOperatorStatus(ctx context.Context, obj *v1alpha10.IstioOperator, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj, patch}
 	for _, a := range opts {
@@ -499,7 +499,7 @@ func (mr *MockIstioOperatorClientMockRecorder) PatchIstioOperatorStatus(ctx, obj
 }
 
 // UpdateIstioOperator mocks base method.
-func (m *MockIstioOperatorClient) UpdateIstioOperator(ctx context.Context, obj *v1alpha1.IstioOperator, opts ...client.UpdateOption) error {
+func (m *MockIstioOperatorClient) UpdateIstioOperator(ctx context.Context, obj *v1alpha10.IstioOperator, opts ...client.UpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
@@ -518,7 +518,7 @@ func (mr *MockIstioOperatorClientMockRecorder) UpdateIstioOperator(ctx, obj inte
 }
 
 // UpdateIstioOperatorStatus mocks base method.
-func (m *MockIstioOperatorClient) UpdateIstioOperatorStatus(ctx context.Context, obj *v1alpha1.IstioOperator, opts ...client.SubResourceUpdateOption) error {
+func (m *MockIstioOperatorClient) UpdateIstioOperatorStatus(ctx context.Context, obj *v1alpha10.IstioOperator, opts ...client.SubResourceUpdateOption) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range opts {
@@ -537,7 +537,7 @@ func (mr *MockIstioOperatorClientMockRecorder) UpdateIstioOperatorStatus(ctx, ob
 }
 
 // UpsertIstioOperator mocks base method.
-func (m *MockIstioOperatorClient) UpsertIstioOperator(ctx context.Context, obj *v1alpha1.IstioOperator, transitionFuncs ...v1alpha10.IstioOperatorTransitionFunction) error {
+func (m *MockIstioOperatorClient) UpsertIstioOperator(ctx context.Context, obj *v1alpha10.IstioOperator, transitionFuncs ...v1alpha1.IstioOperatorTransitionFunction) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, obj}
 	for _, a := range transitionFuncs {
@@ -579,10 +579,10 @@ func (m *MockMulticlusterIstioOperatorClient) EXPECT() *MockMulticlusterIstioOpe
 }
 
 // Cluster mocks base method.
-func (m *MockMulticlusterIstioOperatorClient) Cluster(cluster string) (v1alpha10.IstioOperatorClient, error) {
+func (m *MockMulticlusterIstioOperatorClient) Cluster(cluster string) (v1alpha1.IstioOperatorClient, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Cluster", cluster)
-	ret0, _ := ret[0].(v1alpha10.IstioOperatorClient)
+	ret0, _ := ret[0].(v1alpha1.IstioOperatorClient)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

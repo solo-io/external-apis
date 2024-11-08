@@ -6,10 +6,10 @@ require (
 	github.com/aws/aws-app-mesh-controller-for-k8s v1.1.1
 	github.com/cilium/cilium v1.15.0-pre.2
 	github.com/golang/mock v1.6.0
-	github.com/jehawley/istio v0.0.0-20241108154541-bc174863852a
 	github.com/pkg/errors v0.9.1
 	github.com/rotisserie/eris v0.1.1
 	github.com/servicemeshinterface/smi-sdk-go v0.4.1
+	github.com/solo-io/istio-operator-legacy v0.0.0-20241108164300-f85fe304b807
 	github.com/solo-io/skv2 v0.41.0
 	istio.io/client-go v1.24.0
 	k8s.io/api v0.31.1
@@ -21,6 +21,7 @@ require (
 )
 
 require (
+	dario.cat/mergo v1.0.1 // indirect
 	github.com/BurntSushi/toml v1.3.2 // indirect
 	github.com/Masterminds/goutils v1.1.1 // indirect
 	github.com/Masterminds/semver v1.4.2 // indirect
@@ -73,7 +74,6 @@ require (
 	github.com/huandu/xstrings v1.5.0 // indirect
 	github.com/iancoleman/orderedmap v0.0.0-20190318233801-ac98e3ecb4b0 // indirect
 	github.com/iancoleman/strcase v0.3.0 // indirect
-	github.com/imdario/mergo v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/invopop/jsonschema v0.7.0 // indirect
 	github.com/invopop/yaml v0.2.0 // indirect
@@ -81,6 +81,7 @@ require (
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/k0kubun/pp v2.3.0+incompatible // indirect
+	github.com/klauspost/compress v1.17.9 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/lufia/plan9stats v0.0.0-20211012122336-39d0f177ccd0 // indirect

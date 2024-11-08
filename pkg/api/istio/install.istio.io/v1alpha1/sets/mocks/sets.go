@@ -8,8 +8,8 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	v1alpha1 "github.com/jehawley/istio/operator/pkg/apis/istio/v1alpha1"
 	v1alpha1sets "github.com/solo-io/external-apis/pkg/api/istio/install.istio.io/v1alpha1/sets"
+	v1alpha1 "github.com/solo-io/istio-operator-legacy/operator/pkg/apis/istio/v1alpha1"
 	sets "github.com/solo-io/skv2/contrib/pkg/sets"
 	ezkube "github.com/solo-io/skv2/pkg/ezkube"
 	sets0 "k8s.io/apimachinery/pkg/util/sets"

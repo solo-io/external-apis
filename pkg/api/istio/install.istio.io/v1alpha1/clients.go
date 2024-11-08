@@ -7,7 +7,7 @@ package v1alpha1
 import (
 	"context"
 
-	install_istio_io_v1alpha1 "github.com/jehawley/istio/operator/pkg/apis/istio/v1alpha1"
+	install_istio_io_v1alpha1 "github.com/solo-io/istio-operator-legacy/operator/pkg/apis/istio/v1alpha1"
 	"github.com/solo-io/skv2/pkg/controllerutils"
 	"github.com/solo-io/skv2/pkg/multicluster"
 	"k8s.io/apimachinery/pkg/runtime"

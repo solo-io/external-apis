@@ -1,7 +1,7 @@
 package codegen
 
 import (
-	operator "github.com/jehawley/istio/operator/pkg/apis/istio/v1alpha1"
+	operator "github.com/solo-io/istio-operator-legacy/operator/pkg/apis/istio/v1alpha1"
 	"github.com/solo-io/skv2/codegen/model"
 	extensionsv1alpha1 "istio.io/client-go/pkg/apis/extensions/v1alpha1"
 	networkingv1 "istio.io/client-go/pkg/apis/networking/v1"
@@ -143,7 +143,7 @@ func istioGroups() []model.Group {
 					Kind: "IstioOperator",
 				},
 			},
-			CustomTypesImportPath: "github.com/jehawley/istio/operator/pkg/apis/istio/v1alpha1",
+			CustomTypesImportPath: "github.com/solo-io/istio-operator-legacy/operator/pkg/apis/istio/v1alpha1",
 			ApiRoot:               istioApiRoot,
 		},
 		{
