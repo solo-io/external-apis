@@ -6,12 +6,12 @@ require (
 	github.com/aws/aws-app-mesh-controller-for-k8s v1.1.1
 	github.com/cilium/cilium v1.15.0-pre.2
 	github.com/golang/mock v1.6.0
-	github.com/jehawley/istio v0.0.0-20241104223713-10383454d87d
+	github.com/jehawley/istio v0.0.0-20241107185752-72099f20bb4f
 	github.com/pkg/errors v0.9.1
 	github.com/rotisserie/eris v0.1.1
 	github.com/servicemeshinterface/smi-sdk-go v0.4.1
 	github.com/solo-io/skv2 v0.41.0
-	istio.io/client-go v1.23.3-0.20241007150824-1455e2e0ee0a
+	istio.io/client-go v1.24.0
 	k8s.io/api v0.31.1
 	k8s.io/apiextensions-apiserver v0.31.1
 	k8s.io/apimachinery v0.31.1
@@ -162,7 +162,8 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	istio.io/api v1.23.3-0.20241007150425-eb56b2cffca7 // indirect
+	istio.io/api v1.24.0-rc.0.0.20241101200753-9397ebf09c3a // indirect
+	istio.io/api/123 v0.0.0-00010101000000-000000000000 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20240423202451-8948a665c108 // indirect
 	k8s.io/utils v0.0.0-20240711033017-18e509b52bc8 // indirect
@@ -175,3 +176,6 @@ require (
 //        module declares its path as: dario.cat/mergo
 //                but was required as: github.com/imdario/mergo
 replace github.com/imdario/mergo => github.com/imdario/mergo v0.3.5
+
+// TODO(jhawley): commentary
+replace istio.io/api/123 => istio.io/api v1.23.3
