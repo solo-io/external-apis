@@ -10,7 +10,7 @@ require (
 	github.com/rotisserie/eris v0.1.1
 	github.com/servicemeshinterface/smi-sdk-go v0.4.1
 	github.com/solo-io/istio-operator-legacy v1.23.3
-	github.com/solo-io/skv2 v0.41.0
+	github.com/solo-io/skv2 v0.42.0
 	istio.io/client-go v1.24.0
 	k8s.io/api v0.32.2
 	k8s.io/apiextensions-apiserver v0.32.2
@@ -122,7 +122,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/solo-io/anyvendor v0.0.4 // indirect
 	github.com/solo-io/cue v0.4.7 // indirect
-	github.com/solo-io/go-utils v0.26.0 // indirect
+	github.com/solo-io/go-utils v0.27.4 // indirect
 	github.com/solo-io/protoc-gen-ext v0.0.20 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
 	github.com/spf13/afero v1.11.0 // indirect
