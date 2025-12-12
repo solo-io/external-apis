@@ -19,9 +19,9 @@ codegen-deps: mod-download
 	go install golang.org/x/tools/cmd/goimports@v0.1.2
 
 .PHONY: generated-code
-generated-code:
+generated-code: codegen-deps
 	go run generate.go
 	go generate -v ./...
 	goimports -w .
-	go mod tidy 
+	go mod tidy
 
