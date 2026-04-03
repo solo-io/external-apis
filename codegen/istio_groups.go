@@ -1,7 +1,6 @@
 package codegen
 
 import (
-	operator "github.com/solo-io/istio-operator-legacy/operator/pkg/apis/istio/v1alpha1"
 	"github.com/solo-io/skv2/codegen/model"
 	extensionsv1alpha1 "istio.io/client-go/pkg/apis/extensions/v1alpha1"
 	networkingv1 "istio.io/client-go/pkg/apis/networking/v1"
@@ -134,17 +133,6 @@ func istioGroups() []model.Group {
 			CustomTypesImportPath: "istio.io/client-go/pkg/apis/security/v1",
 			ApiRoot:               istioApiRoot,
 			PointerSlices:         true,
-		},
-		{
-			GroupVersion: operator.SchemeGroupVersion,
-			Module:       "install.istio.io",
-			Resources: []model.Resource{
-				{
-					Kind: "IstioOperator",
-				},
-			},
-			CustomTypesImportPath: "github.com/solo-io/istio-operator-legacy/operator/pkg/apis/istio/v1alpha1",
-			ApiRoot:               istioApiRoot,
 		},
 		{
 			GroupVersion: istiotelemetryv1.SchemeGroupVersion,
