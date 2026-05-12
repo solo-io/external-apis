@@ -133,3 +133,120 @@ func (r genericWasmPluginFinalizer) Finalize(object ezkube.Object) error {
 	}
 	return r.finalizingReconciler.FinalizeWasmPlugin(obj)
 }
+
+// Reconcile Upsert events for the TrafficExtension Resource.
+// implemented by the user
+type TrafficExtensionReconciler interface {
+	ReconcileTrafficExtension(obj *extensions_istio_io_v1alpha1.TrafficExtension) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the TrafficExtension Resource.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type TrafficExtensionDeletionReconciler interface {
+	ReconcileTrafficExtensionDeletion(req reconcile.Request) error
+}
+
+type TrafficExtensionReconcilerFuncs struct {
+	OnReconcileTrafficExtension         func(obj *extensions_istio_io_v1alpha1.TrafficExtension) (reconcile.Result, error)
+	OnReconcileTrafficExtensionDeletion func(req reconcile.Request) error
+}
+
+func (f *TrafficExtensionReconcilerFuncs) ReconcileTrafficExtension(obj *extensions_istio_io_v1alpha1.TrafficExtension) (reconcile.Result, error) {
+	if f.OnReconcileTrafficExtension == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcileTrafficExtension(obj)
+}
+
+func (f *TrafficExtensionReconcilerFuncs) ReconcileTrafficExtensionDeletion(req reconcile.Request) error {
+	if f.OnReconcileTrafficExtensionDeletion == nil {
+		return nil
+	}
+	return f.OnReconcileTrafficExtensionDeletion(req)
+}
+
+// Reconcile and finalize the TrafficExtension Resource
+// implemented by the user
+type TrafficExtensionFinalizer interface {
+	TrafficExtensionReconciler
+
+	// name of the finalizer used by this handler.
+	// finalizer names should be unique for a single task
+	TrafficExtensionFinalizerName() string
+
+	// finalize the object before it is deleted.
+	// Watchers created with a finalizing handler will a
+	FinalizeTrafficExtension(obj *extensions_istio_io_v1alpha1.TrafficExtension) error
+}
+
+type TrafficExtensionReconcileLoop interface {
+	RunTrafficExtensionReconciler(ctx context.Context, rec TrafficExtensionReconciler, predicates ...predicate.Predicate) error
+}
+
+type trafficExtensionReconcileLoop struct {
+	loop reconcile.Loop
+}
+
+func NewTrafficExtensionReconcileLoop(name string, mgr manager.Manager, options reconcile.Options) TrafficExtensionReconcileLoop {
+	return &trafficExtensionReconcileLoop{
+		// empty cluster indicates this reconciler is built for the local cluster
+		loop: reconcile.NewLoop(name, "", mgr, &extensions_istio_io_v1alpha1.TrafficExtension{}, options),
+	}
+}
+
+func (c *trafficExtensionReconcileLoop) RunTrafficExtensionReconciler(ctx context.Context, reconciler TrafficExtensionReconciler, predicates ...predicate.Predicate) error {
+	genericReconciler := genericTrafficExtensionReconciler{
+		reconciler: reconciler,
+	}
+
+	var reconcilerWrapper reconcile.Reconciler
+	if finalizingReconciler, ok := reconciler.(TrafficExtensionFinalizer); ok {
+		reconcilerWrapper = genericTrafficExtensionFinalizer{
+			genericTrafficExtensionReconciler: genericReconciler,
+			finalizingReconciler:              finalizingReconciler,
+		}
+	} else {
+		reconcilerWrapper = genericReconciler
+	}
+	return c.loop.RunReconciler(ctx, reconcilerWrapper, predicates...)
+}
+
+// genericTrafficExtensionHandler implements a generic reconcile.Reconciler
+type genericTrafficExtensionReconciler struct {
+	reconciler TrafficExtensionReconciler
+}
+
+func (r genericTrafficExtensionReconciler) Reconcile(object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*extensions_istio_io_v1alpha1.TrafficExtension)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: TrafficExtension handler received event for %T", object)
+	}
+	return r.reconciler.ReconcileTrafficExtension(obj)
+}
+
+func (r genericTrafficExtensionReconciler) ReconcileDeletion(request reconcile.Request) error {
+	if deletionReconciler, ok := r.reconciler.(TrafficExtensionDeletionReconciler); ok {
+		return deletionReconciler.ReconcileTrafficExtensionDeletion(request)
+	}
+	return nil
+}
+
+// genericTrafficExtensionFinalizer implements a generic reconcile.FinalizingReconciler
+type genericTrafficExtensionFinalizer struct {
+	genericTrafficExtensionReconciler
+	finalizingReconciler TrafficExtensionFinalizer
+}
+
+func (r genericTrafficExtensionFinalizer) FinalizerName() string {
+	return r.finalizingReconciler.TrafficExtensionFinalizerName()
+}
+
+func (r genericTrafficExtensionFinalizer) Finalize(object ezkube.Object) error {
+	obj, ok := object.(*extensions_istio_io_v1alpha1.TrafficExtension)
+	if !ok {
+		return errors.Errorf("internal error: TrafficExtension handler received event for %T", object)
+	}
+	return r.finalizingReconciler.FinalizeTrafficExtension(obj)
+}

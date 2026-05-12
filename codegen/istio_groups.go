@@ -165,6 +165,9 @@ func istioGroups() []model.Group {
 				{
 					Kind: "WasmPlugin",
 				},
+				{
+					Kind: "TrafficExtension",
+				},
 			},
 			CustomTypesImportPath: "istio.io/client-go/pkg/apis/extensions/v1alpha1",
 			ApiRoot:               istioApiRoot,

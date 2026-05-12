@@ -42,6 +42,8 @@ func (m *multiclusterClientset) Cluster(cluster string) (Clientset, error) {
 type Clientset interface {
 	// clienset for the extensions.istio.io/v1alpha1/v1alpha1 APIs
 	WasmPlugins() WasmPluginClient
+	// clienset for the extensions.istio.io/v1alpha1/v1alpha1 APIs
+	TrafficExtensions() TrafficExtensionClient
 }
 
 type clientSet struct {
@@ -69,6 +71,11 @@ func NewClientset(client client.Client) Clientset {
 // clienset for the extensions.istio.io/v1alpha1/v1alpha1 APIs
 func (c *clientSet) WasmPlugins() WasmPluginClient {
 	return NewWasmPluginClient(c.client)
+}
+
+// clienset for the extensions.istio.io/v1alpha1/v1alpha1 APIs
+func (c *clientSet) TrafficExtensions() TrafficExtensionClient {
+	return NewTrafficExtensionClient(c.client)
 }
 
 // Reader knows how to read and list WasmPlugins.
@@ -211,4 +218,146 @@ func (m *multiclusterWasmPluginClient) Cluster(cluster string) (WasmPluginClient
 		return nil, err
 	}
 	return NewWasmPluginClient(client), nil
+}
+
+// Reader knows how to read and list TrafficExtensions.
+type TrafficExtensionReader interface {
+	// Get retrieves a TrafficExtension for the given object key
+	GetTrafficExtension(ctx context.Context, key client.ObjectKey) (*extensions_istio_io_v1alpha1.TrafficExtension, error)
+
+	// List retrieves list of TrafficExtensions for a given namespace and list options.
+	ListTrafficExtension(ctx context.Context, opts ...client.ListOption) (*extensions_istio_io_v1alpha1.TrafficExtensionList, error)
+}
+
+// TrafficExtensionTransitionFunction instructs the TrafficExtensionWriter how to transition between an existing
+// TrafficExtension object and a desired on an Upsert
+type TrafficExtensionTransitionFunction func(existing, desired *extensions_istio_io_v1alpha1.TrafficExtension) error
+
+// Writer knows how to create, delete, and update TrafficExtensions.
+type TrafficExtensionWriter interface {
+	// Create saves the TrafficExtension object.
+	CreateTrafficExtension(ctx context.Context, obj *extensions_istio_io_v1alpha1.TrafficExtension, opts ...client.CreateOption) error
+
+	// Delete deletes the TrafficExtension object.
+	DeleteTrafficExtension(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error
+
+	// Update updates the given TrafficExtension object.
+	UpdateTrafficExtension(ctx context.Context, obj *extensions_istio_io_v1alpha1.TrafficExtension, opts ...client.UpdateOption) error
+
+	// Patch patches the given TrafficExtension object.
+	PatchTrafficExtension(ctx context.Context, obj *extensions_istio_io_v1alpha1.TrafficExtension, patch client.Patch, opts ...client.PatchOption) error
+
+	// DeleteAllOf deletes all TrafficExtension objects matching the given options.
+	DeleteAllOfTrafficExtension(ctx context.Context, opts ...client.DeleteAllOfOption) error
+
+	// Create or Update the TrafficExtension object.
+	UpsertTrafficExtension(ctx context.Context, obj *extensions_istio_io_v1alpha1.TrafficExtension, transitionFuncs ...TrafficExtensionTransitionFunction) error
+}
+
+// StatusWriter knows how to update status subresource of a TrafficExtension object.
+type TrafficExtensionStatusWriter interface {
+	// Update updates the fields corresponding to the status subresource for the
+	// given TrafficExtension object.
+	UpdateTrafficExtensionStatus(ctx context.Context, obj *extensions_istio_io_v1alpha1.TrafficExtension, opts ...client.SubResourceUpdateOption) error
+
+	// Patch patches the given TrafficExtension object's subresource.
+	PatchTrafficExtensionStatus(ctx context.Context, obj *extensions_istio_io_v1alpha1.TrafficExtension, patch client.Patch, opts ...client.SubResourcePatchOption) error
+}
+
+// Client knows how to perform CRUD operations on TrafficExtensions.
+type TrafficExtensionClient interface {
+	TrafficExtensionReader
+	TrafficExtensionWriter
+	TrafficExtensionStatusWriter
+}
+
+type trafficExtensionClient struct {
+	client client.Client
+}
+
+func NewTrafficExtensionClient(client client.Client) *trafficExtensionClient {
+	return &trafficExtensionClient{client: client}
+}
+
+func (c *trafficExtensionClient) GetTrafficExtension(ctx context.Context, key client.ObjectKey) (*extensions_istio_io_v1alpha1.TrafficExtension, error) {
+	obj := &extensions_istio_io_v1alpha1.TrafficExtension{}
+	if err := c.client.Get(ctx, key, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+func (c *trafficExtensionClient) ListTrafficExtension(ctx context.Context, opts ...client.ListOption) (*extensions_istio_io_v1alpha1.TrafficExtensionList, error) {
+	list := &extensions_istio_io_v1alpha1.TrafficExtensionList{}
+	if err := c.client.List(ctx, list, opts...); err != nil {
+		return nil, err
+	}
+	return list, nil
+}
+
+func (c *trafficExtensionClient) CreateTrafficExtension(ctx context.Context, obj *extensions_istio_io_v1alpha1.TrafficExtension, opts ...client.CreateOption) error {
+	return c.client.Create(ctx, obj, opts...)
+}
+
+func (c *trafficExtensionClient) DeleteTrafficExtension(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	obj := &extensions_istio_io_v1alpha1.TrafficExtension{}
+	obj.SetName(key.Name)
+	obj.SetNamespace(key.Namespace)
+	return c.client.Delete(ctx, obj, opts...)
+}
+
+func (c *trafficExtensionClient) UpdateTrafficExtension(ctx context.Context, obj *extensions_istio_io_v1alpha1.TrafficExtension, opts ...client.UpdateOption) error {
+	return c.client.Update(ctx, obj, opts...)
+}
+
+func (c *trafficExtensionClient) PatchTrafficExtension(ctx context.Context, obj *extensions_istio_io_v1alpha1.TrafficExtension, patch client.Patch, opts ...client.PatchOption) error {
+	return c.client.Patch(ctx, obj, patch, opts...)
+}
+
+func (c *trafficExtensionClient) DeleteAllOfTrafficExtension(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	obj := &extensions_istio_io_v1alpha1.TrafficExtension{}
+	return c.client.DeleteAllOf(ctx, obj, opts...)
+}
+
+func (c *trafficExtensionClient) UpsertTrafficExtension(ctx context.Context, obj *extensions_istio_io_v1alpha1.TrafficExtension, transitionFuncs ...TrafficExtensionTransitionFunction) error {
+	genericTxFunc := func(existing, desired runtime.Object) error {
+		for _, txFunc := range transitionFuncs {
+			if err := txFunc(existing.(*extensions_istio_io_v1alpha1.TrafficExtension), desired.(*extensions_istio_io_v1alpha1.TrafficExtension)); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+	_, err := controllerutils.Upsert(ctx, c.client, obj, genericTxFunc)
+	return err
+}
+
+func (c *trafficExtensionClient) UpdateTrafficExtensionStatus(ctx context.Context, obj *extensions_istio_io_v1alpha1.TrafficExtension, opts ...client.SubResourceUpdateOption) error {
+	return c.client.Status().Update(ctx, obj, opts...)
+}
+
+func (c *trafficExtensionClient) PatchTrafficExtensionStatus(ctx context.Context, obj *extensions_istio_io_v1alpha1.TrafficExtension, patch client.Patch, opts ...client.SubResourcePatchOption) error {
+	return c.client.Status().Patch(ctx, obj, patch, opts...)
+}
+
+// Provides TrafficExtensionClients for multiple clusters.
+type MulticlusterTrafficExtensionClient interface {
+	// Cluster returns a TrafficExtensionClient for the given cluster
+	Cluster(cluster string) (TrafficExtensionClient, error)
+}
+
+type multiclusterTrafficExtensionClient struct {
+	client multicluster.Client
+}
+
+func NewMulticlusterTrafficExtensionClient(client multicluster.Client) MulticlusterTrafficExtensionClient {
+	return &multiclusterTrafficExtensionClient{client: client}
+}
+
+func (m *multiclusterTrafficExtensionClient) Cluster(cluster string) (TrafficExtensionClient, error) {
+	client, err := m.client.Cluster(cluster)
+	if err != nil {
+		return nil, err
+	}
+	return NewTrafficExtensionClient(client), nil
 }

@@ -75,6 +75,20 @@ func (m *MockClientset) EXPECT() *MockClientsetMockRecorder {
 	return m.recorder
 }
 
+// TrafficExtensions mocks base method.
+func (m *MockClientset) TrafficExtensions() v1alpha1.TrafficExtensionClient {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "TrafficExtensions")
+	ret0, _ := ret[0].(v1alpha1.TrafficExtensionClient)
+	return ret0
+}
+
+// TrafficExtensions indicates an expected call of TrafficExtensions.
+func (mr *MockClientsetMockRecorder) TrafficExtensions() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TrafficExtensions", reflect.TypeOf((*MockClientset)(nil).TrafficExtensions))
+}
+
 // WasmPlugins mocks base method.
 func (m *MockClientset) WasmPlugins() v1alpha1.WasmPluginClient {
 	m.ctrl.T.Helper()
@@ -591,4 +605,508 @@ func (m *MockMulticlusterWasmPluginClient) Cluster(cluster string) (v1alpha1.Was
 func (mr *MockMulticlusterWasmPluginClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterWasmPluginClient)(nil).Cluster), cluster)
+}
+
+// MockTrafficExtensionReader is a mock of TrafficExtensionReader interface.
+type MockTrafficExtensionReader struct {
+	ctrl     *gomock.Controller
+	recorder *MockTrafficExtensionReaderMockRecorder
+}
+
+// MockTrafficExtensionReaderMockRecorder is the mock recorder for MockTrafficExtensionReader.
+type MockTrafficExtensionReaderMockRecorder struct {
+	mock *MockTrafficExtensionReader
+}
+
+// NewMockTrafficExtensionReader creates a new mock instance.
+func NewMockTrafficExtensionReader(ctrl *gomock.Controller) *MockTrafficExtensionReader {
+	mock := &MockTrafficExtensionReader{ctrl: ctrl}
+	mock.recorder = &MockTrafficExtensionReaderMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockTrafficExtensionReader) EXPECT() *MockTrafficExtensionReaderMockRecorder {
+	return m.recorder
+}
+
+// GetTrafficExtension mocks base method.
+func (m *MockTrafficExtensionReader) GetTrafficExtension(ctx context.Context, key client.ObjectKey) (*v1alpha10.TrafficExtension, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetTrafficExtension", ctx, key)
+	ret0, _ := ret[0].(*v1alpha10.TrafficExtension)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTrafficExtension indicates an expected call of GetTrafficExtension.
+func (mr *MockTrafficExtensionReaderMockRecorder) GetTrafficExtension(ctx, key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTrafficExtension", reflect.TypeOf((*MockTrafficExtensionReader)(nil).GetTrafficExtension), ctx, key)
+}
+
+// ListTrafficExtension mocks base method.
+func (m *MockTrafficExtensionReader) ListTrafficExtension(ctx context.Context, opts ...client.ListOption) (*v1alpha10.TrafficExtensionList, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListTrafficExtension", varargs...)
+	ret0, _ := ret[0].(*v1alpha10.TrafficExtensionList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTrafficExtension indicates an expected call of ListTrafficExtension.
+func (mr *MockTrafficExtensionReaderMockRecorder) ListTrafficExtension(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTrafficExtension", reflect.TypeOf((*MockTrafficExtensionReader)(nil).ListTrafficExtension), varargs...)
+}
+
+// MockTrafficExtensionWriter is a mock of TrafficExtensionWriter interface.
+type MockTrafficExtensionWriter struct {
+	ctrl     *gomock.Controller
+	recorder *MockTrafficExtensionWriterMockRecorder
+}
+
+// MockTrafficExtensionWriterMockRecorder is the mock recorder for MockTrafficExtensionWriter.
+type MockTrafficExtensionWriterMockRecorder struct {
+	mock *MockTrafficExtensionWriter
+}
+
+// NewMockTrafficExtensionWriter creates a new mock instance.
+func NewMockTrafficExtensionWriter(ctrl *gomock.Controller) *MockTrafficExtensionWriter {
+	mock := &MockTrafficExtensionWriter{ctrl: ctrl}
+	mock.recorder = &MockTrafficExtensionWriterMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockTrafficExtensionWriter) EXPECT() *MockTrafficExtensionWriterMockRecorder {
+	return m.recorder
+}
+
+// CreateTrafficExtension mocks base method.
+func (m *MockTrafficExtensionWriter) CreateTrafficExtension(ctx context.Context, obj *v1alpha10.TrafficExtension, opts ...client.CreateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateTrafficExtension", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateTrafficExtension indicates an expected call of CreateTrafficExtension.
+func (mr *MockTrafficExtensionWriterMockRecorder) CreateTrafficExtension(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateTrafficExtension", reflect.TypeOf((*MockTrafficExtensionWriter)(nil).CreateTrafficExtension), varargs...)
+}
+
+// DeleteAllOfTrafficExtension mocks base method.
+func (m *MockTrafficExtensionWriter) DeleteAllOfTrafficExtension(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteAllOfTrafficExtension", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllOfTrafficExtension indicates an expected call of DeleteAllOfTrafficExtension.
+func (mr *MockTrafficExtensionWriterMockRecorder) DeleteAllOfTrafficExtension(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfTrafficExtension", reflect.TypeOf((*MockTrafficExtensionWriter)(nil).DeleteAllOfTrafficExtension), varargs...)
+}
+
+// DeleteTrafficExtension mocks base method.
+func (m *MockTrafficExtensionWriter) DeleteTrafficExtension(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, key}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteTrafficExtension", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteTrafficExtension indicates an expected call of DeleteTrafficExtension.
+func (mr *MockTrafficExtensionWriterMockRecorder) DeleteTrafficExtension(ctx, key interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, key}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTrafficExtension", reflect.TypeOf((*MockTrafficExtensionWriter)(nil).DeleteTrafficExtension), varargs...)
+}
+
+// PatchTrafficExtension mocks base method.
+func (m *MockTrafficExtensionWriter) PatchTrafficExtension(ctx context.Context, obj *v1alpha10.TrafficExtension, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchTrafficExtension", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchTrafficExtension indicates an expected call of PatchTrafficExtension.
+func (mr *MockTrafficExtensionWriterMockRecorder) PatchTrafficExtension(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchTrafficExtension", reflect.TypeOf((*MockTrafficExtensionWriter)(nil).PatchTrafficExtension), varargs...)
+}
+
+// UpdateTrafficExtension mocks base method.
+func (m *MockTrafficExtensionWriter) UpdateTrafficExtension(ctx context.Context, obj *v1alpha10.TrafficExtension, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateTrafficExtension", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateTrafficExtension indicates an expected call of UpdateTrafficExtension.
+func (mr *MockTrafficExtensionWriterMockRecorder) UpdateTrafficExtension(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateTrafficExtension", reflect.TypeOf((*MockTrafficExtensionWriter)(nil).UpdateTrafficExtension), varargs...)
+}
+
+// UpsertTrafficExtension mocks base method.
+func (m *MockTrafficExtensionWriter) UpsertTrafficExtension(ctx context.Context, obj *v1alpha10.TrafficExtension, transitionFuncs ...v1alpha1.TrafficExtensionTransitionFunction) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range transitionFuncs {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpsertTrafficExtension", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertTrafficExtension indicates an expected call of UpsertTrafficExtension.
+func (mr *MockTrafficExtensionWriterMockRecorder) UpsertTrafficExtension(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertTrafficExtension", reflect.TypeOf((*MockTrafficExtensionWriter)(nil).UpsertTrafficExtension), varargs...)
+}
+
+// MockTrafficExtensionStatusWriter is a mock of TrafficExtensionStatusWriter interface.
+type MockTrafficExtensionStatusWriter struct {
+	ctrl     *gomock.Controller
+	recorder *MockTrafficExtensionStatusWriterMockRecorder
+}
+
+// MockTrafficExtensionStatusWriterMockRecorder is the mock recorder for MockTrafficExtensionStatusWriter.
+type MockTrafficExtensionStatusWriterMockRecorder struct {
+	mock *MockTrafficExtensionStatusWriter
+}
+
+// NewMockTrafficExtensionStatusWriter creates a new mock instance.
+func NewMockTrafficExtensionStatusWriter(ctrl *gomock.Controller) *MockTrafficExtensionStatusWriter {
+	mock := &MockTrafficExtensionStatusWriter{ctrl: ctrl}
+	mock.recorder = &MockTrafficExtensionStatusWriterMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockTrafficExtensionStatusWriter) EXPECT() *MockTrafficExtensionStatusWriterMockRecorder {
+	return m.recorder
+}
+
+// PatchTrafficExtensionStatus mocks base method.
+func (m *MockTrafficExtensionStatusWriter) PatchTrafficExtensionStatus(ctx context.Context, obj *v1alpha10.TrafficExtension, patch client.Patch, opts ...client.SubResourcePatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchTrafficExtensionStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchTrafficExtensionStatus indicates an expected call of PatchTrafficExtensionStatus.
+func (mr *MockTrafficExtensionStatusWriterMockRecorder) PatchTrafficExtensionStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchTrafficExtensionStatus", reflect.TypeOf((*MockTrafficExtensionStatusWriter)(nil).PatchTrafficExtensionStatus), varargs...)
+}
+
+// UpdateTrafficExtensionStatus mocks base method.
+func (m *MockTrafficExtensionStatusWriter) UpdateTrafficExtensionStatus(ctx context.Context, obj *v1alpha10.TrafficExtension, opts ...client.SubResourceUpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateTrafficExtensionStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateTrafficExtensionStatus indicates an expected call of UpdateTrafficExtensionStatus.
+func (mr *MockTrafficExtensionStatusWriterMockRecorder) UpdateTrafficExtensionStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateTrafficExtensionStatus", reflect.TypeOf((*MockTrafficExtensionStatusWriter)(nil).UpdateTrafficExtensionStatus), varargs...)
+}
+
+// MockTrafficExtensionClient is a mock of TrafficExtensionClient interface.
+type MockTrafficExtensionClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockTrafficExtensionClientMockRecorder
+}
+
+// MockTrafficExtensionClientMockRecorder is the mock recorder for MockTrafficExtensionClient.
+type MockTrafficExtensionClientMockRecorder struct {
+	mock *MockTrafficExtensionClient
+}
+
+// NewMockTrafficExtensionClient creates a new mock instance.
+func NewMockTrafficExtensionClient(ctrl *gomock.Controller) *MockTrafficExtensionClient {
+	mock := &MockTrafficExtensionClient{ctrl: ctrl}
+	mock.recorder = &MockTrafficExtensionClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockTrafficExtensionClient) EXPECT() *MockTrafficExtensionClientMockRecorder {
+	return m.recorder
+}
+
+// CreateTrafficExtension mocks base method.
+func (m *MockTrafficExtensionClient) CreateTrafficExtension(ctx context.Context, obj *v1alpha10.TrafficExtension, opts ...client.CreateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateTrafficExtension", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateTrafficExtension indicates an expected call of CreateTrafficExtension.
+func (mr *MockTrafficExtensionClientMockRecorder) CreateTrafficExtension(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateTrafficExtension", reflect.TypeOf((*MockTrafficExtensionClient)(nil).CreateTrafficExtension), varargs...)
+}
+
+// DeleteAllOfTrafficExtension mocks base method.
+func (m *MockTrafficExtensionClient) DeleteAllOfTrafficExtension(ctx context.Context, opts ...client.DeleteAllOfOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteAllOfTrafficExtension", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllOfTrafficExtension indicates an expected call of DeleteAllOfTrafficExtension.
+func (mr *MockTrafficExtensionClientMockRecorder) DeleteAllOfTrafficExtension(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllOfTrafficExtension", reflect.TypeOf((*MockTrafficExtensionClient)(nil).DeleteAllOfTrafficExtension), varargs...)
+}
+
+// DeleteTrafficExtension mocks base method.
+func (m *MockTrafficExtensionClient) DeleteTrafficExtension(ctx context.Context, key client.ObjectKey, opts ...client.DeleteOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, key}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteTrafficExtension", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteTrafficExtension indicates an expected call of DeleteTrafficExtension.
+func (mr *MockTrafficExtensionClientMockRecorder) DeleteTrafficExtension(ctx, key interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, key}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTrafficExtension", reflect.TypeOf((*MockTrafficExtensionClient)(nil).DeleteTrafficExtension), varargs...)
+}
+
+// GetTrafficExtension mocks base method.
+func (m *MockTrafficExtensionClient) GetTrafficExtension(ctx context.Context, key client.ObjectKey) (*v1alpha10.TrafficExtension, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetTrafficExtension", ctx, key)
+	ret0, _ := ret[0].(*v1alpha10.TrafficExtension)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTrafficExtension indicates an expected call of GetTrafficExtension.
+func (mr *MockTrafficExtensionClientMockRecorder) GetTrafficExtension(ctx, key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTrafficExtension", reflect.TypeOf((*MockTrafficExtensionClient)(nil).GetTrafficExtension), ctx, key)
+}
+
+// ListTrafficExtension mocks base method.
+func (m *MockTrafficExtensionClient) ListTrafficExtension(ctx context.Context, opts ...client.ListOption) (*v1alpha10.TrafficExtensionList, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListTrafficExtension", varargs...)
+	ret0, _ := ret[0].(*v1alpha10.TrafficExtensionList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTrafficExtension indicates an expected call of ListTrafficExtension.
+func (mr *MockTrafficExtensionClientMockRecorder) ListTrafficExtension(ctx interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTrafficExtension", reflect.TypeOf((*MockTrafficExtensionClient)(nil).ListTrafficExtension), varargs...)
+}
+
+// PatchTrafficExtension mocks base method.
+func (m *MockTrafficExtensionClient) PatchTrafficExtension(ctx context.Context, obj *v1alpha10.TrafficExtension, patch client.Patch, opts ...client.PatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchTrafficExtension", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchTrafficExtension indicates an expected call of PatchTrafficExtension.
+func (mr *MockTrafficExtensionClientMockRecorder) PatchTrafficExtension(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchTrafficExtension", reflect.TypeOf((*MockTrafficExtensionClient)(nil).PatchTrafficExtension), varargs...)
+}
+
+// PatchTrafficExtensionStatus mocks base method.
+func (m *MockTrafficExtensionClient) PatchTrafficExtensionStatus(ctx context.Context, obj *v1alpha10.TrafficExtension, patch client.Patch, opts ...client.SubResourcePatchOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj, patch}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "PatchTrafficExtensionStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchTrafficExtensionStatus indicates an expected call of PatchTrafficExtensionStatus.
+func (mr *MockTrafficExtensionClientMockRecorder) PatchTrafficExtensionStatus(ctx, obj, patch interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj, patch}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchTrafficExtensionStatus", reflect.TypeOf((*MockTrafficExtensionClient)(nil).PatchTrafficExtensionStatus), varargs...)
+}
+
+// UpdateTrafficExtension mocks base method.
+func (m *MockTrafficExtensionClient) UpdateTrafficExtension(ctx context.Context, obj *v1alpha10.TrafficExtension, opts ...client.UpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateTrafficExtension", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateTrafficExtension indicates an expected call of UpdateTrafficExtension.
+func (mr *MockTrafficExtensionClientMockRecorder) UpdateTrafficExtension(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateTrafficExtension", reflect.TypeOf((*MockTrafficExtensionClient)(nil).UpdateTrafficExtension), varargs...)
+}
+
+// UpdateTrafficExtensionStatus mocks base method.
+func (m *MockTrafficExtensionClient) UpdateTrafficExtensionStatus(ctx context.Context, obj *v1alpha10.TrafficExtension, opts ...client.SubResourceUpdateOption) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateTrafficExtensionStatus", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateTrafficExtensionStatus indicates an expected call of UpdateTrafficExtensionStatus.
+func (mr *MockTrafficExtensionClientMockRecorder) UpdateTrafficExtensionStatus(ctx, obj interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateTrafficExtensionStatus", reflect.TypeOf((*MockTrafficExtensionClient)(nil).UpdateTrafficExtensionStatus), varargs...)
+}
+
+// UpsertTrafficExtension mocks base method.
+func (m *MockTrafficExtensionClient) UpsertTrafficExtension(ctx context.Context, obj *v1alpha10.TrafficExtension, transitionFuncs ...v1alpha1.TrafficExtensionTransitionFunction) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, obj}
+	for _, a := range transitionFuncs {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpsertTrafficExtension", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertTrafficExtension indicates an expected call of UpsertTrafficExtension.
+func (mr *MockTrafficExtensionClientMockRecorder) UpsertTrafficExtension(ctx, obj interface{}, transitionFuncs ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, obj}, transitionFuncs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertTrafficExtension", reflect.TypeOf((*MockTrafficExtensionClient)(nil).UpsertTrafficExtension), varargs...)
+}
+
+// MockMulticlusterTrafficExtensionClient is a mock of MulticlusterTrafficExtensionClient interface.
+type MockMulticlusterTrafficExtensionClient struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterTrafficExtensionClientMockRecorder
+}
+
+// MockMulticlusterTrafficExtensionClientMockRecorder is the mock recorder for MockMulticlusterTrafficExtensionClient.
+type MockMulticlusterTrafficExtensionClientMockRecorder struct {
+	mock *MockMulticlusterTrafficExtensionClient
+}
+
+// NewMockMulticlusterTrafficExtensionClient creates a new mock instance.
+func NewMockMulticlusterTrafficExtensionClient(ctrl *gomock.Controller) *MockMulticlusterTrafficExtensionClient {
+	mock := &MockMulticlusterTrafficExtensionClient{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterTrafficExtensionClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterTrafficExtensionClient) EXPECT() *MockMulticlusterTrafficExtensionClientMockRecorder {
+	return m.recorder
+}
+
+// Cluster mocks base method.
+func (m *MockMulticlusterTrafficExtensionClient) Cluster(cluster string) (v1alpha1.TrafficExtensionClient, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Cluster", cluster)
+	ret0, _ := ret[0].(v1alpha1.TrafficExtensionClient)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Cluster indicates an expected call of Cluster.
+func (mr *MockMulticlusterTrafficExtensionClientMockRecorder) Cluster(cluster interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cluster", reflect.TypeOf((*MockMulticlusterTrafficExtensionClient)(nil).Cluster), cluster)
 }

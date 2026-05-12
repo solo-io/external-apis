@@ -129,3 +129,118 @@ func (mr *MockMulticlusterWasmPluginReconcileLoopMockRecorder) AddMulticlusterWa
 	varargs := append([]interface{}{ctx, rec}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddMulticlusterWasmPluginReconciler", reflect.TypeOf((*MockMulticlusterWasmPluginReconcileLoop)(nil).AddMulticlusterWasmPluginReconciler), varargs...)
 }
+
+// MockMulticlusterTrafficExtensionReconciler is a mock of MulticlusterTrafficExtensionReconciler interface.
+type MockMulticlusterTrafficExtensionReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterTrafficExtensionReconcilerMockRecorder
+}
+
+// MockMulticlusterTrafficExtensionReconcilerMockRecorder is the mock recorder for MockMulticlusterTrafficExtensionReconciler.
+type MockMulticlusterTrafficExtensionReconcilerMockRecorder struct {
+	mock *MockMulticlusterTrafficExtensionReconciler
+}
+
+// NewMockMulticlusterTrafficExtensionReconciler creates a new mock instance.
+func NewMockMulticlusterTrafficExtensionReconciler(ctrl *gomock.Controller) *MockMulticlusterTrafficExtensionReconciler {
+	mock := &MockMulticlusterTrafficExtensionReconciler{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterTrafficExtensionReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterTrafficExtensionReconciler) EXPECT() *MockMulticlusterTrafficExtensionReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileTrafficExtension mocks base method.
+func (m *MockMulticlusterTrafficExtensionReconciler) ReconcileTrafficExtension(clusterName string, obj *v1alpha1.TrafficExtension) (reconcile.Result, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileTrafficExtension", clusterName, obj)
+	ret0, _ := ret[0].(reconcile.Result)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReconcileTrafficExtension indicates an expected call of ReconcileTrafficExtension.
+func (mr *MockMulticlusterTrafficExtensionReconcilerMockRecorder) ReconcileTrafficExtension(clusterName, obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileTrafficExtension", reflect.TypeOf((*MockMulticlusterTrafficExtensionReconciler)(nil).ReconcileTrafficExtension), clusterName, obj)
+}
+
+// MockMulticlusterTrafficExtensionDeletionReconciler is a mock of MulticlusterTrafficExtensionDeletionReconciler interface.
+type MockMulticlusterTrafficExtensionDeletionReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterTrafficExtensionDeletionReconcilerMockRecorder
+}
+
+// MockMulticlusterTrafficExtensionDeletionReconcilerMockRecorder is the mock recorder for MockMulticlusterTrafficExtensionDeletionReconciler.
+type MockMulticlusterTrafficExtensionDeletionReconcilerMockRecorder struct {
+	mock *MockMulticlusterTrafficExtensionDeletionReconciler
+}
+
+// NewMockMulticlusterTrafficExtensionDeletionReconciler creates a new mock instance.
+func NewMockMulticlusterTrafficExtensionDeletionReconciler(ctrl *gomock.Controller) *MockMulticlusterTrafficExtensionDeletionReconciler {
+	mock := &MockMulticlusterTrafficExtensionDeletionReconciler{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterTrafficExtensionDeletionReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterTrafficExtensionDeletionReconciler) EXPECT() *MockMulticlusterTrafficExtensionDeletionReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileTrafficExtensionDeletion mocks base method.
+func (m *MockMulticlusterTrafficExtensionDeletionReconciler) ReconcileTrafficExtensionDeletion(clusterName string, req reconcile.Request) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileTrafficExtensionDeletion", clusterName, req)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ReconcileTrafficExtensionDeletion indicates an expected call of ReconcileTrafficExtensionDeletion.
+func (mr *MockMulticlusterTrafficExtensionDeletionReconcilerMockRecorder) ReconcileTrafficExtensionDeletion(clusterName, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileTrafficExtensionDeletion", reflect.TypeOf((*MockMulticlusterTrafficExtensionDeletionReconciler)(nil).ReconcileTrafficExtensionDeletion), clusterName, req)
+}
+
+// MockMulticlusterTrafficExtensionReconcileLoop is a mock of MulticlusterTrafficExtensionReconcileLoop interface.
+type MockMulticlusterTrafficExtensionReconcileLoop struct {
+	ctrl     *gomock.Controller
+	recorder *MockMulticlusterTrafficExtensionReconcileLoopMockRecorder
+}
+
+// MockMulticlusterTrafficExtensionReconcileLoopMockRecorder is the mock recorder for MockMulticlusterTrafficExtensionReconcileLoop.
+type MockMulticlusterTrafficExtensionReconcileLoopMockRecorder struct {
+	mock *MockMulticlusterTrafficExtensionReconcileLoop
+}
+
+// NewMockMulticlusterTrafficExtensionReconcileLoop creates a new mock instance.
+func NewMockMulticlusterTrafficExtensionReconcileLoop(ctrl *gomock.Controller) *MockMulticlusterTrafficExtensionReconcileLoop {
+	mock := &MockMulticlusterTrafficExtensionReconcileLoop{ctrl: ctrl}
+	mock.recorder = &MockMulticlusterTrafficExtensionReconcileLoopMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMulticlusterTrafficExtensionReconcileLoop) EXPECT() *MockMulticlusterTrafficExtensionReconcileLoopMockRecorder {
+	return m.recorder
+}
+
+// AddMulticlusterTrafficExtensionReconciler mocks base method.
+func (m *MockMulticlusterTrafficExtensionReconcileLoop) AddMulticlusterTrafficExtensionReconciler(ctx context.Context, rec controller.MulticlusterTrafficExtensionReconciler, predicates ...predicate.Predicate) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, rec}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "AddMulticlusterTrafficExtensionReconciler", varargs...)
+}
+
+// AddMulticlusterTrafficExtensionReconciler indicates an expected call of AddMulticlusterTrafficExtensionReconciler.
+func (mr *MockMulticlusterTrafficExtensionReconcileLoopMockRecorder) AddMulticlusterTrafficExtensionReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, rec}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddMulticlusterTrafficExtensionReconciler", reflect.TypeOf((*MockMulticlusterTrafficExtensionReconcileLoop)(nil).AddMulticlusterTrafficExtensionReconciler), varargs...)
+}

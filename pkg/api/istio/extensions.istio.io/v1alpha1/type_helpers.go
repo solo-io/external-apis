@@ -9,3 +9,6 @@ import (
 
 // WasmPluginSlice represents a slice of *WasmPlugin
 type WasmPluginSlice []*WasmPlugin
+
+// TrafficExtensionSlice represents a slice of *TrafficExtension
+type TrafficExtensionSlice []*TrafficExtension

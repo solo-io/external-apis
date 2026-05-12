@@ -134,3 +134,124 @@ func (mr *MockWasmPluginEventWatcherMockRecorder) AddEventHandler(ctx, h interfa
 	varargs := append([]interface{}{ctx, h}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockWasmPluginEventWatcher)(nil).AddEventHandler), varargs...)
 }
+
+// MockTrafficExtensionEventHandler is a mock of TrafficExtensionEventHandler interface.
+type MockTrafficExtensionEventHandler struct {
+	ctrl     *gomock.Controller
+	recorder *MockTrafficExtensionEventHandlerMockRecorder
+}
+
+// MockTrafficExtensionEventHandlerMockRecorder is the mock recorder for MockTrafficExtensionEventHandler.
+type MockTrafficExtensionEventHandlerMockRecorder struct {
+	mock *MockTrafficExtensionEventHandler
+}
+
+// NewMockTrafficExtensionEventHandler creates a new mock instance.
+func NewMockTrafficExtensionEventHandler(ctrl *gomock.Controller) *MockTrafficExtensionEventHandler {
+	mock := &MockTrafficExtensionEventHandler{ctrl: ctrl}
+	mock.recorder = &MockTrafficExtensionEventHandlerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockTrafficExtensionEventHandler) EXPECT() *MockTrafficExtensionEventHandlerMockRecorder {
+	return m.recorder
+}
+
+// CreateTrafficExtension mocks base method.
+func (m *MockTrafficExtensionEventHandler) CreateTrafficExtension(obj *v1alpha1.TrafficExtension) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateTrafficExtension", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateTrafficExtension indicates an expected call of CreateTrafficExtension.
+func (mr *MockTrafficExtensionEventHandlerMockRecorder) CreateTrafficExtension(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateTrafficExtension", reflect.TypeOf((*MockTrafficExtensionEventHandler)(nil).CreateTrafficExtension), obj)
+}
+
+// DeleteTrafficExtension mocks base method.
+func (m *MockTrafficExtensionEventHandler) DeleteTrafficExtension(obj *v1alpha1.TrafficExtension) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteTrafficExtension", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteTrafficExtension indicates an expected call of DeleteTrafficExtension.
+func (mr *MockTrafficExtensionEventHandlerMockRecorder) DeleteTrafficExtension(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTrafficExtension", reflect.TypeOf((*MockTrafficExtensionEventHandler)(nil).DeleteTrafficExtension), obj)
+}
+
+// GenericTrafficExtension mocks base method.
+func (m *MockTrafficExtensionEventHandler) GenericTrafficExtension(obj *v1alpha1.TrafficExtension) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GenericTrafficExtension", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// GenericTrafficExtension indicates an expected call of GenericTrafficExtension.
+func (mr *MockTrafficExtensionEventHandlerMockRecorder) GenericTrafficExtension(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenericTrafficExtension", reflect.TypeOf((*MockTrafficExtensionEventHandler)(nil).GenericTrafficExtension), obj)
+}
+
+// UpdateTrafficExtension mocks base method.
+func (m *MockTrafficExtensionEventHandler) UpdateTrafficExtension(old, new *v1alpha1.TrafficExtension) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateTrafficExtension", old, new)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateTrafficExtension indicates an expected call of UpdateTrafficExtension.
+func (mr *MockTrafficExtensionEventHandlerMockRecorder) UpdateTrafficExtension(old, new interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateTrafficExtension", reflect.TypeOf((*MockTrafficExtensionEventHandler)(nil).UpdateTrafficExtension), old, new)
+}
+
+// MockTrafficExtensionEventWatcher is a mock of TrafficExtensionEventWatcher interface.
+type MockTrafficExtensionEventWatcher struct {
+	ctrl     *gomock.Controller
+	recorder *MockTrafficExtensionEventWatcherMockRecorder
+}
+
+// MockTrafficExtensionEventWatcherMockRecorder is the mock recorder for MockTrafficExtensionEventWatcher.
+type MockTrafficExtensionEventWatcherMockRecorder struct {
+	mock *MockTrafficExtensionEventWatcher
+}
+
+// NewMockTrafficExtensionEventWatcher creates a new mock instance.
+func NewMockTrafficExtensionEventWatcher(ctrl *gomock.Controller) *MockTrafficExtensionEventWatcher {
+	mock := &MockTrafficExtensionEventWatcher{ctrl: ctrl}
+	mock.recorder = &MockTrafficExtensionEventWatcherMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockTrafficExtensionEventWatcher) EXPECT() *MockTrafficExtensionEventWatcherMockRecorder {
+	return m.recorder
+}
+
+// AddEventHandler mocks base method.
+func (m *MockTrafficExtensionEventWatcher) AddEventHandler(ctx context.Context, h controller.TrafficExtensionEventHandler, predicates ...predicate.Predicate) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, h}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "AddEventHandler", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AddEventHandler indicates an expected call of AddEventHandler.
+func (mr *MockTrafficExtensionEventWatcherMockRecorder) AddEventHandler(ctx, h interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, h}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddEventHandler", reflect.TypeOf((*MockTrafficExtensionEventWatcher)(nil).AddEventHandler), varargs...)
+}
