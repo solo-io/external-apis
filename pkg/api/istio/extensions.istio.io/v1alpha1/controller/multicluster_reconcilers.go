@@ -88,3 +88,74 @@ func (g genericWasmPluginMulticlusterReconciler) Reconcile(cluster string, objec
 	}
 	return g.reconciler.ReconcileWasmPlugin(cluster, obj)
 }
+
+// Reconcile Upsert events for the TrafficExtension Resource across clusters.
+// implemented by the user
+type MulticlusterTrafficExtensionReconciler interface {
+	ReconcileTrafficExtension(clusterName string, obj *extensions_istio_io_v1alpha1.TrafficExtension) (reconcile.Result, error)
+}
+
+// Reconcile deletion events for the TrafficExtension Resource across clusters.
+// Deletion receives a reconcile.Request as we cannot guarantee the last state of the object
+// before being deleted.
+// implemented by the user
+type MulticlusterTrafficExtensionDeletionReconciler interface {
+	ReconcileTrafficExtensionDeletion(clusterName string, req reconcile.Request) error
+}
+
+type MulticlusterTrafficExtensionReconcilerFuncs struct {
+	OnReconcileTrafficExtension         func(clusterName string, obj *extensions_istio_io_v1alpha1.TrafficExtension) (reconcile.Result, error)
+	OnReconcileTrafficExtensionDeletion func(clusterName string, req reconcile.Request) error
+}
+
+func (f *MulticlusterTrafficExtensionReconcilerFuncs) ReconcileTrafficExtension(clusterName string, obj *extensions_istio_io_v1alpha1.TrafficExtension) (reconcile.Result, error) {
+	if f.OnReconcileTrafficExtension == nil {
+		return reconcile.Result{}, nil
+	}
+	return f.OnReconcileTrafficExtension(clusterName, obj)
+}
+
+func (f *MulticlusterTrafficExtensionReconcilerFuncs) ReconcileTrafficExtensionDeletion(clusterName string, req reconcile.Request) error {
+	if f.OnReconcileTrafficExtensionDeletion == nil {
+		return nil
+	}
+	return f.OnReconcileTrafficExtensionDeletion(clusterName, req)
+}
+
+type MulticlusterTrafficExtensionReconcileLoop interface {
+	// AddMulticlusterTrafficExtensionReconciler adds a MulticlusterTrafficExtensionReconciler to the MulticlusterTrafficExtensionReconcileLoop.
+	AddMulticlusterTrafficExtensionReconciler(ctx context.Context, rec MulticlusterTrafficExtensionReconciler, predicates ...predicate.Predicate)
+}
+
+type multiclusterTrafficExtensionReconcileLoop struct {
+	loop multicluster.Loop
+}
+
+func (m *multiclusterTrafficExtensionReconcileLoop) AddMulticlusterTrafficExtensionReconciler(ctx context.Context, rec MulticlusterTrafficExtensionReconciler, predicates ...predicate.Predicate) {
+	genericReconciler := genericTrafficExtensionMulticlusterReconciler{reconciler: rec}
+
+	m.loop.AddReconciler(ctx, genericReconciler, predicates...)
+}
+
+func NewMulticlusterTrafficExtensionReconcileLoop(name string, cw multicluster.ClusterWatcher, options reconcile.Options) MulticlusterTrafficExtensionReconcileLoop {
+	return &multiclusterTrafficExtensionReconcileLoop{loop: mc_reconcile.NewLoop(name, cw, &extensions_istio_io_v1alpha1.TrafficExtension{}, options)}
+}
+
+type genericTrafficExtensionMulticlusterReconciler struct {
+	reconciler MulticlusterTrafficExtensionReconciler
+}
+
+func (g genericTrafficExtensionMulticlusterReconciler) ReconcileDeletion(cluster string, req reconcile.Request) error {
+	if deletionReconciler, ok := g.reconciler.(MulticlusterTrafficExtensionDeletionReconciler); ok {
+		return deletionReconciler.ReconcileTrafficExtensionDeletion(cluster, req)
+	}
+	return nil
+}
+
+func (g genericTrafficExtensionMulticlusterReconciler) Reconcile(cluster string, object ezkube.Object) (reconcile.Result, error) {
+	obj, ok := object.(*extensions_istio_io_v1alpha1.TrafficExtension)
+	if !ok {
+		return reconcile.Result{}, errors.Errorf("internal error: TrafficExtension handler received event for %T", object)
+	}
+	return g.reconciler.ReconcileTrafficExtension(cluster, obj)
+}

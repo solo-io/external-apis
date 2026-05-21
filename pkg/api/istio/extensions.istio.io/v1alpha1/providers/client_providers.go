@@ -44,3 +44,31 @@ func WasmPluginClientFromConfigFactoryProvider() WasmPluginClientFromConfigFacto
 		return clients.WasmPlugins(), nil
 	}
 }
+
+// Provider for TrafficExtensionClient from Clientset
+func TrafficExtensionClientFromClientsetProvider(clients extensions_istio_io_v1alpha1.Clientset) extensions_istio_io_v1alpha1.TrafficExtensionClient {
+	return clients.TrafficExtensions()
+}
+
+// Provider for TrafficExtension Client from Client
+func TrafficExtensionClientProvider(client client.Client) extensions_istio_io_v1alpha1.TrafficExtensionClient {
+	return extensions_istio_io_v1alpha1.NewTrafficExtensionClient(client)
+}
+
+type TrafficExtensionClientFactory func(client client.Client) extensions_istio_io_v1alpha1.TrafficExtensionClient
+
+func TrafficExtensionClientFactoryProvider() TrafficExtensionClientFactory {
+	return TrafficExtensionClientProvider
+}
+
+type TrafficExtensionClientFromConfigFactory func(cfg *rest.Config) (extensions_istio_io_v1alpha1.TrafficExtensionClient, error)
+
+func TrafficExtensionClientFromConfigFactoryProvider() TrafficExtensionClientFromConfigFactory {
+	return func(cfg *rest.Config) (extensions_istio_io_v1alpha1.TrafficExtensionClient, error) {
+		clients, err := extensions_istio_io_v1alpha1.NewClientsetFromConfig(cfg)
+		if err != nil {
+			return nil, err
+		}
+		return clients.TrafficExtensions(), nil
+	}
+}

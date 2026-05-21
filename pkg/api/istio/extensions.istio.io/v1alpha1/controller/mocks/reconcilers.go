@@ -197,3 +197,186 @@ func (mr *MockWasmPluginReconcileLoopMockRecorder) RunWasmPluginReconciler(ctx, 
 	varargs := append([]interface{}{ctx, rec}, predicates...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunWasmPluginReconciler", reflect.TypeOf((*MockWasmPluginReconcileLoop)(nil).RunWasmPluginReconciler), varargs...)
 }
+
+// MockTrafficExtensionReconciler is a mock of TrafficExtensionReconciler interface.
+type MockTrafficExtensionReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockTrafficExtensionReconcilerMockRecorder
+}
+
+// MockTrafficExtensionReconcilerMockRecorder is the mock recorder for MockTrafficExtensionReconciler.
+type MockTrafficExtensionReconcilerMockRecorder struct {
+	mock *MockTrafficExtensionReconciler
+}
+
+// NewMockTrafficExtensionReconciler creates a new mock instance.
+func NewMockTrafficExtensionReconciler(ctrl *gomock.Controller) *MockTrafficExtensionReconciler {
+	mock := &MockTrafficExtensionReconciler{ctrl: ctrl}
+	mock.recorder = &MockTrafficExtensionReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockTrafficExtensionReconciler) EXPECT() *MockTrafficExtensionReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileTrafficExtension mocks base method.
+func (m *MockTrafficExtensionReconciler) ReconcileTrafficExtension(obj *v1alpha1.TrafficExtension) (reconcile.Result, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileTrafficExtension", obj)
+	ret0, _ := ret[0].(reconcile.Result)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReconcileTrafficExtension indicates an expected call of ReconcileTrafficExtension.
+func (mr *MockTrafficExtensionReconcilerMockRecorder) ReconcileTrafficExtension(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileTrafficExtension", reflect.TypeOf((*MockTrafficExtensionReconciler)(nil).ReconcileTrafficExtension), obj)
+}
+
+// MockTrafficExtensionDeletionReconciler is a mock of TrafficExtensionDeletionReconciler interface.
+type MockTrafficExtensionDeletionReconciler struct {
+	ctrl     *gomock.Controller
+	recorder *MockTrafficExtensionDeletionReconcilerMockRecorder
+}
+
+// MockTrafficExtensionDeletionReconcilerMockRecorder is the mock recorder for MockTrafficExtensionDeletionReconciler.
+type MockTrafficExtensionDeletionReconcilerMockRecorder struct {
+	mock *MockTrafficExtensionDeletionReconciler
+}
+
+// NewMockTrafficExtensionDeletionReconciler creates a new mock instance.
+func NewMockTrafficExtensionDeletionReconciler(ctrl *gomock.Controller) *MockTrafficExtensionDeletionReconciler {
+	mock := &MockTrafficExtensionDeletionReconciler{ctrl: ctrl}
+	mock.recorder = &MockTrafficExtensionDeletionReconcilerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockTrafficExtensionDeletionReconciler) EXPECT() *MockTrafficExtensionDeletionReconcilerMockRecorder {
+	return m.recorder
+}
+
+// ReconcileTrafficExtensionDeletion mocks base method.
+func (m *MockTrafficExtensionDeletionReconciler) ReconcileTrafficExtensionDeletion(req reconcile.Request) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileTrafficExtensionDeletion", req)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ReconcileTrafficExtensionDeletion indicates an expected call of ReconcileTrafficExtensionDeletion.
+func (mr *MockTrafficExtensionDeletionReconcilerMockRecorder) ReconcileTrafficExtensionDeletion(req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileTrafficExtensionDeletion", reflect.TypeOf((*MockTrafficExtensionDeletionReconciler)(nil).ReconcileTrafficExtensionDeletion), req)
+}
+
+// MockTrafficExtensionFinalizer is a mock of TrafficExtensionFinalizer interface.
+type MockTrafficExtensionFinalizer struct {
+	ctrl     *gomock.Controller
+	recorder *MockTrafficExtensionFinalizerMockRecorder
+}
+
+// MockTrafficExtensionFinalizerMockRecorder is the mock recorder for MockTrafficExtensionFinalizer.
+type MockTrafficExtensionFinalizerMockRecorder struct {
+	mock *MockTrafficExtensionFinalizer
+}
+
+// NewMockTrafficExtensionFinalizer creates a new mock instance.
+func NewMockTrafficExtensionFinalizer(ctrl *gomock.Controller) *MockTrafficExtensionFinalizer {
+	mock := &MockTrafficExtensionFinalizer{ctrl: ctrl}
+	mock.recorder = &MockTrafficExtensionFinalizerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockTrafficExtensionFinalizer) EXPECT() *MockTrafficExtensionFinalizerMockRecorder {
+	return m.recorder
+}
+
+// FinalizeTrafficExtension mocks base method.
+func (m *MockTrafficExtensionFinalizer) FinalizeTrafficExtension(obj *v1alpha1.TrafficExtension) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FinalizeTrafficExtension", obj)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// FinalizeTrafficExtension indicates an expected call of FinalizeTrafficExtension.
+func (mr *MockTrafficExtensionFinalizerMockRecorder) FinalizeTrafficExtension(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FinalizeTrafficExtension", reflect.TypeOf((*MockTrafficExtensionFinalizer)(nil).FinalizeTrafficExtension), obj)
+}
+
+// ReconcileTrafficExtension mocks base method.
+func (m *MockTrafficExtensionFinalizer) ReconcileTrafficExtension(obj *v1alpha1.TrafficExtension) (reconcile.Result, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReconcileTrafficExtension", obj)
+	ret0, _ := ret[0].(reconcile.Result)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReconcileTrafficExtension indicates an expected call of ReconcileTrafficExtension.
+func (mr *MockTrafficExtensionFinalizerMockRecorder) ReconcileTrafficExtension(obj interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReconcileTrafficExtension", reflect.TypeOf((*MockTrafficExtensionFinalizer)(nil).ReconcileTrafficExtension), obj)
+}
+
+// TrafficExtensionFinalizerName mocks base method.
+func (m *MockTrafficExtensionFinalizer) TrafficExtensionFinalizerName() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "TrafficExtensionFinalizerName")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// TrafficExtensionFinalizerName indicates an expected call of TrafficExtensionFinalizerName.
+func (mr *MockTrafficExtensionFinalizerMockRecorder) TrafficExtensionFinalizerName() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TrafficExtensionFinalizerName", reflect.TypeOf((*MockTrafficExtensionFinalizer)(nil).TrafficExtensionFinalizerName))
+}
+
+// MockTrafficExtensionReconcileLoop is a mock of TrafficExtensionReconcileLoop interface.
+type MockTrafficExtensionReconcileLoop struct {
+	ctrl     *gomock.Controller
+	recorder *MockTrafficExtensionReconcileLoopMockRecorder
+}
+
+// MockTrafficExtensionReconcileLoopMockRecorder is the mock recorder for MockTrafficExtensionReconcileLoop.
+type MockTrafficExtensionReconcileLoopMockRecorder struct {
+	mock *MockTrafficExtensionReconcileLoop
+}
+
+// NewMockTrafficExtensionReconcileLoop creates a new mock instance.
+func NewMockTrafficExtensionReconcileLoop(ctrl *gomock.Controller) *MockTrafficExtensionReconcileLoop {
+	mock := &MockTrafficExtensionReconcileLoop{ctrl: ctrl}
+	mock.recorder = &MockTrafficExtensionReconcileLoopMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockTrafficExtensionReconcileLoop) EXPECT() *MockTrafficExtensionReconcileLoopMockRecorder {
+	return m.recorder
+}
+
+// RunTrafficExtensionReconciler mocks base method.
+func (m *MockTrafficExtensionReconcileLoop) RunTrafficExtensionReconciler(ctx context.Context, rec controller.TrafficExtensionReconciler, predicates ...predicate.Predicate) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, rec}
+	for _, a := range predicates {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "RunTrafficExtensionReconciler", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// RunTrafficExtensionReconciler indicates an expected call of RunTrafficExtensionReconciler.
+func (mr *MockTrafficExtensionReconcileLoopMockRecorder) RunTrafficExtensionReconciler(ctx, rec interface{}, predicates ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, rec}, predicates...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunTrafficExtensionReconciler", reflect.TypeOf((*MockTrafficExtensionReconcileLoop)(nil).RunTrafficExtensionReconciler), varargs...)
+}

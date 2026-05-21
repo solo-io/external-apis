@@ -123,3 +123,110 @@ func (h genericWasmPluginHandler) Generic(object client.Object) error {
 	}
 	return h.handler.GenericWasmPlugin(obj)
 }
+
+// Handle events for the TrafficExtension Resource
+// DEPRECATED: Prefer reconciler pattern.
+type TrafficExtensionEventHandler interface {
+	CreateTrafficExtension(obj *extensions_istio_io_v1alpha1.TrafficExtension) error
+	UpdateTrafficExtension(old, new *extensions_istio_io_v1alpha1.TrafficExtension) error
+	DeleteTrafficExtension(obj *extensions_istio_io_v1alpha1.TrafficExtension) error
+	GenericTrafficExtension(obj *extensions_istio_io_v1alpha1.TrafficExtension) error
+}
+
+type TrafficExtensionEventHandlerFuncs struct {
+	OnCreate  func(obj *extensions_istio_io_v1alpha1.TrafficExtension) error
+	OnUpdate  func(old, new *extensions_istio_io_v1alpha1.TrafficExtension) error
+	OnDelete  func(obj *extensions_istio_io_v1alpha1.TrafficExtension) error
+	OnGeneric func(obj *extensions_istio_io_v1alpha1.TrafficExtension) error
+}
+
+func (f *TrafficExtensionEventHandlerFuncs) CreateTrafficExtension(obj *extensions_istio_io_v1alpha1.TrafficExtension) error {
+	if f.OnCreate == nil {
+		return nil
+	}
+	return f.OnCreate(obj)
+}
+
+func (f *TrafficExtensionEventHandlerFuncs) DeleteTrafficExtension(obj *extensions_istio_io_v1alpha1.TrafficExtension) error {
+	if f.OnDelete == nil {
+		return nil
+	}
+	return f.OnDelete(obj)
+}
+
+func (f *TrafficExtensionEventHandlerFuncs) UpdateTrafficExtension(objOld, objNew *extensions_istio_io_v1alpha1.TrafficExtension) error {
+	if f.OnUpdate == nil {
+		return nil
+	}
+	return f.OnUpdate(objOld, objNew)
+}
+
+func (f *TrafficExtensionEventHandlerFuncs) GenericTrafficExtension(obj *extensions_istio_io_v1alpha1.TrafficExtension) error {
+	if f.OnGeneric == nil {
+		return nil
+	}
+	return f.OnGeneric(obj)
+}
+
+type TrafficExtensionEventWatcher interface {
+	AddEventHandler(ctx context.Context, h TrafficExtensionEventHandler, predicates ...predicate.Predicate) error
+}
+
+type trafficExtensionEventWatcher struct {
+	watcher events.EventWatcher
+}
+
+func NewTrafficExtensionEventWatcher(name string, mgr manager.Manager) TrafficExtensionEventWatcher {
+	return &trafficExtensionEventWatcher{
+		watcher: events.NewWatcher(name, mgr, &extensions_istio_io_v1alpha1.TrafficExtension{}),
+	}
+}
+
+func (c *trafficExtensionEventWatcher) AddEventHandler(ctx context.Context, h TrafficExtensionEventHandler, predicates ...predicate.Predicate) error {
+	handler := genericTrafficExtensionHandler{handler: h}
+	if err := c.watcher.Watch(ctx, handler, predicates...); err != nil {
+		return err
+	}
+	return nil
+}
+
+// genericTrafficExtensionHandler implements a generic events.EventHandler
+type genericTrafficExtensionHandler struct {
+	handler TrafficExtensionEventHandler
+}
+
+func (h genericTrafficExtensionHandler) Create(object client.Object) error {
+	obj, ok := object.(*extensions_istio_io_v1alpha1.TrafficExtension)
+	if !ok {
+		return errors.Errorf("internal error: TrafficExtension handler received event for %T", object)
+	}
+	return h.handler.CreateTrafficExtension(obj)
+}
+
+func (h genericTrafficExtensionHandler) Delete(object client.Object) error {
+	obj, ok := object.(*extensions_istio_io_v1alpha1.TrafficExtension)
+	if !ok {
+		return errors.Errorf("internal error: TrafficExtension handler received event for %T", object)
+	}
+	return h.handler.DeleteTrafficExtension(obj)
+}
+
+func (h genericTrafficExtensionHandler) Update(old, new client.Object) error {
+	objOld, ok := old.(*extensions_istio_io_v1alpha1.TrafficExtension)
+	if !ok {
+		return errors.Errorf("internal error: TrafficExtension handler received event for %T", old)
+	}
+	objNew, ok := new.(*extensions_istio_io_v1alpha1.TrafficExtension)
+	if !ok {
+		return errors.Errorf("internal error: TrafficExtension handler received event for %T", new)
+	}
+	return h.handler.UpdateTrafficExtension(objOld, objNew)
+}
+
+func (h genericTrafficExtensionHandler) Generic(object client.Object) error {
+	obj, ok := object.(*extensions_istio_io_v1alpha1.TrafficExtension)
+	if !ok {
+		return errors.Errorf("internal error: TrafficExtension handler received event for %T", object)
+	}
+	return h.handler.GenericTrafficExtension(obj)
+}
