@@ -10,7 +10,7 @@ require (
 	github.com/rotisserie/eris v0.1.1
 	github.com/servicemeshinterface/smi-sdk-go v0.4.1
 	github.com/solo-io/skv2 v0.45.0
-	istio.io/client-go v1.30.0-beta.0.0.20260430142314-417ed72b2802
+	istio.io/client-go v1.30.0
 	k8s.io/api v0.35.0
 	k8s.io/apiextensions-apiserver v0.34.2
 	k8s.io/apimachinery v0.35.0
@@ -177,7 +177,7 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	istio.io/api v1.30.0-beta.0.0.20260430141914-14322f1483ad // indirect
+	istio.io/api v1.30.0-rc.0.0.20260508191950-a283232d9647 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20251125145642-4e65d59e963e // indirect
 	k8s.io/utils v0.0.0-20251219084037-98d557b7f1e7 // indirect
